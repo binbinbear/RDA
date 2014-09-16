@@ -391,7 +391,19 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
 				<configuration>
-					<packagingExcludes>**/*.class,**/toolset_proguard_base.jar</packagingExcludes>
+					<packagingExcludes>
+					**/*.class,
+					**/toolset_proguard_base.jar,
+					**/adamwrapper.jar,
+					**/commonutils.jar,
+					**/coreadmin.jar,
+					**/dbwrapper.jar,
+					**/events-common.jar,
+					**/orchestratorj.jar,
+					**/securitymanager.jar,
+					**/securitymanager.jar,
+					**/winauth.jar
+					</packagingExcludes>
 					<useCache>true</useCache>
 				</configuration>
 				<executions>

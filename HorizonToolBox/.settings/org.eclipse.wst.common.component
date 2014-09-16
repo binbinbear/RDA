@@ -4,7 +4,7 @@
         <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
         <property name="java-output-path" value="/toolbox/target/classes"/>
-        <property name="component.exclusion.patterns" value="**/*.class,**/toolset_proguard_base.jar"/>
         <property name="context-root" value="toolbox"/>
+        <property name="component.exclusion.patterns" value="**/*.class,**/toolset_proguard_base.jar,**/adamwrapper.jar,**/commonutils.jar,**/coreadmin.jar,**/dbwrapper.jar,**/events-common.jar,**/orchestratorj.jar,**/securitymanager.jar,**/winauth.jar"/>
     </wb-module>
 </project-modules>

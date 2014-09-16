@@ -17,8 +17,16 @@ public class AccumulatedUsage implements Comparable<AccumulatedUsage>{
 	public void addTime(long newtime){
 		this.usageTime  =this.usageTime + newtime;
 	}
+	/**
+	 * Sort by descent usageTime, then by username
+	 */
 	@Override
 	public int compareTo(AccumulatedUsage o) {
-		return 0;
+		if (this.usageTime>o.usageTime){
+			return -1;
+		}else if (this.usageTime<o.usageTime){
+			return 1;
+		}
+		return userName.compareTo(o.userName);
 	}
 }
