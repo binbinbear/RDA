@@ -1,0 +1,306 @@
+@import url("normalDropMenu.css");
+
+
+/*
+This is the main ul holding the
+whole menu
+*/
+ul.jd_menu,
+ul.jd_menu_vertical {
+	margin: 0px;
+	padding: 0px;
+	list-style-type: none;
+    margin-top: 3px;
+}
+
+/*
+  This is the ul holding the 2nd level menus
+*/
+ul.jd_menu ul,
+ul.jd_menu_vertical ul {
+	display: none;
+    border-left: 1px solid #0168BE;
+    border-right: 1px solid #0168BE;
+    border-bottom: 1px solid #0168BE;
+}
+
+/*
+  This is the li of each 1st level item
+*/
+ul.jd_menu li {
+	float: left;    
+}
+
+ul.jd_menu_vertical {
+	width: 300px;
+
+}
+ul.jd_menu_vertical li {
+	float: none;
+}
+
+/* -- Sub-Menus -- */
+/*
+  This is the main ul of the 2nd level
+  menu
+*/
+ul.jd_menu ul,
+ul.jd_menu_vertical ul {
+	position: absolute;
+	display: none;
+	list-style-type: none;
+	margin: 0px;
+	padding: 0px;
+	z-index: 10000;    
+}
+
+/*
+  This is the li of each 2nd level item
+*/
+ul.jd_menu ul li,
+ul.jd_menu_vertical ul li {
+	float: none;
+	margin: 0px;
+        padding: 2px;
+        background: white;
+}
+
+
+ul.jd_menu,
+ul.jd_menu ul,
+ul.jd_menu_vertical,
+ul.jd_menu_vertical ul {
+	height: 30px;
+}
+ul.jd_menu_vertical {
+	height: auto;
+}
+ul.jd_menu ul {
+	height: auto;
+}
+* html ul.jd_menu ul {
+	width: 1%;
+}
+ul.jd_menu li {
+	font-size: 12px;
+	color: #fff;
+	font-size: 14px;
+	line-height: 35px;
+
+	margin: 0px;
+	padding: 4px 13px 9px 13px;
+	height: 35px;
+
+	cursor: pointer;
+    white-space: nowrap;
+    /*border-right: 1px solid #0168BE;*/
+}
+ul.jd_menu li li {
+	width: 200px;     
+}
+
+ul.jd_menu li li a{
+	    display: inline-block;
+        font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
+        font-size: 11px;
+        font-weight: normal;
+        color: black;
+        width: 200px;
+         
+}
+/*
+  1st level menu href
+*/
+ul.jd_menu li a {
+	    display: inline-block;
+        font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
+        text-decoration: none;
+        font-size: 12px;
+        font-weight: bold;
+        color: white;
+}
+ul.jd_menu li a:visited{
+	color: white;
+}
+
+ul.jd_menu li.jdm_hover,
+ul.jd_menu li.jdm_active{
+    background-color: #0168BE;
+    color: #fff;
+}
+
+ul.jd_menu li.selected{
+    background: white url('../img/menuShadow.gif') repeat-x ;
+    background-position: 10 0px;
+}
+
+ul.jd_menu li.selected a, ul.jd_menu li.selected a:visited{
+    color: #0168BE;
+}
+
+
+ul.jd_menu li ul li a:visited,
+ul.jd_menu li.selected ul li a,
+ul.jd_menu li.selected ul li a:visited,
+ul.jd_menu li.jdm_hover ul li a,
+ul.jd_menu li.jdm_jover ul li a:visited,
+ul.jd_menu li.jdm_active ul li a
+ul.jd_menu li.jdm_active ul li a:visited{
+        color: black;
+}
+/*
+This takes care of 2nd level - need to
+be in this order as compared to the style
+below
+*/
+ul.jd_menu li.jdm_hover ul li:hover a,
+ul.jd_menu li.jdm_active ul li:hover a{
+        color: white;
+
+}
+/*
+this takes care of the 1st level
+*/
+ul.jd_menu li.jdm_hover a,
+ul.jd_menu li.jdm_active a{
+        color: #fff;
+}
+/**
+    This takes care of an already selected 1st level menu item, upon a hover over
+**/
+ul.jd_menu li.selected a{
+        color: #0168BE;
+}
+
+
+.tree {
+	max-height: 600px;
+	overflow: auto;
+	min-height: 20px;
+	padding: 19px;
+	margin-bottom: 20px;
+	background-color: #fbfbfb;
+	border: 1px solid #999;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+	-moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05)
+}
+
+.tree li {
+	list-style-type: none;
+	margin: 0;
+	padding: 10px 5px 0 5px;
+	position: relative
+}
+
+.tree li::before,.tree li::after {
+	content: '';
+	left: -20px;
+	position: absolute;
+	right: auto
+}
+
+.tree li::before {
+	border-left: 1px solid #999;
+	bottom: 50px;
+	height: 100%;
+	top: 0;
+	width: 1px
+}
+
+.tree li::after {
+	border-top: 1px solid #999;
+	height: 20px;
+	top: 25px;
+	width: 25px
+}
+
+.tree li span {
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border: 1px solid #999;
+	border-radius: 5px;
+	display: inline-block;
+	padding: 3px 8px;
+	text-decoration: none
+}
+
+.tree li.parent_li>span {
+	cursor: pointer
+}
+
+.tree>ul>li::before,.tree>ul>li::after {
+	border: 0
+}
+
+.tree li:last-child::before {
+	height: 25px
+}
+
+.tree li.parent_li>span:hover,.tree li.parent_li>span:hover+ul li span {
+	background: #eee;
+	border: 1px solid #94a0b4;
+	color: #000
+}
+
+
+span.not-in-use {
+	background: #94a0b4
+}
+
+table,table td {
+	border: 1px solid #000
+}
+
+.pageHeader table,.pageHeader table td {
+	border: none
+}
+
+.poolContainer {
+	border: 1px solid #cacaca;
+	border-top: 4px solid #65A8DD;
+	border-radius: 4px;
+	padding: 10px;
+	margin-bottom: 20px;
+}
+
+path.slice {
+	stroke-width: 2px;
+}
+
+polyline {
+	opacity: .3;
+	stroke: black;
+	stroke-width: 2px;
+	fill: none;
+}
+
+svg text.percent {
+	fill: white;
+	text-anchor: middle;
+	font-size: 12px;
+}
+
+
+div.hiddenClients {
+	display: none
+}
+
+a.disableButton{
+	display: none
+}
+
+
+tr.loadingrow td{
+	background: url("../img/loading.gif");
+}
+
+div.loadingdiv{
+	background: url("../img/loading.gif");
+	height: 12px;
+	padding: 6px;
+}
+

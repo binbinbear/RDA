@@ -1,0 +1,448 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.vmware</groupId>
+	<artifactId>toolbox</artifactId>
+	<version>1.0</version>
+	<packaging>war</packaging>
+	<name>toolbox</name>
+	<properties>
+		<start-class>com.vmware.horizontoolset.Application</start-class>
+	</properties>
+
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>1.0.2.RELEASE</version>
+	</parent>
+
+
+	<dependencies>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+		</dependency>
+
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>2.5</version>
+            <scope>provided</scope>
+        </dependency>
+
+		<dependency>
+			<groupId>com.vmware</groupId>
+			<artifactId>view-vmodl-client</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/view-vmodl-client.jar</systemPath>
+		</dependency>
+
+		<dependency>
+			<groupId>com.vmware</groupId>
+			<artifactId>vlsi-client</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/vlsi-client.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>com.vmware</groupId>
+			<artifactId>adamwrapper</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/adamwrapper.jar</systemPath>
+		</dependency>
+
+		<dependency>
+			<groupId>com.vmware</groupId>
+			<artifactId>orchestratorj</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/orchestratorj.jar</systemPath>
+		</dependency>
+
+		<dependency>
+			<groupId>com.vmware</groupId>
+			<artifactId>winauth</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/winauth.jar</systemPath>
+		</dependency>
+
+		<dependency>
+			<groupId>com.vmware</groupId>
+			<artifactId>vlsi-core</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/vlsi-core.jar</systemPath>
+		</dependency>
+
+		<dependency>
+			<groupId>com.vmware</groupId>
+			<artifactId>vdm-admin</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/vdm-admin.jar</systemPath>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.vmware</groupId>
+			<artifactId>coreadmin</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/coreadmin.jar</systemPath>
+		
+		</dependency>
+
+		<dependency>
+			<groupId>com.vmware</groupId>
+			<artifactId>events-common</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/events-common.jar</systemPath>
+		
+		</dependency>
+		
+		
+		
+		<dependency>
+			<groupId>com.vmware</groupId>
+			<artifactId>dbwrapper</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/dbwrapper.jar</systemPath>
+		
+		</dependency>
+		
+		
+				<dependency>
+			<groupId>com.vmware</groupId>
+			<artifactId>securitymanager</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/securitymanager.jar</systemPath>
+		
+		</dependency>
+		
+				
+				<dependency>
+			<groupId>com.vmware</groupId>
+			<artifactId>commonutils</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/commonutils.jar</systemPath>
+		
+		</dependency>
+		
+		
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-tomcat</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.codehaus.woodstox</groupId>
+			<artifactId>woodstox-core-asl</artifactId>
+			<version>4.3.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpcore</artifactId>
+			<version>4.3.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+		</dependency>
+	</dependencies>
+
+	<profiles>
+		<profile>
+			<id>defualtProfile</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+		</profile>
+
+		<profile>
+			<id>release</id>
+			<build>
+				<plugins>
+					<!-- disable this plugin for dev purpose -->
+					<plugin>
+						<groupId>com.github.wvengen</groupId>
+						<artifactId>proguard-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<phase>prepare-package</phase>
+								<goals>
+									<goal>proguard</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<obfuscate>true</obfuscate>
+							<injar>${project.build.finalName}/WEB-INF/lib/${project.build.finalName}.jar</injar>
+							<outjar>${project.build.finalName}/WEB-INF/lib/${project.build.finalName}.jar</outjar>
+							<outputDirectory>${project.build.directory}</outputDirectory>
+							<proguardInclude>${basedir}/proguard.conf</proguardInclude>
+							<libs>
+								<lib>${java.home}/lib/rt.jar</lib>
+								<lib>${java.home}/lib/jsse.jar</lib>
+							</libs>
+						</configuration>
+					</plugin>
+					<!-- compress js and csss -->
+					<plugin>
+
+						<groupId>org.apache.maven.plugins</groupId>
+
+						<artifactId>maven-antrun-plugin</artifactId>
+
+						<executions>
+
+							<execution>
+
+								<phase>prepare-package</phase>
+
+								<goals>
+
+									<goal>run</goal>
+
+								</goals>
+
+								<configuration>
+
+									<tasks>
+										<property name="closure-compiler" value="build/compressor/compiler.jar" />
+
+										<property name="js.compress.directory"
+											value="${project.build.directory}/toolset/js" />
+
+										<echo message="begin compress javascripts" />
+
+
+										<apply executable="java" parallel="false"
+											dest="${js.compress.directory}">
+
+											<fileset dir="src/main/webapp/js" excludes="**/*.min.js" />
+
+											<arg value="-jar" />
+
+											<arg value="${closure-compiler}" />
+
+											<arg value="--language_in" />
+
+											<arg value="ECMASCRIPT5" />
+
+											<arg value="--js" />
+
+											<srcfile />
+
+											<arg value="--js_output_file" />
+
+											<targetfile />
+
+											<mapper type="regexp" from="^(.*)\.(js)$" to="\1-tempmin.\2" />
+
+
+										</apply>
+
+										<move todir="${js.compress.directory}">
+
+											<fileset dir="${js.compress.directory}" includes="**/*.js" />
+
+											<mapper type="regexp" from="^(.*)-tempmin\.(js)$" to="\1.\2" />
+
+										</move>
+
+
+										<echo message="end compress" />
+
+										<property name="yuicompressor" value="build/compressor/yuicompressor.jar" />
+
+										<property name="css.compress.directory"
+											value="${project.build.directory}/toolset/css" />
+
+										<echo message="begin compress css" />
+
+										<apply executable="java" parallel="false" failonerror="true"
+											dest="${css.compress.directory}">
+
+											<fileset dir="src/main/webapp/css" excludes="**/*.min.css" />
+
+											<arg line="-jar" />
+
+											<arg path="${yuicompressor}" />
+
+											<arg line="--charset UTF-8" />
+
+											<arg value="--type" />
+
+											<arg value="css" />
+
+											<srcfile />
+
+											<arg line="-o" />
+
+											<targetfile />
+
+											<mapper type="regexp" from="^(.*)\.(css)$" to="\1-tempmin.\2" />
+
+
+										</apply>
+
+										<move todir="${css.compress.directory}">
+
+											<fileset dir="${css.compress.directory}" includes="**/*.css" />
+
+											<mapper type="regexp" from="^(.*)-tempmin\.(css)$" to="\1.\2" />
+
+										</move>
+
+
+										<echo message="compress css successfully" />
+
+									</tasks>
+
+								</configuration>
+
+							</execution>
+
+						</executions>
+
+					</plugin>
+
+				</plugins>
+			</build>
+
+		</profile>
+	</profiles>
+
+	<build>
+		<finalName>${project.artifactId}</finalName>
+		<plugins>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-clean-plugin</artifactId>
+				<configuration>
+					<filesets>
+						<fileset>
+							<directory>${project.build.directory}</directory>
+
+						</fileset>
+					</filesets>
+				</configuration>
+			</plugin>
+
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+				</configuration>
+			</plugin>
+
+
+
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+						<configuration>
+							<archive>
+								<manifest><!-- caution: add directory entries -->
+									<addClasspath>true</addClasspath>
+								</manifest>
+							</archive>
+							<classesDirectory>${project.build.directory}/classes</classesDirectory>
+							<outputDirectory>${project.build.directory}/${project.build.finalName}/WEB-INF/lib</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<packagingExcludes>**/*.class,**/toolset_proguard_base.jar</packagingExcludes>
+					<useCache>true</useCache>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>exploded</goal>
+						</goals>
+					</execution>
+				</executions>
+
+			</plugin>
+
+
+		</plugins>
+
+
+
+
+	</build>
+
+	<repositories>
+		<repository>
+			<id>spring-snapshots</id>
+			<name>Spring Snapshots</name>
+			<url>http://repo.spring.io/libs-snapshot</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>spring-milestones</id>
+			<name>Spring Milestones</name>
+			<url>http://repo.spring.io/libs-milestone</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>spring-snapshots</id>
+			<name>Spring Snapshots</name>
+			<url>http://repo.spring.io/libs-snapshot</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</pluginRepository>
+
+
+	</pluginRepositories>
+
+
+</project>

@@ -1,0 +1,84 @@
+<html>
+<head>
+<title>Horizon Toolbox</title>
+<link rel="shortcut icon" href="./resources/icons/favicon.ico" />
+<link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css" />
+<link rel="stylesheet" type="text/css" href="./css/jquery-ui.min.css" />
+<link rel="stylesheet" type="text/css" href="./css/report.css" />
+<script type="text/javascript" charset="utf-8" src="./js/jquery.min.js"></script>
+</head>
+
+<body>
+	<div id="container">
+		<div id="banner">
+			<div id="productName">VMware Horizon Toolbox</div>
+
+			<div id="topMenu">
+
+				<ul class="jd_menu">
+                    
+					<li id="L1_01" class="menuBtn" onclick="location='.'"><a href=".">Auditing</a>
+					         <ul class="jdm_events" style="left: 560.265625px; top: 47px; display: none;">
+                               			<li id="L1_01_01" class=""><a  href="snapshot">&nbsp;&nbsp;Snapshots</a></li>
+                               			<li id="L1_01_02" class=""><a href="event">&nbsp;&nbsp;Users Usage</a></li>
+                                        <li id="L1_01_03" class=""><a  href="client">&nbsp;&nbsp;Clients</a></li>
+                                        <li id="L1_01_04" class=""><a href="session">&nbsp;&nbsp;Sessions</a></li>
+                            </ul>
+					</li>
+
+
+					<li id="L1_02" class="menuBtn" onclick="location='remoteassist'"><a href="remoteassist">Remote Assistant</a>
+					</li>
+
+				</ul>
+
+			</div>
+
+			<div class="loggedInUser">
+
+				<span class="user" th:text="${user}"></span> &nbsp;|&nbsp; <a
+					href="Logout">Logout</a>
+
+			</div>
+
+		</div>
+
+		<div id="content">
+			<noscript>&lt;p&gt;You should enable your
+				javascript&lt;/p&gt;</noscript>
+			<div id="windowShadeData"></div>
+
+
+			<div class="frag" th:include=" ${view} :: fragment"></div>
+
+		</div>
+		<div id="footer">
+
+
+			<span style="float: right;"> <a href="#" id="animOff"
+				onclick="commonjs.animaitonOff();return false;"
+				title="Turn animation off" alt="Animation off">Off</a> <a href="#"
+				id="animOn" onclick="commonjs.animaitonOn();return false;"
+				title="Turn animation on" alt="Animation on" style="display: none;">On</a>
+			</span> <span id="copyright"> VMware Horizon&nbsp; <span
+				class="spaceFooter"> 2007-2014 VMware, Inc. All rights
+					reserverd &nbsp; </span>
+			</span>
+
+
+
+
+		</div>
+	</div>
+	<script th:inline="javascript">
+/*<![CDATA[*/
+    window.view = [[${view}]];
+
+/*]]>*/
+</script>
+
+	<script type="text/javascript" charset="utf-8" src="./js/bootstrap.min.js"></script>
+	<script type="text/javascript" charset="utf-8" src="./js/jquery-ui.min.js"></script>
+	<script type="text/javascript" charset="utf-8" src="./js/toolset.js"></script>
+</body>
+</html>

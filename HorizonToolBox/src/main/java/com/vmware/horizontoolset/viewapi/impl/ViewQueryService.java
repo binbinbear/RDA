@@ -1,0 +1,227 @@
+package com.vmware.horizontoolset.viewapi.impl;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
+import org.apache.log4j.Logger;
+
+import com.vmware.vdi.vlsi.binding.vdi.entity.BaseImageVmId;
+import com.vmware.vdi.vlsi.binding.vdi.entity.DesktopId;
+import com.vmware.vdi.vlsi.binding.vdi.entity.FarmId;
+import com.vmware.vdi.vlsi.binding.vdi.entity.VirtualCenterId;
+import com.vmware.vdi.vlsi.binding.vdi.query.QueryDefinition;
+import com.vmware.vdi.vlsi.binding.vdi.resources.Desktop;
+import com.vmware.vdi.vlsi.binding.vdi.resources.Desktop.DesktopInfo;
+import com.vmware.vdi.vlsi.binding.vdi.resources.Desktop.DesktopSummaryView;
+import com.vmware.vdi.vlsi.binding.vdi.resources.Farm.FarmInfo;
+import com.vmware.vdi.vlsi.binding.vdi.users.Session.SessionLocalSummaryView;
+import com.vmware.vdi.vlsi.binding.vdi.utils.virtualcenter.BaseImageSnapshot;
+import com.vmware.vdi.vlsi.binding.vdi.utils.virtualcenter.BaseImageSnapshot.BaseImageSnapshotInfo;
+import com.vmware.vdi.vlsi.binding.vdi.utils.virtualcenter.BaseImageVm;
+import com.vmware.vdi.vlsi.binding.vdi.utils.virtualcenter.BaseImageVm.BaseImageVmInfo;
+import com.vmware.vdi.vlsi.binding.vdi.utils.virtualcenter.VmTemplate;
+import com.vmware.vdi.vlsi.binding.vdi.utils.virtualcenter.VmTemplate.VmTemplateInfo;
+import com.vmware.vdi.vlsi.client.Connection;
+import com.vmware.vdi.vlsi.client.Query;
+import com.vmware.vdi.vlsi.client.Query.QueryFilter;
+import com.vmware.vdi.vlsi.cname.CName;
+import com.vmware.vdi.vlsi.cname.vdi.users.SessionCName.SessionLocalSummaryViewCName;
+import com.vmware.horizontoolset.viewapi.SessionFarm;
+import com.vmware.horizontoolset.viewapi.SessionPool;
+import com.vmware.horizontoolset.viewapi.SnapShotViewPool;
+import com.vmware.horizontoolset.viewapi.VM;
+import com.vmware.vim.binding.impl.vmodl.TypeNameImpl;
+import com.vmware.vim.binding.vmodl.DataObject;
+
+public class ViewQueryService {
+	private static Logger log = Logger.getLogger(ViewQueryService.class);
+	
+	private Desktop _desktop;
+	private VmTemplate _template;
+	private BaseImageSnapshot _snapshotService;
+	private BaseImageVm _vmServicve;
+	private Connection _connection;
+
+	public ViewQueryService(Connection connect){
+		this._connection = connect;
+		this._desktop = connect.get(Desktop.class);
+		this._template = connect.get(VmTemplate.class);
+		this._snapshotService = connect.get(BaseImageSnapshot.class);
+		this._vmServicve = connect.get(BaseImageVm.class);
+
+	}
+	
+	
+	public DesktopInfo getDesktopInfo(DesktopSummaryView summary){
+		DesktopInfo desktopinfo = this._desktop.get(summary.id);
+		
+		if (desktopinfo == null){
+			log.warn("desktop not found for:"+summary.desktopSummaryData.displayName);
+		}
+		return desktopinfo;
+	}
+	
+	
+	
+	public VmTemplateInfo[] getTemplates(VirtualCenterId vcID){	
+		return this._template.list(vcID);
+	}
+	
+	
+	public BaseImageSnapshotInfo[] getSnapShots(BaseImageVmId vmid){
+		return this._snapshotService.list( vmid);
+	}
+	
+	
+	
+	public VM getVM(VirtualCenterId vcID, BaseImageVmId vmid){
+		VM result = Cache.getVM(vmid.id);
+		if (result !=null){
+			log.debug("Great VM cache hit ");
+			return result;
+		}
+		
+		log.debug("query vcenter for vmid");
+		
+		BaseImageVmInfo [] infos = this._vmServicve.list(vcID);
+		if (infos==null || infos.length == 0){
+			return null;
+		}
+		
+		
+		for (int i= 0;i< infos.length;i++){
+			Cache.addOrUpdateVM(infos[i].id.id, new VMImpl(infos[i]));
+		}
+		
+		return Cache.getVM(vmid.id);
+	}
+	
+
+	
+	  private <T extends DataObject> List<T> getAllObjects(Class<T> type) {
+		  log.debug("Start to query");
+	        List<T> ret = new ArrayList<>();
+
+	        try (Query<T> query = new Query<>(this._connection, type)) {
+
+	            for (T info : query) {
+
+	               ret.add(info);
+
+	            }
+	        }
+	        return ret;
+	    }
+	
+
+	private List<DesktopSummaryView> getDesktopSummaryViews(){
+		log.debug("Start to query pools");
+
+		return getAllObjects(DesktopSummaryView.class);	  
+	}
+	
+	
+	public List<SessionPool> getAllSessionPools(){
+		List<DesktopSummaryView>  results = this.getDesktopSummaryViews();
+		List<SessionPool> list = new ArrayList<SessionPool>();
+	    for (DesktopSummaryView desktop : results){
+	    	SessionPool pool = PoolFactory.getSessionPool(desktop, this.getSessionCount(desktop.id));
+	    	if (pool!=null){
+	    		list.add(pool);
+	    	}
+	    }
+	    
+	    if (list.size()>0){
+		    Collections.sort(list,new Comparator<SessionPool>(){  
+	            public int compare(SessionPool arg0, SessionPool arg1) {  
+	                return arg1.getSessionCount()- arg0.getSessionCount();
+	            }  
+	        });  
+	    }
+
+	    
+	        return list;
+		
+	}
+
+
+	
+	public List<SnapShotViewPool> getAllPools(){
+		log.debug("Start to query pools");
+		List<DesktopSummaryView> results = this.getDesktopSummaryViews();
+		List<SnapShotViewPool> list = new ArrayList<SnapShotViewPool>();
+		
+	    if (results == null || results.size() == 0) {
+	    	log.debug("no results in queryResults");
+	        return list;
+	    }
+	    for (DesktopSummaryView desktop : results){
+	    	SnapShotViewPool pool = PoolFactory.getPool(desktop, this);
+	    	if (pool!=null){
+	    		list.add(pool);
+	    	}
+	    	
+	    }
+	        return list;
+	}
+
+	
+	private static final SessionLocalSummaryViewCName SESSION_LOCAL_SUMMARY_VIEW_CNAME = new SessionLocalSummaryViewCName();
+	private static final CName<DesktopId> desktopCName = SESSION_LOCAL_SUMMARY_VIEW_CNAME.referenceData.desktop;
+	private static final CName<FarmId> farmCName = SESSION_LOCAL_SUMMARY_VIEW_CNAME.referenceData.farm;
+	
+	public int getAllSessionCount(){
+		return Query.count(this._connection, SessionLocalSummaryView.class,null);
+	}
+	
+	public List<SessionLocalSummaryView> getAllSessions(){
+		return this.getAllObjects(SessionLocalSummaryView.class);
+	}
+	
+	public int getSessionCount(DesktopId desktopid){
+		QueryFilter filter = QueryFilter.equals(desktopCName,		desktopid);
+		return Query.count(this._connection, SessionLocalSummaryView.class, filter);
+	}
+
+	public List<SessionFarm> getAllSessionFarms() {
+		log.debug("Start to query farms");
+		List<SessionFarm> list = new ArrayList<SessionFarm>();
+		List<FarmInfo> farminfolist = this.getAllObjects(FarmInfo.class);
+		
+		
+	    if (farminfolist == null || farminfolist.size()==0) {
+	    	log.debug("no result is returned");
+	            return list;
+	    }
+	    
+	    for (FarmInfo farm: farminfolist){
+	    	list.add(new SessionFarmImpl(farm, this.getAppSessionCount(farm.id)));
+	    }
+	    
+
+	    if (list.size()>0){
+		    Collections.sort(list,new Comparator<SessionFarm>(){  
+	            public int compare(SessionFarm arg0, SessionFarm arg1) {  
+	                return arg1.getAppSessionCount()- arg0.getAppSessionCount();
+	            }  
+	        });  
+	    }
+
+	    
+		return list;
+	}
+
+	public int getAppSessionCount(FarmId id) {
+		QueryDefinition queryDefinition = new QueryDefinition();
+		queryDefinition.setQueryEntityType(new TypeNameImpl("SessionLocalSummaryView"));
+
+		QueryFilter[] filters= new QueryFilter[2];
+	    filters[0] =   QueryFilter.equals(farmCName, id);
+	    filters[1] = QueryFilter.equals(desktopCName, null);
+
+		
+		return Query.count(this._connection, SessionLocalSummaryView.class,QueryFilter.and(filters) );
+	}
+}

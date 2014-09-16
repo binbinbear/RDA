@@ -1,0 +1,65 @@
+package com.vmware.horizontoolset;
+
+import java.util.Date;
+import java.util.List;
+
+import javax.servlet.http.HttpSession;
+
+import org.apache.log4j.Logger;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.vmware.horizontoolset.report.ReportUtil;
+import com.vmware.horizontoolset.report.SessionReport;
+import com.vmware.horizontoolset.util.SessionUtil;
+import com.vmware.horizontoolset.viewapi.Session;
+import com.vmware.horizontoolset.viewapi.SessionFarm;
+import com.vmware.horizontoolset.viewapi.SessionPool;
+import com.vmware.horizontoolset.viewapi.ViewAPIService;
+
+@RestController
+public class SessionRestController {
+	private static Logger log = Logger.getLogger(SessionRestController.class);
+	
+	public static final int refershInterValSeconds = 300;
+	private static SessionReport cachedreport =null;
+	private static long timestamp;
+	public SessionRestController(){
+		log.debug("Create Session Rest Controller");
+	}
+	
+	@RequestMapping("/session/report")
+    public synchronized SessionReport getSessionsReport(HttpSession session) {
+    	long currenttime = new Date().getTime();
+    	if (cachedreport !=null && currenttime - timestamp < 1000 *refershInterValSeconds ){
+    		 log.debug("Receive get request for clients, and reuse previous report");
+    	}else{
+    		timestamp = currenttime;
+        	try{
+                log.debug("Receive get request for clients");
+                ViewAPIService service = SessionUtil.getViewAPIService(session);
+                int allCount = service.getSessionCount();
+                if (allCount<500){
+                	List<Session> sessions = service.getAllSessions();
+                	cachedreport = ReportUtil.generateSessionReport(sessions);
+                }else{
+                    List<SessionPool> pools = service.getSessionPools();
+                    List<SessionFarm> farms = service.getSessionFarms();
+                    cachedreport = ReportUtil.generateSessionReport(pools, farms);
+                }
+
+               
+        	}catch(Exception ex){
+        		log.error("Exception, return to login",ex);
+        		return cachedreport;
+        	}
+    	}
+    	return cachedreport;
+
+    }
+	
+	static void cleanReport(){
+		cachedreport = null;
+	}
+
+}

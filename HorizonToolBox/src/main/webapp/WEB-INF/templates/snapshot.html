@@ -1,0 +1,56 @@
+<html>
+<head>
+<title>View SnapShot Report</title>
+</head>
+<body>
+
+	<div id="snapshot" th:fragment="fragment">
+
+		<h3 class="pageHeader">
+			<table border="0" cellpadding="0" cellspacing="0" width="100%">
+				<tbody>
+					<tr>
+						<td>
+							<div class="pageHeaderDiv">
+								<img src="img/window_information.png" alt="Dashboard" />&nbsp;&nbsp; Snapshot
+								Audit Report &nbsp; <span class = "updateDate"> </span> <a href="./refreshSnapShot">
+									Click here to update this report now</a>
+							</div>
+						</td>
+						<td id="loadingAnim"></td>
+					</tr>
+				</tbody>
+			</table>
+		</h3>
+
+		<div id="dialog" title="Detail Information"></div>
+
+
+
+		<div class="poolContainer">
+			<h2>SnapShots for Linked Clone Pools:</h2>
+			<h3>
+				<span class="not-in-use" style="padding: 3px 8px"><i
+					class="glyphicon  glyphicon-camera "></i> SnapShot</span> are snapshots
+				not in use by Linked Clone Pools
+			</h3>
+			<div class="vms tree well">
+				<div class="loadingdiv">Loading</div>
+			</div>
+		</div>
+
+		<div class="poolContainer">
+			<h2>Templates for Full Clone Pools:</h2>
+
+			<div class="templates tree well">
+				<div class="loadingdiv"> Loading </div>
+			</div>
+		</div>
+
+			<script type="text/javascript" charset="utf-8"
+		src="./js/snapshot.js"></script>
+
+	</div>
+
+</body>
+</html>

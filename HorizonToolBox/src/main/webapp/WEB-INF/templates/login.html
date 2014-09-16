@@ -1,0 +1,115 @@
+<html>
+<head>
+<meta charset="utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<title>View</title>
+<link rel="shortcut icon" href="./resources/icons/favicon.ico"/>
+<link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css"/>
+<link rel="stylesheet" type="text/css" href="./css/style.css"/>
+</head>
+<body>
+
+	<!-- ngInclude:  -->
+	<div data-ng-include="" class="ng-scope">
+		<header class="navbar ui-navbar ng-scope">
+			<div class="ui-strip"></div>
+			<div class="container">
+				<div class="navbar-header pull-left">
+					<button type="button" class="navbar-toggle" data-toggle="collapse"
+						data-target=".ui-navbar-links">
+						<span class="sr-only">Toggle navigation</span> <span
+							class="icon-bar"></span> <span class="icon-bar"></span> <span
+							class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand ui-brand"> <img
+						src="./resources/icons/view_48x.png" id="logoImg"/> <span
+						class="ui-view-logo"></span>
+					</a>
+				</div>
+				<div class="navbar-header pull-right ui-navbar-links">
+					<ul class="nav navbar-nav navbar-right">
+						<li class="ui-header-account ng-binding ng-hide"></li>
+						<li class="ng-hide"><a><img
+								src="./resources/icons/logout.png"/></a></li>
+						<li class="ng-hide"><a href="./" id="homeBtn" title="Home"><img
+								src="./resources/icons/home-icon.png"/></a></li>
+						<li><a href="http://www.vmware.com/info?id=1213"
+							target="_blank" id="helpBtn" title="Help"><img
+								src="./resources/icons/header_button_help.png"/></a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="ui-header-bottom-up"></div>
+			<div class="ui-header-bottom-down"></div>
+		</header>
+	</div>
+
+
+
+	<!-- ngView:  -->
+	<div data-ng-view="" class="animate ui-page ui-body ng-scope">
+		<div class="ui-content-area ng-scope">
+			<div class="container ui-center-div">
+				<div class="row ui-center-div-inner">
+					<div class="ui-center-panel">
+						<div class="ui-panel-header">
+							<h3 class="ng-binding">Login Horizon Toolbox</h3>
+						</div>
+						<div class="ui-strip"></div>
+						<div class="ui-pattern">
+							<img src="./resources/icons/web_view_logo.png"/>
+						</div>
+						<div class="ui-panel-content">
+							<!-- ngIf: error -->
+							<form id="loginForm" name="loginForm" action="Login/Submit"
+								class="form-horizontal ng-pristine ng-invalid ng-invalid-required"
+								autocomplete="off">
+								<div class="form-group ui-form-group">
+									<label for="username" class="col-sm-3 control-label ng-binding">UserName:</label>
+									<div class="input-group col-sm-8">
+										<span class="input-group-addon"> <span
+											class="glyphicon glyphicon-user"> </span>
+										</span> <input id="username" name="username" type="text"
+											class="form-control ng-pristine ng-invalid ng-invalid-required"
+											placeholder="Username"/>
+									</div>
+									<label for="username" class="error ng-binding ng-hide">Required</label>
+								</div>
+								<div class="form-group ui-form-group ui-form-group">
+									<label for="password" class="col-sm-3 control-label ng-binding">Password:</label>
+									<div class="input-group col-sm-8">
+										<span class="input-group-addon"><span class="ui-lock"></span></span>
+										<input id="password" name="password" type="password"
+											class="form-control ng-pristine ng-valid"
+											placeholder="Password"/>
+									</div>
+								</div>
+								<div class="form-group ui-form-group ui-form-group">
+									<label for="domain" class="col-sm-3 control-label ng-binding">Domain:</label>
+									<div class="input-group col-sm-8">
+										<span class="input-group-addon"><span class="ui-lock"></span></span>
+										<!-- domains -->
+										<select id="domain" name="domain" class="form-control ng-pristine ng-valid" >
+										<option  th:each="domain : ${domains}" th:value="${domain}">
+											
+										  <span th:text="${domain}"></span>
+										</option>
+										</select>
+
+									</div>
+								</div>
+							</form>
+						</div>
+						<div class="ui-panel-footer">
+							<button id="submitButton" type="submit" class="btn btn-primary ng-binding">Submit</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+    <script type="text/javascript" charset="utf-8" src="./js/jquery.min.js"></script>
+	<script type="text/javascript" charset="utf-8" src="./js/web.js"></script>
+
+</body>
+</html>
