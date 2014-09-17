@@ -5,7 +5,7 @@ import java.util.Collection;
 import com.vmware.horizontoolset.usage.AccumulatedUsage;
 
 
-public class AccumulatedUsageReport {
+public class AccumulatedUsageReport extends AbstractReport{
 	
 	private Collection<AccumulatedUsage> allUsages;
 	

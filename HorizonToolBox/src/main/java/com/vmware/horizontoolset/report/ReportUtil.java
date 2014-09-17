@@ -3,15 +3,21 @@ package com.vmware.horizontoolset.report;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.TreeMap;
+import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 
 import com.vmware.horizontoolset.usage.AccumulatedUsage;
+import com.vmware.horizontoolset.usage.ConcurrentConnection;
 import com.vmware.horizontoolset.usage.Connection;
+import com.vmware.horizontoolset.usage.Event;
+import com.vmware.horizontoolset.usage.EventType;
+import com.vmware.horizontoolset.util.ConnectionImpl;
 import com.vmware.horizontoolset.viewapi.Session;
 import com.vmware.horizontoolset.viewapi.SessionFarm;
 import com.vmware.horizontoolset.viewapi.SessionPool;
@@ -97,8 +103,53 @@ public class ReportUtil {
 		return CEIPReportUtil.generateReport(sPoolFolder);
 	}
 	
-	public static AccumulatedUsageReport generateUsageReport(List<Connection> connections){
+	/**
+	 * Get all connection time and disconnection time for a specific user or all users
+	 * @param events
+	 * @param userName     null to get all users
+	 * @return 
+	 */
+	public static List<Connection> getConnections(List<Event> events, String userName) {
+		if (userName == null){
+			userName = "";
+		}
+		List<Connection> result = new ArrayList<Connection>();
 		
+		Map<String,Event> connectionEvents = new HashMap<String, Event>();
+		//Event is sorted by descent time
+		for (int i = events.size() -1; i>=0; i--) {
+			Event event = events.get(i);
+			String eventUserName = event.getUserName();
+			
+			if (eventUserName!=null && ( userName.length() == 0 || eventUserName.toLowerCase().contains(userName))){
+				
+				String key = event.getMachineDNSName() + eventUserName;
+				if (event.getType() == EventType.Connection){
+					connectionEvents.put(key, event);
+				}else if (event.getType() == EventType.Disconnection){
+					Event connectionEvent = connectionEvents.get(key);
+					if (connectionEvent!=null){
+						result.add(new ConnectionImpl(connectionEvent, event));				
+						connectionEvents.remove(key);
+					}
+				}
+
+			}
+		}
+		
+		
+		java.util.Collections.sort(result);
+		log.debug("All connections:" + result.size());
+		return result;
+	}
+	
+	/**
+	 * Get accumulated using time for all users
+	 * @param connections
+	 * @return
+	 */
+	public static AccumulatedUsageReport generateUsageReport(List<Connection> connections){
+		log.debug("Start to generate usage report from connections:"+ connections.size());
 		HashMap<String, AccumulatedUsage> map = new HashMap<String, AccumulatedUsage>( );
 		for (Connection connection:connections ){
 			String username = connection.getUserName();
@@ -118,8 +169,61 @@ public class ReportUtil {
 		Collections.sort(list);
 		
 		AccumulatedUsageReport report = new AccumulatedUsageReport(list);
+		log.info("Report size:" + list.size());
 		return report;
 	}
-
 	
+	/**
+	 * Get concurrent connections for the past week/month
+	 * 
+	 * @param events all connection/disconnection event
+	 * @param timeUnit   number of seconds
+	 * @return
+	 */
+	public static ConcurrentConnectionsReport getConcurrentConnectionsReport(List<Event> events, long timeUnit ) {
+		if (events == null || events.size() == 0){
+			return null;
+		}
+		log.debug("Start to generate concurrent connections report from event:" + events.size() + "Timeunit:" + timeUnit);
+	
+		List<Connection> connections = ReportUtil.getConnections(events, null);
+		
+		events.clear();
+		for (Connection c: connections){
+			events.add(c.getConnectionEvent());
+			events.add(c.getDisconnectionEvent());
+		}
+		
+		java.util.Collections.sort(events);
+		
+		
+
+		int i = events.size()-1;
+		long previousTime = events.get(i).getTime().getTime();
+		int currentMax = 0;
+		int currentConCurrent = 0;
+		List<ConcurrentConnection> result = new ArrayList<ConcurrentConnection>();
+		for ( ;i>=0;i--) {
+			Event event = events.get(i);
+			if (event.getType() == EventType.Connection){
+				currentConCurrent ++;
+			}else if (event.getType() == EventType.Disconnection && currentConCurrent>0){
+				currentConCurrent --;
+			}
+			
+			if (currentConCurrent > currentMax){
+				currentMax = currentConCurrent;
+			}
+			if (i==0 || event.getTime().getTime() - previousTime > timeUnit * 1000){
+				result.add(new ConcurrentConnection(new Date(previousTime), currentMax));
+				currentMax = 0;
+				previousTime = event.getTime().getTime();
+			}
+			
+		}
+		
+		
+		log.debug("Report size:" + result.size());
+		return new ConcurrentConnectionsReport(result);
+	}
 }

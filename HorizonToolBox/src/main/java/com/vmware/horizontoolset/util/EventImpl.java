@@ -87,4 +87,17 @@ public class EventImpl implements Event{
 		return this.message;
 	}
 
+	/**
+	 * sort by descent time, then by username
+	 */
+	@Override
+	public int compareTo(Event o) {
+		if (this.time.after(o.getTime())){
+			return -1;
+		}else if (this.time.before(o.getTime())){
+			return 1;
+		}
+		return this.username.compareTo(o.getUserName());
+	}
+
 }

@@ -3,9 +3,10 @@ package com.vmware.horizontoolset.util;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.vmware.horizontoolset.usage.Connection;
 import com.vmware.horizontoolset.usage.Event;
-
+@JsonIgnoreProperties(value={"connectionEvent", "disconnectionEvent"})
 public class ConnectionImpl implements Connection{
 
 	private String username;
@@ -52,6 +53,29 @@ public class ConnectionImpl implements Connection{
 		return this.disConnectEvent.getTime();
 	}
 
+
+	@Override
+	public int compareTo(Connection o) {
+		if (this.getConnectionTime().before(o.getConnectionTime())){
+			return 1;
+		}else if (this.getConnectionTime().after(o.getConnectionTime())){
+			return -1;
+		}
+		
+		return this.getDisconnectionTime().compareTo(o.getConnectionTime());
+	}
+
+
+	@Override
+	public Event getConnectionEvent() {
+		return this.connectEvent;
+	}
+
+
+	@Override
+	public Event getDisconnectionEvent() {
+		return this.disConnectEvent;
+	}
 
 
 

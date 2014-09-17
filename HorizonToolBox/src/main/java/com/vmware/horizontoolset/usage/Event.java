@@ -2,7 +2,7 @@ package com.vmware.horizontoolset.usage;
 
 import java.util.Date;
 
-public interface Event {
+public interface Event extends Comparable<Event>{
 	public EventType getType();
 	public String getUserName();
 	public Date getTime();
