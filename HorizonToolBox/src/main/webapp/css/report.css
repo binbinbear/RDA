@@ -343,3 +343,25 @@ a.pagenum:hover{
 	background:#eef3f7;
 	color:#fd6d01
 }
+
+
+/**
+For sessions line chart view
+**/
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.x.axis path {
+  display: none;
+}
+
+.line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
+

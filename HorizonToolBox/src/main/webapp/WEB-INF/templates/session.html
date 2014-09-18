@@ -6,6 +6,7 @@
 <body>
 
 	<div id="session" th:fragment="fragment">
+		
 		<h3 class="pageHeader">
 			<table border="0" cellpadding="0" cellspacing="0" width="100%">
 				<tbody>
@@ -13,7 +14,31 @@
 						<td>
 							<div class="pageHeaderDiv">
 								l <img src="img/window_information.png" alt="Dashboard" />&nbsp;&nbsp;Session
-								Audit Report &nbsp; <span class = "updateDate"> </span> <a href="./refreshSession">
+								Audit Report &nbsp; 
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</h3>
+		
+		<div>
+				
+				<svg width="500" height="400">
+					<g id="versiondata"></g>
+				</svg>
+				
+	  </div>
+			
+			
+		<h3 class="pageHeader">
+			<table border="0" cellpadding="0" cellspacing="0" width="100%">
+				<tbody>
+					<tr>
+						<td>
+							<div class="pageHeaderDiv">
+								l <img src="img/window_information.png" alt="Dashboard" />&nbsp;&nbsp;Current Sessions
+								 &nbsp; <span class = "updateDate"> </span> <a href="./refreshSession">
 									Click here to update this report now</a>
 							</div>
 						</td>
@@ -69,6 +94,7 @@
 			</table>
 
 		</div>
+		<script src="./js/d3.js"></script>
 	<script src="./js/sessions.js"></script>
 	</div>
 
