@@ -200,25 +200,35 @@ public class ReportUtil {
 
 		int i = events.size()-1;
 		long previousTime = events.get(i).getTime().getTime();
+		long currentTime =previousTime;
 		int currentMax = 0;
 		int currentConCurrent = 0;
 		List<ConcurrentConnection> result = new ArrayList<ConcurrentConnection>();
 		for ( ;i>=0;i--) {
 			Event event = events.get(i);
+			
+			if (event.getTime().getTime() - currentTime > timeUnit * 1000 ){
+				result.add(new ConcurrentConnection(new Date(previousTime), currentMax));
+				result.add(new ConcurrentConnection(new Date(currentTime), currentConCurrent));
+				currentMax = 0;
+				previousTime = event.getTime().getTime();
+				
+			}else if (i==0 || event.getTime().getTime() - previousTime > timeUnit * 1000){
+				result.add(new ConcurrentConnection(new Date(previousTime), currentMax));
+				currentMax = 0;
+				previousTime = event.getTime().getTime();
+			}
+			
 			if (event.getType() == EventType.Connection){
 				currentConCurrent ++;
 			}else if (event.getType() == EventType.Disconnection && currentConCurrent>0){
 				currentConCurrent --;
 			}
-			
 			if (currentConCurrent > currentMax){
 				currentMax = currentConCurrent;
 			}
-			if (i==0 || event.getTime().getTime() - previousTime > timeUnit * 1000){
-				result.add(new ConcurrentConnection(new Date(previousTime), currentMax));
-				currentMax = 0;
-				previousTime = event.getTime().getTime();
-			}
+			
+			currentTime = event.getTime().getTime();
 			
 		}
 		
