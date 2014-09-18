@@ -140,7 +140,7 @@ $(function () {
 	      modal: true,
 	      buttons: {
 	        "Accept": function() {
-	        	AuditingApp.Client.enableCEIP();
+	        	ToolBox.Client.enableCEIP();
 	          $( this ).dialog( "close" );
 	        },
 	        Cancel: function() {
@@ -153,11 +153,11 @@ $(function () {
 });
 
 
-if (!window.AuditingApp){
-	window.AuditingApp= {};
+if (!window.ToolBox){
+	window.ToolBox= {};
 }
-if (!AuditingApp.Client || !AuditingApp.Client.init){
-	AuditingApp.Client = {
+if (!ToolBox.Client || !ToolBox.Client.init){
+	ToolBox.Client = {
 			osdata: [],
 			versiondata: [],
 			colorMap: {
@@ -188,18 +188,18 @@ if (!AuditingApp.Client || !AuditingApp.Client.init){
 						 }else{
 							 $(".updateDate").text("");
 						 }
-						 AuditingApp.Client.osdata = [];
-						 AuditingApp.Client.versiondata = [];
+						 ToolBox.Client.osdata = [];
+						 ToolBox.Client.versiondata = [];
 						var osMap = data.osMap;
 						var versionMap = data.versionMap;
 						//label, color, value
-						var colorMap = AuditingApp.Client.colorMap;
+						var colorMap = ToolBox.Client.colorMap;
 						for (var label in osMap){
 							var color = colorMap[label];
 							
 							var os = { label: label, color: color, value: osMap[label]}
 							
-							AuditingApp.Client.osdata.push(os);
+							ToolBox.Client.osdata.push(os);
 						}
 						
 						for (var label in versionMap){
@@ -207,14 +207,14 @@ if (!AuditingApp.Client || !AuditingApp.Client.init){
 							
 							var version = { label: label, color: color, value: versionMap[label]}
 							
-							AuditingApp.Client.versiondata.push(version);
+							ToolBox.Client.versiondata.push(version);
 						}
 					       
 					      var type = $("#viewType").val();
 					      if (type == "pie"){
-					    	  AuditingApp.Client.showPieView();
+					    	  ToolBox.Client.showPieView();
 					      }else{
-					    	  AuditingApp.Client.showTableView();
+					    	  ToolBox.Client.showTableView();
 					      }
 
 					}
@@ -235,8 +235,8 @@ if (!AuditingApp.Client || !AuditingApp.Client.init){
 				svg.css("display","block");
 				var size = 180;
 				var height = 20;
-				Donut3D.draw("osdata",AuditingApp.Client.osdata, size+height, size+height, size, size-height, height, 0.4);
-				Donut3D.draw("versiondata",AuditingApp.Client.versiondata, size+height, size+height, size, size-height, height, 0.4);  
+				Donut3D.draw("osdata",ToolBox.Client.osdata, size+height, size+height, size, size-height, height, 0.4);
+				Donut3D.draw("versiondata",ToolBox.Client.versiondata, size+height, size+height, size, size-height, height, 0.4);  
 				
 			},
 			
@@ -245,7 +245,7 @@ if (!AuditingApp.Client || !AuditingApp.Client.init){
 				if (!table){
 					   return;
 				}
-				var osdata = AuditingApp.Client.osdata;
+				var osdata = ToolBox.Client.osdata;
 				var osbody = $("#clientostable tbody");
 				osbody.empty();
 				var headtr = "<tr> <th width=\"23%\">Client OS</th>		<th width=\"23%\">Number</th> </tr>"
@@ -258,7 +258,7 @@ if (!AuditingApp.Client || !AuditingApp.Client.init){
 				
 				var versionbody = $("#clientversionTable tbody");
 				versionbody.empty();
-				var versiondata = AuditingApp.Client.versiondata;
+				var versiondata = ToolBox.Client.versiondata;
 				headtr = "<tr> <th width=\"23%\">Client Version</th>		<th width=\"23%\">Number</th> </tr>";
 				versionbody.append(headtr);
 				for (var i = 0;i<versiondata.length;i++)
@@ -285,9 +285,9 @@ if (!AuditingApp.Client || !AuditingApp.Client.init){
 			},
 			
 			init: function(){
-				AuditingApp.Client.refreshModel();
-				$("#viewType").change(AuditingApp.Client.refreshModel);
-				$(".enableButton").click(AuditingApp.Client.popEnableDialog);
+				ToolBox.Client.refreshModel();
+				$("#viewType").change(ToolBox.Client.refreshModel);
+				$(".enableButton").click(ToolBox.Client.popEnableDialog);
 				
 				
 			}
@@ -296,4 +296,4 @@ if (!AuditingApp.Client || !AuditingApp.Client.init){
 
 
 
-AuditingApp.Client.init();
+ToolBox.Client.init();

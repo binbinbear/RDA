@@ -9,11 +9,11 @@ $(function () {
 
 });
 
-if (!window.AuditingApp){
-	window.AuditingApp= {};
+if (!window.ToolBox){
+	window.ToolBox= {};
 }
-if (!AuditingApp.Snapshot || !AuditingApp.Snapshot.init){
-	AuditingApp.Snapshot = {
+if (!ToolBox.Snapshot || !ToolBox.Snapshot.init){
+	ToolBox.Snapshot = {
 			templates: [],
 			vms: [],
 			
@@ -23,9 +23,9 @@ if (!AuditingApp.Snapshot || !AuditingApp.Snapshot.init){
 					url: './snapshot/report',
 					type: "GET",
 					success: function (data) {
-						 AuditingApp.Snapshot.templates = data.templates;
-						 AuditingApp.Snapshot.vms = data.vms;
-						 AuditingApp.Snapshot.updateListView();
+						 ToolBox.Snapshot.templates = data.templates;
+						 ToolBox.Snapshot.vms = data.vms;
+						 ToolBox.Snapshot.updateListView();
 						 if (data.updatedDate){
 							 var date = new Date(data.updatedDate);
 							 $(".updateDate").text("Updated on "+ date.toLocaleString());
@@ -58,7 +58,7 @@ if (!AuditingApp.Snapshot || !AuditingApp.Snapshot.init){
 				var childrenSnapShots = snapshot.childrenSnapShots;
 				for (var i=0;i<childrenSnapShots.length;i++){
 					var childsnapshot = childrenSnapShots[i];
-					li = li + AuditingApp.Snapshot.renderSnapShot(childsnapshot);
+					li = li + ToolBox.Snapshot.renderSnapShot(childsnapshot);
 				}
 				li = li + "</ul></li>";
 				return li;
@@ -68,7 +68,7 @@ if (!AuditingApp.Snapshot || !AuditingApp.Snapshot.init){
 			updateListView: function(){
 
 				var vmDiv = $(".vms");
-				var vms = AuditingApp.Snapshot.vms;
+				var vms = ToolBox.Snapshot.vms;
 				if (vmDiv){
 					vmDiv.empty();
 					var ul = "<ul> ";
@@ -80,7 +80,7 @@ if (!AuditingApp.Snapshot || !AuditingApp.Snapshot.init){
 						
 						var children = vm.children;
 						for (var j=0;j<children.length;j++){
-							ul = ul + AuditingApp.Snapshot.renderSnapShot(children[j]);
+							ul = ul + ToolBox.Snapshot.renderSnapShot(children[j]);
 						}
 						
 						ul = ul + " </ul> </li> ";
@@ -91,7 +91,7 @@ if (!AuditingApp.Snapshot || !AuditingApp.Snapshot.init){
 				
 				
 				var templatesDiv = $(".templates");
-				var templates = AuditingApp.Snapshot.templates;
+				var templates = ToolBox.Snapshot.templates;
 				if (templatesDiv){
 					templatesDiv.empty();
 					var ul = "<ul> ";
@@ -141,12 +141,12 @@ if (!AuditingApp.Snapshot || !AuditingApp.Snapshot.init){
 			},
 			
 			init: function(){
-				AuditingApp.Snapshot.refreshModel();
+				ToolBox.Snapshot.refreshModel();
 			}
 	};
 }
 
 
 
-AuditingApp.Snapshot.init();
+ToolBox.Snapshot.init();
 

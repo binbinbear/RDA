@@ -489,10 +489,10 @@ $(function() {
 
 
 
-if (!window.AuditingApp){
-	window.AuditingApp = {};
+if (!window.ToolBox){
+	window.ToolBox = {};
 }
-AuditingApp.init =  function(){
+ToolBox.init =  function(){
 
 
 			var map = {
@@ -518,4 +518,4 @@ AuditingApp.init =  function(){
 };
 
 
-$(window).load(AuditingApp.init);
+$(window).load(ToolBox.init);

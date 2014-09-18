@@ -1,8 +1,8 @@
-if (!window.AuditingApp){
-	window.AuditingApp= {};
+if (!window.ToolBox){
+	window.ToolBox= {};
 }
-if (!AuditingApp.Session || !AuditingApp.Session.init){
-	AuditingApp.Session = {
+if (!ToolBox.Session || !ToolBox.Session.init){
+	ToolBox.Session = {
 			pools: [],
 			farms: [],
 			
@@ -12,9 +12,9 @@ if (!AuditingApp.Session || !AuditingApp.Session.init){
 					url: './session/report',
 					type: "GET",
 					success: function (data) {
-						 AuditingApp.Session.pools = data.pools;
-						 AuditingApp.Session.farms = data.farms;
-						 AuditingApp.Session.updateTableView();
+						 ToolBox.Session.pools = data.pools;
+						 ToolBox.Session.farms = data.farms;
+						 ToolBox.Session.updateTableView();
 						 if (data.updatedDate){
 							 var date = new Date(data.updatedDate);
 							 $(".updateDate").text("Updated on "+ date.toLocaleString());
@@ -37,7 +37,7 @@ if (!AuditingApp.Session || !AuditingApp.Session.init){
 				}
 				$(".loadingrow").remove();
 				
-				var farms = AuditingApp.Session.farms;
+				var farms = ToolBox.Session.farms;
 				var farmbody = $(".farmSessionTable tbody");
 				
 				
@@ -48,7 +48,7 @@ if (!AuditingApp.Session || !AuditingApp.Session.init){
 				}
 				
 				var poolbody = $("#poolSessionTable tbody");
-				var pools = AuditingApp.Session.pools;
+				var pools = ToolBox.Session.pools;
 				for (var i = 0;i<pools.length;i++)
 				{
 					var pool = pools[i];
@@ -59,11 +59,11 @@ if (!AuditingApp.Session || !AuditingApp.Session.init){
 			},
 			
 			init: function(){
-				AuditingApp.Session.refreshModel();
+				ToolBox.Session.refreshModel();
 			}
 	};
 }
 
 
 
-AuditingApp.Session.init();
+ToolBox.Session.init();

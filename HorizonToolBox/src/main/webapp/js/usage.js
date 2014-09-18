@@ -1,72 +1,80 @@
-function enter(){
-	if(event.keyCode==13) {  
-		getUserEvent();  
-        return false;  
-    } 
+if (!window.ToolBox){
+	window.ToolBox= {};
 }
-function format(date){
-	var year = date.getFullYear();
-	var month = (1 + date.getMonth()).toString();
-    month = month.length > 1 ? month : '0' + month;
-	var day = date.getDate().toString();
-	day = day.length > 1 ? day : '0' + day;
-	var hours = date.getHours().toString();
-	hours = hours.length > 1 ? hours : '0' + hours;
-	var minutes = date.getMinutes().toString();
-	minutes = minutes.length > 1 ? minutes : '0' + minutes;
-	var seconds = date.getSeconds().toString();
-	seconds = seconds.length > 1 ? seconds : '0' + seconds;
-	return year + '/' + month + '/' + day + " " + hours + ":" + minutes + ":" + seconds;
-}
-function getUserEvent(){
-	$.ajax({
-		url: './userevent',
-		type: "GET",
-		data:{user:$("#user").val()},
-		success: function (data) {
-			var tbody = $("#infoTable tbody");
-			tbody.empty();
-			var headtr = " <tr> <th width=\"23%\">User Name</th> " +
-		    " <th width=\"23%\">Usage Time</th> " +
-			" <th width=\"23%\">Disconnection Time</th> " +
-			" <th width=\"23%\">Connection Time</th> " +
-			" <th width=\"23%\">Machine Name</th> </tr> ";
-			tbody.append(headtr);
-			if(data){	
-			//	$(".loadingrow").remove();
-				for(var i = 0; i < data.length; i++){
-					var usageTime;
-					var disconnection = format(new Date(data[i].disconnectionTime));
-					var connection = format(new Date(data[i].connectionTime));
-					
-					
-					if (data[i].usageTime < 60){
-						var second = data[i].usageTime > 9 ? data[i].usageTime.toString() : "0" + data[i].usageTime.toString();
-						usageTime = "00:00:" + second;
+if (!ToolBox.Usage || !ToolBox.Usage.init){
+	ToolBox.Usage = {
+			toTimeString: function(seconds){
+				var hours = Math.floor(seconds/3600);
+				var minutes = Math.floor((seconds % 3600) /60);
+				seconds = seconds%60;
+				
+				hours = hours > 9 ? hours : "0" + hours;
+				minutes = minutes > 9 ? minutes : "0" + minutes; 
+				seconds = seconds >9 ? seconds: "0" + seconds;
+				return hours + ":" + minutes + ":" + seconds;						
+		
+			},
+			init: function(){
+				var enterfn = function(event){
+					if(event.keyCode==13) {  
+						ToolBox.Usage.getUserEvent();  
+				        return false;  
+				    } 
+				};
+				$("#user").keypress(enterfn);
+				
+				$("#submitBtn").click(ToolBox.Usage.getUserEvent);
+				
+				ToolBox.Usage.getUserEvent();
+			},
+
+
+		
+			
+			getUserEvent: function (){
+				var tbody = $("#infoTable tbody");
+				tbody.empty();
+				var headtr = " <tr> <th width=\"23%\">User Name</th> " +
+				" <th width=\"23%\">Connection Time</th> " +
+				" <th width=\"23%\">Disconnection Time</th> " +
+				 " <th width=\"23%\">Usage Time</th> " +
+				" <th width=\"23%\">Machine Name</th> </tr> ";
+				tbody.append(headtr);
+				var loading =  " <tr class=\"loadingrow\"> <td/><td/><td/><td/><td/> </tr>"; 
+				tbody.append(loading);
+				$.ajax({
+					url: './usage/connection',
+					type: "GET",
+					data:{user:$("#user").val()},
+					success: function (data) {
+						
+						tbody.empty();
+						tbody.append(headtr);
+						
+						if(data){	
+						//	$(".loadingrow").remove();
+							for(var i = 0; i < data.length; i++){
+								var disconnection = new Date(data[i].disconnectionTime).toLocaleString();
+								var connection = new Date(data[i].connectionTime).toLocaleString();
+								
+								var usageTime= ToolBox.Usage.toTimeString(data[i].usageTime);
+								
+								
+								var tr = "<tr>"+"<td>" + data[i].userName + "</td>"
+									+"<td>" + connection + "</td>"
+									+"<td>" + disconnection + "</td>"
+									 +"<td>" + usageTime + "</td>"
+									+"<td>" + data[i].machineName + "</td>" +"</tr>";
+								tbody.append(tr);
+							}
+						}
 					}
-					if (data[i].usageTime >= 60 && data[i].usageTime < 3600){
-						var minutes = parseInt(data[i].usageTime/60) > 9 ? parseInt(data[i].usageTime/60).toString() : "0" + parseInt(data[i].usageTime/60).toString();
-						seconds = data[i].usageTime % 60 > 9 ? (data[i].usageTime % 60).toString() : "0" + (data[i].usageTime % 60).toString();
-						usageTime = "00:" + minutes + ":" + seconds;					
-					}
-					if(data[i].usageTime >= 3600){
-						var hours = parseInt(data[i].usageTime/3600) > 9 ? parseInt(data[i].usageTime/3600).toString() : "0" + parseInt(data[i].usageTime/3600).toString();
-						minutes = parseInt((data[i].usageTime % 3600) / 60 ) > 9 ? parseInt((data[i].usageTime % 3600) / 60 ).toString() : "0" + parseInt((data[i].usageTime % 3600) / 60 ).toString(); 
-						seconds = (data[i].usageTime % 3600) % 60 > 9 ? ((data[i].usageTime % 3600) % 60).toString() : "0" + ((data[i].usageTime % 3600) % 60).toString();
-						usageTime = hours + ":" + parseInt((data[i].usageTime % 3600) / 60 ) + ":" +  (data[i].usageTime % 3600) % 60;						
-					}
-					
-					var tr = "<tr>"+"<td>" + data[i].userName + "</td>"
-					    +"<td>" + usageTime + "</td>"
-						+"<td>" + disconnection + "</td>"
-						+"<td>" + connection + "</td>"
-						+"<td>" + data[i].machineName + "</td>" +"</tr>";
-					tbody.append(tr);
-				}
+				}); 
 			}
-		}
-	}); 
+	};
 }
+
+
 $(document).ready(function(){  
-	getUserEvent();
+	ToolBox.Usage.init();
 });

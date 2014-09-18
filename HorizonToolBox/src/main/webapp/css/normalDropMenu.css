@@ -26,7 +26,6 @@ hr{
 }
 
 input[type=submit], input[type=button],input[type=reset],  .button, a.button, a.smallButton{
-    background: url("../images/grayGradientSmall.gif") repeat-x bottom left;
     border: 1px solid #cacaca;
     font-weight: bold;
     color: #000 !important;
@@ -62,7 +61,6 @@ a.buttonDown{
 
 
 .disabledButton{
-    background: url("../images/grayGradientSmall.gif") repeat-x bottom left;
     border: 1px solid #cacaca;
     font-weight: bold;
     color: #777 !important;
@@ -208,7 +206,6 @@ a.rndButtonSmall:active span {
     display: none;
     float: left;    
     border-bottom: 1px solid #cacaca;
-    background: url("../images/grayGradientSmall.gif") repeat-x bottom left;
     width: 100%;
     height: 24px;
     padding-top: 2px;
@@ -243,7 +240,6 @@ noscript{
 body{
     font-family: arial, helvetica, sans-serif;
     background: white;
-    background: url("../img/grayGradient.gif");
     background-repeat: repeat-x;
     font-size: 12px;
     margin-bottom: 0px;
@@ -497,7 +493,6 @@ td.right{
 }
 
 .dataTable tr.gradient td{
-    background: url("../img/grayGradientRow.gif");    
     border-top:1px solid #aaaaaa;
     border-bottom:1px solid #eaeaea;    
 }
@@ -538,7 +533,6 @@ tr.odd td{
 .header{
    font-size: 15px;
    border-bottom: 2px solid #cacaca;
-   background: url("../img/grayGradient.gif");
    padding: 10px;
    font-weight: bold;
 }
@@ -785,7 +779,6 @@ fieldset table{
 	background-position: 10px 10px;
 }
 .bar{
-	background: url('../img/grayGradientRow.gif') repeat-x;
 	width: 150px;
 	float: left;
 	border-right: 1px solid #cacaca;
