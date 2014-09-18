@@ -1,10 +1,14 @@
 package com.vmware.horizontoolset.util;
 
 import java.util.Date;
+import java.util.List;
+
+import org.apache.log4j.Logger;
 
 import com.vmware.horizontoolset.usage.Event;
 import com.vmware.horizontoolset.usage.EventType;
 import com.vmware.vdi.admin.be.events.AdminEvent;
+import com.vmware.vdi.admin.be.events.AdminEventSource;
 import com.vmware.vdi.events.enums.EventModule;
 
 public class EventImpl implements Event{
@@ -17,7 +21,7 @@ public class EventImpl implements Event{
 	private String username;
 	private String machineName = "";
 	private Date time;
-	private String message;
+	private String poolName = "";
 	private String getValue(String all, String key){
 		//get pool name from the message
 		int index = all.indexOf(key) + key.length();
@@ -41,13 +45,12 @@ public class EventImpl implements Event{
 	public EventImpl(AdminEvent event){
 		
 		this.username = event.getUsername();
-		this.message = event.getShortMessage();
+		String message = event.getShortMessage();
 		this.time = event.getTime();
 		 
 		if(event.getModule().equals(EventModule.Agent) && event.isInfo() ){
 			if (event.getShortMessage().contains(accept)){
 				this.type = EventType.Connection;
-				//get pool name from the message
 				this.machineName = getValue(message, onMachine);
 			}else if (event.getShortMessage().contains(disconnect)  ){
 				this.type = EventType.Disconnection;
@@ -56,6 +59,17 @@ public class EventImpl implements Event{
 			}else if ( event.getShortMessage().contains(logoff)){
 				this.type = EventType.Disconnection;
 				this.machineName = getValue(message, logoff);
+			}
+			//get pool name from the message
+			List sourcesList = event.getSources();
+			for( Object eventSource : sourcesList){
+				AdminEventSource source = (AdminEventSource)eventSource;
+				if(source.getType().toString().equals("POOL")){
+					this.poolName = source.getName();
+					break;
+				}
+					
+				
 			}
 		}
 	
@@ -94,6 +108,11 @@ public class EventImpl implements Event{
 			return 1;
 		}
 		return this.username.compareTo(o.getUserName());
+	}
+
+	@Override
+	public String getPoolName() {
+		return this.poolName;
 	}
 
 }

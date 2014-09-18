@@ -74,18 +74,20 @@ public class SessionRestController {
 	 @RequestMapping("/session/concurrent")
 	    public ConcurrentConnectionsReport getConcurrentConnectionsReport(HttpSession session, 
 	    		@RequestParam(value="days", required=false, defaultValue=defaultDays) String days,
-	    		@RequestParam(value="period", required=false, defaultValue=defaultPeriod) String period) {
+	    		@RequestParam(value="period", required=false, defaultValue=defaultPeriod) String period,
+	    		@RequestParam(value="pool",required=false,defaultValue="") String poolName) {
 		 
 		 	log.debug("Start to generate  ConcurrentConnectionsReport for "+days + " days");
-		 	
-			List<Event> events = UsageRestController.getEvents(session, null, days);
+		 	if(poolName.equals("")) 
+		 		poolName = null;
+			List<Event> events = UsageRestController.getEvents(session, null, days, poolName);
 			if (events!=null){
 				int daysToShow = Integer.parseInt(days);
 		    	if (daysToShow<=0){
 		    		daysToShow = Integer.parseInt(defaultDays);
 		    	}
 		    	long periodL = Long.parseLong(period);
-				
+				log.info("ok for events"+events.size());
 				return  ReportUtil.getConcurrentConnectionsReport(events, periodL);
 			}
 		 	

@@ -23,14 +23,14 @@ public class UsageRestController {
 	 private static final String defaultDays = "30";
 		private static Logger log = Logger.getLogger(UsageRestController.class);
 		
-		static List<Event> getEvents(HttpSession session, String userName, String days){
+		static List<Event> getEvents(HttpSession session, String userName, String days, String poolName){
 			 EventDBUtil db = SessionUtil.getDB(session);
 			    if (db!=null){
 			    	int daysToShow = Integer.parseInt(days);
 			    	if (daysToShow<=0){
 			    		daysToShow = Integer.parseInt(defaultDays);
 			    	}
-			    	return  db.getEvents(userName, daysToShow);
+			    	return  db.getEvents(userName, daysToShow,poolName);
 			    }
 			 return null;
 			    
@@ -41,7 +41,7 @@ public class UsageRestController {
 	    		@RequestParam(value="user", required=false, defaultValue="") String userName,
 	    		@RequestParam(value="days", required=false, defaultValue=defaultDays) String days) {
 		 log.debug("Start to query connections for "+userName);
-		   List<Event> events = UsageRestController.getEvents(session, userName, days);
+		   List<Event> events = UsageRestController.getEvents(session, userName, days,null);
 		   if (events!=null){
 			   return ReportUtil.getConnections(events, userName);
 		   }

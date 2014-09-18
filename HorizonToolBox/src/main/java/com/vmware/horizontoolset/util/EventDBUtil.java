@@ -32,8 +32,8 @@ public class EventDBUtil {
 	}
 	
 	
-	public List<Event> getEvents(String username, int daysToShow){
-		log.debug("start to query events:"+ daysToShow + " user:"+ username);
+	public List<Event> getEvents(String username, int daysToShow,String poolName){
+		log.debug("start to query events:"+ daysToShow + " user:"+ username+" poolName:"+poolName);
 		eventFilter.setFilterDays(daysToShow);
 		eventFilter.setFilterText(username);
 
@@ -43,9 +43,10 @@ public class EventDBUtil {
 		List<Event> allEvents = new ArrayList<Event>();
 		for (AdminEvent adminevent: adminevents){
 			Event event = new EventImpl(adminevent);
-			if (event.getType() != EventType.Others ){
-				allEvents.add(event);
-			}
+			if (event.getType() != EventType.Others )
+					if(poolName == null || ( event.getPoolName().equals(poolName))){
+						allEvents.add(event);
+					}
 		}
 		java.util.Collections.sort(allEvents);
 		log.debug("Events:"+ allEvents.size());

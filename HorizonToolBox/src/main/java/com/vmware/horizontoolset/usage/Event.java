@@ -7,4 +7,6 @@ public interface Event extends Comparable<Event>{
 	public String getUserName();
 	public Date getTime();
 	public String getMachineDNSName();
+	public String getPoolName();
+
 }
