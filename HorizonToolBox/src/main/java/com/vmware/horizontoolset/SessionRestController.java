@@ -7,10 +7,13 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.vmware.horizontoolset.report.ConcurrentConnectionsReport;
 import com.vmware.horizontoolset.report.ReportUtil;
 import com.vmware.horizontoolset.report.SessionReport;
+import com.vmware.horizontoolset.usage.Event;
 import com.vmware.horizontoolset.util.SessionUtil;
 import com.vmware.horizontoolset.viewapi.Session;
 import com.vmware.horizontoolset.viewapi.SessionFarm;
@@ -61,5 +64,32 @@ public class SessionRestController {
 	static void cleanReport(){
 		cachedreport = null;
 	}
+	
+	
+	 /**
+	  * default period is 1 day
+	  */
+	 	private static final String defaultPeriod = "86400";
+	 	private static final String defaultDays = "30";
+	 @RequestMapping("/session/concurrent")
+	    public ConcurrentConnectionsReport getConcurrentConnectionsReport(HttpSession session, 
+	    		@RequestParam(value="days", required=false, defaultValue=defaultDays) String days,
+	    		@RequestParam(value="period", required=false, defaultValue=defaultPeriod) String period) {
+		 
+		 	log.debug("Start to generate  ConcurrentConnectionsReport for "+days + " days");
+		 	
+			List<Event> events = UsageRestController.getEvents(session, null, days);
+			if (events!=null){
+				int daysToShow = Integer.parseInt(days);
+		    	if (daysToShow<=0){
+		    		daysToShow = Integer.parseInt(defaultDays);
+		    	}
+		    	long periodL = Long.parseLong(period);
+				
+				return  ReportUtil.getConcurrentConnectionsReport(events, periodL);
+			}
+		 	
+		 	return null;
+		}
 
 }

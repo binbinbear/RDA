@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vmware.horizontoolset.report.AccumulatedUsageReport;
-import com.vmware.horizontoolset.report.ConcurrentConnectionsReport;
 import com.vmware.horizontoolset.report.ReportUtil;
 import com.vmware.horizontoolset.usage.Connection;
 import com.vmware.horizontoolset.usage.Event;
@@ -20,11 +19,11 @@ import com.vmware.horizontoolset.util.SessionUtil;
 
 
 @RestController
-public class EventRestController {
+public class UsageRestController {
 	 private static final String defaultDays = "30";
-		private static Logger log = Logger.getLogger(EventRestController.class);
+		private static Logger log = Logger.getLogger(UsageRestController.class);
 		
-		private List<Event> getEvents(HttpSession session, String userName, String days){
+		static List<Event> getEvents(HttpSession session, String userName, String days){
 			 EventDBUtil db = SessionUtil.getDB(session);
 			    if (db!=null){
 			    	int daysToShow = Integer.parseInt(days);
@@ -37,12 +36,12 @@ public class EventRestController {
 			    
 		}
 		
-	 @RequestMapping("/connection")
+	 @RequestMapping("/usage/connection")
 	    public List<Connection> getConnections(HttpSession session, 
 	    		@RequestParam(value="user", required=false, defaultValue="") String userName,
 	    		@RequestParam(value="days", required=false, defaultValue=defaultDays) String days) {
 		 log.debug("Start to query connections for "+userName);
-		   List<Event> events = this.getEvents(session, userName, days);
+		   List<Event> events = UsageRestController.getEvents(session, userName, days);
 		   if (events!=null){
 			   return ReportUtil.getConnections(events, userName);
 		   }
@@ -50,7 +49,7 @@ public class EventRestController {
 		}
 	 
 	 
-	 @RequestMapping("/usage")
+	 @RequestMapping("/usage/accumulated")
 	    public AccumulatedUsageReport getUsageReport(HttpSession session, 
 	    		@RequestParam(value="days", required=false, defaultValue=defaultDays) String days) {
 		 	log.debug("Start to query accumlated usage for "+days + " days");
@@ -59,29 +58,5 @@ public class EventRestController {
 		 	return ReportUtil.generateUsageReport(connections);
 		}
 	 
-	 /**
-	  * default period is 1 day
-	  */
-	 	private static final String defaultPeriod = "86400";
 
-	 @RequestMapping("/concurrent")
-	    public ConcurrentConnectionsReport getConcurrentConnectionsReport(HttpSession session, 
-	    		@RequestParam(value="days", required=false, defaultValue=defaultDays) String days,
-	    		@RequestParam(value="period", required=false, defaultValue=defaultPeriod) String period) {
-		 
-		 	log.debug("Start to generate  ConcurrentConnectionsReport for "+days + " days");
-		 	
-			List<Event> events = this.getEvents(session, null, days);
-			if (events!=null){
-				int daysToShow = Integer.parseInt(days);
-		    	if (daysToShow<=0){
-		    		daysToShow = Integer.parseInt(defaultDays);
-		    	}
-		    	long periodL = Long.parseLong(period);
-				
-				return  ReportUtil.getConcurrentConnectionsReport(events, periodL);
-			}
-		 	
-		 	return null;
-		}
 }

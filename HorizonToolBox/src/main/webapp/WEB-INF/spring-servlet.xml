@@ -40,30 +40,33 @@
     <property name="templateEngine" ref="templateEngine" />
   </bean>   
   
-  <bean id="snapShotController" class="com.vmware.horizontoolset.SnapShotController" />
-<bean id="loginController" class="com.vmware.horizontoolset.LoginController" scope="session"/>
+  <bean id="loginController" class="com.vmware.horizontoolset.LoginController" scope="session"/>
 <bean id="logoutController" class="com.vmware.horizontoolset.LogoutController"/>
-
-  <bean id="clientController" class="com.vmware.horizontoolset.ClientController"/>
+  
+ 
   <bean id="sessionController" class="com.vmware.horizontoolset.SessionController"/>
   
+  <bean id="sessionRestController" class="com.vmware.horizontoolset.SessionRestController"/>
   
-  <bean id="clientrestController" class="com.vmware.horizontoolset.ClientRestController"/>
+
+  
+  <bean id="usageController" class="com.vmware.horizontoolset.UsageController"/>
+    <bean id="usageRestController" class="com.vmware.horizontoolset.UsageRestController"/>
+  
+  
+   <bean id="clientController" class="com.vmware.horizontoolset.ClientController"/>
+   <bean id="clientrestController" class="com.vmware.horizontoolset.ClientRestController"/>
+   
+   <bean id="snapShotController" class="com.vmware.horizontoolset.SnapShotController" />
+   <bean id="snapRestController" class="com.vmware.horizontoolset.SnapShotRestController"/>
+ 
+    <bean id="remoteAssistController" class="com.vmware.horizontoolset.RemoteAssistantController"/>
+    <bean id="policyController" class="com.vmware.horizontoolset.PolicyController"/>
+  
+   
   <!-- Execute once a day on 1:00 am , Seconds Minutes Hours DayofMonth Month DayofWeek -->
    <task:scheduled-tasks>   
         <task:scheduled ref="clientrestController" method="updateCachedReport" cron="0 0 1 * * ?"/>   
    </task:scheduled-tasks>  
-
-
-  <bean id="sessionRestController" class="com.vmware.horizontoolset.SessionRestController"/>
-  
-  <bean id="snapRestController" class="com.vmware.horizontoolset.SnapShotRestController"/>
- 
-  <bean id="remoteAssistController" class="com.vmware.horizontoolset.RemoteAssistantController"/>
    
-  <bean id="eventController" class="com.vmware.horizontoolset.EventController"/>
-    <bean id="eventrestController" class="com.vmware.horizontoolset.EventRestController"/>
-  
-  
-  
 </beans>

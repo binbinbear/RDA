@@ -502,14 +502,19 @@ AuditingApp.init =  function(){
 						"href" : $("#L1_01_02")},
 					snapshot:{"btn": $("#L1_01"),
 						"href" : $("#L1_01_03")},
+					client:{"btn": $("#L1_01"),
+						"href" : $("#L1_01_04")},
 				
-					remoteassist:{"btn": $("#L1_02")}
+					remoteassist:{"btn": $("#L1_02")},
+					policy:{"btn": $("#L1_03")}
 					};
 
 			$(".menuBtn").removeClass("selected");
+			if (map[window.view]){
+				map[window.view]["btn"].addClass("selected");
+				map[window.view]["href"] && map[window.view]["href"].addClass("jdm_hover");
+			}
 			
-			map[window.view]["btn"].addClass("selected");
-			map[window.view]["href"].addClass("jdm_hover");
 };
 
 

@@ -22,10 +22,7 @@ public class SnapShotController  {
 		log.debug("Create SnapShotController");
 	}
     
-    @RequestMapping(value="/", method=RequestMethod.GET)
-    public String index() {
-    	return "redirect:/snapshot";
-    }
+
     
     /**
      * @param model
