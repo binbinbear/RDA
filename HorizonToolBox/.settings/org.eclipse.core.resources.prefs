@@ -2,4 +2,5 @@ eclipse.preferences.version=1
 encoding//src/main/java=UTF-8
 encoding//src/main/java/com/vmware/horizontoolset/SnapShotController.java=UTF-8
 encoding//src/main/webapp/WEB-INF/templates/session.html=UTF-8
+encoding//src/main/webapp/WEB-INF/templates/usage.html=UTF-8
 encoding/<project>=UTF-8

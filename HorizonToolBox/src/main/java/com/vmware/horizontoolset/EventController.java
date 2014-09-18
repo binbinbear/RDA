@@ -11,8 +11,8 @@ import com.vmware.horizontoolset.util.SessionUtil;
 
 @Controller
 public class EventController {
-	private static final String view = "event";
-	 @RequestMapping(value="/event", method=RequestMethod.GET)
+	private static final String view = "usage";
+	 @RequestMapping(value="/usage", method=RequestMethod.GET)
 	    public synchronized String getEvents( Model model, HttpSession session) {
 		    
 	        model.addAttribute("view", view);

@@ -496,14 +496,13 @@ AuditingApp.init =  function(){
 
 
 			var map = {
-					snapshot: {"btn": $("#L1_01"),
+					session: {"btn": $("#L1_01"),
 						"href" : $("#L1_01_01")},
-					event: {"btn": $("#L1_01"),
+					usage: {"btn": $("#L1_01"),
 						"href" : $("#L1_01_02")},
-					client:{"btn": $("#L1_01"),
+					snapshot:{"btn": $("#L1_01"),
 						"href" : $("#L1_01_03")},
-					session:{"btn": $("#L1_01"),
-						"href" : $("#L1_01_04")},
+				
 					remoteassist:{"btn": $("#L1_02")}
 					};
 

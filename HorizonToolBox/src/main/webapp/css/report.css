@@ -303,4 +303,43 @@ div.loadingdiv{
 	height: 12px;
 	padding: 6px;
 }
-
+.divpage{
+	height:50px;
+	line-height:50px;
+	word-spacing:3px;
+	font-size:14px;
+	font-weight:bold;
+	color:#555;
+	text-align:center
+}
+.divpage span.currpage{
+	margin:auto 5px;
+	font-size:12px
+}
+.divpage a:hover{
+	color:#fd6d01
+}
+.divpage a.pagenum{
+	text-decoration:none;
+	font-size:12px;
+	border:1px solid #f2f2f2;
+	padding:5px 10px;
+	color:#555
+}
+a.pagenum:hover{
+	background:#f2f2f2;
+	color:#fd6d01
+}
+.divpage .text{
+	text-decoration:none;
+	width:40px;
+	padding:5px 15px;
+	color:#404040;
+	font-size:12px;
+	font-weight:normal;
+	border:1px solid #f2f2f2
+}
+.divpage .text:hover{
+	background:#eef3f7;
+	color:#fd6d01
+}
