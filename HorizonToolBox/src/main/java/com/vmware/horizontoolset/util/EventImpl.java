@@ -82,10 +82,6 @@ public class EventImpl implements Event{
 	}
 
 	
-	@Override
-	public String getMessage() {
-		return this.message;
-	}
 
 	/**
 	 * sort by descent time, then by username

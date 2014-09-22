@@ -17,7 +17,6 @@ public class LogoutController {
     public String logout(Credential credential, BindingResult bindingResult, Model model, HttpSession session) {
     	if(session != null){
     		SessionUtil.releaseSession(session);
-    		session.invalidate();
     	}
     	return "redirect:/Login";
     }

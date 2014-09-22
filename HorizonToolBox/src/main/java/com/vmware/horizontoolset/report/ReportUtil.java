@@ -181,11 +181,12 @@ public class ReportUtil {
 	 * @return
 	 */
 	public static ConcurrentConnectionsReport getConcurrentConnectionsReport(List<Event> events, long timeUnit ) {
+		
 		if (events == null || events.size() == 0){
 			return null;
 		}
 		log.debug("Start to generate concurrent connections report from event:" + events.size() + "Timeunit:" + timeUnit);
-	
+		timeUnit = timeUnit* 1000;
 		List<Connection> connections = ReportUtil.getConnections(events, null);
 		
 		events.clear();
@@ -200,23 +201,23 @@ public class ReportUtil {
 
 		int i = events.size()-1;
 		long previousTime = events.get(i).getTime().getTime();
-		long currentTime =previousTime;
 		int currentMax = 0;
 		int currentConCurrent = 0;
 		List<ConcurrentConnection> result = new ArrayList<ConcurrentConnection>();
 		for ( ;i>=0;i--) {
 			Event event = events.get(i);
+			if (i==0 || event.getTime().getTime() - previousTime > timeUnit){
+				result.add(new ConcurrentConnection(new Date(previousTime), currentMax));
+				long diffs = (event.getTime().getTime() - previousTime)/timeUnit;
+				if (diffs>1L){
+					result.add(new ConcurrentConnection(new Date(previousTime + timeUnit), currentConCurrent));
+					if (diffs>2L){
+						result.add(new ConcurrentConnection(new Date(previousTime + timeUnit*(diffs-1)), currentConCurrent));
+					}
+				}
+				previousTime = previousTime + timeUnit * diffs;
+				currentMax = 0;
 			
-			if (event.getTime().getTime() - currentTime > timeUnit * 1000 ){
-				result.add(new ConcurrentConnection(new Date(previousTime), currentMax));
-				result.add(new ConcurrentConnection(new Date(currentTime), currentConCurrent));
-				currentMax = 0;
-				previousTime = event.getTime().getTime();
-				
-			}else if (i==0 || event.getTime().getTime() - previousTime > timeUnit * 1000){
-				result.add(new ConcurrentConnection(new Date(previousTime), currentMax));
-				currentMax = 0;
-				previousTime = event.getTime().getTime();
 			}
 			
 			if (event.getType() == EventType.Connection){
@@ -228,7 +229,6 @@ public class ReportUtil {
 				currentMax = currentConCurrent;
 			}
 			
-			currentTime = event.getTime().getTime();
 			
 		}
 		

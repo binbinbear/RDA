@@ -9,8 +9,13 @@
     
      <bean id="Application" class="com.vmware.horizontoolset.Application" scope="singleton"> 
              <property name="server"> 
-            <value>127.0.0.1</value> 
-        </property> 
+            <value>127.0.0.1</value>
+            </property> 
+            
+            <!-- Allow 30 concurrent sessions, the 31st user kicks off the 1st user  -->
+            <property name="maximumSessions"> 
+            <value>3</value> 
+            </property>
     </bean> 
     
     <bean id="loginFilter" class="com.vmware.horizontoolset.LoginFilter"> 

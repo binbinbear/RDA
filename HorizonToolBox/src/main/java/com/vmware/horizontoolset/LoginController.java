@@ -120,7 +120,6 @@ public class LoginController implements Serializable{
     	}catch(Exception ex){
     		log.error("You can't use DB related features!", ex);
     	}
-    	
     	//the default page is snapshotsreport
     	return "redirect:/";
     }

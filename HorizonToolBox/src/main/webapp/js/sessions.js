@@ -9,7 +9,7 @@ if (!ToolBox.Session || !ToolBox.Session.init){
 			
 			refreshModel: function(){
 				$.ajax({
-					url: './session/concurrent',
+					url: './session/concurrent?days=7&period=3600',
 					type: "GET",
 					success: function (data) {
 						 ToolBox.Session.history = data.concurrentConnections;
