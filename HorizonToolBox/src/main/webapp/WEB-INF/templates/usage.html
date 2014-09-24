@@ -23,9 +23,17 @@
 			</table>
 		</h3>
 		<div class="poolContainer" style="width:100%;height:90%;overflow:scroll;overflow-x:hidden;">
-		Account Name: 
+	
+		
+		<label for="viewType">Account Name: </label>
 		<input type="text" id= "user" name="user"  value=""/>
         <input type="button" class="btn btn-primary ng-binding" id="submitBtn" value="search"/>
+        &nbsp;&nbsp;
+        <label for="viewType">Show report for: </label>
+        <select name="viewType" id="viewType">
+				<option value="week" selected="selected">Last 7 days</option>
+				<option value="month" selected="selected">Last 1 month</option>
+		</select>
         
 		<table border="0" cellpadding="3" cellspacing="0" class="dataTable" id="infoTable" >
 			<tbody>

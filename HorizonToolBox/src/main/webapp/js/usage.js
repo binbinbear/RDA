@@ -25,6 +25,8 @@ if (!ToolBox.Usage || !ToolBox.Usage.init){
 				
 				$("#submitBtn").click(ToolBox.Usage.getUserEvent);
 				
+				$("#viewType").change(ToolBox.Usage.getUserEvent);
+				
 				ToolBox.Usage.getUserEvent();
 			},
 
@@ -32,6 +34,11 @@ if (!ToolBox.Usage || !ToolBox.Usage.init){
 		
 			
 			getUserEvent: function (){
+				var type = $("#viewType").val();
+				 var days="7";
+			     if (type=="month"){
+			    	  days="30";
+			      }
 				var tbody = $("#infoTable tbody");
 				tbody.empty();
 				var headtr = " <tr> <th width=\"23%\">User Name</th> " +
@@ -45,7 +52,7 @@ if (!ToolBox.Usage || !ToolBox.Usage.init){
 				$.ajax({
 					url: './usage/connection',
 					type: "GET",
-					data:{user:$("#user").val()},
+					data:{user:$("#user").val(),days:days},
 					success: function (data) {
 						
 						tbody.empty();

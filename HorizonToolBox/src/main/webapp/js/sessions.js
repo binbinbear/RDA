@@ -7,24 +7,37 @@ if (!ToolBox.Session || !ToolBox.Session.init){
 			farms: [],
 			history: [],
 			
-			refreshModel: function(){
+			refreshHistorySession: function(){
+				$("svg").empty();
+				 var type = $("#viewType").val();
+				 var days="7";
+				 var period="3600";
+			      if (type == "day"){
+			    	  days="1";
+			    	  period="600";
+			      }else if (type=="month"){
+			    	  days="30";
+			    	  period="21600";
+			      }
+			      
 				$.ajax({
-					url: './session/concurrent?days=7&period=3600',
+					url: './session/concurrent?days='+ days+'&period=' + period,
 					type: "GET",
 					success: function (data) {
 						 ToolBox.Session.history = data.concurrentConnections;
-						 ToolBox.Session.updateChartView();
+						 ToolBox.Session._updateChartView();
 						
 					}
 				}); 
-				
+			},
+			refreshCurrentSession: function(){
 				$.ajax({
 					url: './session/report',
 					type: "GET",
 					success: function (data) {
 						 ToolBox.Session.pools = data.pools;
 						 ToolBox.Session.farms = data.farms;
-						 ToolBox.Session.updateTableView();
+						 ToolBox.Session._updateTableView();
 						 if (data.updatedDate){
 							 var date = new Date(data.updatedDate);
 							 $(".updateDate").text("Updated on "+ date.toLocaleString());
@@ -38,7 +51,7 @@ if (!ToolBox.Session || !ToolBox.Session.init){
 			},
 			
 			
-			updateChartView: function(){
+			_updateChartView: function(){
 				if (!ToolBox.Session.history){
 					return;
 				}
@@ -105,7 +118,7 @@ if (!ToolBox.Session || !ToolBox.Session.init){
 				
 			},
 			
-			updateTableView: function(){
+			_updateTableView: function(){
 				var table = $(".farmSessionTable");
 				if (!table){
 					   return;
@@ -134,11 +147,11 @@ if (!ToolBox.Session || !ToolBox.Session.init){
 			},
 			
 			init: function(){
-				ToolBox.Session.refreshModel();
+				ToolBox.Session.refreshHistorySession();
+				ToolBox.Session.refreshCurrentSession();
+				$("#viewType").change(ToolBox.Session.refreshHistorySession);
 			}
 	};
 }
-
-
 
 ToolBox.Session.init();

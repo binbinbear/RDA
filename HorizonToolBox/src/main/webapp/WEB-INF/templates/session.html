@@ -20,45 +20,48 @@
 					</tr>
 				</tbody>
 			</table>
-		</h3>
+		</h3>	
 		
-		<div>
-				
-				<svg width="500" height="400">
-					<g id="versiondata"></g>
-				</svg>
-				
-	  </div>
-			
-			
-		<h3 class="pageHeader">
-			<table border="0" cellpadding="0" cellspacing="0" width="100%">
-				<tbody>
-					<tr>
-						<td>
-							<div class="pageHeaderDiv">
-								l <img src="img/window_information.png" alt="Dashboard" />&nbsp;&nbsp;Current Sessions
-								 &nbsp; <span class = "updateDate"> </span> <a href="./refreshSession">
-									Click here to update this report now</a>
-							</div>
-						</td>
-						<td id="loadingAnim"></td>
-					</tr>
-				</tbody>
-			</table>
-		</h3>
 		<div class="poolContainer">
+			<label for="viewType">Show report for: </label>
+			<select name="viewType" id="viewType">
+				<option value="day" selected="selected">Last 1 day</option>
+				<option value="week" selected="selected">Last 7 days</option>
+				<option value="month" selected="selected">Last 1 month</option>
+			</select>	
+			
+			<svg width="500" height="400">
+				<g id="versiondata"></g>
+			</svg>
+				
+	    </div>
+			
+			
+		
+		<div class="poolContainer">
+			<h3 class="pageHeader">
+				<table border="0" cellpadding="0" cellspacing="0" width="100%">
+					<tbody>
+						<tr>
+							<td>
+								<div class="pageHeaderDiv">
+									l <img src="img/window_information.png" alt="Dashboard" />&nbsp;&nbsp;Current Sessions
+								 	&nbsp; <span class = "updateDate"> </span> <a href="./refreshSession">
+										Click here to update this report now</a>
+								</div>
+							</td>
+							<td id="loadingAnim"></td>
+						</tr>
+					</tbody>
+				</table>
+			</h3>
 			<h2>Desktop Sessions:</h2>
-			<table border="0" cellpadding="3" cellspacing="0" class="poolSessionTable"
-				id="poolSessionTable">
+			<table border="0" cellpadding="3" cellspacing="0" class="poolSessionTable" id="poolSessionTable">
 				<tbody>
 					<tr>
-
 						<th width="23%">Pool Name</th>
 						<th width="23%">Pool Type</th>
 						<th width="20%">Session Number</th>
-
-
 					</tr>
 
 					<tr class="loadingrow">
@@ -69,32 +72,24 @@
 					</tr>
 				</tbody>
 			</table>
-
-		</div>
-
-		<div class="poolContainer">
+			<br></br>
+			<br></br>
 			<h2>Application Sessions:</h2>
-			<table border="0" cellpadding="3" cellspacing="0" class="farmSessionTable"
-				id="farmSessionTable">
+			<table border="0" cellpadding="3" cellspacing="0" class="farmSessionTable" id="farmSessionTable">
 				<tbody>
 					<tr>
-
 						<th width="23%">Farm Name</th>
 						<th width="20%">Session Number</th>
 					</tr>
 
 					<tr class="loadingrow" >
 						<td class="desktopName " ></td>
-
-						<td class="desktopName ">
-						</td>
+						<td class="desktopName "></td>
 					</tr>
-
 				</tbody>
 			</table>
-
-		</div>
-		<script src="./js/d3.js"></script>
+			</div>
+	<script src="./js/d3.js"></script>
 	<script src="./js/sessions.js"></script>
 	</div>
 
