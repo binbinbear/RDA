@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFDataFormat;
 import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -21,7 +22,9 @@ public class ExportFileUtil {
 	private static Logger log = Logger.getLogger(ExportFileUtil.class);
 	
 	private static HSSFCellStyle HeaderStyle;
-	private static String[] connectionHeaders={"User","Usage time","Start time","End Time","Machine"};
+	private static final String[] connectionHeaders={"User","Usage time(s)","Start time","End Time","Machine"};
+	
+	private static final String DateFormatString = "yy/m/d/ h:mm:ss";
 	
     @SuppressWarnings("unchecked")
 	public static void exportExcel(ExportType type,  
@@ -34,11 +37,12 @@ public class ExportFileUtil {
         if(type == ExportType.Connection){
             HSSFSheet sheet = workbook.createSheet(type.toString()); 
             sheet.setDefaultColumnWidth(15);  
-        	ExportFileUtil.exportConnectionExcel(sheet, (List<Connection>) data);
+        	ExportFileUtil.exportConnectionExcel(workbook,sheet, (List<Connection>) data);
         }      
         workbook.write(out);
     } 
-    private static void exportConnectionExcel(HSSFSheet sheet,List<Connection> list){
+    private static void exportConnectionExcel(HSSFWorkbook workBook, 
+    		HSSFSheet sheet,List<Connection> list){
     	log.info("Start export connection ");
     	 ExportFileUtil.exportHeaders(sheet, connectionHeaders);
     	 HSSFRow row = null;  
@@ -46,13 +50,20 @@ public class ExportFileUtil {
     	 log.info("Export connections size:"+list.size());
          for(int j=0;j<list.size();j++)
          {
+        	 HSSFCellStyle cellStyle = workBook.createCellStyle();
+             HSSFDataFormat format= workBook.createDataFormat();
+             cellStyle.setDataFormat(format.getFormat(DateFormatString));
+             
         	 Connection connection = list.get(j);
               row = sheet.createRow(j+1);  
               row.createCell(0).setCellValue(connection.getUserName());
               row.createCell(1).setCellValue(connection.getUsageTime());
               row.createCell(2).setCellValue(connection.getConnectionTime());
+              row.getCell(2).setCellStyle(cellStyle);
               row.createCell(3).setCellValue(connection.getDisconnectionTime());
+              row.getCell(3).setCellStyle(cellStyle);
               row.createCell(4).setCellValue(connection.getMachineName());
+              
            }      
     }
    
