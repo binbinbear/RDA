@@ -12,8 +12,7 @@
 					<tr>
 						<td>
 							<div class="pageHeaderDiv">
-								<img src="img/window_information.png" alt="Dashboard" />&nbsp;&nbsp;Usage
-								Report for Users &nbsp;  
+								<img src="img/window_information.png" alt="Dashboard" />&nbsp;&nbsp;Accumulated Using TIme of Users &nbsp;  
 
 							</div>
 						</td>
@@ -22,26 +21,60 @@
 				</tbody>
 			</table>
 		</h3>
+		
+		<div class="poolContainer">
+			<label for="viewType">Accumulated Using Time, Hours: Minutes: Seconds. Show report for: </label>
+			<select name="usageDays" id="usageDays">
+				<option value="day">Last 1 day</option>
+				<option value="week" selected="selected">Last 7 days</option>
+				<option value="month">Last 1 month</option>
+			</select>	
+			<div>
+			<svg>
+			</svg>
+			</div>
+			 <div class="loadingdiv">Loading</div>
+	    </div>
+	    
+	    
 		<div class="poolContainer" style="width:100%;height:90%;overflow:scroll;overflow-x:hidden;">
+		<h3 class="pageHeader">
+				<table border="0" cellpadding="0" cellspacing="0" width="100%">
+					<tbody>
+						<tr>
+							<td>
+								<div class="pageHeaderDiv">
+									l <img src="img/window_information.png" alt="Dashboard" />&nbsp;&nbsp;  Connections of Users
+								 	&nbsp;
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</h3>
 	
 		
 		<label for="viewType">Account Name: </label>
 		<input type="text" id= "user" name="user"  value=""/>
-        <input type="button" class="btn btn-primary ng-binding" id="submitBtn" value="search"/>
+        <input type="button" class="btn btn-primary" id="submitBtn" value="search"/>
         &nbsp;&nbsp;
         <label for="viewType">Show report for: </label>
         <select name="viewType" id="viewType">
+        		<option value="day">Last 1 day</option>
 				<option value="week" selected="selected">Last 7 days</option>
-				<option value="month" selected="selected">Last 1 month</option>
+				<option value="month">Last 1 month</option>
 		</select>
-        
+         
+        &nbsp;&nbsp;
+         <a type="button" class="btn btn-primary" id="exportBtn"  href="./usage/connection/export">Export as .xls file</a>
 		<table border="0" cellpadding="3" cellspacing="0" class="dataTable" id="infoTable" >
 			<tbody>
-			       <tr> <th width="23%">User Name</th> 
-						 <th width="23%">Connection Time</th> 
-						 <th width="23%">Disconnection Time</th> 
-						 <th width="23%">Usage Time</th> 
-						  <th width="23%">Machine Name</th> </tr>
+			       <tr> <th width="17%">User Name</th> 
+						 <th width="17%">Connection Time</th> 
+						 <th width="17%">Disconnection Time</th> 
+						 <th width="17%">Usage Time</th> 
+						  <th width="17%">Machine Name</th> 
+						 <th width="17%">Pool Name</th> </tr>
 				<tr class="loadingrow">
 					<td  ></td>
 					<td></td>
@@ -65,6 +98,7 @@
         <a class="text" href="#">End Page</a>
     </div>
         </div>
+        <script src="./js/d3.js"></script>
         <script type="text/javascript" charset="utf-8" src="./js/usage.js"></script>
 	</div>
 </body>

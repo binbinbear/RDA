@@ -62,7 +62,9 @@
  
     <bean id="remoteAssistController" class="com.vmware.horizontoolset.RemoteAssistantController"/>
     <bean id="policyController" class="com.vmware.horizontoolset.PolicyController"/>
+    <bean id="whitelistController" class="com.vmware.horizontoolset.WhiteListController"/>
   
+   
    
   <!-- Execute once a day on 1:00 am , Seconds Minutes Hours DayofMonth Month DayofWeek -->
    <task:scheduled-tasks>   

@@ -506,7 +506,11 @@ ToolBox.init =  function(){
 						"href" : $("#L1_01_04")},
 				
 					remoteassist:{"btn": $("#L1_02")},
-					policy:{"btn": $("#L1_03")}
+					
+					policy:{"btn": $("#L1_03"),
+						"href" : $("#L1_03_01")},
+					whitelist:{"btn": $("#L1_03"),
+						"href" : $("#L1_03_01")},
 					};
 
 			$(".menuBtn").removeClass("selected");

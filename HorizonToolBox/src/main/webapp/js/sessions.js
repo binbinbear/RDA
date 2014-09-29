@@ -15,8 +15,11 @@ if (!ToolBox.Session || !ToolBox.Session.init){
 			      if (type == "day"){
 			    	  days="1";
 			    	  period="600";
+			      }else if (type=="week"){
+			    	  days="7";
+			    	  period="3600";
 			      }else if (type=="month"){
-			    	  days="30";
+			    	  days = "30";
 			    	  period="21600";
 			      }
 			      
@@ -55,26 +58,31 @@ if (!ToolBox.Session || !ToolBox.Session.init){
 				if (!ToolBox.Session.history){
 					return;
 				}
+				$(".loadingdiv").remove();
 				var margin = {top: 20, right: 20, bottom: 30, left: 50},
-			    width = 960 - margin.left - margin.right,
-			    height = 500 - margin.top - margin.bottom;
+			    width = 800 - margin.left - margin.right,
+			    height = 400 - margin.top - margin.bottom;
 
 
 			var x = d3.time.scale()
 			    .range([0, width]);
 
-			var y = d3.scale.linear()
-			    .range([height, 0]);
+			var y = d3.scale.linear().range([height, 0]);
 
-			var xAxis = d3.svg.axis()
-			    .scale(x)
-			    .orient("bottom");
+			
+			var data = ToolBox.Session.history;
+			data.forEach(function(d){
+			    d.date = new Date(d.date);
+			});
+			 x.domain(d3.extent(data, function(d) { return d.date; }));
+			 y.domain([0, d3.max(data, function(d) { return d.concurrent; })]);
+			 
+			 
+			var xAxis = d3.svg.axis().scale(x).orient("bottom");
 
-			var yAxis = d3.svg.axis()
-			    .scale(y)
-			    .orient("left");
+			var yAxis = d3.svg.axis().scale(y).tickFormat(d3.format("d")).orient("left");
 
-			var line = d3.svg.line()
+			var line = d3.svg.line().interpolate("step-before")  
 			    .x(function(d) { return x(d.date); })
 			    .y(function(d) { return y(d.concurrent); });
 
@@ -84,17 +92,10 @@ if (!ToolBox.Session || !ToolBox.Session.init){
 			  .append("g")
 			    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-			var data = ToolBox.Session.history;
-			data.forEach(function(d){
-
-			    d.date = new Date(d.date);
-			    d.concurrent = +d.concurrent;
-			  
-			});
+	
 			
 			
-			 x.domain(d3.extent(data, function(d) { return d.date; }));
-			  y.domain(d3.extent(data, function(d) { return d.concurrent; }));
+			
 
 			  svg.append("g")
 			      .attr("class", "x axis")

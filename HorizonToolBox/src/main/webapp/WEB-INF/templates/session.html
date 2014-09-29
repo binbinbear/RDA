@@ -25,14 +25,16 @@
 		<div class="poolContainer">
 			<label for="viewType">Show report for: </label>
 			<select name="viewType" id="viewType">
-				<option value="day" selected="selected">Last 1 day</option>
+				<option value="day">Last 1 day</option>
 				<option value="week" selected="selected">Last 7 days</option>
-				<option value="month" selected="selected">Last 1 month</option>
+				<option value="month" >Last 1 month</option>
 			</select>	
-			
-			<svg width="500" height="400">
-				<g id="versiondata"></g>
+			<div>
+			<svg>
 			</svg>
+			</div>
+			
+			<div class="loadingdiv">Loading</div>
 				
 	    </div>
 			

@@ -78,5 +78,11 @@ public class ConnectionImpl implements Connection{
 	}
 
 
+	@Override
+	public String getPoolName() {
+		return this.connectEvent.getPoolName();
+	}
+
+
 
 }

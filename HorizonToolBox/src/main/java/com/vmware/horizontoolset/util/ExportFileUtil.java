@@ -22,7 +22,7 @@ public class ExportFileUtil {
 	private static Logger log = Logger.getLogger(ExportFileUtil.class);
 	
 	private static HSSFCellStyle HeaderStyle;
-	private static final String[] connectionHeaders={"User","Usage time(s)","Start time","End Time","Machine"};
+	private static final String[] connectionHeaders={"User","Usage time(s)","Start time","End Time","Machine", "Pool"};
 	
 	private static final String DateFormatString = "yy/m/d/ h:mm:ss";
 	
@@ -63,7 +63,7 @@ public class ExportFileUtil {
               row.createCell(3).setCellValue(connection.getDisconnectionTime());
               row.getCell(3).setCellStyle(cellStyle);
               row.createCell(4).setCellValue(connection.getMachineName());
-              
+              row.createCell(5).setCellValue(connection.getPoolName());
            }      
     }
    
