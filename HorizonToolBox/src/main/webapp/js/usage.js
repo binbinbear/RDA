@@ -1,8 +1,55 @@
 if (!window.ToolBox){
 	window.ToolBox= {};
 }
+
+
+
+
+
 if (!ToolBox.Usage || !ToolBox.Usage.init){
 	ToolBox.Usage = {
+			app:  angular.module('main', ['ngTable']).controller('usageCtrl', function($scope, ngTableParams) {
+				$scope.days = "7";
+				 $scope.$watch("days", function () {
+				        $scope.tableParams.reload();
+				  });     
+		            
+		        
+			    $scope.tableParams = new ngTableParams({
+			        page: 1,            // show first page
+			        count: 10           // count per page
+			    }, {
+			        total: 0, // length of data
+			        getData: function($defer, params) {
+			        	
+						
+						$.ajax({
+							url: './usage/connection',
+							type: "GET",
+							data:{user:$("#user").val(),days:$scope.days},
+							success: function (data) {
+								$(".loadingrow").remove();
+								if(data){	
+									for(var i = 0; i < data.length; i++){
+										data[i].disconnectionTime = new Date(data[i].disconnectionTime).toLocaleString();
+										data[i].connectionTime = new Date(data[i].connectionTime).toLocaleString();
+										
+										data[i].usageTime= ToolBox.Usage.toTimeString(data[i].usageTime);
+									}
+								}
+								if ((params.page() - 1) * params.count() >= data.length){
+									params.page(1);
+								}
+								
+								params.total(data.length);
+								$defer.resolve(data.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+								
+							}
+						}); 
+			            
+			        }
+			    });
+			}),
 			toTimeString: function(seconds){
 				var hours = Math.floor(seconds/3600);
 				var minutes = Math.floor((seconds % 3600) /60);
@@ -15,33 +62,24 @@ if (!ToolBox.Usage || !ToolBox.Usage.init){
 		
 			},
 			init: function(){
-				var enterfn = function(event){
-					if(event.keyCode==13) {  
-						ToolBox.Usage.getUserEvent();  
-				        return false;  
-				    } 
-				};
-				$("#user").keypress(enterfn);
-				
-				$("#submitBtn").click(ToolBox.Usage.getUserEvent);
-				
-				$("#viewType").change(ToolBox.Usage.getUserEvent);
 				
 				$("#usageDays").change(ToolBox.Usage.refreshUsageChart);
 				
-				ToolBox.Usage.getUserEvent();
 				ToolBox.Usage.refreshUsageChart();
 			},
 
 			usageReport: [],
 		
 			_refreshUsageChartView: function(){
-				if (!ToolBox.Usage.usageReport){
+				if (!ToolBox.Usage.usageReport ||ToolBox.Usage.usageReport.length == 0){
+					var loadingDiv = $(".loadingdiv");
+					loadingDiv.removeClass("loadingdiv");
+					loadingDiv.text(ToolBox.STR_NODATA);
 					return;
 				}
 				$(".loadingdiv").remove();
 				var data = ToolBox.Usage.usageReport;
-				 var margin = {top: 30, right: 40, bottom: 80, left: 70};
+				 var margin = {top: 40, right: 40, bottom: 80, left: 70};
                  var width = 800 - margin.left - margin.right;
                  var height = 400 - margin.top - margin.bottom;
 
@@ -77,16 +115,24 @@ if (!ToolBox.Usage || !ToolBox.Usage.init){
                      .style("text-anchor", "end")
                      .attr("transform", "rotate(270)" );
 
-                 svg.append("g")
+                 var yg =svg.append("g")
                      .attr("class", "y axis")
                      .attr("transform", "rotate(0)")
-                     .call(yAxis)
-                     .selectAll("text")
+                     .call(yAxis);
+                 
+                 
+                 yg.selectAll("text")
                      .style("text-anchor", "end")
                      .attr("dx", "-.1em")
                      .attr("dy", "-.8em")
                      .attr("transform", "rotate(0)" )
 		.text(function(d){return ToolBox.Usage.toTimeString(d);});
+                 
+                 yg.append("text")
+			      .attr("y", -20)
+			      .attr("dy", ".71em")
+			      .style("text-anchor", "middle")
+			      .text("Hours:Minutes:Seconds");
 
                  svg.selectAll("bar")
                      .data(data)
@@ -155,56 +201,7 @@ if (!ToolBox.Usage || !ToolBox.Usage.init){
 			},
 			
 			
-			
-			getUserEvent: function (){
-				var type = $("#viewType").val();
-				 var days="7";
-			     if (type=="month"){
-			    	  days="30";
-			      }else if (type=="day"){
-			    	  days="1";
-			      }
-				var tbody = $("#infoTable tbody");
-				tbody.empty();
-				var headtr = " <tr> <th width=\"17%\">User Name</th> " +
-				" <th width=\"17%\">Connection Time</th> " +
-				" <th width=\"17%\">Disconnection Time</th> " +
-				 " <th width=\"17%\">Usage Time</th> " +
-				" <th width=\"17%\">Machine Name</th> " +
-				" <th  width=\"17%\">Pool Name</th> </tr> ";
-				tbody.append(headtr);
-				var loading =  " <tr class=\"loadingrow\"> <td/><td/><td/><td/><td/><td/> </tr>"; 
-				tbody.append(loading);
-				$.ajax({
-					url: './usage/connection',
-					type: "GET",
-					data:{user:$("#user").val(),days:days},
-					success: function (data) {
-						
-						tbody.empty();
-						tbody.append(headtr);
-						
-						if(data){	
-						//	$(".loadingrow").remove();
-							for(var i = 0; i < data.length; i++){
-								var disconnection = new Date(data[i].disconnectionTime).toLocaleString();
-								var connection = new Date(data[i].connectionTime).toLocaleString();
-								
-								var usageTime= ToolBox.Usage.toTimeString(data[i].usageTime);
-								
-								
-								var tr = "<tr>"+"<td>" + data[i].userName + "</td>"
-									+"<td>" + connection + "</td>"
-									+"<td>" + disconnection + "</td>"
-									 +"<td>" + usageTime + "</td>"
-									+"<td>" + data[i].machineName + "</td>" 
-									+"<td>" + data[i].poolName + "</td>" +"</tr>";
-								tbody.append(tr);
-							}
-						}
-					}
-				}); 
-			}
+
 	};
 }
 

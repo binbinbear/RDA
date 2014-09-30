@@ -8,16 +8,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.vmware.horizontoolset.util.SessionUtil;
-@Controller
-public class RemoteAssistantController {
-	private static final String view = "remoteassist";
 
-    @RequestMapping(value="/remoteassist", method=RequestMethod.GET)
+@Controller
+public class HomeSiteController {
+	private static final String view = "homesite";
+    @RequestMapping(value="/homesite", method=RequestMethod.GET)
     public synchronized String action( Model model, HttpSession session) {
         model.addAttribute("view", view);
         model.addAttribute("user", SessionUtil.getuser(session));
     	return Application.MAINPAGE;
 
     }
-    
 }

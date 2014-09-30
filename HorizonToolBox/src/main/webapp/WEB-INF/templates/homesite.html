@@ -1,0 +1,150 @@
+<html>
+<head>
+<title>Homesite policies</title>
+
+</head>
+<body>
+
+	<div id="homesite" th:fragment="fragment">
+		<h3 class="pageHeader">
+			<table border="0" cellpadding="0" cellspacing="0" width="100%">
+				<tbody>
+					<tr>
+						<td>
+							<div class="pageHeaderDiv">
+								<img src="img/window_information.png" alt="Dashboard" />&nbsp;&nbsp;Default
+								HomeSite for Users/Groups&nbsp;
+
+							</div>
+						</td>
+						<td id="loadingAnim"></td>
+					</tr>
+				</tbody>
+			</table>
+		</h3>
+
+		<div class="poolContainer">
+			<label for="homesite">Select Home Site: </label> <select
+				name="homesite" id="homesite">
+				<option value="1">Denmark</option>
+				<option value="2" selected="selected">China</option>
+				<option value="3">USA</option>
+			</select> &nbsp;&nbsp; <input type="button" class="btn btn-primary"
+				id="exportBtn" href="./usage/connection/export" value="Remove" />
+			&nbsp;&nbsp; <input type="button" class="btn btn-primary"
+				id="exportBtn" href="./usage/connection/export" value="Add" />
+
+
+			<div class="row">
+				<div class="col-lg-6">
+					<div class="input-group">
+						<span class="input-group-addon"> <input type="checkbox"/>
+						</span> <input type="text" class="form-control" value="Domain1\User1"/>
+					</div>
+					<!-- /input-group -->
+				</div>
+				<!-- /.col-lg-6 -->
+			</div>
+
+			<div class="row">
+				<div class="col-lg-6">
+					<div class="input-group">
+						<span class="input-group-addon"> <input type="checkbox"/>
+						</span> <input type="text" class="form-control" value="Domain1\Group1"/>
+					</div>
+					<!-- /input-group -->
+				</div>
+				<!-- /.col-lg-6 -->
+			</div>
+
+			<div class="row">
+				<div class="col-lg-6">
+					<div class="input-group">
+						<span class="input-group-addon"> <input type="checkbox"/>
+						</span> <input type="text" class="form-control" value="Domain2\Group2"/>
+					</div>
+					<!-- /input-group -->
+				</div>
+				<!-- /.col-lg-6 -->
+			</div>
+
+
+
+		</div>
+
+
+		<div class="poolContainer"
+			style="width: 100%; height: 90%; overflow: scroll; overflow-x: hidden;">
+			<h3 class="pageHeader">
+				<table border="0" cellpadding="0" cellspacing="0" width="100%">
+					<tbody>
+						<tr>
+							<td>
+								<div class="pageHeaderDiv">
+									<img src="img/window_information.png" alt="Dashboard" />&nbsp;&nbsp;
+									Override HomeSite of Entitlements &nbsp;
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</h3>
+
+
+
+			
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+  <label for="entitlements">Select Global Entitlement: </label> <select
+				name="entitlements" id="entitlements">
+				<option value="1">Global Entitlement 1</option>
+				<option value="2" selected="selected">Global Entitlement 2</option>
+				<option value="3">Global Entitlement 3</option>
+				<option value="4">Global Entitlement 4</option>
+				<option value="5">Global Entitlement 5</option>
+				<option value="6">Global Entitlement 6</option>
+				<option value="7">Global Entitlement 7</option>
+				<option value="8">Global Entitlement 8</option>
+				<option value="9">Global Entitlement 9</option>
+			</select> &nbsp;&nbsp; 
+			<input type="button" class="btn btn-primary"
+				id="exportBtn"  value="Edit" />
+				&nbsp;&nbsp; 
+			<input type="button" class="btn btn-primary"
+				id="exportBtn"  value="Remove" />
+			&nbsp;&nbsp; <input type="button" class="btn btn-primary"
+				id="exportBtn"  value="Add" />
+				
+  </div>
+
+  <!-- Table -->
+  <table class="dataTable">
+<tbody>
+					<tr>
+						<th >Select all</th>
+						<th >User/Group Name</th>
+						<th >HomeSite Name</th>
+					</tr>
+					<tr>
+						<td>Domain1\User1</td>
+						<td>China</td>
+					</tr>
+					<tr>
+						<td>Domain1\Group1</td>
+						<td>USA</td>
+					</tr>
+					<tr>
+						<td>Domain2\Group2</td>
+						<td>Denmark</td>
+					</tr>
+				</tbody>
+  </table>
+</div>
+
+
+		</div>
+
+	</div>
+</body>
+</html>

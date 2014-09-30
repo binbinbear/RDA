@@ -6,6 +6,35 @@ if (!ToolBox.Session || !ToolBox.Session.init){
 			pools: [],
 			farms: [],
 			history: [],
+			desktopParams: null,
+		    
+		    
+		    appParams: null,
+		    
+			app:  angular.module('main', ['ngTable']).controller('sessionCtrl', function($scope, ngTableParams) {
+
+			    $scope.desktopParams = ToolBox.Session.desktopParams =new  ngTableParams({
+			        page: 1,            // show first page
+			        count: 10           // count per page
+			    }, {
+			        total: 0, // length of data
+			        getData: function($defer, params) {
+			        		params.total(ToolBox.Session.pools.length);
+							$defer.resolve(ToolBox.Session.pools.slice((params.page() - 1) * params.count(), params.page() * params.count()));   
+			        }
+			    });
+			    
+			    $scope.appParams = ToolBox.Session.appParams = new  ngTableParams({
+			        page: 1,            // show first page
+			        count: 10           // count per page
+			    }, {
+			        total: 0, // length of data
+			        getData: function($defer, params) {
+			        		params.total(ToolBox.Session.farms.length);
+							$defer.resolve(ToolBox.Session.farms.slice((params.page() - 1) * params.count(), params.page() * params.count()));   
+			        }
+			    });
+			}),
 			
 			refreshHistorySession: function(){
 				$("svg").empty();
@@ -40,7 +69,9 @@ if (!ToolBox.Session || !ToolBox.Session.init){
 					success: function (data) {
 						 ToolBox.Session.pools = data.pools;
 						 ToolBox.Session.farms = data.farms;
-						 ToolBox.Session._updateTableView();
+						 $(".loadingrow").remove();
+						 ToolBox.Session.desktopParams.reload();
+						 ToolBox.Session.appParams.reload();
 						 if (data.updatedDate){
 							 var date = new Date(data.updatedDate);
 							 $(".updateDate").text("Updated on "+ date.toLocaleString());
@@ -55,11 +86,15 @@ if (!ToolBox.Session || !ToolBox.Session.init){
 			
 			
 			_updateChartView: function(){
+				
 				if (!ToolBox.Session.history){
+					var loadingDiv = $(".loadingdiv");
+					loadingDiv.removeClass("loadingdiv");
+					loadingDiv.text(ToolBox.STR_NODATA);
 					return;
 				}
 				$(".loadingdiv").remove();
-				var margin = {top: 20, right: 20, bottom: 30, left: 50},
+				var margin = {top: 40, right: 20, bottom: 30, left: 50},
 			    width = 800 - margin.left - margin.right,
 			    height = 400 - margin.top - margin.bottom;
 
@@ -92,11 +127,6 @@ if (!ToolBox.Session || !ToolBox.Session.init){
 			  .append("g")
 			    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-	
-			
-			
-			
-
 			  svg.append("g")
 			      .attr("class", "x axis")
 			      .attr("transform", "translate(0," + height + ")")
@@ -106,10 +136,9 @@ if (!ToolBox.Session || !ToolBox.Session.init){
 			      .attr("class", "y axis")
 			      .call(yAxis)
 			    .append("text")
-			      .attr("transform", "rotate(-90)")
-			      .attr("y", 6)
+			      .attr("y", -20)
 			      .attr("dy", ".71em")
-			      .style("text-anchor", "end")
+			      .style("text-anchor", "middle")
 			      .text("Concurrent");
 
 			  svg.append("path")
@@ -119,33 +148,7 @@ if (!ToolBox.Session || !ToolBox.Session.init){
 				
 			},
 			
-			_updateTableView: function(){
-				var table = $(".farmSessionTable");
-				if (!table){
-					   return;
-				}
-				$(".loadingrow").remove();
-				
-				var farms = ToolBox.Session.farms;
-				var farmbody = $(".farmSessionTable tbody");
-				
-				
-				for (var i= 0; i< farms.length; i++){
-					var farm = farms[i];
-					var tr = "<tr><td>" + farm.name + "</td><td>"  +   farm.appSessionCount + "</td></tr>";
-					farmbody.append(tr);
-				}
-				
-				var poolbody = $("#poolSessionTable tbody");
-				var pools = ToolBox.Session.pools;
-				for (var i = 0;i<pools.length;i++)
-				{
-					var pool = pools[i];
-					var tr = "<tr><td>" + pool.name + "</td><td>"  +   pool.viewType +  "</td><td>"  +   pool.sessionCount +"</td></tr>";
-					poolbody.append(tr);
-				}
-				
-			},
+			
 			
 			init: function(){
 				ToolBox.Session.refreshHistorySession();

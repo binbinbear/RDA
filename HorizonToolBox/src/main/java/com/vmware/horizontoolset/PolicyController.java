@@ -14,7 +14,7 @@ public class PolicyController {
 	private static final String view = "policy";
 
     @RequestMapping(value="/policy", method=RequestMethod.GET)
-    public synchronized String getSessionsAuditing( Model model, HttpSession session) {
+    public synchronized String action( Model model, HttpSession session) {
         model.addAttribute("view", view);
         model.addAttribute("user", SessionUtil.getuser(session));
     	return Application.MAINPAGE;

@@ -490,7 +490,9 @@ $(function() {
 
 
 if (!window.ToolBox){
-	window.ToolBox = {};
+	window.ToolBox = {
+			STR_NODATA: "No data is retrieved, please configure Event DB from your administrator UI"
+	};
 }
 ToolBox.init =  function(){
 

@@ -13,7 +13,7 @@ import com.vmware.horizontoolset.util.SessionUtil;
 public class WhiteListController {
 	private static final String view = "whitelist";
     @RequestMapping(value="/whitelist", method=RequestMethod.GET)
-    public synchronized String getSessionsAuditing( Model model, HttpSession session) {
+    public synchronized String action( Model model, HttpSession session) {
         model.addAttribute("view", view);
         model.addAttribute("user", SessionUtil.getuser(session));
     	return Application.MAINPAGE;
