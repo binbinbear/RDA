@@ -1,0 +1,122 @@
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Horizon View AdminEx</title>
+
+<style type='text/css'>
+body {
+	font: 75% "Trebuchet MS", sans-serif;
+	margin: 0;
+}
+#banner {
+	height: 51px;
+	width: 100%;
+	background-image: url(img/banner_bg.png);
+}
+#logo {
+	height: 51px;
+	width: 100%;
+	background-image: url(img/banner.png);
+	background-repeat: no-repeat;
+}
+#left_margin {
+	width: 17px;
+	background-image: url(img/left_margin.png);
+	background-repeat: repeat-y;
+	height: 100%;
+}
+#content_area {
+	margin: 10px;
+	position:absolute;
+	left:17px;
+	top:51px;
+}
+</style>
+	<link href="jquery/jquery-ui.css" rel="stylesheet">
+	<style>
+
+	.demoHeaders {
+		margin-top: 2em;
+	}
+	#dialog-link {
+		padding: .4em 1em .4em 20px;
+		text-decoration: none;
+		position: relative;
+	}
+	#dialog-link span.ui-icon {
+		margin: 0 5px 0 0;
+		position: absolute;
+		left: .2em;
+		top: 50%;
+		margin-top: -8px;
+	}
+	#icons {
+		margin: 0;
+		padding: 0;
+	}
+	#icons li {
+		margin: 2px;
+		position: relative;
+		padding: 4px 0;
+		cursor: pointer;
+		float: left;
+		list-style: none;
+	}
+	#icons span.ui-icon {
+		float: left;
+		margin: 0 4px;
+	}
+	.fakewindowcontain .ui-widget-overlay {
+		position: absolute;
+	}
+	select {
+		width: 200px;
+	}
+	</style>
+	 <style>
+.ui-tabs-vertical { width: 55em; }
+.ui-tabs-vertical .ui-tabs-nav { padding: .2em .1em .2em .2em; float: left; width: 12em; }
+.ui-tabs-vertical .ui-tabs-nav li { clear: left; width: 100%; border-bottom-width: 1px !important; border-right-width: 0 !important; margin: 0 -1px .2em 0; }
+.ui-tabs-vertical .ui-tabs-nav li a { display:block; }
+.ui-tabs-vertical .ui-tabs-nav li.ui-tabs-active { padding-bottom: 0; padding-right: .1em; border-right-width: 1px; border-right-width: 1px; }
+.ui-tabs-vertical .ui-tabs-panel { padding: 1em; float: right; width: 40em;}
+</style>
+</head>
+
+<body>
+
+<div id='banner'><div id='logo'></div></div>
+<div id='left_margin'></div>
+<div id='content_area'>
+
+	<div id="tabs" style='width:100%'>
+		<ul>
+			<li><a href="hra">Remote Assistance Requests</a></li>
+			<li><a href="notAvailable.html">Sessions</a></li>
+			<li><a href="notAvailable.html">Snapshots</a></li>
+			<li><a href="notAvailable.html">Virtual Desktop Recycling</a></li>
+		</ul>
+	</div>
+
+</div>
+
+
+<script src="jquery/external/jquery/jquery.js"></script>
+<script src="jquery/jquery-ui.js"></script>
+<script>
+
+$( "#button" ).button();
+
+$( "#tabs" ).tabs();
+//$( "#tabs" ).tabs({
+//    select: function(event, ui) {
+//        alert("PRESSED TAB!" + ui);
+//    }
+//});	
+//.addClass( "ui-tabs-vertical ui-helper-clearfix" );;
+//$( "#tabs li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
+
+</script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+[admin_ex]
+
+Eclipse project. Web module for View Connection Server.
+
+
+[HorizonRemoteAssistance]
+
+Visual Studio 2008 Solution.
+
+	[HRAInstaller]
+		The installer project which generate a standalone HRA installer.
+
+	[HRALauncher]
+		The ticket launcher, on admin side.
+
+	[HRARequestor]
+		The end-user side request initiator
+
