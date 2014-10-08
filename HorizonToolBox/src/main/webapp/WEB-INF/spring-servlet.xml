@@ -63,7 +63,6 @@
     <bean id="remoteAssistController" class="com.vmware.horizontoolset.RemoteAssistantController"/>
     <bean id="policyController" class="com.vmware.horizontoolset.PolicyController"/>
     <bean id="whitelistController" class="com.vmware.horizontoolset.WhiteListController"/>
-      <bean id="homesiteController" class="com.vmware.horizontoolset.HomeSiteController"/>
   
    
    
