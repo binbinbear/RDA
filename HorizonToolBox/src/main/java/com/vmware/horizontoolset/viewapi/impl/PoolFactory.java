@@ -12,6 +12,10 @@ public class PoolFactory {
 
 	private static Logger log = Logger.getLogger(PoolFactory.class);
 	
+	public static BasicViewPool getBasicViewPool(DesktopSummaryView desktop){
+		return new BasicViewPool(desktop);
+	}
+	
 	public static SnapShotViewPool getPool(DesktopSummaryView desktop, ViewQueryService service){
 		
 		log.debug("desktop type:"+desktop.desktopSummaryData.type+" name:"+ desktop.desktopSummaryData.displayName);

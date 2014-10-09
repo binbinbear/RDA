@@ -1,17 +1,19 @@
 package com.vmware.horizontoolset.util;
 
-
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.vmware.horizontoolset.usage.Connection;
 import com.vmware.horizontoolset.usage.Event;
+
+
 @JsonIgnoreProperties(value={"connectionEvent", "disconnectionEvent"})
 public class ConnectionImpl implements Connection{
 
 	private String username;
 	private Event connectEvent;
 	private Event disConnectEvent;
+	private String connectionType;
 	
 	
 	
@@ -20,7 +22,12 @@ public class ConnectionImpl implements Connection{
 		this.connectEvent = connectEvent;
 		this.disConnectEvent = disconnectEvent;
 	}
-	
+	public ConnectionImpl(Event connectEvent, Event disconnectEvent, String contype){
+		this.username = connectEvent.getUserName();
+		this.connectEvent = connectEvent;
+		this.disConnectEvent = disconnectEvent;
+		this.connectionType = contype;
+	}
 	
 	@Override
 	public String getUserName() {
@@ -81,6 +88,13 @@ public class ConnectionImpl implements Connection{
 	@Override
 	public String getPoolName() {
 		return this.connectEvent.getPoolName();
+	}
+
+
+	@Override
+	public String getConnectionType() {
+		
+		return this.connectionType;
 	}
 
 

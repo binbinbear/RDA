@@ -3,7 +3,9 @@ package com.vmware.horizontoolset.viewapi.impl;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 
@@ -14,6 +16,7 @@ import com.vmware.vdi.vlsi.binding.vdi.entity.VirtualCenterId;
 import com.vmware.vdi.vlsi.binding.vdi.query.QueryDefinition;
 import com.vmware.vdi.vlsi.binding.vdi.resources.Desktop;
 import com.vmware.vdi.vlsi.binding.vdi.resources.Desktop.DesktopInfo;
+import com.vmware.vdi.vlsi.binding.vdi.resources.Desktop.DesktopSummaryData;
 import com.vmware.vdi.vlsi.binding.vdi.resources.Desktop.DesktopSummaryView;
 import com.vmware.vdi.vlsi.binding.vdi.resources.Farm.FarmInfo;
 import com.vmware.vdi.vlsi.binding.vdi.users.Session.SessionLocalSummaryView;
@@ -223,5 +226,18 @@ public class ViewQueryService {
 
 		
 		return Query.count(this._connection, SessionLocalSummaryView.class,QueryFilter.and(filters) );
+	}
+
+
+	public List<BasicViewPool>  getAllBasicPools() {
+		List<DesktopSummaryView> results = this.getDesktopSummaryViews();
+		List<BasicViewPool>  list = new ArrayList<BasicViewPool>();
+	    if (results == null || results.size() == 0) {
+	    	log.debug("no results in pools");
+	    }
+	    for(DesktopSummaryView desktop: results){
+	    	list.add(PoolFactory.getBasicViewPool(desktop));
+	    }
+		return list;
 	}
 }

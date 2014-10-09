@@ -5,10 +5,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.log4j.Logger;
 
@@ -22,7 +20,9 @@ import com.vmware.horizontoolset.viewapi.Session;
 import com.vmware.horizontoolset.viewapi.SessionFarm;
 import com.vmware.horizontoolset.viewapi.SessionPool;
 import com.vmware.horizontoolset.viewapi.SnapShotViewPool;
+import com.vmware.horizontoolset.viewapi.ViewAPIService;
 import com.vmware.horizontoolset.viewapi.ViewType;
+import com.vmware.horizontoolset.viewapi.impl.BasicViewPool;
 import com.vmware.horizontoolset.viewapi.impl.SessionFarmImpl;
 import com.vmware.horizontoolset.viewapi.impl.SessionPoolImpl;
 
@@ -107,9 +107,10 @@ public class ReportUtil {
 	 * Get all connection time and disconnection time for a specific user or all users
 	 * @param events
 	 * @param userName     null to get all users
+	 * @param service 
 	 * @return 
 	 */
-	public static List<Connection> getConnections(List<Event> events, String userName) {
+	public static List<Connection> getConnections(List<Event> events, String userName, ViewAPIService service) {
 		if (userName == null){
 			userName = "";
 		}
@@ -117,6 +118,14 @@ public class ReportUtil {
 		
 		Map<String,Event> connectionEvents = new HashMap<String, Event>();
 		//Event is sorted by descent time
+		 HashMap<String, String> poolNameTotype = new HashMap<String, String>();
+		if(service != null){
+			List<BasicViewPool> basicPools = service.getAllPools();
+			 for(BasicViewPool pool : basicPools){
+					poolNameTotype.put(pool.getName(), pool.getViewType().toString());
+				}
+		}
+		 log.debug("before tranverse events: "+new Date());
 		for (int i = events.size() -1; i>=0; i--) {
 			Event event = events.get(i);
 			String eventUserName = event.getUserName();
@@ -129,13 +138,18 @@ public class ReportUtil {
 				}else if (event.getType() == EventType.Disconnection){
 					Event connectionEvent = connectionEvents.get(key);
 					if (connectionEvent!=null){
-						result.add(new ConnectionImpl(connectionEvent, event));				
+						if(!poolNameTotype.isEmpty()){
+							result.add(new ConnectionImpl(connectionEvent, event, 
+									poolNameTotype.get(connectionEvent.getPoolName())));		
+						}else
+							result.add(new ConnectionImpl(connectionEvent, event));
 						connectionEvents.remove(key);
 					}
 				}
 
 			}
 		}
+		 log.debug("after tranverse events: "+new Date());
 		
 		
 		java.util.Collections.sort(result);
@@ -178,16 +192,17 @@ public class ReportUtil {
 	 * 
 	 * @param events all connection/disconnection event
 	 * @param timeUnit   number of seconds
+	 * @param viewAPIService 
 	 * @return
 	 */
-	public static ConcurrentConnectionsReport getConcurrentConnectionsReport(List<Event> events, long timeUnit ) {
+	public static ConcurrentConnectionsReport getConcurrentConnectionsReport(List<Event> events, long timeUnit) {
 		
 		if (events == null || events.size() == 0){
 			return null;
 		}
 		log.debug("Start to generate concurrent connections report from event:" + events.size() + "Timeunit:" + timeUnit);
 		timeUnit = timeUnit* 1000;
-		List<Connection> connections = ReportUtil.getConnections(events, null);
+		List<Connection> connections = ReportUtil.getConnections(events, null, null);
 		
 		events.clear();
 		for (Connection c: connections){

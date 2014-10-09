@@ -2,6 +2,8 @@ package com.vmware.horizontoolset.viewapi;
 
 import java.util.List;
 
+import com.vmware.horizontoolset.viewapi.impl.BasicViewPool;
+
 public interface ViewAPIService {
 	public List<SnapShotViewPool> getDetailedAutoPools();
 	
@@ -17,5 +19,7 @@ public interface ViewAPIService {
 	public List<Session> getAllSessions();
 	
 	public void disconnect();
+
+	public List<BasicViewPool> getAllPools();
 	
 }

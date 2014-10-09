@@ -3,6 +3,7 @@ package com.vmware.horizontoolset;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +23,7 @@ import com.vmware.horizontoolset.usage.ExportType;
 import com.vmware.horizontoolset.util.EventDBUtil;
 import com.vmware.horizontoolset.util.ExportFileUtil;
 import com.vmware.horizontoolset.util.SessionUtil;
+import com.vmware.horizontoolset.viewapi.ViewAPIService;
 
 
 @RestController
@@ -46,11 +48,14 @@ public class UsageRestController {
 	    public List<Connection> getConnections(HttpSession session, 
 	    		@RequestParam(value="user", required=false, defaultValue="") String userName,
 	    		@RequestParam(value="days", required=false, defaultValue=defaultDays) String days) {
-		 log.debug("Start to query connections for "+userName);
+		 ViewAPIService service = SessionUtil.getViewAPIService(session);
+		 log.debug("Start to query connections for "+userName+new Date());
 		   List<Event> events = UsageRestController.getEvents(session, userName, days,null);
+		 log.debug("Get Events: "+new Date());
 		   if (events!=null){
-			   return ReportUtil.getConnections(events, userName);
+			   return ReportUtil.getConnections(events, userName, service);
 		   }
+		 log.debug("Complish Connnections: "+new Date());
 			return new ArrayList<Connection>();
 		}
 	 
