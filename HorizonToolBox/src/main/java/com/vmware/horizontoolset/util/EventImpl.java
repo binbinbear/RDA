@@ -2,16 +2,34 @@ package com.vmware.horizontoolset.util;
 
 import java.util.Date;
 import java.util.List;
-
-import org.apache.log4j.Logger;
-
 import com.vmware.horizontoolset.usage.Event;
 import com.vmware.horizontoolset.usage.EventType;
 import com.vmware.vdi.admin.be.events.AdminEvent;
 import com.vmware.vdi.admin.be.events.AdminEventSource;
 import com.vmware.vdi.events.enums.EventModule;
 
+/**
+ * @author Administrator
+ *
+ */
 public class EventImpl implements Event{
+	@Override
+	public int hashCode() {
+		return this.eventId;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+            return true;
+        }
+        if (obj instanceof EventImpl) {
+        	EventImpl anotherObj = (EventImpl) obj;
+            return this.eventId == anotherObj.eventId && this.time.equals(anotherObj.time);
+        }
+        return false;
+	}
+
 	private static final String accept = "has accepted an allocated session";
 	private static final String onMachine = "running on machine ";
 	private static final String disconnect = "has disconnected from machine ";
@@ -22,6 +40,7 @@ public class EventImpl implements Event{
 	private String machineName = "";
 	private Date time;
 	private String poolName = "";
+	private int eventId = 0;
 	private String getValue(String all, String key){
 		//get pool name from the message
 		int index = all.indexOf(key) + key.length();
@@ -43,7 +62,7 @@ public class EventImpl implements Event{
 	}
 	
 	public EventImpl(AdminEvent event){
-		
+		this.eventId = event.getEventId();
 		this.username = event.getUsername();
 		String message = event.getShortMessage();
 		this.time = event.getTime();
