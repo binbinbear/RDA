@@ -35,11 +35,15 @@ public class SnapShotRestController {
 	    }
 
 	 private synchronized void refreshLastReport(HttpSession session){
-		 if (lastReport == null){
-			 ViewAPIService service = SessionUtil.getViewAPIService(session);
-				log.info("Start to get all pools");
-	     	List<SnapShotViewPool> list = service.getDetailedAutoPools();
-	     	lastReport= ReportUtil.generateSnapShotReport(list);
+		 try{
+			 if (lastReport == null){
+				 ViewAPIService service = SessionUtil.getViewAPIService(session);
+					log.info("Start to get all pools");
+		     	List<SnapShotViewPool> list = service.getDetailedAutoPools();
+		     	lastReport= ReportUtil.generateSnapShotReport(list);
+			 }
+		 }catch(Throwable ex){
+			 log.error("Can't refresh snapshot report", ex);
 		 }
 
 	 }

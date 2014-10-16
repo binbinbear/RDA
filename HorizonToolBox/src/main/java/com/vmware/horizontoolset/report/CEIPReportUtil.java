@@ -65,7 +65,7 @@ public class CEIPReportUtil {
 	private static void searchFolder(File folder){
 		 File[] files = folder.listFiles();
          if (files==null || files.length == 0) {
-        	 log.info("Folder is null:"+ folder.getAbsolutePath()+" Files:"+ files);
+        	 log.info("Folder is null:"+ folder.getAbsolutePath());
             return;
          }
          for (int i=0;i< files.length;i++){

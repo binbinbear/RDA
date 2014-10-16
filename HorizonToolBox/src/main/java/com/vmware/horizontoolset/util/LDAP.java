@@ -1,6 +1,5 @@
 package com.vmware.horizontoolset.util;
 
-import java.io.Serializable;
 import java.net.InetAddress;
 import java.util.Hashtable;
 
@@ -21,11 +20,10 @@ import com.vmware.vdi.common.winauth.UserContext;
 import com.vmware.vdi.common.winauth.UserContextFactory;
 import com.vmware.vdi.common.winauth.sasl.WinAuthSASLClient;
 import com.vmware.horizontoolset.report.CEIPReportUtil;
-public class LDAP implements Serializable{
+public class LDAP{
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 3465987931845342866L;
 	private static Logger log = Logger.getLogger(LDAP.class);
     private static final String ADAM_URL_PROPERTY_NAME = "ADAM_URL";
 

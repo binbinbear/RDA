@@ -37,7 +37,7 @@ public class SessionUtil {
 		}
 	}
 	
-	private static ToolBoxSession getOrNewToolBoxSession(HttpSession session){
+	private synchronized static ToolBoxSession getOrNewToolBoxSession(HttpSession session){
 		if (session == null){
 			return null;
 		}

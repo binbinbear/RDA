@@ -29,6 +29,9 @@ import com.vmware.vdi.vlsi.cname.vdi.users.SessionCName.SessionLocalSummaryViewC
 import com.vmware.horizontoolset.viewapi.SessionFarm;
 import com.vmware.horizontoolset.viewapi.SessionPool;
 import com.vmware.horizontoolset.viewapi.SnapShotViewPool;
+import com.vmware.horizontoolset.viewapi.VM;
+import com.vmware.horizontoolset.viewapi.impl.Cache;
+import com.vmware.horizontoolset.viewapi.impl.VMImpl;
 import com.vmware.vim.binding.impl.vmodl.TypeNameImpl;
 import com.vmware.vim.binding.vmodl.DataObject;
 
@@ -70,7 +73,18 @@ public class ViewQueryService {
 	}
 	
 	
-	
+	public VM getVM(BaseImageVmId vmid, String fullPath){
+		VM result = Cache.getVM(vmid.id);
+		if (result !=null){
+			log.info("Great VM cache hit ");
+			return result;
+		}
+		
+
+		log.info("Create vm for "+ fullPath);
+		Cache.addOrUpdateVM(vmid.id, new VMImpl(fullPath));
+		return Cache.getVM(vmid.id);
+	}
 
 	
 	  private <T extends DataObject> List<T> getAllObjects(Class<T> type) {

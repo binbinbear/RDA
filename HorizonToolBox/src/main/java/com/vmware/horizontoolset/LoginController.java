@@ -1,7 +1,6 @@
 package com.vmware.horizontoolset;
 
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpSession;
@@ -21,7 +20,7 @@ import com.vmware.horizontoolset.viewapi.ViewAPIService;
 import com.vmware.horizontoolset.viewapi.ViewApiFactory;
 
 @Controller
-public class LoginController implements Serializable{
+public class LoginController{
 	/**
 	 * 
 	 */
@@ -29,7 +28,6 @@ public class LoginController implements Serializable{
 	public LoginController(){
 		log.debug("Login Controller is created");
 	}
-	private static final long serialVersionUID = -6445526336852221989L;
 	
 	private ViewAPIService _service;
 	private LDAP _ldap;

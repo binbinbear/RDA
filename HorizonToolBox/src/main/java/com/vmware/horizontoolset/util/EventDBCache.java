@@ -32,7 +32,7 @@ public class EventDBCache {
 	private static void updateCache(VDIContext vdiContext, int recentdays){
 		int days = recentdays;
 		long currentTime = new Date().getTime();
-		if (cachedEvents!=null && cachedEvents.size()>0){
+		if ( cachedEvents.size()>0){
 			
 			long hours = (currentTime - lastCachedTime)/(millisecondsHour);
 			if (hours<=0 && recentdays<=cachedDays){

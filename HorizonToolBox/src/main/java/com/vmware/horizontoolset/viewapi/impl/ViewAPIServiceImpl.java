@@ -1,11 +1,9 @@
 package com.vmware.horizontoolset.viewapi.impl;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.vmware.vdi.vlsi.binding.vdi.resources.Desktop.DesktopSummaryView;
 import com.vmware.vdi.vlsi.binding.vdi.users.Session.SessionLocalSummaryView;
 import com.vmware.horizontoolset.viewapi.Session;
 import com.vmware.horizontoolset.viewapi.SessionFarm;
@@ -16,17 +14,9 @@ public class ViewAPIServiceImpl implements ViewAPIService{
 	private static Logger log = Logger.getLogger(ViewAPIServiceImpl.class);
 	private ViewAPIConnect _connection;
 	private ViewQueryService _queryService;
-	private String _host;
-	private String _user;
-	private String _pass;
-	private String _domain;
 	public ViewAPIServiceImpl(String host, String username, String password,String domain){
 		//clear all cache since 
 		Cache.emptyCache();
-		this._host = host;
-		this._user = username;
-		this._pass = password;
-		this._domain = domain;
 		this._connection = new ViewAPIConnect(host);
 		this._connection.login(username, password, domain);
 		this._queryService = new ViewQueryService(this._connection);
@@ -100,8 +90,11 @@ public class ViewAPIServiceImpl implements ViewAPIService{
 
 	public List<BasicViewPool> getAllPools()
 	{
-		if (this._queryService == null)
+		if (this._queryService == null){
 			log.info("Closed VIEW API can't be used!");
+			return null;
+		}
+			
 		return this._queryService.getAllBasicPools();
 	}
 

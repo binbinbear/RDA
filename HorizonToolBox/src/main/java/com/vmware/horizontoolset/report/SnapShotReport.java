@@ -20,11 +20,17 @@ public class SnapShotReport extends AbstractReport{
 	
 
 	public void addOrUpdateTemplate(Template template){
-		this.templates.put(template.getPath(), template);
+		if (template!=null){
+			this.templates.put(template.getPath(), template);
+		}
+		
 	}
 
 	public void addOrUpdateVM(VM vm){
-		this.vms.put(vm.getFullName(),vm);
+		if (vm!=null){
+			this.vms.put(vm.getFullName(),vm);
+		}
+		
 	}
 
 	public SnapShotReport(){

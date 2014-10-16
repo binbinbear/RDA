@@ -58,7 +58,7 @@ public class LinkedClonePoolImpl extends ViewPoolImpl implements LinkedClonePool
 		log.debug("Cache not hit, I have to query all snapshots and images:"+this.getName());
 		
 		
-		VM vm = new VMImpl(super.info.automatedDesktopData.virtualCenterNamesData.parentVmPath);
+		VM vm = super.service.getVM(vmid,  super.info.automatedDesktopData.virtualCenterNamesData.parentVmPath) ;
 		
 		BaseImageSnapshotInfo[] snapshots = super.service.getSnapShots(vmid);
 		

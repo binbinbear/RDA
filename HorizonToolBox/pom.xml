@@ -399,16 +399,7 @@
 				<configuration>
 					<packagingExcludes>
 					**/*.class,
-					**/toolset_proguard_base.jar,
-					**/adamwrapper.jar,
-					**/commonutils.jar,
-					**/coreadmin.jar,
-					**/dbwrapper.jar,
-					**/events-common.jar,
-					**/orchestratorj.jar,
-					**/securitymanager.jar,
-					**/securitymanager.jar,
-					**/winauth.jar
+					**/toolset_proguard_base.jar
 					</packagingExcludes>
 					<useCache>true</useCache>
 				</configuration>
