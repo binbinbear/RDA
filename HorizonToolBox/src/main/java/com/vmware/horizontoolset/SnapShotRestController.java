@@ -37,7 +37,7 @@ public class SnapShotRestController {
 	 private synchronized void refreshLastReport(HttpSession session){
 		 if (lastReport == null){
 			 ViewAPIService service = SessionUtil.getViewAPIService(session);
-				log.debug("Start to get all pools");
+				log.info("Start to get all pools");
 	     	List<SnapShotViewPool> list = service.getDetailedAutoPools();
 	     	lastReport= ReportUtil.generateSnapShotReport(list);
 		 }

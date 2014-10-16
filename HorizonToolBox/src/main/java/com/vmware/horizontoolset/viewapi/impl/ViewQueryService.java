@@ -3,9 +3,7 @@ package com.vmware.horizontoolset.viewapi.impl;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.log4j.Logger;
 
@@ -16,14 +14,11 @@ import com.vmware.vdi.vlsi.binding.vdi.entity.VirtualCenterId;
 import com.vmware.vdi.vlsi.binding.vdi.query.QueryDefinition;
 import com.vmware.vdi.vlsi.binding.vdi.resources.Desktop;
 import com.vmware.vdi.vlsi.binding.vdi.resources.Desktop.DesktopInfo;
-import com.vmware.vdi.vlsi.binding.vdi.resources.Desktop.DesktopSummaryData;
 import com.vmware.vdi.vlsi.binding.vdi.resources.Desktop.DesktopSummaryView;
 import com.vmware.vdi.vlsi.binding.vdi.resources.Farm.FarmInfo;
 import com.vmware.vdi.vlsi.binding.vdi.users.Session.SessionLocalSummaryView;
 import com.vmware.vdi.vlsi.binding.vdi.utils.virtualcenter.BaseImageSnapshot;
 import com.vmware.vdi.vlsi.binding.vdi.utils.virtualcenter.BaseImageSnapshot.BaseImageSnapshotInfo;
-import com.vmware.vdi.vlsi.binding.vdi.utils.virtualcenter.BaseImageVm;
-import com.vmware.vdi.vlsi.binding.vdi.utils.virtualcenter.BaseImageVm.BaseImageVmInfo;
 import com.vmware.vdi.vlsi.binding.vdi.utils.virtualcenter.VmTemplate;
 import com.vmware.vdi.vlsi.binding.vdi.utils.virtualcenter.VmTemplate.VmTemplateInfo;
 import com.vmware.vdi.vlsi.client.Connection;
@@ -34,7 +29,6 @@ import com.vmware.vdi.vlsi.cname.vdi.users.SessionCName.SessionLocalSummaryViewC
 import com.vmware.horizontoolset.viewapi.SessionFarm;
 import com.vmware.horizontoolset.viewapi.SessionPool;
 import com.vmware.horizontoolset.viewapi.SnapShotViewPool;
-import com.vmware.horizontoolset.viewapi.VM;
 import com.vmware.vim.binding.impl.vmodl.TypeNameImpl;
 import com.vmware.vim.binding.vmodl.DataObject;
 
@@ -44,7 +38,6 @@ public class ViewQueryService {
 	private Desktop _desktop;
 	private VmTemplate _template;
 	private BaseImageSnapshot _snapshotService;
-	private BaseImageVm _vmServicve;
 	private Connection _connection;
 
 	public ViewQueryService(Connection connect){
@@ -52,7 +45,6 @@ public class ViewQueryService {
 		this._desktop = connect.get(Desktop.class);
 		this._template = connect.get(VmTemplate.class);
 		this._snapshotService = connect.get(BaseImageSnapshot.class);
-		this._vmServicve = connect.get(BaseImageVm.class);
 
 	}
 	
@@ -78,28 +70,6 @@ public class ViewQueryService {
 	}
 	
 	
-	
-	public VM getVM(VirtualCenterId vcID, BaseImageVmId vmid){
-		VM result = Cache.getVM(vmid.id);
-		if (result !=null){
-			log.debug("Great VM cache hit ");
-			return result;
-		}
-		
-		log.debug("query vcenter for vmid");
-		
-		BaseImageVmInfo [] infos = this._vmServicve.list(vcID);
-		if (infos==null || infos.length == 0){
-			return null;
-		}
-		
-		
-		for (int i= 0;i< infos.length;i++){
-			Cache.addOrUpdateVM(infos[i].id.id, new VMImpl(infos[i]));
-		}
-		
-		return Cache.getVM(vmid.id);
-	}
 	
 
 	

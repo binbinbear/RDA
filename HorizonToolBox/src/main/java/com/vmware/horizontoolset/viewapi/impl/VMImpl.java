@@ -3,20 +3,18 @@ package com.vmware.horizontoolset.viewapi.impl;
 import java.util.Collection;
 import java.util.HashMap;
 
-import com.vmware.vdi.vlsi.binding.vdi.utils.virtualcenter.BaseImageVm.BaseImageVmInfo;
 import com.vmware.horizontoolset.viewapi.SnapShot;
 import com.vmware.horizontoolset.viewapi.VM;
 
 public class VMImpl implements VM{
 
-	private BaseImageVmInfo _info;
+	private String _path;
 	
 	private HashMap<String, SnapShot> content = new HashMap<String, SnapShot>();
 	
-	//don't crate new VMImpl by yourself, I don't want two VM have the same VMId
-	//refer to getVM in DesktopService
-	VMImpl(BaseImageVmInfo vminfo){
-		this._info = vminfo;
+
+	VMImpl(String vmpath){
+		this._path = vmpath;
 	}
 	@Override
 	public Collection<SnapShot> getChildren() {
@@ -25,8 +23,7 @@ public class VMImpl implements VM{
 
 	@Override
 	public String getFullName() {
-		// TODO Auto-generated method stub
-		return this._info.path;
+		return this._path;
 	}
 	@Override
 	public void addOrUpdateSnapShot(SnapShot shot) {
@@ -57,10 +54,8 @@ public class VMImpl implements VM{
 	}
 	@Override
 	public String getInformation() {
-		String information = "<table><tr><td>VM Path</td> <td>VM Name </td> <td>OS Name</td> </tr> <tr><td>" + this._info.path + 
-				"</td><td>" + this._info.name
-				+"</td><td>" + this._info.operatingSystem
-				+"</td></tr></table>";
+		String information = "<table><tr><td>VM Path</td><tr><td> " + this._path 
+				+"</td></tr></table>";              
 			
 		return information;
 	}
