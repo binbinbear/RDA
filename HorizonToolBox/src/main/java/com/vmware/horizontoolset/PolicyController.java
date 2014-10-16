@@ -21,5 +21,10 @@ public class PolicyController {
 
     }
     
+    @RequestMapping(value="/refreshPools", method=RequestMethod.GET)
+    public String refresh(Model model, HttpSession session) {
+    	PolicyRestController.cleanReport();
+    	return "redirect:/policy"; 
+    }
 }
 

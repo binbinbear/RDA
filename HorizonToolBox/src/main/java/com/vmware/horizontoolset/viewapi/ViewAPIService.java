@@ -3,6 +3,11 @@ package com.vmware.horizontoolset.viewapi;
 import java.util.List;
 
 import com.vmware.horizontoolset.viewapi.impl.BasicViewPool;
+import com.vmware.horizontoolset.util.DesktopPool;
+import com.vmware.vdi.vlsi.binding.vdi.infrastructure.VirtualCenter.VirtualCenterInfo;
+import com.vmware.vdi.vlsi.binding.vdi.resources.Desktop.DesktopSummaryView;
+
+
 
 public interface ViewAPIService {
 	public List<SnapShotViewPool> getDetailedAutoPools();
@@ -20,6 +25,13 @@ public interface ViewAPIService {
 	
 	public void disconnect();
 
+
 	public List<BasicViewPool> getAllPools();
+
+	public List<DesktopSummaryView> listDesktopPools();
+
+	public DesktopPool getDesktopPool(String name);
+
+	List<VirtualCenterInfo> listVirtualCenters();
 	
 }

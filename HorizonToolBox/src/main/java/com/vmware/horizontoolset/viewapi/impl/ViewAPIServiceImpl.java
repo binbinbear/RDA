@@ -4,7 +4,20 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+
+
+
+
+
+import com.vmware.vdi.vlsi.binding.vdi.infrastructure.VirtualCenter;
+import com.vmware.vdi.vlsi.binding.vdi.infrastructure.VirtualCenter.VirtualCenterInfo;
+import com.vmware.vdi.vlsi.binding.vdi.resources.Desktop.DesktopSummaryView;
 import com.vmware.vdi.vlsi.binding.vdi.users.Session.SessionLocalSummaryView;
+import com.vmware.vdi.vlsi.client.Query;
+import com.vmware.vdi.vlsi.client.Query.QueryFilter;
+import com.vmware.vdi.vlsi.cname.vdi.resources.DesktopCName.DesktopSummaryViewCName;
+import com.vmware.vim.binding.vmodl.DataObject;
+import com.vmware.horizontoolset.util.DesktopPool;
 import com.vmware.horizontoolset.viewapi.Session;
 import com.vmware.horizontoolset.viewapi.SessionFarm;
 import com.vmware.horizontoolset.viewapi.SessionPool;
@@ -14,13 +27,24 @@ public class ViewAPIServiceImpl implements ViewAPIService{
 	private static Logger log = Logger.getLogger(ViewAPIServiceImpl.class);
 	private ViewAPIConnect _connection;
 	private ViewQueryService _queryService;
+
+	private VirtualCenter _virtualCenterService;
+	private String _host;
+	private String _user;
+	private String _pass;
+	private String _domain;
 	public ViewAPIServiceImpl(String host, String username, String password,String domain){
 		//clear all cache since 
 		Cache.emptyCache();
+		this._host = host;
+		this.set_user(username);
+		this.set_pass(password);
+		this.set_domain(domain);
+
 		this._connection = new ViewAPIConnect(host);
 		this._connection.login(username, password, domain);
 		this._queryService = new ViewQueryService(this._connection);
-		
+		this._virtualCenterService = this._connection.get(VirtualCenter.class);
 	}
 	
 	@Override
@@ -88,6 +112,7 @@ public class ViewAPIServiceImpl implements ViewAPIService{
 	}
 
 
+
 	public List<BasicViewPool> getAllPools()
 	{
 		if (this._queryService == null){
@@ -96,6 +121,74 @@ public class ViewAPIServiceImpl implements ViewAPIService{
 		}
 			
 		return this._queryService.getAllBasicPools();
+	}
+
+	@Override
+	public List<DesktopSummaryView> listDesktopPools() {
+		return listAll(DesktopSummaryView.class);
+	}
+
+	@Override
+	public List<VirtualCenterInfo> listVirtualCenters() {
+		List<VirtualCenterInfo> ret = new ArrayList<>();
+		for(int i=0; i< this._virtualCenterService.list().length; i++){
+			ret.add(this._virtualCenterService.list()[i]);
+		}
+		return ret;
+	}
+
+	public <T extends DataObject> List<T> listAll(Class<T> type) {
+    	
+        List<T> ret = new ArrayList<>();
+        try (Query<T> query = new Query<>(this._connection, type)) {
+            for (T info : query) {
+               ret.add(info);
+            }
+        }
+        return ret;
+    }
+	
+	@Override
+	public DesktopPool getDesktopPool(String name) {
+    	
+    	QueryFilter filter = QueryFilter.equals(
+    			DesktopSummaryViewCName.DESKTOP_SUMMARY_VIEW_CNAME.desktopSummaryData.name, name);
+    	
+    	List<DesktopSummaryView> ret = new ArrayList<>();
+        try (Query<DesktopSummaryView> query = new Query<>(this._connection, DesktopSummaryView.class, filter)) {
+            for (DesktopSummaryView info : query) {
+               ret.add(info);
+            }
+        }
+        
+        if (ret.isEmpty())
+        	return null;
+        
+    	return new DesktopPool(this._connection, ret.get(0));
+    }
+
+	public String get_user() {
+		return _user;
+	}
+
+	public void set_user(String _user) {
+		this._user = _user;
+	}
+
+	public String get_pass() {
+		return _pass;
+	}
+
+	public void set_pass(String _pass) {
+		this._pass = _pass;
+	}
+
+	public String get_domain() {
+		return _domain;
+	}
+
+	public void set_domain(String _domain) {
+		this._domain = _domain;
 	}
 
 }

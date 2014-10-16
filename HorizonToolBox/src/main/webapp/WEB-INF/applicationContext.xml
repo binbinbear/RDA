@@ -16,6 +16,8 @@
             <property name="maximumSessions"> 
             <value>3</value> 
             </property>
+
+
     </bean> 
     
     <bean id="loginFilter" class="com.vmware.horizontoolset.LoginFilter"> 

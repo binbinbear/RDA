@@ -251,4 +251,9 @@ public class ReportUtil {
 		log.debug("Report size:" + result.size());
 		return new ConcurrentConnectionsReport(result);
 	}
+
+	public static ViewPoolReport generateViewPoolReport(List<Session> sessions) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
