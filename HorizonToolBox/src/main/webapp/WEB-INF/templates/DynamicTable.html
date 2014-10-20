@@ -1,0 +1,94 @@
+<html>
+<head>
+<title>View User Usage Report</title>
+</head>
+<body>
+	<div id="event" th:fragment="fragment">
+		<h3 class="pageHeader">
+			<table border="0" cellpadding="0" cellspacing="0" width="100%">
+				<tbody>
+					<tr>
+						<td>
+							<div class="pageHeaderDiv">
+								<img src="img/window_information.png" alt="Dashboard" />&nbsp;&nbsp;Accumulated
+								Using TIme of Users &nbsp;
+							</div>
+						</td>
+						<td id="loadingAnim"></td>
+					</tr>
+				</tbody>
+			</table>
+		</h3>
+		<div id="accumulatedUsing" class="poolContainer">
+			<label for="usageDays">Accumulated Using Time, Show report
+				for: </label> <select name="usageDays" id="usageDays">
+				<option value="day">Last 2 day</option>
+				<option value="week" selected="selected">Last 7 days</option>
+				<option value="month">Last 1 month</option>
+			</select>
+			<div>
+				<svg>
+				</svg>
+			</div>
+			<div id="loading1" class="loadingdiv">Loading</div>
+		</div>
+		<div class="poolContainer" ng-controller="usageCtrl"
+			style="width: 100%; height: 90%; overflow: scroll; overflow-x: hidden;">
+			<h3 class="pageHeader">
+				<table border="0" cellpadding="0" cellspacing="0" width="100%">
+					<tbody>
+						<tr>
+							<td>
+								<div class="pageHeaderDiv">
+									<img src="img/window_information.png" alt="Dashboard" />&nbsp;&nbsp;
+									Connections of Users &nbsp;<span class="updateDate"> </span> 
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</h3>
+			<label for="viewType">Account Name: </label> <input type="text"
+				id="user" name="user" value="" /> 
+				<button ng-click="tableParams.reload()" class="btn btn-default">Search</button>
+			&nbsp;&nbsp; <label for="viewType">Show report for: </label>
+			<select ng-model="days">
+				<option value="1">Last 1 day</option>
+				<option value="7" selected="selected">Last 7 days</option>
+				<option value="30">Last 1 month</option>
+			</select>
+			  &nbsp;&nbsp; <a type="button" class="btn btn-default" id="exportBtn"
+				href="./usage/connection/export">Export as .xls file</a>
+				<div>
+				 <a  href="" class="btn btn-primary btn-xs" ng-click="add()">Add new data</a>
+				 </div>
+			<table id="connectionTable" ng-table="tableParams" class="dataTable">
+				<tr ng-repeat="user in $data">
+					<td data-title="'User Name'">{{user.userName}}</td>
+					<td data-title="'Connection Time'">{{user.connectionTime}}</td>
+					<td data-title="'Disconnection Time'">{{user.disconnectionTime}}</td>
+					<td data-title="'Usage Time'">{{user.usageTime}}</td>
+					<td data-title="'Machine Name'">{{user.machineName}}</td>
+					<td data-title="'Pool Name'">{{user.poolName}}</td>
+					 <td data-title="'Actions'" >
+                		
+               			 <a  href="" class="btn btn-primary btn-xs" ng-click="remove(user)">Delete</a>
+           			 </td>
+				</tr>
+				<tr id="loading2" class="loadingrow">
+						<td class="desktopName " ></td>
+						<td class="desktopName " ></td>
+						<td class="desktopName " ></td>
+						<td class="desktopName " ></td>
+						<td class="desktopName " ></td>
+						<td class="desktopName " ></td>
+						<td class="desktopName " ></td>
+				</tr>
+			</table>
+		</div>
+		<script src="./js/d3.js"></script>
+		<script src="./js/angular.min.js"></script>
+		<script type="text/javascript" charset="utf-8" src="./js/usage.js"></script>
+	</div>
+</body>
+</html>
