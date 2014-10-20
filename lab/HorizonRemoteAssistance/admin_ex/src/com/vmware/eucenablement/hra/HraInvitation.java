@@ -128,4 +128,8 @@ public class HraInvitation {
 		a.time = System.currentTimeMillis();
 		return a;
 	}
+	
+	public String toString() {
+		return machine + ", " + getUserNameDisplay() + ", " + os;
+	 }
 }

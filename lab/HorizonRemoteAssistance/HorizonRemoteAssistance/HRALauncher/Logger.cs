@@ -20,7 +20,10 @@ namespace HRALauncher
             if (!Directory.Exists(path))
                 Directory.CreateDirectory(path);
 
-            path += "launcher.log";
+            DateTime dt = DateTime.Now;
+            string postFix = String.Format("launcher_{0:MM}{1:dd}{2:yy}_{3:HH}{4:mm}{5:ss}_{6:ffff}.log", dt, dt, dt, dt, dt, dt, dt);
+
+            path += postFix;
 
             if (File.Exists(path))
                 File.Delete(path);

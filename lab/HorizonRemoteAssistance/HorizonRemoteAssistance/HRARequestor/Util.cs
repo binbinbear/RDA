@@ -10,23 +10,6 @@ namespace HRARequestor
     class Util
     {
 
-        public static void InitiateSSLTrust()
-        {
-            try
-            {
-                //Change SSL checks so that all checks pass
-                ServicePointManager.ServerCertificateValidationCallback =
-                    new RemoteCertificateValidationCallback(
-                        delegate
-                        { return true; }
-                    );
-            }
-            catch (Exception ex)
-            {
-                Logger.Log(ex);
-            }
-        }
-
         public static void UriHackFix()
         {
             MethodInfo getSyntax = typeof(UriParser).GetMethod("GetSyntax", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic);

@@ -13,6 +13,11 @@ public class Logger {
 	static {
 		String path = System.getProperty("user.home", null);
 		
+		if (path == null || !new File(path).exists()) {
+			
+		}
+		
+		path = System.getProperty("HOMEPATH", null);
 		//if the path does not exist, try with default user temp
 		if (path == null || !new File(path).exists()) {
 			String user = System.getProperty("username", null);

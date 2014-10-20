@@ -105,7 +105,7 @@ namespace HRARequestor
             //
             //  Post remote assistance request (including invitation file) to AdminEx on all brokers
             //
-            //Util.InitiateSSLTrust();
+
             Util.UriHackFix();
 
             int success = 0;
@@ -169,7 +169,7 @@ namespace HRARequestor
 
             Logger.Log("Posting to broker: " + brokerAddr);
 
-            //string address = "http://10.112.119.165:8080/admin_ex/hra";
+            //string address = "http://xxxxxxxxx:8080/admin_ex/hra";
 
             foreach (string addr in addrs)
             {

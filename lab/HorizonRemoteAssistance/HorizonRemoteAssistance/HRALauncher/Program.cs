@@ -27,6 +27,15 @@ namespace HRALauncher
 
             //MessageBox.Show(newName);
 
+            Logger.Log("Time: " + DateTime.Now);
+            Logger.Log("Current Directory: " + Environment.CurrentDirectory);
+            Logger.Log("Machine Name: " + Environment.MachineName);
+            Logger.Log("OS Version: " + Environment.OSVersion);
+            Logger.Log("User Domain Name: " + Environment.UserDomainName);
+            Logger.Log("User Name: " + Environment.UserName);
+            Logger.Log("Version: " + Environment.Version);
+            Logger.Log("System Directory: " + Environment.SystemDirectory);
+            Logger.Log("");
             Logger.Log("Starting MSRA...");
             Process proc = new Process();
             proc.StartInfo.FileName = "msra.exe";

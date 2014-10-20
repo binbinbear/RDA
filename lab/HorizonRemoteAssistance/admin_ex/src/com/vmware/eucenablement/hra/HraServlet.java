@@ -87,6 +87,8 @@ public class HraServlet extends HttpServlet {
 			return;
 		}
 		
+		Logger.log("Downloading invitation: " + inv);
+		
         response.setContentType("application/octet-stream");
 
         response.setHeader("Content-disposition","attachment; filename=\"Invitation.HorizonRemoteAssistance\"");
@@ -98,6 +100,8 @@ public class HraServlet extends HttpServlet {
         OutputStream out = response.getOutputStream();
         out.write(bytes);
         out.flush();
+        
+        
 	}
 
 	private String test(String value) {
