@@ -69,7 +69,7 @@ public class LoginController{
 	public String index( Model model) {
 		log.debug("Receive index request");
 		if (domains.isEmpty()){
-			this.getDomains();
+			LoginController.getDomains();
 		}
 		model.addAttribute("domains", domains);
 		return "login";
@@ -124,9 +124,11 @@ public class LoginController{
     
 
 	
-	private SimpleHttpClient httpClient = new SimpleHttpClient();
-	private void getDomains() {
-		domains.clear();
+	private static SimpleHttpClient httpClient = new SimpleHttpClient();
+	private static synchronized void getDomains() {
+		if (!domains.isEmpty()){
+			return;
+		}
 		String result = httpClient.post(brokerXMLAPI, message) ;
 		//TODO: this is an ugly implementation
 		/**

@@ -40,7 +40,7 @@
     <property name="templateEngine" ref="templateEngine" />
   </bean>   
   
-  <bean id="loginController" class="com.vmware.horizontoolset.LoginController" scope="session"/>
+  <bean id="loginController" class="com.vmware.horizontoolset.LoginController"/>
 <bean id="logoutController" class="com.vmware.horizontoolset.LogoutController"/>
   
  

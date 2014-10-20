@@ -10,7 +10,6 @@ import org.apache.log4j.Logger;
 import com.vmware.vdi.vlsi.binding.vdi.entity.BaseImageVmId;
 import com.vmware.vdi.vlsi.binding.vdi.entity.DesktopId;
 import com.vmware.vdi.vlsi.binding.vdi.entity.FarmId;
-import com.vmware.vdi.vlsi.binding.vdi.entity.VirtualCenterId;
 import com.vmware.vdi.vlsi.binding.vdi.query.QueryDefinition;
 import com.vmware.vdi.vlsi.binding.vdi.resources.Desktop;
 import com.vmware.vdi.vlsi.binding.vdi.resources.Desktop.DesktopInfo;
@@ -19,8 +18,6 @@ import com.vmware.vdi.vlsi.binding.vdi.resources.Farm.FarmInfo;
 import com.vmware.vdi.vlsi.binding.vdi.users.Session.SessionLocalSummaryView;
 import com.vmware.vdi.vlsi.binding.vdi.utils.virtualcenter.BaseImageSnapshot;
 import com.vmware.vdi.vlsi.binding.vdi.utils.virtualcenter.BaseImageSnapshot.BaseImageSnapshotInfo;
-import com.vmware.vdi.vlsi.binding.vdi.utils.virtualcenter.VmTemplate;
-import com.vmware.vdi.vlsi.binding.vdi.utils.virtualcenter.VmTemplate.VmTemplateInfo;
 import com.vmware.vdi.vlsi.client.Connection;
 import com.vmware.vdi.vlsi.client.Query;
 import com.vmware.vdi.vlsi.client.Query.QueryFilter;
@@ -29,6 +26,7 @@ import com.vmware.vdi.vlsi.cname.vdi.users.SessionCName.SessionLocalSummaryViewC
 import com.vmware.horizontoolset.viewapi.SessionFarm;
 import com.vmware.horizontoolset.viewapi.SessionPool;
 import com.vmware.horizontoolset.viewapi.SnapShotViewPool;
+import com.vmware.horizontoolset.viewapi.Template;
 import com.vmware.horizontoolset.viewapi.VM;
 import com.vmware.horizontoolset.viewapi.impl.Cache;
 import com.vmware.horizontoolset.viewapi.impl.VMImpl;
@@ -39,14 +37,12 @@ public class ViewQueryService {
 	private static Logger log = Logger.getLogger(ViewQueryService.class);
 	
 	private Desktop _desktop;
-	private VmTemplate _template;
 	private BaseImageSnapshot _snapshotService;
 	private Connection _connection;
 
 	public ViewQueryService(Connection connect){
 		this._connection = connect;
 		this._desktop = connect.get(Desktop.class);
-		this._template = connect.get(VmTemplate.class);
 		this._snapshotService = connect.get(BaseImageSnapshot.class);
 
 	}
@@ -63,8 +59,17 @@ public class ViewQueryService {
 	
 	
 	
-	public VmTemplateInfo[] getTemplates(VirtualCenterId vcID){	
-		return this._template.list(vcID);
+	public Template getTemplate(String id, String templatePath){	
+		Template template = Cache.getTemplate(id);
+		if (template !=null){
+			log.debug("Great VM cache hit " + templatePath);
+			return template;
+		}
+		
+
+		log.info("Create template for "+ templatePath);
+		Cache.addOrUpdateTemplate(id, new TemplateImpl(templatePath));
+		return Cache.getTemplate(id);
 	}
 	
 	
