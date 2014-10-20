@@ -48,6 +48,7 @@ if (!ToolBox.Usage || !ToolBox.Usage.init){
 									type: "GET",
 									data:thisRequestData,
 									success: function (data) {
+										$(".updateDate").text("");
 										$(".loadingrow").remove();
 										if(data){	
 											for(var i = 0; i < data.length; i++){
@@ -58,7 +59,13 @@ if (!ToolBox.Usage || !ToolBox.Usage.init){
 											ToolBox.Usage.usageData = data;
 										}
 										loadPage();
-									}
+									}, 
+									error:function(XMLHttpRequest, textStatus, errorThrown){
+										$(".loadingrow").remove();
+										ToolBox.Usage.usageData = [];
+										loadPage();
+										 $(".updateDate").text("Error happens when getting data from Event DB");
+								    }
 								});
 							}else{
 								loadPage();
@@ -84,6 +91,7 @@ if (!ToolBox.Usage || !ToolBox.Usage.init){
 				if (!ToolBox.Usage.usageReport ||ToolBox.Usage.usageReport.length == 0){
 					var loadingDiv = $(".loadingdiv");
 					loadingDiv.removeClass("loadingdiv");
+					loadingDiv.addClass("messagediv");
 					loadingDiv.text(ToolBox.STR_NODATA);
 					return;
 				}
@@ -180,7 +188,8 @@ if (!ToolBox.Usage || !ToolBox.Usage.init){
 			      }else if (type=="day"){
 			    	  days="2";
 			      }
-			     if($("#loading1").length == 0){
+			     if($(".loadingdiv").length == 0){
+			    	 $(".messagediv").remove();
 			    	 $('#accumulatedUsing').append("<div class=\"loadingdiv\">Loading</div>"); 
 			     }
 			     $.ajax({
@@ -192,7 +201,11 @@ if (!ToolBox.Usage || !ToolBox.Usage.init){
 								ToolBox.Usage.usageReport = data.usageReport;
 								ToolBox.Usage._refreshUsageChartView();
 							}
-						}
+						},
+						error:function(XMLHttpRequest, textStatus, errorThrown){
+							ToolBox.Usage.usageReport = [];
+							ToolBox.Usage._refreshUsageChartView();
+					    }
 					}); 
 			},
 	};

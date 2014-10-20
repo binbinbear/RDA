@@ -35,7 +35,12 @@ if (!ToolBox.Session || !ToolBox.Session.init){
 			        }
 			    });
 			}),
-			
+		    _updateHistoryStatus: function(message){
+		    	var loadingDiv = $(".loadingdiv");
+		    	loadingDiv.removeClass("loadingdiv");
+		    	loadingDiv.addClass("messagediv");
+		    	loadingDiv.text(message);
+		    },
 			refreshHistorySession: function(){
 				$("svg").empty();
 				 var type = $("#viewType").val();
@@ -51,7 +56,10 @@ if (!ToolBox.Session || !ToolBox.Session.init){
 			    	  days = "30";
 			    	  period="21600";
 			      }
-			      
+			      if ($(".loadingdiv").length == 0){
+			    	  $(".messagediv").remove();
+			    	  $("#historySessions").append("<div class=\"loadingdiv\">Loading</div>");
+			      }
 				$.ajax({
 					url: './session/concurrent?days='+ days+'&period=' + period,
 					type: "GET",
@@ -59,7 +67,11 @@ if (!ToolBox.Session || !ToolBox.Session.init){
 						 ToolBox.Session.history = data.concurrentConnections;
 						 ToolBox.Session._updateChartView();
 						
-					}
+					},
+					error:function(XMLHttpRequest, textStatus, errorThrown){
+						 ToolBox.Session.history = null;
+						 ToolBox.Session._updateHistoryStatus("Error happens: " + errorThrown);
+				    }
 				}); 
 			},
 			refreshCurrentSession: function(){
@@ -79,7 +91,15 @@ if (!ToolBox.Session || !ToolBox.Session.init){
 							 $(".updateDate").text("");
 						 }
 						
-					}
+					},
+					error:function(XMLHttpRequest, textStatus, errorThrown){
+						$(".loadingrow").remove();
+						ToolBox.Session.pools = [];
+						ToolBox.Session.farms = [];
+						ToolBox.Session.desktopParams.reload();
+						ToolBox.Session.appParams.reload();
+						 $(".updateDate").text("Error happens when getting current sessions");
+				    }
 				});    
 				
 			},
@@ -88,9 +108,7 @@ if (!ToolBox.Session || !ToolBox.Session.init){
 			_updateChartView: function(){
 				
 				if (!ToolBox.Session.history){
-					var loadingDiv = $(".loadingdiv");
-					loadingDiv.removeClass("loadingdiv");
-					loadingDiv.text(ToolBox.STR_NODATA);
+					ToolBox.Session._updateHistoryStatus(ToolBox.STR_NODATA);
 					return;
 				}
 				$(".loadingdiv").remove();
