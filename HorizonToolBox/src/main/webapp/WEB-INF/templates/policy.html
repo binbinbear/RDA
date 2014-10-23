@@ -6,6 +6,53 @@
 
 	<div id="policy" th:fragment="fragment">
 
+<style type="text/css">
+
+div.card .field {
+    overflow: visible !important;
+    margin-top:30px;
+}
+button {
+    margin-top:50px;
+}
+
+.card > div label:first-child, .entries.lang div label:first-child {
+    width: 190px;
+    float: left;
+    text-align: right;
+    margin-right: 15px;
+    min-height: 1px;
+    margin-top: 5px;
+}
+.field > label:first-child {
+    width: 270px !important;
+    padding-left: 5px;
+    line-height: 140%;
+    margin-right: 15px;
+    text-align: left !important;
+}
+.field label {
+    display: inline-block;
+    color: #555;
+    font-size: 1.1em;
+    vertical-align: top;
+}
+.tray.editor div select, .tray.editor div input.ui-autocomplete-input {
+    min-width: 147px;
+}
+
+
+div.card div select {
+    width: 30%;
+    border: 1px solid #BBB;
+    border-radius: 4px;
+    box-sizing: content-box;
+    padding: 2px 0px;
+}
+
+
+</style>
+
 		<h3 class="pageHeader">
 			<table border="0" cellpadding="0" cellspacing="0" width="100%">
 				<tbody>
@@ -14,8 +61,7 @@
 							<div class="pageHeaderDiv">
 
 								<img src="img/window_information.png" alt="Dashboard" />&nbsp;&nbsp; Policy functions
-								 &nbsp; <span class = "updateDate"> </span> <a href="./refreshPools">
-									Click here to update the View pools now</a>
+								 &nbsp; 
 							</div>
 						</td>
 						<td id="loadingAnim"></td>
@@ -23,79 +69,94 @@
 				</tbody>
 			</table>
 		</h3>
-		<div class="poolContainer">
-			<h2>View Pools:</h2>
-			<table border="0" cellpadding="1" cellspacing="0" class="poolListTable"
-				id="poolListTable">
-				<tbody>
-					<tr>
 
-						<th width="23%">Pool Name</th>
-					</tr>
-
-					<tr class="loadingrow">
-						<td class="desktopName "></td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
 
 		<div class="poolContainer">
-			<h2>View Policies:</h2>
-			<table border="0" cellpadding="2" cellspacing="0" class="policyTable"
-				id="policyTable">
-				<tbody>
-					<tr>
-						<th width="23%">Policy Name:</th>
-						<th width="23%">Policy Value:</th>
-					</tr>
-					<tr>
-                	<td>Configure clipboard redirection:</td>
-                	<td><ul>
-                			<li><input type="radio" name="clipboard" value="0"> Enabled client to agent only</input></li>
-							<li><input type="radio" name="clipboard" value="1"> Disabled in both directions</input></li>
-							<li><input type="radio" name="clipboard" value="2"> Enabled in both directions</input></li>
-							<li><input type="radio" name="clipboard" value="3"> Enabled agent to client only</input></li>
-						</ul>
-					</td>
-                </tr>
-                <tr>
-                	<td>Block all devices unless they are included via Include filter rule:</td>
-                	<td><ul>
-                			<li><input type="radio" name="block_all_devices" value="0"> Allow all devices</input></li>
-							<li><input type="radio" name="block_all_devices" value="1"> Disabled all devices</input></li>
-                	</ul></td>
-                </tr>
-                <tr>
-                	<td>Turn off Build-to-Lossless feature:</td>
-                	<td><ul>
-                			<li><input type="radio" name="Build_to_lossless" value="0"> Enabled</input></li>
-							<li><input type="radio" name="Build_to_lossless" value="1"> Disabled</input></li>
-                	</ul></td>
-                </tr>
-                <tr>
-                	<td>Enable/disable audio in the PCoIP session:</td>
-                	<td><ul>
-                			<li><input type="radio" name="audio" value="0"> Enabled</input></li>
-							<li><input type="radio" name="audio" value="1"> Disabled</input></li>
-                	</ul></td>
-                </tr>
-                <tr>
-                	<td>Enable/disable microphone noise and DC offset filter in PCoIP session:</td>
-                	<td><ul>
-                			<li><input type="radio" name="noise_offset_filter" value="0"> Enabled</input></li>
-							<li><input type="radio" name="noise_offset_filter" value="1"> Disabled</input></li>
-                	</ul></td>
-                </tr>
-                <tr>  
-                    <td>&nbsp;</td>  
-                    <td><ul>
-                        <li><input type="button" class="btn btn-primary ng-binding" id="submitBtn" value="ChangeGPO"/></li>
-                        </ul>
-                    </td>  
-                </tr>
-				</tbody>
-			</table>
+			<label for="desktoppool" style="font-size:20">Select desktop pool </label> 
+			<select name="desktoppool" id="desktoppool">
+			</select>
+			  
+
+			<ul class="nav nav-tabs" role="tablist" id="myTab">
+  				<li class="active"><a href="#common" role="tab" data-toggle="tab">Common Policies</a></li>
+ 				 <li><a href="#pcoip" role="tab" data-toggle="tab">PCoIP Policies</a></li>
+  				<li><a href="#usb" role="tab" data-toggle="tab">USB Policies</a></li>
+			</ul>
+
+
+<!-- Tab panes -->
+<div class="tab-content">
+  <div class="tab-pane active card" id="common">
+  			<div class="field" >
+           		 <label  for="clipboard">Configure clipboard redirection:</label>
+						<select id="clipboard" name="clipboard" title="clipboard">
+							<option selected="selected" value="0">Enabled client to agent only </option>
+							<option value="1">Disabled in both directions</option>
+							<option value="2">Enabled in both directions</option>
+							<option value="3">Enabled agent to client only</option>
+						</select>
+						
+				</div>
+				
+				
+				<div class="field" >
+            			<label  for="device">Block all devices unless they are included via Include filter rule:</label>
+						<select id="device" name="device" title="device">
+							<option selected="selected" value="0"> Allow all devices</option>
+							<option value="1">Disabled all devices</option>
+						</select>
+						
+				</div>
+				
+				
+				<div class="field" >
+            			<label  for="lossless">Turn off Build-to-Lossless feature:</label>
+						<select id="lossless" name="lossless" title="lossless">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disableds</option>
+						</select>
+						
+				</div>
+  
+  </div>
+  <div class=" tab-pane active card" id="pcoip">
+    			<div class="field" >
+           		 <label  for="clipboard">Configure clipboard redirection:</label>
+						<select id="clipboard" name="clipboard" title="clipboard">
+							<option selected="selected" value="0">Enabled client to agent only </option>
+							<option value="1">Disabled in both directions</option>
+							<option value="2">Enabled in both directions</option>
+							<option value="3">Enabled agent to client only</option>
+						</select>
+						
+				</div>
+				
+				
+  </div>
+  <div class="tab-pane active card" id="usb">
+    			<div class="field" >
+           		 <label  for="clipboard">Configure clipboard redirection:</label>
+						<select id="clipboard" name="clipboard" title="clipboard">
+							<option selected="selected" value="0">Enabled client to agent only </option>
+							<option value="1">Disabled in both directions</option>
+							<option value="2">Enabled in both directions</option>
+							<option value="3">Enabled agent to client only</option>
+						</select>
+						
+				</div>
+				
+
+  </div>
+  <div>
+  <button type="button" id="submitBtn" data-loading-text="Loading..." class="btn btn-primary submitBtn">
+  Submit
+</button>
+</div>
+
+</div>
+			
+
+            
 
 		</div>
 	<script src="./js/policy.js"></script>

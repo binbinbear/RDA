@@ -1,35 +1,40 @@
 if (!window.ToolBox){
 	window.ToolBox= {};
 }
-if (!ToolBox.Usage || !ToolBox.Usage.init){
-	ToolBox.Usage = {
+if (!ToolBox.Policy || !ToolBox.Policy.init){
+	ToolBox.Policy = {
 
 			getViewPools: function(){
 				$.ajax({
 					url: './policy/viewpools',
 					type: "GET",
 					success: function (data) {
-						 $(".loadingrow").remove();
-						 var poolbody = $("#poolListTable tbody");
+						 var poolbody = $("#desktoppool");
 						 for (var i= 0; i< data.length; i++){
 								var dSD = data[i];
-								var tr = "<tr><td>" + "<input type=radio name=pool value=\""+dSD.desktopSummaryData.name+"\">" + dSD.desktopSummaryData.name + "</td></tr>";
-							 	poolbody.append(tr);
+								var option = "<option value=\""   +  dSD.desktopSummaryData.name + "\"> "+ dSD.desktopSummaryData.name+"</option>";
+							 	poolbody.append(option);
 							}
+					}, 
+					error: function(data) {
 					}
 				});
 			},
 
 			init: function(){
-				$("#submitBtn").click(ToolBox.Usage.updatePlicies);			
-				ToolBox.Usage.getViewPools();
+				$('#myTab a').click(function (e) {
+					  e.preventDefault()
+					  $(this).tab('show')
+					})
+				$("#submitBtn").click(ToolBox.Policy.updatePlicies);			
+				ToolBox.Policy.getViewPools();
 			},
 
 			updatePlicies: function (){
 				$.ajax({
 					url: './policy/updatepolicies',
 					type: "GET",
-					data:{pool:$("#pool").val(),clipboard:$("#clipboard").val()},
+					data:{pool:$("#desktoppool").val(),clipboard:$("#clipboard").val()},
 					success: function (data) {
 						
 					}
@@ -40,7 +45,7 @@ if (!ToolBox.Usage || !ToolBox.Usage.init){
 
 
 $(document).ready(function(){  
-	ToolBox.Usage.init();
+	ToolBox.Policy.init();
 });
 /*
   <script>
