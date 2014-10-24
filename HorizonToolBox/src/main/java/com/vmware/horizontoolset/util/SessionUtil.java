@@ -89,6 +89,15 @@ public class SessionUtil {
 		return getSessionObj(session, EventDBUtil.class);
 	}
 	
+	public synchronized static SharedStorageAccess getSSA(HttpSession session) {
+		SharedStorageAccess ssa = getSessionObj(session, SharedStorageAccess.class);
+		if (ssa == null) {
+			LDAP ldap = getSessionObj(session, LDAP.class);
+			ssa = new SharedStorageAccess(ldap.getContext());
+			setSessionObj(session, ssa);
+		}
+		return ssa;
+	}
 	
 	public static void releaseSession(HttpSession session){
 		if (session == null){

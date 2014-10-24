@@ -78,8 +78,6 @@ public class LoginController{
         	SessionUtil.setUser(session, credential.getUsername());
     		SessionUtil.setSessionObj(session, _service);
     		
-    		
-    		
     	}catch(Exception ex){
     		log.error("login failed, return to login page,", ex);
     		return "redirect:/Login";

@@ -19,6 +19,9 @@ public class DeviceInfo {
     public String UserDomain;
     public String UserDnsDomain;
     
+    public DeviceInfo(String clientId) {
+    	ViewClient_Client_ID = clientId;
+    }
     
 	public boolean isSameDevice(DeviceInfo di) {
 		return ViewClient_Client_ID.equals(di.ViewClient_Client_ID);
