@@ -1,0 +1,61 @@
+<html>
+<head>
+<title>Horizon Toolbox - Setup Guide for Device Access Policy</title>
+<link rel="stylesheet" type="text/css" href="/toolbox/css/bootstrap.min.css" />
+<link rel="stylesheet" type="text/css" href="/toolbox/css/jquery-ui.min.css" />
+<link rel="stylesheet" type="text/css" href="/toolbox/css/report.css" />
+	
+</head>
+
+<body ng-app="main">
+	<div id="container">
+		<div id="banner">
+			<div id="productName">VMware Horizon Toolbox</div>
+
+			<div id="topMenu">
+
+				<ul class="jd_menu">
+				</ul>
+
+			</div>
+
+		</div>
+
+		<div id="content">
+			
+			<h3>What is Device Access Policy</h3>
+			<p>
+			Device Access Policy provides a whitelist to control devices that can access Horizon View.
+			When View client from a device accesses the configured View desktop, it appears in the Access Log table. If the client device is not in the whitelist, the connection will be reset. Administrator can add a device to the whitelist, by clicking the Add icon from the Access Log table.
+			</p>
+			
+			<h3>How to setup</h3>
+			
+			
+			<h4>1. <a href="DeviceFilter.exe">Download DeviceFilter.exe</a></h4>.
+			
+			<h4>2. Install DeviceFilter.exe in View Desktop</h4>
+			<p>Put the the DeviceFilter.exe on View Desktops for which you want to support Device Filter policy. Configure the <b>OnConnect</b> and <b>OnReconnect</b> event to point to DeviceFilter.exe.</p>
+			<p>Refer to <a href="http://pubs.vmware.com/view-50/index.jsp#com.vmware.view.administration.doc/GUID-AB42F842-BD66-4856-9E61-1A392BF93B6F.html">this document</a> about how to configure the OnConnect and OnReconnect event.</p>
+			<p>The command line should be:</p>
+			<blockquote>
+				<i>DeviceFilter.exe -client</i>
+			</blockquote>
+			<p>Normally you can do this on the master template of a View desktop pool, or configure the Group Policy in AD Controller, e.g. for pool specific OU.</p>
+			
+			<h4>3. Make sure the View connection server has Horizon Toolbox installed.</h4>
+
+			<p>That's all. The whitelist can be managed by https://your_View_connection_server/toolbox/deviceFilter</p>
+
+
+		</div>
+
+		<div id="footer">
+			</span> <span id="copyright"> VMware Horizon&nbsp; <span class="spaceFooter"> 2007-2014 VMware, Inc. All rights
+					reserverd &nbsp; </span>
+			</span>
+
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<html>
+<head>
+<title>Device Access Policy</title>
+<link href="css/report.css" rel="stylesheet" />
+<link href="css/cupertino/jquery-ui.custom.min.css" rel="stylesheet" />
+</head>
+
+<body>
+
+	<div id="deviceFilter" th:fragment="fragment">
+
+		
+		<link href="./css/cupertino/jquery-ui.custom.min.css" rel="stylesheet" />
+		<link href="./jtable/themes/jqueryui/jtable_jqueryui.min.css" rel="stylesheet" type="text/css" />
+		<style>
+		h3.pageHeader {
+			font-size: 16px
+		}
+		.jtable-column-header-text {
+			font-size: 12px
+		}
+		.jtable-title-text {
+			font-size: 12px
+		}
+		th.jtable-column-header {
+			height: 40px
+		}
+		tr.jtable-data-row {
+			font-size: 10px
+		}
+		tr.jtable-no-data-row {
+			font-size: 10px
+		}
+		.jtable-my-add-action {
+			background: url("./jtable/themes/jqueryui/plus_16.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+			height: 16px;
+			width: 16px;
+		    border: medium none;
+			cursor: pointer;
+			display: inline;
+			margin: 0;
+			padding: 0;
+		}
+		</style>
+		
+		<h3 class="pageHeader">
+			<div class="pageHeaderDiv">
+								<img src="./img/window_information.png" alt="Dashboard" />
+								&nbsp;&nbsp; Device Access Policy&nbsp; 
+			</div>
+		</h3>
+		
+		<p>
+		Device Access Policy provides a whitelist to control devices that can access Horizon View. <br/>
+		When View client from a device accesses the configured View desktop, it appears in the <i>Access Log</i> table. If the client device is not in the whitelist, the connection will be reset. Administrator can add a device to the whitelist, by clicking the <i>Add</i> icon from the <i>Access Log</i> table.
+		</p>
+		
+		<p>
+		To setup the environment, refer to <a href="./static/deviceFilter/help.html" target="_blank">Setup Guide</a>.<br/>
+		</p>
+		
+		<br/>
+		
+			<div style="float: left; width: 450px">
+			<div id="WhitelistContainer"></div>
+		</div>
+			<div style="float: left; width: 450px; margin-left: 20px; ">
+			<div id="AccessLogContainer"></div>
+		</div>
+		
+		
+		<script src="./jtable/jquery.jtable.min.js"></script>
+		<script src="./js/deviceFilter.js"></script>
+
+	</div>
+	
+
+</body>
+</html>

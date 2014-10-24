@@ -29,6 +29,7 @@
     			<value>.gif</value>
     			<value>.html</value>
     			<value>/Login</value>
+    			<value>/remoteassist/upload</value>
     		</array>
     	</property>
      </bean> 

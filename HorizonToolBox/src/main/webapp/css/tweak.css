@@ -1,0 +1,31 @@
+
+th {
+	background-color: #eceff2;
+}
+table {
+	font: 100% "Trebuchet MS", sans-serif;
+}
+table.lite_table, th, td.lite_table {
+	border: 1px solid #cdcdcd;
+	border-spacing:0px 0px;
+} 
+th, td {
+	padding: 3px;
+}
+.tr_even {
+	background-color: #eceff2;
+}
+.start_icon {
+	vertical-align:text-bottom;
+	border:none;
+    outline:none
+}
+a {
+	text-decoration: none;
+}
+
+.loading_place_holder {
+	width: 32px;
+	height: 32px;
+	background: url("../img/loading_32.gif");
+}

@@ -60,15 +60,13 @@
    <bean id="snapShotController" class="com.vmware.horizontoolset.SnapShotController" />
    <bean id="snapRestController" class="com.vmware.horizontoolset.SnapShotRestController"/>
  
-    <bean id="remoteAssistController" class="com.vmware.horizontoolset.RemoteAssistantController"/>
-    <bean id="policyController" class="com.vmware.horizontoolset.PolicyController"/>
-
-    <bean id="whitelistController" class="com.vmware.horizontoolset.WhiteListController"/>
-
-    <bean id="PolicyRestController" class="com.vmware.horizontoolset.PolicyRestController"/>
-
-  
-   
+   <bean id="remoteAssistController" class="com.vmware.horizontoolset.ra.RemoteAssistController"/>
+   <bean id="remoteAssistRestController" class="com.vmware.horizontoolset.ra.RemoteAssistRestController"/>
+   <bean id="deviceFilterController" class="com.vmware.horizontoolset.device.controller.DeviceFilterController"/>
+   <bean id="deviceFilterRestController" class="com.vmware.horizontoolset.device.controller.DeviceFilterRestController"/>
+   <bean id="policyController" class="com.vmware.horizontoolset.PolicyController"/>
+   <bean id="PolicyRestController" class="com.vmware.horizontoolset.PolicyRestController"/>
+   <bean id="SessionMsgRestController" class="com.vmware.horizontoolset.SessionMsgRestController"/>
    
   <!-- Execute once a day on 1:00 am , Seconds Minutes Hours DayofMonth Month DayofWeek -->
    <task:scheduled-tasks>   

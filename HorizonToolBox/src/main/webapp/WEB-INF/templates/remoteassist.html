@@ -1,30 +1,58 @@
 <html>
 <head>
-<title>Report Assist</title>
+<title>Remote Assistance</title>
+<link href="css/report.css" rel="stylesheet" />
+<link href="css/cupertino/jquery-ui.custom.min.css" rel="stylesheet" />
 </head>
+
 <body>
 
-	<div id="remoteassist" th:fragment="fragment">
+	<div id="deviceFilter" th:fragment="fragment">
 
+		
+		<link href="./css/cupertino/jquery-ui.custom.min.css" rel="stylesheet" />
+		<link href="./css/tweak.css" rel="stylesheet" />
+		
 		<h3 class="pageHeader">
-			<table border="0" cellpadding="0" cellspacing="0" width="100%">
-				<tbody>
-					<tr>
-						<td>
-							<div class="pageHeaderDiv">
-								<img src="img/window_information.png" alt="Dashboard" />&nbsp;&nbsp; Remote Assistance
-								 &nbsp; <span class = "updateDate"> </span> 
-							</div>
-						</td>
-						
-					</tr>
-				</tbody>
-			</table>
+			<div class="pageHeaderDiv">
+								<img src="./img/window_information.png" alt="Dashboard" />
+								&nbsp;&nbsp; Remote Assistance&nbsp; 
+			</div>
 		</h3>
+		
+		<p>
+		</p>
+		
+		<br/>
+		
+		
+		<p><b>List of Remote Assistance Requests</b></p>
+		
 
-	
+		<table class='lite_table'>
+			<thead><tr><th>Request Time</th><th>User</th><th>Machine Name</th><th>OS Version</th><th>Action</th></tr></thead>
+			<tbody id='ra_table'>
+				<tr><td class='loading_place_holder' colspan="10"></td></tr>
+			</tbody>
+			<tfoot></tfoot>
+		</table>
+
+		<br/><br/>
+		Note:
+		<ul>
+			<li><i>Normally remote assistance request is timeout in 6 minutes.</i></li>
+			<li><i>Remote assistance request history will be kept for one day and deleted automatically.</i></li>
+		</ul>
+				
+				
+		<p>
+		To setup the entire environment, refer to <a href="./static/ra/help.html" target="_blank">Setup Guide</a>.<br/>
+		</p>
+		
+		<script src="./js/remoteassist.js"></script>
 
 	</div>
+	
 
 </body>
 </html>

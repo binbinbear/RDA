@@ -1,0 +1,71 @@
+<html>
+<head>
+<title>Horizon Toolbox - Setup Guide for Remote Assistance</title>
+<link rel="stylesheet" type="text/css" href="/toolbox/css/bootstrap.min.css" />
+<link rel="stylesheet" type="text/css" href="/toolbox/css/jquery-ui.min.css" />
+<link rel="stylesheet" type="text/css" href="/toolbox/css/report.css" />
+	
+</head>
+
+<body ng-app="main">
+	<div id="container">
+		<div id="banner">
+			<div id="productName">VMware Horizon Toolbox</div>
+
+			<div id="topMenu">
+
+				<ul class="jd_menu">
+				</ul>
+
+			</div>
+
+		</div>
+
+		<div id="content">
+			
+			<h3>Remote Assistance</h3>
+			<p>
+			Remote Assistance provides the capability for administrator or IT helpdesk to remotely view and/or control
+			end-user's desktop, in Horizon View environment. It's also called session shadowing.
+			</p>
+			
+			<h3>How to setup</h3>
+			
+			
+			<h4>1. <a href="Horizon_Remote_Assistance_Installer.exe">Download Horizon_Remote_Assistance_Installer.exe</a></h4>.
+			
+			<h4>2. Install component for end-user desktop</h4>
+		
+			<p>Run the installer in end-user desktop, e.g. virtual machine which has View agent, and choose the "Install for end-user" option to install the end-user component.</p>
+			
+			<p>Normally you can do this on the master template of a View desktop pool, or configure the Group Policy in AD Controller, e.g. for pool specific OU.</p>
+		
+			<h4>3. Install component for Helpdesk.</h4>
+			
+			<p>Run the same installer in desktop from where the administrator or IT helpdesk will do the remote assistance. Choose the "Install for helpdesk" option to install this component.</p>
+			
+			<br>
+			<br>
+			
+			<p>Make sure the View connection server has Horizon Toolbox installed. By default this page is served by an active Horizon Toolbox.</p>
+
+			<p>That's all. For more details, refer to dev internal <a href="#">wiki</a>.</p>
+
+			<h3>User Scenario</h3>
+			<ol>
+				<li><b>User creates support request</b>: Desktop end-user clicks "Horizon Remote Assistance" icon on his/her View desktop, to initiate the remote assist request.</li>
+				<li><b>Admin support</b>: Administrator sees requests from the web portal. and by clicking the start button associated with a request to launch the support.</li>
+				<li><b>User confirmation</b>: A message box is shown in user desktop, and user confirmation is needed to establish the connection.</li>
+				<li>Further, full control can be requested by administrator, and still user confirmation is needed.</li>
+			</ol>
+		</div>
+
+		<div id="footer">
+			</span> <span id="copyright"> VMware Horizon&nbsp; <span class="spaceFooter"> 2007-2014 VMware, Inc. All rights
+					reserverd &nbsp; </span>
+			</span>
+
+		</div>
+	</div>
+</body>
+</html>
