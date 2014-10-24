@@ -49,6 +49,10 @@ public class LDAP implements AutoCloseable {
 		}
 	}
 
+	DirContext getContext() {
+		return ctx;
+	}
+	
 	// TODO: FIXME: only local host is supported by this default context.
 	public LDAP(String servername, String domain, String username,
 			String password) {

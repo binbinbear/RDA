@@ -64,6 +64,25 @@ public class SessionUtil {
 		if (ts != null)
 			ts.set(o);
 	}
+
+	public static void releaseSession(HttpSession session){
+		if (session == null){
+			return;
+		}
+		
+		ToolBoxSession ts = sessions.remove(session.getId());
+		if (ts!=null){
+			ts.release();
+		}
+		
+		
+		//check the sessions to make sure no dead session
+		
+	}
+	
+	////////////////////////////////////////////////////////////////////////
+	//	HELPERS
+	////////////////////////////////////////////////////////////////////////
 	
 	public static ViewAPIService getViewAPIService(HttpSession session){
 		return getSessionObj(session, ViewAPIService.class);
@@ -89,19 +108,13 @@ public class SessionUtil {
 		return getSessionObj(session, EventDBUtil.class);
 	}
 	
-	
-	public static void releaseSession(HttpSession session){
-		if (session == null){
-			return;
+	public synchronized static SharedStorageAccess getSSA(HttpSession session) {
+		SharedStorageAccess ssa = getSessionObj(session, SharedStorageAccess.class);
+		if (ssa == null) {
+			LDAP ldap = getSessionObj(session, LDAP.class);
+			ssa = new SharedStorageAccess(ldap.getContext());
+			setSessionObj(session, ssa);
 		}
-		
-		ToolBoxSession ts = sessions.remove(session.getId());
-		if (ts!=null){
-			ts.release();
-		}
-		
-		
-		//check the sessions to make sure no dead session
-		
+		return ssa;
 	}
 }

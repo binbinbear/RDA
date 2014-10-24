@@ -6,8 +6,8 @@ public class WhitelistRecord extends UniqueRecord {
 	public DeviceInfo deviceInfo;
 	public long lastAccessTime;
 	
-	public WhitelistRecord(DeviceInfo di, long lastAccessTime) {
+	public WhitelistRecord(DeviceInfo di) {
 		this.deviceInfo = di;
-		this.lastAccessTime = lastAccessTime;
+		this.lastAccessTime = -1;	//never accessed.
 	}
 }

@@ -22,6 +22,7 @@ import com.vmware.horizontoolset.device.guidata.RowData_AccessLog;
 import com.vmware.horizontoolset.device.guidata.RowData_Whitelist;
 import com.vmware.horizontoolset.util.LDAP;
 import com.vmware.horizontoolset.util.SessionUtil;
+import com.vmware.horizontoolset.util.SharedStorageAccess;
 
 @RestController
 public class DeviceFilterRestController {
@@ -56,7 +57,9 @@ public class DeviceFilterRestController {
 	public JTableData whitelist(HttpSession session) {
     	JTableData ret = new JTableData();
 
-    	List<WhitelistRecord> records = WhitelistManager.list();
+    	WhitelistManager wm = new WhitelistManager(SessionUtil.getSSA(session));
+    	List<WhitelistRecord> records = wm.list();
+    	
     	ret.Records = new Object[records.size()];
     	
     	for (int i = 0; i < records.size(); i++) {
@@ -84,7 +87,10 @@ public class DeviceFilterRestController {
     	
     	try {
     		long recordId = Long.parseLong(recordIdString);
-    		if (WhitelistManager.delete(recordId))
+    		
+    		WhitelistManager wm = new WhitelistManager(SessionUtil.getSSA(session));
+    		
+    		if (wm.delete(recordId))
     			resp = JTableResponse.RESULT_OK;
     		else
     			resp = JTableResponse.error("No such record");
