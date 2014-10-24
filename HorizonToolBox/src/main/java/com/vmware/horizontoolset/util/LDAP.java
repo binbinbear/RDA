@@ -103,6 +103,58 @@ public class LDAP{
 			log.warn("Can't get since ctx is null!");
 			return null;
 		}
+	/**
+	 * NEVER use it for released code!!!!
+	 * This can only be used by unit test from remote dev environment
+	 * This doesn't work on connection server
+	 * @param hostname
+	 * @param username
+	 * @param password
+	 */
+	@Deprecated
+	public LDAP(String hostname, String username, String password){
+
+        env.put(Context.INITIAL_CONTEXT_FACTORY,
+                "com.sun.jndi.ldap.LdapCtxFactory");
+        env.put(Context.PROVIDER_URL, "ldap://" + hostname + ":389/"
+                + BASE_DN);
+
+        env.put(Context.SECURITY_AUTHENTICATION, "DIGEST-MD5");
+        env.put(Context.SECURITY_PRINCIPAL, username);
+        env.put(Context.SECURITY_CREDENTIALS, password);
+		 try {
+				ctx = new InitialDirContext(env);
+			} catch (NamingException e) {
+				log.warn("Can't connect to server", e);
+				e.printStackTrace();
+			}
+
+	}
+	
+	
+	
+	   protected String getAttribute(Attributes attributes, String attrId,
+		         String defaultValue) {
+		      try {
+		         Attribute attribute = attributes.get(attrId);
+		         String value = null;
+		         if (attribute != null) {
+		            Object obj = attribute.get();
+		            value = (obj == null) ? null : obj.toString();
+		         }
+		         return value == null ? defaultValue : value;
+		      } catch (NamingException e) {
+		         log.debug("Retrieve ADAM object attribute failed: ", e);
+		      }
+		      
+		      return defaultValue;
+		   }
+	   
+	public String getValue(String key){
+		   if (ctx ==null){
+			   log.warn("Can't get since ctx is null!");
+			   return null;
+		   }
 		SearchControls searchObject = new SearchControls();
 		searchObject.setSearchScope(SearchControls.OBJECT_SCOPE);
 
