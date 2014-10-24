@@ -86,6 +86,8 @@ public class LDAP{
 
 	protected static String getAttribute(Attributes attributes, String attrId,
 			String defaultValue) {
+		log.debug("start to get attribute:" + attrId);
+
 		try {
 			Attribute attribute = attributes.get(attrId);
 			String value = null;

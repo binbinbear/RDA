@@ -19,7 +19,7 @@
             
             <!-- Allow 30 concurrent sessions, the 31st user kicks off the 1st user  -->
             <property name="maximumSessions"> 
-            <value>30</value> 
+            <value>10</value> 
             </property>
 
 
