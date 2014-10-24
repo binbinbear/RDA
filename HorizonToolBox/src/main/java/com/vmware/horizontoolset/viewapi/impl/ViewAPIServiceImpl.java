@@ -101,7 +101,7 @@ public class ViewAPIServiceImpl implements ViewAPIService{
 	}
 
 	@Override
-	public void disconnect() {
+	public void close() {
 		log.debug("Release resource: Disconnect the VIew API Service");
 		if (this._connection!=null){
 			this._connection.close();

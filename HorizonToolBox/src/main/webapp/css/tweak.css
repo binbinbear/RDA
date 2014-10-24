@@ -1,4 +1,6 @@
-
+h3.pageHeader {
+	font-size: 16px
+}
 th {
 	background-color: #eceff2;
 }
@@ -27,5 +29,5 @@ a {
 .loading_place_holder {
 	width: 32px;
 	height: 32px;
-	background: url("../img/loading_32.gif");
+	background: url("../img/loading_32.gif") no-repeat;
 }

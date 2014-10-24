@@ -46,11 +46,4 @@ public class WhitelistManager {
 		return false;
 	}
 	
-	public static void loadFromLDAP() {
-		
-	}
-	
-	public static void saveToLDAP() {
-		
-	}
 }

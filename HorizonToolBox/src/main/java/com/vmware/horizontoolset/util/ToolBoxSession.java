@@ -1,17 +1,25 @@
 package com.vmware.horizontoolset.util;
 
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpSession;
 
-import com.vmware.horizontoolset.viewapi.ViewAPIService;
+import org.apache.log4j.Logger;
 
 public class ToolBoxSession implements Comparable<ToolBoxSession>{
-	private LDAP ldap;
-	private ViewAPIService viewapi;
+	
+	private static Logger log = Logger.getLogger(ToolBoxSession.class);
+	
+	private Map<Class<?>, Object> apis = new HashMap<>();
+	
 	private String user;
-	private EventDBUtil db;
+	
 	private HttpSession session;
+	
 	private long createdTime;
+	
 	public ToolBoxSession(HttpSession session){
 		this.session = session;
 		this.createdTime = session.getCreationTime();
@@ -21,49 +29,41 @@ public class ToolBoxSession implements Comparable<ToolBoxSession>{
 		return this.session;
 	}
 	
-	public LDAP getLdap() {
-		return ldap;
+	public <T> T get(Class<? extends T> klass) {
+		@SuppressWarnings("unchecked")
+		T t = (T) apis.get(klass);
+		return t;
 	}
-	public void setLdap(LDAP ldap) {
-		this.ldap = ldap;
+	
+	public void set(Object o) {
+		if (apis.containsKey(o.getClass()))
+			throw new RuntimeException("Already contains api: " + o.getClass());
+		
+		apis.put(o.getClass(), o);
 	}
-	public ViewAPIService getViewapi() {
-		return viewapi;
-	}
-	public void setViewapi(ViewAPIService viewapi) {
-		this.viewapi = viewapi;
-	}
+	
 	public String getUser() {
 		return user;
 	}
 	public void setUser(String user) {
 		this.user = user;
 	}
-	public EventDBUtil getDb() {
-		return db;
-	}
-	public void setDb(EventDBUtil db) {
-		this.db = db;
-	}
 	
 	
 	public void release(){
-		if (viewapi!=null){
-			viewapi.disconnect();
-			viewapi = null;
+		
+		for (Object o : apis.values()) {
+			if (o instanceof AutoCloseable) {
+				try {
+					((AutoCloseable)o).close();
+				} catch (Throwable t) {
+					log.warn("Error closing api: " + o.getClass(), t);
+				}
+			}
 		}
 		
+		apis.clear();
 		
-		if (ldap!=null){
-			ldap.close();
-			ldap = null;
-		}
-		
-		
-		if (db !=null){
-			db.disConnect();
-			db = null;
-		}
 		if (session!=null ){
 			session.invalidate();
 			session = null;

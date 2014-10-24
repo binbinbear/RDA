@@ -16,11 +16,12 @@ import javax.naming.directory.SearchResult;
 
 import org.apache.log4j.Logger;
 
+import com.vmware.horizontoolset.report.CEIPReportUtil;
 import com.vmware.vdi.common.winauth.UserContext;
 import com.vmware.vdi.common.winauth.UserContextFactory;
 import com.vmware.vdi.common.winauth.sasl.WinAuthSASLClient;
-import com.vmware.horizontoolset.report.CEIPReportUtil;
-public class LDAP{
+
+public class LDAP implements AutoCloseable {
 	/**
 	 * 
 	 */
@@ -35,6 +36,7 @@ public class LDAP{
 	private static final String BINARY_ATTRIBUTES = "java.naming.ldap.attributes.binary";
 	private static final String BASE_DN = "dc=vdi,dc=vmware,dc=int";
 
+	@Override
 	public void close() {
 		log.info("Release resource: Start to close the ctx");
 		try {
@@ -80,9 +82,6 @@ public class LDAP{
 		}
 
 	}
-	
-	
-	
 
 	protected static String getAttribute(Attributes attributes, String attrId,
 			String defaultValue) {

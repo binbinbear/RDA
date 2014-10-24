@@ -6,9 +6,10 @@ import org.apache.log4j.Logger;
 
 import com.vmware.horizontoolset.usage.Event;
 import com.vmware.vdi.adamwrapper.exceptions.ADAMConnectionFailedException;
-import com.vmware.vdi.adamwrapper.ldap.VDIContextFactory;
 import com.vmware.vdi.adamwrapper.ldap.VDIContext;
-public class EventDBUtil {
+import com.vmware.vdi.adamwrapper.ldap.VDIContextFactory;
+
+public class EventDBUtil implements AutoCloseable {
 	private static Logger log = Logger.getLogger(EventDBUtil.class);
 	private VDIContext vdiContext;
 	
@@ -16,8 +17,9 @@ public class EventDBUtil {
 	public EventDBUtil(String username, String password, String domain) throws ADAMConnectionFailedException{
 		vdiContext = VDIContextFactory.VDIContext(username, password, domain);
 	}
-	
-	public void disConnect(){
+
+	@Override
+	public void close() {
 		if (this.vdiContext!=null){
 			try{
 				this.vdiContext.disposeContext();
@@ -25,12 +27,7 @@ public class EventDBUtil {
 				log.warn("can't disconnect from context",ex);
 			}
 		}
-		
 	}
-	
-	
-	
-	
 	
 	public List<Event> getEvents(String username, int daysToShow,String poolName){
 		log.debug("start to query events:"+ daysToShow + " user:"+ username+" poolName:"+poolName);

@@ -25,12 +25,16 @@ public class SessionUtil {
 	}
 	
 	
-	private static void clearSessions(){
+	private static void restrictMaxCapacity(){
+		
+		int toBeRemoved = sessions.size() - maximumSessions;
+		if (toBeRemoved <= 0)
+			return;
 		
 		ArrayList<ToolBoxSession> sessionlist = new ArrayList<ToolBoxSession>(sessions.values());
 		Collections.sort(sessionlist);
-		int toberemoved = sessions.size() - maximumSessions;
-		for (int i=0;i<toberemoved; i++){
+		
+		for (int i = 0; i < toBeRemoved; i++){
 			HttpSession hsession = sessionlist.get(i).getSession();
 			log.debug("Start to release session:" + hsession.getCreationTime());
 			releaseSession(hsession);
@@ -45,36 +49,30 @@ public class SessionUtil {
 		if (ts==null){
 			ts = new ToolBoxSession(session);
 			sessions.put(session.getId(), ts);
-			if (sessions.size()> maximumSessions){
-				clearSessions();
-			}
+			restrictMaxCapacity();
 		}
 		return ts;
 	}
 	
-	public static ViewAPIService getViewAPIService(HttpSession session){
+	private static <T> T getSessionObj(HttpSession session, Class<T> klass) {
 		ToolBoxSession ts = getOrNewToolBoxSession(session);
-		return (ts==null)? null: ts.getViewapi();
-	}
-	public static void setViewAPIService(HttpSession session, ViewAPIService viewapi){
-		ToolBoxSession ts =  getOrNewToolBoxSession(session);
-		if (ts!=null){
-			ts.setViewapi(viewapi);
-		}
-		
+		return ts == null ? null : ts.get(klass);
 	}
 	
+	public static void setSessionObj(HttpSession session, Object o) {
+		ToolBoxSession ts = getOrNewToolBoxSession(session);
+		if (ts != null)
+			ts.set(o);
+	}
 	
+	public static ViewAPIService getViewAPIService(HttpSession session){
+		return getSessionObj(session, ViewAPIService.class);
+	}
 	
 	public static LDAP getLDAP(HttpSession session){
-		ToolBoxSession ts =  getOrNewToolBoxSession(session);
-		return (ts==null)? null:ts.getLdap();
+		return getSessionObj(session, LDAP.class);
 	}
-	
-	
-
-
-	
+		
 	public static void setUser(HttpSession session, String username){
 		ToolBoxSession ts =  getOrNewToolBoxSession(session);
 		if (ts!=null){
@@ -87,24 +85,8 @@ public class SessionUtil {
 		return (ts==null)? null:ts.getUser();
 	}
 	
-	public static void setLDAP(HttpSession session, LDAP ldap){
-		ToolBoxSession ts =  getOrNewToolBoxSession(session);
-		if (ts!=null){
-			ts.setLdap(ldap);
-		}
-	}
-	
-	
-	public static void setDB(HttpSession session, EventDBUtil eventDB){
-		ToolBoxSession ts =  getOrNewToolBoxSession(session);
-		if (ts!=null){
-			ts.setDb(eventDB);
-		}
-	}
-	
 	public static EventDBUtil getDB(HttpSession session){
-		ToolBoxSession ts =  getOrNewToolBoxSession(session);
-		return (ts==null)? null:ts.getDb();
+		return getSessionObj(session, EventDBUtil.class);
 	}
 	
 	

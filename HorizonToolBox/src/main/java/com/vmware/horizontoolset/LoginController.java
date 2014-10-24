@@ -29,29 +29,6 @@ public class LoginController{
 		log.debug("Login Controller is created");
 	}
 	
-	private ViewAPIService _service;
-	private LDAP _ldap;
-	private EventDBUtil _db;
-	@Override
-	protected void finalize() throws Throwable {
-		super.finalize();
-		//release the API
-		if (this._service!=null){
-			_service.disconnect();
-			this._service = null;
-		}
-		if (this._ldap!=null){
-			this._ldap.close();
-			this._ldap = null;
-		}
-		
-		if (this._db!=null){
-			this._db.disConnect();
-			this._db = null;
-		}
-
-	}
-
 	public static final String LoginURL = "/Login";
 	public static final String SubmitURL = "/Login/Submit";
 	private static Logger log = Logger.getLogger(LoginController.class);
@@ -97,9 +74,9 @@ public class LoginController{
 
     	log.debug("User login :" + credential.getUsername());
     	try{
-    		_service = ViewApiFactory.createNewAPIService(server, credential.getUsername(), credential.getPassword(), credential.getDomain());
+    		ViewAPIService _service = ViewApiFactory.createNewAPIService(server, credential.getUsername(), credential.getPassword(), credential.getDomain());
         	SessionUtil.setUser(session, credential.getUsername());
-    		SessionUtil.setViewAPIService(session, _service);
+    		SessionUtil.setSessionObj(session, _service);
     		
     		
     		
@@ -109,6 +86,7 @@ public class LoginController{
     	}
     	
     	try{
+    		LDAP _ldap; 
     		if (remoteDebug){
     			log.warn("THIS IS DEBUG MODE LDAP and domain is not used!!!!!!!!!");
     			_ldap = LDAP._get_junit_ldap(server,credential.getUsername(), credential.getPassword());
@@ -117,7 +95,7 @@ public class LoginController{
     		}
     		
     		
-    		SessionUtil.setLDAP(session, _ldap);
+    		SessionUtil.setSessionObj(session, _ldap);
     		
     	}catch(Exception ex){
     		log.error("You can't use ldap related features!", ex);
@@ -126,8 +104,8 @@ public class LoginController{
     	
     	try{
     		
-    		_db = new EventDBUtil(credential.getUsername(), credential.getPassword(), credential.getDomain());
-    		SessionUtil.setDB(session, _db);
+    		EventDBUtil _db = new EventDBUtil(credential.getUsername(), credential.getPassword(), credential.getDomain());
+    		SessionUtil.setSessionObj(session, _db);
     	}catch(Exception ex){
     		log.error("You can't use DB related features!", ex);
     	}
