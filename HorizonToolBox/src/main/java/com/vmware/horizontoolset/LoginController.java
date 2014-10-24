@@ -57,6 +57,12 @@ public class LoginController{
 	private static Logger log = Logger.getLogger(LoginController.class);
 
 	protected static String server = "localhost";
+	private static boolean remoteDebug = false;
+	public static void setRemoteDebug(boolean newdebug){
+		LoginController.remoteDebug = newdebug;
+	}
+	
+	
 	private static String brokerXMLAPI =  "https://"+server+"/broker/xml";;
 	private static String message = "<?xml version=\"1.0\"?> <broker version=\"1.0\">  <get-configuration/> </broker>";
  	public static void setServer(String server) {
@@ -103,7 +109,14 @@ public class LoginController{
     	}
     	
     	try{
-    		_ldap =  new LDAP(server, credential.getDomain(), credential.getUsername(), credential.getPassword()); 
+    		if (remoteDebug){
+    			log.warn("THIS IS DEBUG MODE LDAP and domain is not used!!!!!!!!!");
+    			_ldap = LDAP._get_junit_ldap(server,credential.getUsername(), credential.getPassword());
+    		}else{
+    			_ldap =  new LDAP(server, credential.getDomain(), credential.getUsername(), credential.getPassword()); 
+    		}
+    		
+    		
     		SessionUtil.setLDAP(session, _ldap);
     		
     	}catch(Exception ex){

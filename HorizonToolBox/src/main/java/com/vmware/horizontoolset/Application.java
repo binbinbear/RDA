@@ -10,6 +10,17 @@ public class Application {
 	private static Logger log = Logger.getLogger(Application.class);
     private String server;
     
+    private boolean remoteDebug = false;
+    
+    public void setRemoteDebug(boolean debug){
+    	this.remoteDebug = debug;
+    	LoginController.setRemoteDebug(debug);
+    	log.info("DEBUG is SET TO BE:" + debug);
+    }
+    
+    public boolean getDebug(){
+    	return remoteDebug;
+    }
     public static final String MAINPAGE = "toolset";
     
     public Application(){

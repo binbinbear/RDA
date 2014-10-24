@@ -80,6 +80,9 @@ public class LDAP{
 		}
 
 	}
+	
+	
+	
 
 	protected static String getAttribute(Attributes attributes, String attrId,
 			String defaultValue) {
@@ -98,11 +101,7 @@ public class LDAP{
 		return defaultValue;
 	}
 
-	public String getValue(String key) {
-		if (ctx == null) {
-			log.warn("Can't get since ctx is null!");
-			return null;
-		}
+
 	/**
 	 * NEVER use it for released code!!!!
 	 * This can only be used by unit test from remote dev environment
@@ -112,7 +111,7 @@ public class LDAP{
 	 * @param password
 	 */
 	@Deprecated
-	public LDAP(String hostname, String username, String password){
+	private LDAP(String hostname, String username, String password){
 
         env.put(Context.INITIAL_CONTEXT_FACTORY,
                 "com.sun.jndi.ldap.LdapCtxFactory");
@@ -130,25 +129,20 @@ public class LDAP{
 			}
 
 	}
+	/**
+	 * NEVER use it for released code!!!!
+	 * This can only be used by unit test from remote dev environment
+	 * This doesn't work on connection server
+	 * @param hostname
+	 * @param username
+	 * @param password
+	 */
+	@Deprecated
+	public static LDAP _get_junit_ldap(String hostname, String username, String password){
+		return new LDAP(hostname, username, password);
+	}
 	
-	
-	
-	   protected String getAttribute(Attributes attributes, String attrId,
-		         String defaultValue) {
-		      try {
-		         Attribute attribute = attributes.get(attrId);
-		         String value = null;
-		         if (attribute != null) {
-		            Object obj = attribute.get();
-		            value = (obj == null) ? null : obj.toString();
-		         }
-		         return value == null ? defaultValue : value;
-		      } catch (NamingException e) {
-		         log.debug("Retrieve ADAM object attribute failed: ", e);
-		      }
-		      
-		      return defaultValue;
-		   }
+
 	   
 	public String getValue(String key){
 		   if (ctx ==null){

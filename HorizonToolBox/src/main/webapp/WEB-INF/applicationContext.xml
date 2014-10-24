@@ -12,9 +12,14 @@
             <value>127.0.0.1</value>
             </property> 
             
+            <!-- please make sure this is false when publishing -->
+            <property name="remoteDebug">
+            	<value>false</value>
+            </property>
+            
             <!-- Allow 30 concurrent sessions, the 31st user kicks off the 1st user  -->
             <property name="maximumSessions"> 
-            <value>3</value> 
+            <value>30</value> 
             </property>
 
 
