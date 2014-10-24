@@ -77,6 +77,34 @@ public class LDAP{
 				}
 
 	}
+	/**
+	 * NEVER use it for released code!!!!
+	 * This can only be used by unit test from remote dev environment
+	 * This doesn't work on connection server
+	 * @param hostname
+	 * @param username
+	 * @param password
+	 */
+	@Deprecated
+	public LDAP(String hostname, String username, String password){
+
+        env.put(Context.INITIAL_CONTEXT_FACTORY,
+                "com.sun.jndi.ldap.LdapCtxFactory");
+        env.put(Context.PROVIDER_URL, "ldap://" + hostname + ":389/"
+                + BASE_DN);
+
+        env.put(Context.SECURITY_AUTHENTICATION, "DIGEST-MD5");
+        env.put(Context.SECURITY_PRINCIPAL, username);
+        env.put(Context.SECURITY_CREDENTIALS, password);
+		 try {
+				ctx = new InitialDirContext(env);
+			} catch (NamingException e) {
+				log.warn("Can't connect to server", e);
+				e.printStackTrace();
+			}
+
+	}
+	
 	
 	
 	   protected String getAttribute(Attributes attributes, String attrId,
