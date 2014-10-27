@@ -193,16 +193,6 @@
 		</dependency>
 		
 		
-		  <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-jdbc</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <scope>test</scope>
-        </dependency>
 
 
         <dependency>
@@ -210,6 +200,19 @@
         	<artifactId>junit</artifactId>
         	<scope>test</scope>
         </dependency>
+        
+        
+        				
+		<dependency>
+			<groupId>com.microsoft</groupId>
+			<artifactId>SQLServerDriver</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/sqljdbc4.jar</systemPath>
+		
+		</dependency>
+		
+		
 	</dependencies>
 
 	<profiles>
@@ -435,7 +438,8 @@
 				<configuration>
 					<packagingExcludes>
 					**/*.class,
-					**/toolset_proguard_base.jar
+					**/toolset_proguard_base.jar,
+					**/sqljdbc4.jar
 					</packagingExcludes>
 					<useCache>true</useCache>
 				</configuration>
