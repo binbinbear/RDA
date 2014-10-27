@@ -24,7 +24,7 @@ public class EventDBCache {
 	private static int cachedDays = 7;
 	private static Set<Event> cachedEvents =new HashSet<Event>();
 	private static final String filterText = "Agent";
-	private static final int pagingSize = 10000;
+	private static final int pagingSize = 20000;
 	private static final long millisecondsHour = 1000L * 3600L;
 	private static final long millisecondsDay = millisecondsHour * 24L;
 	private static final long millisecondsMonth = millisecondsDay *30L;
