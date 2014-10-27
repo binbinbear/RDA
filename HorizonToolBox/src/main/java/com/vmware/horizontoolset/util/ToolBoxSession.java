@@ -32,12 +32,21 @@ public class ToolBoxSession implements Comparable<ToolBoxSession>{
 	public <T> T get(Class<? extends T> klass) {
 		@SuppressWarnings("unchecked")
 		T t = (T) apis.get(klass);
+		if (t==null){
+			for (Class<?> c : apis.keySet()) {
+				if (klass.isAssignableFrom(c)) {
+					return (T)apis.get(c);
+				}
+			}
+		}
 		return t;
 	}
 	
 	public void set(Object o) {
-		if (apis.containsKey(o.getClass()))
-			throw new RuntimeException("Already contains api: " + o.getClass());
+		log.info("try to set object:"+o.getClass().getCanonicalName());
+		if (apis.containsKey(o.getClass())){
+			log.warn("Already contains api: " + o.getClass());
+		}
 		
 		apis.put(o.getClass(), o);
 	}
