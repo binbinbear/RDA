@@ -119,13 +119,18 @@ if (!ToolBox.Usage || !ToolBox.Usage.init){
                            "translate(" + margin.left + "," + margin.top + ")");
                  x.domain(data.map(function(d) { return d.userName; }));
                  y.domain([0, d3.max(data, function(d) { return d.usageTime; })]);
+                 
                  svg.append("g")
                      .attr("class", "x axis")
                      .call(xAxis)
                      .attr("transform", "translate(0," + height + ")")
                      .selectAll("text")
                      .style("text-anchor", "end")
-                     .attr("transform", "rotate(270)" );
+                     .attr("transform", "rotate(270)" )
+                     .attr('y', 0 - x.rangeBand()/2)
+                     .attr('x', -5);;
+                 
+                 
                  var yg =svg.append("g")
                      .attr("class", "y axis")
                      .attr("transform", "rotate(0)")
@@ -136,11 +141,13 @@ if (!ToolBox.Usage || !ToolBox.Usage.init){
                      .attr("dy", "-.8em")
                      .attr("transform", "rotate(0)" )
 		.text(function(d){return ToolBox.Usage.toTimeString(d);});
+                 
                  yg.append("text")
 			      .attr("y", -20)
 			      .attr("dy", ".71em")
 			      .style("text-anchor", "middle")
 			      .text("Hours:Minutes:Seconds");
+                 
                  svg.selectAll("bar")
                      .data(data)
                      .enter().append("rect")

@@ -157,6 +157,7 @@ public class ReportUtil {
 		return result;
 	}
 	
+	private static int MAXIMUM_ACCUMULATED_REPORT_SIZE = 32;
 	/**
 	 * Get accumulated using time for all users
 	 * @param connections
@@ -181,7 +182,10 @@ public class ReportUtil {
 		ArrayList<AccumulatedUsage> list= new ArrayList<AccumulatedUsage>(map.values());
 		
 		Collections.sort(list);
-		
+		int end = list.size()-1; 
+		for (int i=end;i>=MAXIMUM_ACCUMULATED_REPORT_SIZE;i--){
+			list.remove(i);
+		}
 		AccumulatedUsageReport report = new AccumulatedUsageReport(list);
 		log.info("Report size:" + list.size());
 		return report;

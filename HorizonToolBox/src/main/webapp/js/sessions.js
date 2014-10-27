@@ -45,16 +45,16 @@ if (!ToolBox.Session || !ToolBox.Session.init){
 				$("svg").empty();
 				 var type = $("#viewType").val();
 				 var days="7";
-				 var period="3600";
+				 var period="1200";
 			      if (type == "day"){
-			    	  days="1";
-			    	  period="600";
+			    	  days="2";
+			    	  period="360";
 			      }else if (type=="week"){
 			    	  days="7";
-			    	  period="3600";
+			    	  period="1200";
 			      }else if (type=="month"){
 			    	  days = "30";
-			    	  period="21600";
+			    	  period="3600";
 			      }
 			      if ($(".loadingdiv").length == 0){
 			    	  $(".messagediv").remove();
@@ -135,7 +135,7 @@ if (!ToolBox.Session || !ToolBox.Session.init){
 
 			var yAxis = d3.svg.axis().scale(y).tickFormat(d3.format("d")).orient("left");
 
-			var line = d3.svg.line().interpolate("step-before")  
+			var line = d3.svg.line().interpolate("linear")  
 			    .x(function(d) { return x(d.date); })
 			    .y(function(d) { return y(d.concurrent); });
 

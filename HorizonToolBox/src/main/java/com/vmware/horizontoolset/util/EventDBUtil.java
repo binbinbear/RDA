@@ -35,11 +35,16 @@ public class EventDBUtil implements AutoCloseable {
 		log.debug("All Events size:" + allEvents.size());
 		List<Event> results = new ArrayList<Event>();
 		for (Event event: allEvents){
-			if (username == null || username.length() == 0 ||event.getUserName().contains(username)){
-				if (poolName == null || poolName.length() == 0 || poolName.equalsIgnoreCase(event.getPoolName())){
-					results.add(event);
+			try{
+				if (username == null || username.length() == 0 ||(event.getUserName()!=null && event.getUserName().contains(username))){
+					if (poolName == null || poolName.length() == 0 || poolName.equalsIgnoreCase(event.getPoolName())){
+						results.add(event);
+					}
 				}
+			}catch(Exception e){
+				log.warn("Ignore error event,", e);
 			}
+
 			
 		}
 		java.util.Collections.sort(results);
