@@ -23,8 +23,13 @@ if (!ToolBox.Snapshot || !ToolBox.Snapshot.init){
 					url: './snapshot/report',
 					type: "GET",
 					success: function (data) {
-						 ToolBox.Snapshot.templates = data.templates;
-						 ToolBox.Snapshot.vms = data.vms;
+						if (data.templates){
+							ToolBox.Snapshot.templates = data.templates;
+						}
+						 if (data.vms){
+							 ToolBox.Snapshot.vms = data.vms; 
+						 }
+						 
 						 ToolBox.Snapshot.updateListView();
 						 if (data.updatedDate){
 							 var date = new Date(data.updatedDate);
@@ -69,7 +74,7 @@ if (!ToolBox.Snapshot || !ToolBox.Snapshot.init){
 
 				var vmDiv = $(".vms");
 				var vms = ToolBox.Snapshot.vms;
-				if (vmDiv){
+				if (vmDiv && vms){
 					vmDiv.empty();
 					var ul = "<ul> ";
 					for (var i=0;i<vms.length;i++){
@@ -92,7 +97,7 @@ if (!ToolBox.Snapshot || !ToolBox.Snapshot.init){
 				
 				var templatesDiv = $(".templates");
 				var templates = ToolBox.Snapshot.templates;
-				if (templatesDiv){
+				if (templatesDiv && templates){
 					templatesDiv.empty();
 					var ul = "<ul> ";
 					for (var i=0;i<templates.length;i++){

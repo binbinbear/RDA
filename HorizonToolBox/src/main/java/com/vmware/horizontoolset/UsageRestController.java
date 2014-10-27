@@ -32,14 +32,19 @@ public class UsageRestController {
 		private static Logger log = Logger.getLogger(UsageRestController.class);
 		
 		static List<Event> getEvents(HttpSession session, String userName, String days, String poolName){
-			 EventDBUtil db = SessionUtil.getDB(session);
-			    if (db!=null){
-			    	int daysToShow = Integer.parseInt(days);
-			    	if (daysToShow<=0){
-			    		daysToShow = Integer.parseInt(defaultDays);
-			    	}
-			    	return  db.getEvents(userName, daysToShow,poolName);
-			    }
+			try{
+				 EventDBUtil db = SessionUtil.getDB(session);
+				    if (db!=null){
+				    	int daysToShow = Integer.parseInt(days);
+				    	if (daysToShow<=0){
+				    		daysToShow = Integer.parseInt(defaultDays);
+				    	}
+				    	return  db.getEvents(userName, daysToShow,poolName);
+				    }
+			}catch(Exception ex){
+				log.error("Can't get events from DB",ex);
+			}
+
 			 return null;
 			    
 		}
