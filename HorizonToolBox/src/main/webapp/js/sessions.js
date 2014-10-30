@@ -41,6 +41,22 @@ if (!ToolBox.Session || !ToolBox.Session.init){
 		    	loadingDiv.addClass("messagediv");
 		    	loadingDiv.text(message);
 		    },
+		    getViewPools: function(){
+				$.ajax({
+					url: './common/viewpools',
+					type: "GET",
+					success: function (data) {
+						 var poolbody = $("#desktoppool");
+						 for (var i= 0; i< data.length; i++){
+								var dSD = data[i];
+								var option = "<option value=\""   +  dSD.name + "\"> "+ dSD.name+"</option>";
+							 	poolbody.append(option);
+							}
+					}, 
+					error: function(data) {
+					}
+				});
+			},
 			refreshHistorySession: function(){
 				$("svg").empty();
 				 var type = $("#viewType").val();
@@ -51,17 +67,25 @@ if (!ToolBox.Session || !ToolBox.Session.init){
 			    	  period="360";
 			      }else if (type=="week"){
 			    	  days="7";
-			    	  period="1200";
+			    	  period="1800";
 			      }else if (type=="month"){
 			    	  days = "30";
-			    	  period="3600";
+			    	  period="7200";
 			      }
+			      
+			      var type = $("#desktoppool").val();
+					var poolname = "all";
+					if (type == "all") {
+						poolname = "";
+					} else
+						poolname = type;
+					
 			      if ($(".loadingdiv").length == 0){
 			    	  $(".messagediv").remove();
 			    	  $("#historySessions").append("<div class=\"loadingdiv\">Loading</div>");
 			      }
 				$.ajax({
-					url: './session/concurrent?days='+ days+'&period=' + period,
+					url: './session/concurrent?days='+ days+'&period=' + period	+ '&pool=' + poolname,
 					type: "GET",
 					success: function (data) {
 						 ToolBox.Session.history = data.concurrentConnections;
@@ -135,7 +159,7 @@ if (!ToolBox.Session || !ToolBox.Session.init){
 
 			var yAxis = d3.svg.axis().scale(y).tickFormat(d3.format("d")).orient("left");
 
-			var line = d3.svg.line().interpolate("linear")  
+			var line = d3.svg.line() 
 			    .x(function(d) { return x(d.date); })
 			    .y(function(d) { return y(d.concurrent); });
 
@@ -169,9 +193,11 @@ if (!ToolBox.Session || !ToolBox.Session.init){
 			
 			
 			init: function(){
+				ToolBox.Session.getViewPools();
 				ToolBox.Session.refreshHistorySession();
 				ToolBox.Session.refreshCurrentSession();
 				$("#viewType").change(ToolBox.Session.refreshHistorySession);
+				$("#desktoppool").change(ToolBox.Session.refreshHistorySession);
 			}
 	};
 }

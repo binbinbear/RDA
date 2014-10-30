@@ -124,7 +124,7 @@ public class DBTest {
 			
 			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver").newInstance();
 			System.out.println("DB Driver has registered successfully！");
-			String url = "jdbc:sqlserver://10.112.117.174:1433;DatabaseName=View";
+			String url = "jdbc:sqlserver://10.112.116.239:1433;DatabaseName=View";
 			String user = "administrator";
 			String password = "ca$hc0w";
 			Connection conn = DriverManager.getConnection(url, user, password);
@@ -133,7 +133,7 @@ public class DBTest {
 			String[] EventType = { "AGENT_PENDING", "AGENT_ENDED" };
 			String Source = "com.vmware.vdi.events.client.EventLogger";
 			String Node = "DEMO.stengdomain.fvt";
-			String DesktopId = "stengpool";
+			String[] DesktopId = {"xiaoyi","full1","full2","linked1","rds","manual","xiaoyi"};
 			
 			
 			
@@ -143,7 +143,7 @@ public class DBTest {
 			String sql,sql1,sql2;
 			PreparedStatement pstmt = null;
 
-			for (int i = 0; i < 2; i++) {
+			for (int i = 0; i < 1000; i++) {
 				try {
 					// String use=getRandomString(4);
 					sql = "INSERT INTO event(Module,EventType,ModuleAndEventText,Time,Source,Severity,Node,Acknowledged,DesktopId) VALUES(?,?,?,?,?,?,?,?,?)";
@@ -151,6 +151,7 @@ public class DBTest {
 					
 					String use = useid[(int)(Math.random()*50)];
 					String ma = maid[(int)(Math.random()*50)];
+					String pool=DesktopId[(int)(Math.random()*6)];
 					d= new Date(start + (long)(rand.nextDouble() * (end - start)));
 					Timestamp tt = new Timestamp(d.getTime());
 					// pstmt.setString(1, getRandomString(new
@@ -163,7 +164,7 @@ public class DBTest {
 					pstmt.setString(6, "INFO");
 					pstmt.setString(7, Node);
 					pstmt.setInt(8, 1);
-					pstmt.setString(9, DesktopId);
+					pstmt.setString(9,pool);
 					pstmt.executeUpdate();
 					System.out.println("Success");
 
@@ -183,7 +184,21 @@ public class DBTest {
 					pstmt.executeUpdate();
 					pstmt.setString(2, "MachineName");
 					pstmt.setString(3, ma);
-
+					pstmt.executeUpdate();
+					pstmt.setString(2, "poolName");
+					pstmt.setString(3,pool);
+					pstmt.executeUpdate();
+					pstmt.setString(2, "poolname");
+					pstmt.setString(3,pool);
+					pstmt.executeUpdate();
+					pstmt.setString(2, "poolId");
+					pstmt.setString(3,pool);
+					pstmt.executeUpdate();
+					pstmt.setString(2, "PoolId");
+					pstmt.setString(3,pool);
+					pstmt.executeUpdate();
+					pstmt.setString(2, "DesktopId");
+					pstmt.setString(3,pool);
 					pstmt.executeUpdate();
 					System.out.println("Success2");
 
@@ -198,7 +213,7 @@ public class DBTest {
 					pstmt.setString(6, "INFO");
 					pstmt.setString(7, Node);
 					pstmt.setInt(8, 1);
-					pstmt.setString(9, DesktopId);
+					pstmt.setString(9, pool);
 					pstmt.executeUpdate();
 					System.out.println("Success3");
 
@@ -210,12 +225,27 @@ public class DBTest {
 						ii = rs.getInt(1);
 					System.out.println(ii);
 					pstmt = conn.prepareStatement(sql2);
-					pstmt.setString(2, "UserDisplayName");
 					pstmt.setInt(1, ii);
+					pstmt.setString(2, "UserDisplayName");
 					pstmt.setString(3, use);
 					pstmt.executeUpdate();
 					pstmt.setString(2, "MachineName");
 					pstmt.setString(3, ma);
+					pstmt.executeUpdate();
+					pstmt.setString(2, "poolName");
+					pstmt.setString(3,pool);
+					pstmt.executeUpdate();
+					pstmt.setString(2, "poolname");
+					pstmt.setString(3,pool);
+					pstmt.executeUpdate();
+					pstmt.setString(2, "poolId");
+					pstmt.setString(3,pool);
+					pstmt.executeUpdate();
+					pstmt.setString(2, "PoolId");
+					pstmt.setString(3,pool);
+					pstmt.executeUpdate();
+					pstmt.setString(2, "DesktopId");
+					pstmt.setString(3,pool);
 					pstmt.executeUpdate();
 					System.out.println("Success4");
 					
