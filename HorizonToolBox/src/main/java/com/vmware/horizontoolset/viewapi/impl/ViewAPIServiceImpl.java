@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 
 
 
+
 import com.vmware.vdi.vlsi.binding.vdi.infrastructure.VirtualCenter;
 import com.vmware.vdi.vlsi.binding.vdi.infrastructure.VirtualCenter.VirtualCenterInfo;
 import com.vmware.vdi.vlsi.binding.vdi.resources.Desktop.DesktopSummaryView;
@@ -16,13 +17,13 @@ import com.vmware.vdi.vlsi.binding.vdi.users.Session.SessionLocalSummaryView;
 import com.vmware.vdi.vlsi.client.Query;
 import com.vmware.vdi.vlsi.client.Query.QueryFilter;
 import com.vmware.vdi.vlsi.cname.vdi.resources.DesktopCName.DesktopSummaryViewCName;
-import com.vmware.vim.binding.vmodl.DataObject;
 import com.vmware.horizontoolset.util.DesktopPool;
 import com.vmware.horizontoolset.viewapi.Session;
 import com.vmware.horizontoolset.viewapi.SessionFarm;
 import com.vmware.horizontoolset.viewapi.SessionPool;
 import com.vmware.horizontoolset.viewapi.SnapShotViewPool;
 import com.vmware.horizontoolset.viewapi.ViewAPIService;
+import com.vmware.horizontoolset.viewapi.ViewPool;
 public class ViewAPIServiceImpl implements ViewAPIService{
 	private static Logger log = Logger.getLogger(ViewAPIServiceImpl.class);
 	private ViewAPIConnect _connection;
@@ -113,7 +114,7 @@ public class ViewAPIServiceImpl implements ViewAPIService{
 
 
 
-	public List<BasicViewPool> getAllPools()
+	public List<ViewPool> getAllPools()
 	{
 		if (this._queryService == null){
 			log.info("Closed VIEW API can't be used!");
@@ -123,30 +124,19 @@ public class ViewAPIServiceImpl implements ViewAPIService{
 		return this._queryService.getAllBasicPools();
 	}
 
-	@Override
-	public List<DesktopSummaryView> listDesktopPools() {
-		return listAll(DesktopSummaryView.class);
-	}
+
 
 	@Override
 	public List<VirtualCenterInfo> listVirtualCenters() {
+		
 		List<VirtualCenterInfo> ret = new ArrayList<>();
-		for(int i=0; i< this._virtualCenterService.list().length; i++){
-			ret.add(this._virtualCenterService.list()[i]);
+		VirtualCenterInfo[] array =  this._virtualCenterService.list();
+		for(int i=0; i<array.length; i++){
+			ret.add(array[i]);
 		}
 		return ret;
 	}
 
-	public <T extends DataObject> List<T> listAll(Class<T> type) {
-    	
-        List<T> ret = new ArrayList<>();
-        try (Query<T> query = new Query<>(this._connection, type)) {
-            for (T info : query) {
-               ret.add(info);
-            }
-        }
-        return ret;
-    }
 	
 	@Override
 	public DesktopPool getDesktopPool(String name) {

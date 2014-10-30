@@ -3,9 +3,7 @@ package com.vmware.horizontoolset.viewapi;
 import java.util.List;
 
 import com.vmware.horizontoolset.util.DesktopPool;
-import com.vmware.horizontoolset.viewapi.impl.BasicViewPool;
 import com.vmware.vdi.vlsi.binding.vdi.infrastructure.VirtualCenter.VirtualCenterInfo;
-import com.vmware.vdi.vlsi.binding.vdi.resources.Desktop.DesktopSummaryView;
 
 
 
@@ -27,9 +25,7 @@ public interface ViewAPIService extends AutoCloseable {
 	@Override
 	public void close();
 
-	public List<BasicViewPool> getAllPools();
-
-	public List<DesktopSummaryView> listDesktopPools();
+	public List<ViewPool> getAllPools();
 
 	public DesktopPool getDesktopPool(String name);
 

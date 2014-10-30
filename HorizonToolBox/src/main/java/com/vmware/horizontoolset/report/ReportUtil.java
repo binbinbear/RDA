@@ -21,8 +21,8 @@ import com.vmware.horizontoolset.viewapi.SessionFarm;
 import com.vmware.horizontoolset.viewapi.SessionPool;
 import com.vmware.horizontoolset.viewapi.SnapShotViewPool;
 import com.vmware.horizontoolset.viewapi.ViewAPIService;
+import com.vmware.horizontoolset.viewapi.ViewPool;
 import com.vmware.horizontoolset.viewapi.ViewType;
-import com.vmware.horizontoolset.viewapi.impl.BasicViewPool;
 import com.vmware.horizontoolset.viewapi.impl.SessionFarmImpl;
 import com.vmware.horizontoolset.viewapi.impl.SessionPoolImpl;
 
@@ -120,8 +120,8 @@ public class ReportUtil {
 		//Event is sorted by descent time
 		 HashMap<String, String> poolNameTotype = new HashMap<String, String>();
 		if(service != null){
-			List<BasicViewPool> basicPools = service.getAllPools();
-			 for(BasicViewPool pool : basicPools){
+			List<ViewPool> basicPools = service.getAllPools();
+			 for(ViewPool pool : basicPools){
 					poolNameTotype.put(pool.getName(), pool.getViewType().toString());
 				}
 		}

@@ -28,6 +28,7 @@ import com.vmware.horizontoolset.viewapi.SessionPool;
 import com.vmware.horizontoolset.viewapi.SnapShotViewPool;
 import com.vmware.horizontoolset.viewapi.Template;
 import com.vmware.horizontoolset.viewapi.VM;
+import com.vmware.horizontoolset.viewapi.ViewPool;
 import com.vmware.horizontoolset.viewapi.impl.Cache;
 import com.vmware.horizontoolset.viewapi.impl.VMImpl;
 import com.vmware.vim.binding.impl.vmodl.TypeNameImpl;
@@ -218,9 +219,9 @@ public class ViewQueryService {
 	}
 
 
-	public List<BasicViewPool>  getAllBasicPools() {
+	public List<ViewPool>  getAllBasicPools() {
 		List<DesktopSummaryView> results = this.getDesktopSummaryViews();
-		List<BasicViewPool>  list = new ArrayList<BasicViewPool>();
+		List<ViewPool>  list = new ArrayList<ViewPool>();
 	    if (results == null || results.size() == 0) {
 	    	log.debug("no results in pools");
 	    }

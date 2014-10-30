@@ -6,13 +6,13 @@ if (!ToolBox.Policy || !ToolBox.Policy.init){
 
 			getViewPools: function(){
 				$.ajax({
-					url: './policy/viewpools',
+					url: './common/viewpools',
 					type: "GET",
 					success: function (data) {
 						 var poolbody = $("#desktoppool");
 						 for (var i= 0; i< data.length; i++){
 								var dSD = data[i];
-								var option = "<option value=\""   +  dSD.desktopSummaryData.name + "\"> "+ dSD.desktopSummaryData.name+"</option>";
+								var option = "<option value=\""   +  dSD.name + "\"> "+ dSD.name+"</option>";
 							 	poolbody.append(option);
 							}
 					}, 
