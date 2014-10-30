@@ -145,11 +145,12 @@ public class GuestFileDirector
     FileTransferInformation fileTranInfo = this.gfm.initiateFileTransferFromGuest(this.auth, filePathInGuest);
 
     URL fileURL;
-    if(!this.url.equals(null)){
-    	fileURL = new URL(fileTranInfo.getUrl().replace("*", url));
-    }else{
+    if (this.url == null){
     	fileURL = new URL(fileTranInfo.getUrl());
+    }else{
+    	fileURL = new URL(fileTranInfo.getUrl().replace("*", url));
     }
+
     InputStream is = fileURL.openStream();
     readStream2Stream(is, out);
     is.close();
@@ -222,7 +223,7 @@ public class GuestFileDirector
     modCal.setTimeInMillis(modifyTime);
     guestFileAttr.setModificationTime(modCal);
     String upUrlStr = this.gfm.initiateFileTransferToGuest(this.auth, filePathInGuest, guestFileAttr, size, overwrite);
-    if(!this.url.equals(null)){
+    if(this.url!=null){
     	upUrlStr = upUrlStr.replace("*", url);
     }
     uploadData(upUrlStr, in, size);

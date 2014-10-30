@@ -46,6 +46,9 @@ if (!ToolBox.Session || !ToolBox.Session.init){
 					url: './common/viewpools',
 					type: "GET",
 					success: function (data) {
+						if (!data || !data.length){
+							return;
+						}
 						 var poolbody = $("#desktoppool");
 						 for (var i= 0; i< data.length; i++){
 								var dSD = data[i];
