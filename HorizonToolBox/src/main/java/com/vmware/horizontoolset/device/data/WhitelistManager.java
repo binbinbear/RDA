@@ -12,12 +12,12 @@ import com.vmware.horizontoolset.util.SharedStorageAccess;
 
 public class WhitelistManager {
 
-	private static final long READ_CACHE_EXPIRATION = 60 * 1000; 
+	private static final long READ_CACHE_EXPIRATION = 120 * 1000; 
 	private static final String STORED_ATTR_KEY = "WHITELIST";
 	
 	private final SharedStorageAccess ssa;
 	private static List<WhitelistRecord> data = new LinkedList<>();
-	private static long lastLoadTimestamp; 
+	private static volatile long lastLoadTimestamp; 
 	
 	public WhitelistManager(SharedStorageAccess ssa) {
 		this.ssa = ssa;
@@ -25,18 +25,16 @@ public class WhitelistManager {
 	
 	public List<WhitelistRecord> list() {
 		
-		long now = System.currentTimeMillis();
-		if (now - lastLoadTimestamp > READ_CACHE_EXPIRATION) {
-			loadData();
-		}
-		
 		synchronized(data) {
+			ensureData();
 			return new ArrayList<WhitelistRecord>(data);
 		}
 	}
 	
 	public boolean delete(long recordId) {
 		synchronized(data) {
+			ensureData();
+			
 			for (Iterator<WhitelistRecord> i = data.iterator(); i.hasNext(); ) {
 				WhitelistRecord r = i.next();
 				if (r.recordId == recordId) {
@@ -51,6 +49,8 @@ public class WhitelistManager {
 	
 	public void add(WhitelistRecord record) {
 		synchronized(data) {
+			ensureData();
+			
 			if (data.contains(record))
 				throw new IllegalArgumentException("Record already exists: " + record);
 			data.add(0, record);
@@ -58,12 +58,14 @@ public class WhitelistManager {
 		}
 	}
 	
-	public static boolean isAllowed(DeviceInfo di) {
+	public boolean isAllowed(DeviceInfo di) {
 		
 		if (di == null || di.ViewClient_Client_ID == null || di.ViewClient_Client_ID.isEmpty())
 			return false;
 		
 		synchronized(data) {
+			ensureData();
+			
 			for (WhitelistRecord i : data) {
 				if (i.deviceInfo.isSameDevice(di)) {
 					
@@ -74,6 +76,14 @@ public class WhitelistManager {
 			}
 		}
 		return false;
+	}
+	
+	private void ensureData() {
+		long now = System.currentTimeMillis();
+		if (now - lastLoadTimestamp > READ_CACHE_EXPIRATION) {
+			loadData();
+			lastLoadTimestamp = now;
+		}
 	}
 	
 	///////////////////////////////////////////////////////////////////

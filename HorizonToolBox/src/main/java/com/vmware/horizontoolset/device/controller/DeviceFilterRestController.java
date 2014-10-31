@@ -138,7 +138,7 @@ public class DeviceFilterRestController {
     		DeviceInfo di = gson.fromJson(diJson, DeviceInfo.class);
 
     		if (di.isValid()) {
-	    		boolean isAllowed = AccessLogManager.log(di);
+	    		boolean isAllowed = AccessLogManager.log(session, di);
 	    		
 	    		if (isAllowed)
 	    			resp = "ACCESS_ALLOWED";
