@@ -64,6 +64,7 @@
 							<form id="loginForm" name="loginForm" action="Login/Submit"
 								class="form-horizontal ng-pristine ng-invalid ng-invalid-required"
 								autocomplete="off">
+		
 								<div class="form-group ui-form-group">
 									<label for="username" class="col-sm-3 control-label ng-binding">UserName:</label>
 									<div class="input-group col-sm-8">
@@ -87,14 +88,25 @@
 								<div class="form-group ui-form-group ui-form-group">
 									<label for="domain" class="col-sm-3 control-label ng-binding">Domain:</label>
 									<div class="input-group col-sm-8">
-										<span class="input-group-addon"><span class="glyphicons glyphicon-user"></span></span>
+										<span class="input-group-addon"><span class="ui-lock"></span></span>
 										<!-- domains -->
-										<select id="domain" name="domain" class="form-control ng-pristine ng-valid" >
-										<option  th:each="domain : ${domains}" th:value="${domain}">
-											
-										  <span th:text="${domain}"></span>
-										</option>
-										</select>
+										
+										
+										
+										<a th:if="${domains.isEmpty()}">
+										 <input id="domain" name="domain"  type="text" class="form-control ng-pristine ng-valid" placeholder="Domain"/>
+										
+										</a>
+										
+									    <a th:if="!${domains.isEmpty()}">
+											<select id="domain" name="domain"  class="form-control ng-pristine ng-valid" >
+												<option  th:each="domain : ${domains}" th:value="${domain}">	
+											  		<span th:text="${domain}"></span>
+												</option>
+										 	</select>
+										</a>
+										
+										
 
 									</div>
 								</div>
