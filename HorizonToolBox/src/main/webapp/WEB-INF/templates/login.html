@@ -89,16 +89,13 @@
 									<label for="domain" class="col-sm-3 control-label ng-binding">Domain:</label>
 									<div class="input-group col-sm-8">
 										<span class="input-group-addon"><span class="ui-lock"></span></span>
-										<!-- domains -->
 										
-										
-										
-										<a th:if="${domains.isEmpty()}">
-										 <input id="domain" name="domain"  type="text" class="form-control ng-pristine ng-valid" placeholder="Domain"/>
-										
+										<a th:if="${domains.isEmpty()}" style="text-decoration: none;">
+										<input id="domain" name="domain"  type="text" class="form-control "
+											placeholder="Domain"/>
 										</a>
 										
-									    <a th:if="!${domains.isEmpty()}">
+									    <a th:if="!${domains.isEmpty()}" style="text-decoration: none;">
 											<select id="domain" name="domain"  class="form-control ng-pristine ng-valid" >
 												<option  th:each="domain : ${domains}" th:value="${domain}">	
 											  		<span th:text="${domain}"></span>
