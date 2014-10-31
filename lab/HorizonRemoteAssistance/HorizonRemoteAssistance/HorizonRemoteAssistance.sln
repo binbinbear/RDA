@@ -17,6 +17,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HRA Installer", "HRAInstall
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HRA Launcher", "HRALauncher\HRA Launcher.csproj", "{885D42E1-BDF8-43BD-82BB-F916805A9090}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeviceFilter", "DeviceFilter\DeviceFilter.csproj", "{CBC24DD4-E00C-4B6B-B228-FD3B10EA81DA}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D1177226-105F-4037-85C4-405D41962844} = {D1177226-105F-4037-85C4-405D41962844}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ETEUtils", "ETEUtils\ETEUtils.csproj", "{D1177226-105F-4037-85C4-405D41962844}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +54,14 @@ Global
 		{885D42E1-BDF8-43BD-82BB-F916805A9090}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{885D42E1-BDF8-43BD-82BB-F916805A9090}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{885D42E1-BDF8-43BD-82BB-F916805A9090}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CBC24DD4-E00C-4B6B-B228-FD3B10EA81DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CBC24DD4-E00C-4B6B-B228-FD3B10EA81DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CBC24DD4-E00C-4B6B-B228-FD3B10EA81DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CBC24DD4-E00C-4B6B-B228-FD3B10EA81DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1177226-105F-4037-85C4-405D41962844}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1177226-105F-4037-85C4-405D41962844}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1177226-105F-4037-85C4-405D41962844}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1177226-105F-4037-85C4-405D41962844}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
