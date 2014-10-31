@@ -2,6 +2,7 @@ package com.vmware.horizontoolset;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
@@ -18,6 +19,7 @@ import com.vmware.horizontoolset.util.SessionUtil;
 import com.vmware.horizontoolset.util.SimpleHttpClient;
 import com.vmware.horizontoolset.viewapi.ViewAPIService;
 import com.vmware.horizontoolset.viewapi.ViewApiFactory;
+import com.vmware.vdi.common.winauth.WinAuthUtils;
 
 @Controller
 public class LoginController{
@@ -47,7 +49,7 @@ public class LoginController{
 		brokerXMLAPI = "https://"+server+"/broker/xml";
 	}
 
-	private static ArrayList<String> domains = new ArrayList<String>();
+	private static List<String> domains = new ArrayList<String>();
 	@RequestMapping(value = LoginURL, method = RequestMethod.GET)
 	public String index( Model model) {
 		log.debug("Receive index request");
@@ -114,12 +116,9 @@ public class LoginController{
 
 	
 	private static SimpleHttpClient httpClient = new SimpleHttpClient();
-	private static synchronized void getDomains() {
-		if (!domains.isEmpty()){
-			return;
-		}
-		String result = httpClient.post(brokerXMLAPI, message) ;
-		//TODO: this is an ugly implementation
+	
+	private static void getDomainsFromXMLAPI(){
+		String result = httpClient.post(brokerXMLAPI, message);
 		/**
 		<name>domain</name>
         <values>
@@ -128,7 +127,7 @@ public class LoginController{
         **/
 		
 		if (result == null){
-			log.warn("Can't get domain!");
+			log.info("Can't get domain from XML API, may be using RADIUS or other auth method!");
 			return;
 		}
 		int domainStart=result.indexOf("<name>domain</name>");
@@ -147,7 +146,23 @@ public class LoginController{
 			}
 		}
 		
+	}
+	private static synchronized void getDomains() {
+		if (!domains.isEmpty()){
+			return;
+		}
 		
+		getDomainsFromXMLAPI();
+		
+		if (domains.isEmpty()){
+			log.debug("try to get domain from WinAuth");
+			List<String> tempdomains = WinAuthUtils.getDomains();
+			if (tempdomains!=null){
+				domains.addAll(tempdomains);
+			}
+
+		}
+		log.debug("Get domains:"+domains.size());
 	}
 	
 	
