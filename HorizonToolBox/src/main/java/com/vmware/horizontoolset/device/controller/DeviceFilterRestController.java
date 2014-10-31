@@ -22,7 +22,6 @@ import com.vmware.horizontoolset.device.guidata.RowData_AccessLog;
 import com.vmware.horizontoolset.device.guidata.RowData_Whitelist;
 import com.vmware.horizontoolset.util.LDAP;
 import com.vmware.horizontoolset.util.SessionUtil;
-import com.vmware.horizontoolset.util.SharedStorageAccess;
 
 @RestController
 public class DeviceFilterRestController {

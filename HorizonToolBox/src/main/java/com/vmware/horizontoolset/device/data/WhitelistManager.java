@@ -81,8 +81,6 @@ public class WhitelistManager {
 		
 		synchronized(data) {
 			
-			data.clear();
-			
 			String val = ssa.get(STORED_ATTR_KEY);
 			if (val == null)
 				return;
