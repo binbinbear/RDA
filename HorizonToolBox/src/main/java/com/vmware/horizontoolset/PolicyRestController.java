@@ -152,7 +152,7 @@ public class PolicyRestController {
 			if(!(device == "" | device.endsWith(null)))
 				updateGPO("device",device,runScriptWithinVM,si,msvs);
 			//
-			if(!(productionLogs== "" | productionLogs.endsWith(null))) 
+			if( !(productionLogs== "" | productionLogs.endsWith(null)) )
 				 updateGPO("productionLogs",productionLogs,runScriptWithinVM,si,msvs);
 			if(!(debugLogs== "" | debugLogs.endsWith(null))) 
 				 updateGPO("debugLogs",debugLogs,runScriptWithinVM,si,msvs);
@@ -365,6 +365,13 @@ public class PolicyRestController {
 	*/
 	private void updateGPO(String gpoName, String gpoValue, RunProgramWithinVM runScriptWithinVM,
 			ServiceInstance si, List<MachineSummaryView> msvs) {
+		if(GPOData.getData(gpoName + "_KEYNAME")==""){
+			return ;
+		}
+		else if(GPOData.getData(gpoName + "_VALUENAME")==""){
+			return ;
+		}
+		
 		Registry registry = new Registry();
 		GuestProgramSpec spec = registry.addRegistry(
 				GPOData.getData(gpoName + "_KEYNAME"),
