@@ -6,6 +6,6 @@
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/test"/>
         <property name="java-output-path" value="/toolbox/target/classes"/>
         <property name="context-root" value="toolbox"/>
-        <property name="component.exclusion.patterns" value="**/*.class,**/toolset_proguard_base.jar,**/sqljdbc4.jar"/>
+        <property name="component.exclusion.patterns" value="**/*.class,**/toolbox_proguard_base.jar,**/sqljdbc4.jar"/>
     </wb-module>
 </project-modules>

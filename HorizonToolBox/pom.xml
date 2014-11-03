@@ -276,7 +276,7 @@
 										<property name="closure-compiler" value="build/compressor/compiler.jar" />
 
 										<property name="js.compress.directory"
-											value="${project.build.directory}/toolset/js" />
+											value="${project.build.directory}/toolbox/js" />
 
 										<echo message="begin compress javascripts" />
 
@@ -321,7 +321,7 @@
 										<property name="yuicompressor" value="build/compressor/yuicompressor.jar" />
 
 										<property name="css.compress.directory"
-											value="${project.build.directory}/toolset/css" />
+											value="${project.build.directory}/toolbox/css" />
 
 										<echo message="begin compress css" />
 
@@ -438,7 +438,7 @@
 				<configuration>
 					<packagingExcludes>
 					**/*.class,
-					**/toolset_proguard_base.jar,
+					**/toolbox_proguard_base.jar,
 					**/sqljdbc4.jar
 					</packagingExcludes>
 					<useCache>true</useCache>
