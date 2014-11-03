@@ -6,6 +6,8 @@
 
 	<div id="policy" th:fragment="fragment">
 
+
+
 <style type="text/css">
 
 div.card .field {
@@ -52,16 +54,15 @@ div.card div select {
 
 
 </style>
-
 		<h3 class="pageHeader">
 			<table border="0" cellpadding="0" cellspacing="0" width="100%">
 				<tbody>
 					<tr>
 						<td>
 							<div class="pageHeaderDiv">
-
+								<div id="message"></div>	
 								<img src="img/window_information.png" alt="Dashboard" />&nbsp;&nbsp; Policy functions
-								 &nbsp; 
+								 &nbsp; 								
 							</div>
 						</td>
 						<td id="loadingAnim"></td>
@@ -87,19 +88,8 @@ div.card div select {
 <!-- Tab panes -->
 <div class="tab-content">
   <div class="tab-pane active card" id="common">
-  			<div class="field" >
-           		 <label  for="clipboard">Configure clipboard redirection:</label>
-						<select id="clipboard" name="clipboard" title="clipboard">
-							<option selected="selected" value="0">Enabled client to agent only </option>
-							<option value="1">Disabled in both directions</option>
-							<option value="2">Enabled in both directions</option>
-							<option value="3">Enabled agent to client only</option>
-						</select>
-						
-				</div>
 				
-				
-				<div class="field" >
+				<div class="field" > 
             			<label  for="device">Block all devices unless they are included via Include filter rule:</label>
 						<select id="device" name="device" title="device">
 							<option selected="selected" value="0"> Allow all devices</option>
@@ -107,43 +97,770 @@ div.card div select {
 						</select>
 						
 				</div>
+
 				
+				<div class="field" >
+            			<label  for="productionLogs">Number of days to keep production logs:</label>
+						<select id="productionLogs" name="productionLogs" title="productionLogs">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>
 				
+				<div class="field" >
+            			<label  for="debugLogs">Maximum number if debug logs:</label>
+						<select id="debugLogs" name="debugLogs" title="debugLogs">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>
+				
+				<div class="field" >
+            			<label  for="logSize">Maximun debug log size in Megabytes:</label>
+						<select id="logSize" name="logSize" title="logSize">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>
+				
+				<div class="field" >
+            			<label  for="logDirectory">log directory:</label>
+						<select id="logDirectory" name="logDirectory" title="logDirectory">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>
+				
+				<div class="field" >
+            			<label  for="sendLogs">Send logs to a Syslog server:</label>
+						<select id="sendLogs" name="sendLogs" title="sendLogs">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>
+				
+				<div class="field" >
+            			<label  for="interval">CPU and Memory Sampling Interval in Seconds:</label>
+						<select id="interval" name="interval" title="interval">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>
+				
+				<div class="field" >
+            			<label  for="overallCPU">Overall CPU usage percentage to issue log info:</label>
+						<select id="overallCPU" name="overallCPU" title="overallCPU">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>
+				
+				<div class="field" >
+            			<label  for="overallMemory">Overall memory usage percentage to issue log info:</label>
+						<select id="overallMemory" name="overallMemory" title="overallMemory">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>
+				
+				<div class="field" >
+            			<label  for="processCPU">Process CPU usage percentage to issue log info:</label>
+						<select id="processCPU" name="processCPU" title="processCPU">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>
+				
+				<div class="field" >
+            			<label  for="processMemory">Process memory usage percentage to issue log info:</label>
+						<select id="processMemory" name="processMemory" title="processMemory">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>
+				
+				<div class="field" >
+            			<label  for="processCheck">Process to check, comma separated name list allowing wild cards and exclusion:</label>
+						<select id="" name="" title="">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>
+				
+				<div class="field" >
+            			<label  for="certificateRevocation">Type of certificate revocation check:</label>
+						<select id="certificateRevocation" name="certificateRevocation" title="certificateRevocation">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>
+				
+				<div class="field" >
+            			<label  for="cachedRevocation">Only use cached revocation URLs:</label>
+						<select id="cachedRevocation" name="cachedRevocation" title="cachedRevocation">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>
+				
+				<div class="field" >
+            			<label  for="checkTimeout">Revocation URL check timeout milliseconds:</label>
+						<select id="checkTimeout" name="checkTimeout" title="checkTimeout">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>
+				
+							
+							
+				
+  </div>
+  <div class=" tab-pane card" id="pcoip">
+  
+    			<div class="field" >
+           		 <label  for="clipboard">Configure clipboard redirection:</label>
+						<select id="clipboard" name="clipboard" title="clipboard">
+							<option selected="selected" value="0">Enabled client to agent only </option>
+							<option value="1">Disabled in both directions</option>
+							<option value="2">Enabled in both directions</option>
+							<option value="3">Enabled agent to client only</option>
+						</select>
+						
+				</div>
+				
+
 				<div class="field" >
             			<label  for="lossless">Turn off Build-to-Lossless feature:</label>
 						<select id="lossless" name="lossless" title="lossless">
 							<option selected="selected" value="0">Enabled</option>
-							<option value="1">Disableds</option>
+							<option value="1">Disabled</option>
 						</select>
 						
 				</div>
-  
-  </div>
-  <div class=" tab-pane card" id="pcoip">
-    			<div class="field" >
-           		 <label  for="clipboard">Configure clipboard redirection:</label>
+				
+				<div class="field" >
+            			<label  for="maximum">Configure the maximum PCoIP session bandwidth:</label>
+						<select id="maximum" name="maximum" title="maximum">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>
+						
+				</div>
+				
+				<div class="field" >
+            			<label  for="MTU">Configure the PCoIP session MTU:</label>
+						<select id="MTU" name="MTU" title="MTU">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>
+						
+				</div>
+				
+				<div class="field" >
+            			<label  for="floor">Configure the PCoIP session bandwidth floor:</label>
+						<select id="floor" name="floor" title="floor">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>
+				
+				<div class="field" >
+            			<label  for="enDisAudio">Enable/disable audio in the PCoIP session:</label>
+						<select id="enDisAudio" name="enDisAudio" title="enDisAudio">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>
+				
+				<div class="field" >
+            			<label  for="limit">Configure the PCoIP session audio bandwidth limit:</label>
+						<select id="limit" name="limit" title="limit">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>
+				
+				<div class="field" >
+            			<label  for="SSL">Configure SSL connections to Satisfy Tools:</label>
+						<select id="SSL" name="SSL" title="SSL">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>
+
+				<div class="field" >
+            			<label  for="encryption">Configure PCoIP session encryption algorithms:</label>
+						<select id="encryption" name="encryption" title="encryption">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>
+
+				<div class="field" >
+            			<label  for="USB">Configure PCoIP USB allowed and unallowed device rules:</label>
+						<select id="USB" name="USB" title="USB">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>
+				
+				<div class="field" >
+            			<label  for="TCP">Configure TCP port to which the PCoIP Server binds and listens:</label>
+						<select id="TCP" name="TCP" title="TCP">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>
+
+				<div class="field" >
+            			<label  for="UDP">configure the UDP prot which the PCoIP Server binds and listens:</label>
+						<select id="UDP" name="UDP" title="UDP">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>
+
+				<div class="field" >
+            			<label  for="channels">Configure PCoIP virtual channels:</label>
+						<select id="channels" name="channels" title="channels">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>
+
+				<div class="field" >
+            			<label  for="clipboard">Configure clipboard redirection:</label>
 						<select id="clipboard" name="clipboard" title="clipboard">
-							<option selected="selected" value="0">Enabled client to agent only </option>
-							<option value="1">Disabled in both directions</option>
-							<option value="2">Enabled in both directions</option>
-							<option value="3">Enabled agent to client only</option>
-						</select>
-						
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
 				</div>
+				
+				<div class="field" >
+            			<label  for="image">Configure PCoIP image quality levels:</label>
+						<select id="image" name="image" title="image">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>	
+				
+				<div class="field" >
+            			<label  for="FIPS">Enable the FIPS 140-2 approved mode of operation:</label>
+						<select id="FIPS" name="FIPS" title="FIPS">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>				
+				
+				<div class="field" >
+            			<label  for="vSphere">Enable access to a PCoIP session from a vSphere console:</label>
+						<select id="vSphere" name="vSphere" title="vSphere">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>				
+				
+				<div class="field" >
+            			<label  for="synchronization">Turn on PCoIP user default input language synchronization:</label>
+						<select id="synchronization" name="synchronization" title="synchronization">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>		
+								
+				<div class="field" >
+            			<label  for="alternate">Use alternate key for sending Secure Attention Sequence:</label>
+						<select id="alternate" name="alternate" title="alternate">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>	
+								
+				<div class="field" >
+            			<label  for="CAD">Disable sending CAD when users press Ctrl+Alt+Del:</label>
+						<select id="CAD" name="CAD" title="CAD">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>	
+								
+				<div class="field" >
+            			<label  for="transport">Configure the PCoIP transport header:</label>
+						<select id="transport" name="transport" title="transport">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>	
+								
+				<div class="field" >
+            			<label  for="verbosity">Configure PCoIP event log verbosity:</label>
+						<select id="verbosity" name="verbosity" title="verbosity">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>	
+								
+				<div class="field" >
+            			<label  for="timeindays">Configure PCoIP event log clearup by time in days:</label>
+						<select id="timeindays" name="timeindays" title="timeindays">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>	
+								
+				<div class="field" >
+            			<label  for="sizeinmb">Configure PCoIP event log clearup by size in MB:</label>
+						<select id="sizeinmb" name="sizeinmb" title="sizeinmb">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>
+
 				
 				
   </div>
   <div class="tab-pane card" id="usb">
-    			<div class="field" >
-           		 <label  for="clipboard">Configure clipboard redirection:</label>
-						<select id="clipboard" name="clipboard" title="clipboard">
-							<option selected="selected" value="0">Enabled client to agent only </option>
-							<option value="1">Disabled in both directions</option>
-							<option value="2">Enabled in both directions</option>
-							<option value="3">Enabled agent to client only</option>
-						</select>
-						
+
+				<div class="field" >
+            			<label  for="exclude">Exclude Vid/Pid Device from Split:</label>
+						<select id="exclude" name="exclude" title="exclude">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>			
+				
+				<div class="field" >
+            			<label  for="splitdevice">Split Vid/Pid Device:</label>
+						<select id="splitdevice" name="splitdevice" title="splitdevice">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
 				</div>
+				
+				<div class="field" >
+            			<label  for="other">Allow other input devices:</label>
+						<select id="other" name="other" title="other">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>
+				
+				<div class="field" >
+            			<label  for="HID">Allow HID-Bootable:</label>
+						<select id="HID" name="HID" title="HID">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>
+				
+				<div class="field" >
+            			<label  for="inputdevices">Allow Audio Input Devices:</label>
+						<select id="inputdevices" name="inputdevices" title="inputdevices">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>
+				
+				<div class="field" >
+            			<label  for="outputdevices">Allow Audio Output Devices:</label>
+						<select id="outputdevices" name="outputdevices" title="outputdevices">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>
+				
+				<div class="field" >
+            			<label  for="keyboard">Allow keyboard and Mouse Devices:</label>
+						<select id="keyboard" name="keyboard" title="keyboard">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>
+				
+				<div class="field" >
+            			<label  for="videodevices">Allow Video Devices:</label>
+						<select id="videodevices" name="videodevices" title="videodevices">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>
+				
+				<div class="field" >
+            			<label  for="smartcards">Allow Smart Cards:</label>
+						<select id="smartcards" name="smartcards" title="smartcards">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>
+				
+				<div class="field" >
+            			<label  for="autodevice">Allow Auto Device Splitting:</label>
+						<select id="autodevice" name="autodevice" title="autodevice">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>
+				
+				<div class="field" >
+            			<label  for="excludeVP">Exclude Vid/Pid Device:</label>
+						<select id="excludeVP" name="excludeVP" title="excludeVP">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>
+				
+				<div class="field" >
+            			<label  for="includeVP">Include Vid/Pid Device:</label>
+						<select id="includeVP" name="includeVP" title="includeVP">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>
+				
+				<div class="field" >
+            			<label  for="excludeDF">Exclude Device Family:</label>
+						<select id="excludeDF" name="excludeDF" title="excludeDF">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>	
+				
+				<div class="field" >
+            			<label  for="includeDF">Include Device Family:</label>
+						<select id="includeDF" name="includeDF" title="includeDF">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>	
+				
+				<div class="field" >
+            			<label  for="exclludeAll">Exclude All Devices:</label>
+						<select id="exclludeAll" name="exclludeAll" title="exclludeAll">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>	
+				
+				<div class="field" >
+            			<label  for="MMR">Force MMR to use software overlay:</label>
+						<select id="MMR" name="MMR" title="MMR">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>	
+				
+				<div class="field" >
+            			<label  for="multimedia">Enable multi-media acceleration:</label>
+						<select id="multimedia" name="multimedia" title="multimedia">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>	
+				
+				<div class="field" >
+            			<label  for="directRDP">AllowDirectRDP:</label>
+						<select id="directRDP" name="directRDP" title="directRDP">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>	
+				
+				<div class="field" >
+            			<label  for="singleSignon">AllowSingleSignon:</label>
+						<select id="singleSignon" name="singleSignon" title="singleSignon">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>	
+				
+				<div class="field" >
+            			<label  for="timeout">ConnectionTicketTimeout:</label>
+						<select id="timeout" name="timeout" title="timeout">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>	
+				
+				<div class="field" >
+            			<label  for="credentialFilter">CredentialFilterException:</label>
+						<select id="credentialFilter" name="credentialFilter" title="credentialFilter">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>	
+				
+				<div class="field" >
+            			<label  for="usingDNS">Connect using DNS Name:</label>
+						<select id="usingDNS" name="usingDNS" title="usingDNS">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>	
+				
+				<div class="field" >
+            			<label  for="disableTZName">Disable Time Zone Name:</label>
+						<select id="disableTZName" name="disableTZName" title="disableTZName">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>	
+				
+				<div class="field" >
+            			<label  for="toggle">Toggle Display Settings Control:</label>
+						<select id="toggle" name="toggle" title="toggle">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>	
+				
+				<div class="field" >
+            			<label  for="onConnect">CommandsToRunOnConnect:</label>
+						<select id="onConnect" name="onConnect" title="onConnect">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>	
+				
+				<div class="field" >
+            			<label  for="onReconnect">CommandsToRunOnReconnect:</label>
+						<select id="onReconnect" name="onReconnect" title="onReconnect">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>	
+				
+				<div class="field" >
+            			<label  for="onDisconnect">CommandsToRunOnDisconnect:</label>
+						<select id="onDisconnect" name="onDisconnect" title="onDisconnect">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>	
+				
+				<div class="field" >
+            			<label  for="showIcon">ShowDiskActivityIcon:</label>
+						<select id="showIcon" name="showIcon" title="showIcon">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>	
+				
+				<div class="field" >
+            			<label  for="frameworkChannel">Accept SSL encryted framework channel:</label>
+						<select id="frameworkChannel" name="frameworkChannel" title="frameworkChannel">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>	
+				
+				<div class="field" >
+            			<label  for="unity">Enable Unity Touch:</label>
+						<select id="unity" name="unity" title="unity">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>	
+				
+				<div class="field" >
+            			<label  for="maxFrames">Max frames per second:</label>
+						<select id="maxFrames" name="maxFrames" title="maxFrames">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>	
+				
+				<div class="field" >
+            			<label  for="maxImageHeight">Resolution-Max image height in pixels:</label>
+						<select id="maxImageHeight" name="maxImageHeight" title="maxImageHeight">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>	
+				
+				<div class="field" >
+            			<label  for="maxImageWidth">Resolution-Max image width in pixels:</label>
+						<select id="maxImageWidth" name="maxImageWidth" title="maxImageWidth">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>	
+				
+				<div class="field" >
+            			<label  for="defaultImageHeight">Resolution-Default image resolution height in pixels:</label>
+						<select id="defaultImageHeight" name="defaultImageHeight" title="defaultImageHeight">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>	
+				
+				<div class="field" >
+            			<label  for="defaultImageWidth">Resolution-Default image resolution width in pixels:</label>
+						<select id="defaultImageWidth" name="defaultImageWidth" title="defaultImageWidth">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>	
+				
+				<div class="field" >
+            			<label  for="disableRTAV">Disable RTAV:</label>
+						<select id="disableRTAV" name="disableRTAV" title="disableRTAV">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>	
+				
+				<div class="field" >
+            			<label  for="portNumber">HTTPS Port Number:</label>
+						<select id="portNumber" name="portNumber" title="portNumber">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>	
+				
+				<div class="field" >
+            			<label  for="sessionTimeout">Session Timeout:</label>
+						<select id="sessionTimeout" name="sessionTimeout" title="sessionTimeout">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>
+				
+				<div class="field" >
+            			<label  for="disclaimerEnabled">Disclaimer Enabled:</label>
+						<select id="disclaimerEnabled" name="disclaimerEnabled" title="disclaimerEnabled">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>
+				
+				<div class="field" >
+            			<label  for="disclaimerText">Disclaimer Text:</label>
+						<select id="disclaimerText" name="disclaimerText" title="disclaimerText">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>
+				
+				<div class="field" >
+            			<label  for="applictionsEnabled">Applictions Enabled:</label>
+						<select id="applictionsEnabled" name="applictionsEnabled" title="applictionsEnabled">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>	
+				
+				<div class="field" >
+            			<label  for="autoConnect">Client setting: AutoConnect:</label>
+						<select id="autoConnect" name="autoConnect" title="autoConnect">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>
+				
+				<div class="field" >
+            			<label  for="alwaysConnect">Client setting: AlwaysConnect:</label>
+						<select id="alwaysConnect" name="alwaysConnect" title="alwaysConnect">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>
+				
+				<div class="field" >
+            			<label  for="screenSize">Client setting:ScreenSize:</label>
+						<select id="screenSize" name="screenSize" title="screenSize">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>
+				
+				<div class="field" >
+            			<label  for="PCoIPport">External PCoIP Port:</label>
+						<select id="PCoIPport" name="PCoIPport" title="PCoIPport">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>
+				
+				<div class="field" >
+            			<label  for="RDPport">External RDP Port:</label>
+						<select id="RDPport" name="RDPport" title="RDPport">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>
+				
+				<div class="field" >
+            			<label  for="blastPort">External Blast Port:</label>
+						<select id="blastPort" name="blastPort" title="blastPort">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>
+				
+				<div class="field" >
+            			<label  for="IPaddress">External IP Address:</label>
+						<select id="IPaddress" name="IPaddress" title="IPaddress">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>
+				
+				<div class="field" >
+            			<label  for="channelPort">External Framework Channel Port:</label>
+						<select id="channelPort" name="channelPort" title="channelPort">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>
+				
+				<div class="field" >
+            			<label  for="USBenabled">USB Enabled:</label>
+						<select id="USBenabled" name="USBenabled" title="USBenabled">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>
+				
+				<div class="field" >
+            			<label  for="MMRenabled">Multimedia redirection(MMR) Enabled:</label>
+						<select id="MMRenabled" name="MMRenabled" title="MMRenabled">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>
+				
+				<div class="field" >
+            			<label  for="resetEnabled">Reset Enabled:</label>
+						<select id="resetEnabled" name="resetEnabled" title="resetEnabled">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>
+				
+				<div class="field" >
+            			<label  for="USBautoConnect">USB AutoConnect:</label>
+						<select id="USBautoConnect" name="USBautoConnect" title="USBautoConnect">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>
+				
+				<div class="field" >
+            			<label  for="cacheTimeout">Client Credential Cache Timeout:</label>
+						<select id="cacheTimeout" name="cacheTimeout" title="cacheTimeout">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>
+				
+				<div class="field" >
+            			<label  for="DisSessionTimeout">Disconnected Session Timeout:</label>
+						<select id="DisSessionTimeout" name="DisSessionTimeout" title="DisSessionTimeout">
+							<option selected="selected" value="0">Enabled</option>
+							<option value="1">Disabled</option>
+						</select>						
+				</div>
+				
 				
 
   </div>

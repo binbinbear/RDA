@@ -364,4 +364,32 @@ For sessions line chart view
   stroke: steelblue;
   stroke-width: 1.5px;
 }
+		
+
+.ui-state-highlight {
+	border: 1px solid #fed22f;
+	background: #ffe45c url("images/ui-bg_highlight-soft_75_ffe45c_1x100.png") 50% top repeat-x;
+	color: #363636;
+	height: 20px;
+}
+
+.ui-state-error {
+	border: 1px solid #cd0a0a;
+	background: #b81900 url("images/ui-bg_diagonals-thick_18_b81900_40x40.png") 50% 50% repeat;
+	color: #ffffff;
+	height: 20px;
+}
+
+.ui-state-default .ui-icon {
+	background-image: url("images/ui-icons_ef8c08_256x240.png");
+}
+.ui-state-hover .ui-icon,
+.ui-state-focus .ui-icon {
+	background-image: url("images/ui-icons_ef8c08_256x240.png");
+}
+.ui-state-active .ui-icon {
+	background-image: url("images/ui-icons_ef8c08_256x240.png");
+}
+.ui-icon-alert { background-position: 0 -144px; }
+.ui-icon-info { background-position: -16px -144px; }
 
