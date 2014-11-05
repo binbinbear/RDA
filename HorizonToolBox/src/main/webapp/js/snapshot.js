@@ -153,5 +153,5 @@ if (!ToolBox.Snapshot || !ToolBox.Snapshot.init){
 
 
 
-ToolBox.Snapshot.init();
+$(window).load(ToolBox.Snapshot.init);
 

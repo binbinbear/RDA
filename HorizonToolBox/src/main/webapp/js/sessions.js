@@ -2,6 +2,33 @@ if (!window.ToolBox){
 	window.ToolBox= {};
 }
 if (!ToolBox.Session || !ToolBox.Session.init){
+	/**
+	 * @ngInject
+	 */
+	function  tableController($scope, ngTableParams) {
+
+	    $scope.desktopParams = ToolBox.Session.desktopParams =new  ngTableParams({
+	        page: 1,            // show first page
+	        count: 10           // count per page
+	    }, {
+	        total: 0, // length of data
+	        getData: function($defer, params) {
+	        		params.total(ToolBox.Session.pools.length);
+					$defer.resolve(ToolBox.Session.pools.slice((params.page() - 1) * params.count(), params.page() * params.count()));   
+	        }
+	    });
+	    
+	    $scope.appParams = ToolBox.Session.appParams = new  ngTableParams({
+	        page: 1,            // show first page
+	        count: 10           // count per page
+	    }, {
+	        total: 0, // length of data
+	        getData: function($defer, params) {
+	        		params.total(ToolBox.Session.farms.length);
+					$defer.resolve(ToolBox.Session.farms.slice((params.page() - 1) * params.count(), params.page() * params.count()));   
+	        }
+	    });
+	};
 	ToolBox.Session = {
 			pools: [],
 			farms: [],
@@ -11,30 +38,7 @@ if (!ToolBox.Session || !ToolBox.Session.init){
 		    
 		    appParams: null,
 		    
-			app:  angular.module('main', ['ngTable']).controller('sessionCtrl', function($scope, ngTableParams) {
-
-			    $scope.desktopParams = ToolBox.Session.desktopParams =new  ngTableParams({
-			        page: 1,            // show first page
-			        count: 10           // count per page
-			    }, {
-			        total: 0, // length of data
-			        getData: function($defer, params) {
-			        		params.total(ToolBox.Session.pools.length);
-							$defer.resolve(ToolBox.Session.pools.slice((params.page() - 1) * params.count(), params.page() * params.count()));   
-			        }
-			    });
-			    
-			    $scope.appParams = ToolBox.Session.appParams = new  ngTableParams({
-			        page: 1,            // show first page
-			        count: 10           // count per page
-			    }, {
-			        total: 0, // length of data
-			        getData: function($defer, params) {
-			        		params.total(ToolBox.Session.farms.length);
-							$defer.resolve(ToolBox.Session.farms.slice((params.page() - 1) * params.count(), params.page() * params.count()));   
-			        }
-			    });
-			}),
+			app:  ToolBox.NgApp.controller('sessionCtrl', tableController),
 		    _updateHistoryStatus: function(message){
 		    	var loadingDiv = $(".loadingdiv");
 		    	loadingDiv.removeClass("loadingdiv");

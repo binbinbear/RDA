@@ -2,77 +2,83 @@ if (!window.ToolBox){
 	window.ToolBox= {};
 }
 if (!ToolBox.Usage || !ToolBox.Usage.init){
+	/**
+	 * @ngInject
+	 */
+	function  tableController($scope, ngTableParams) {
+
+		$scope.days = "7";
+		 $scope.$watch("days", function () {
+		        $scope.tableParams.reload();
+		  });     
+	    $scope.tableParams = new ngTableParams({
+	        page: 1,            // show first page
+	        count: 10           // count per page
+	    }, {
+	        total: 0, // length of data
+	        getData: function($defer, params) {
+	        	var thisRequestData = {user:$("#user").val(),days:$scope.days};
+	        	var loadPage = function(){
+	        		ToolBox.Usage.lastRequestData = thisRequestData;
+	        		
+	        		var data = ToolBox.Usage.usageData;
+	        		if (data == null || data.length == 0){
+	        			params.page(1);
+	        			params.total(0);
+	        		}else{
+	        			if ((params.page() - 1) * params.count() >= ToolBox.Usage.usageData.length){
+							params.page(1);
+						}
+	        			params.total(data.length);
+						$defer.resolve(data.slice((params.page() - 1) * params.count(), params.page() * params.count()));						 			           
+	        		}
+					
+	        	};
+					
+					if (ToolBox.Usage.lastRequestData == null || (thisRequestData["user"] != ToolBox.Usage.lastRequestData["user"]|| thisRequestData["days"] != ToolBox.Usage.lastRequestData["days"])){
+						ToolBox.Usage.usageData = [];
+						loadPage();
+						if($("#loading2").length == 0){
+					    	// $('#accumulatedUsing').append("<div class=\"loadingdiv\">Loading</div>"); 
+							$('#connectionTable').append("<tr id=\"loading2\" class=\"loadingrow\"><td class=\"desktopName \" ></td>"
+									+"<td class=\"desktopName \" ></td><td class=\"desktopName \" ></td><td class=\"desktopName \" ></td>"
+									+ "<td class=\"desktopName \" ></td><td class=\"desktopName \" ></td></tr>");
+					     }
+						$.ajax({
+							url: './usage/connection',
+							type: "GET",
+							data:thisRequestData,
+							success: function (data) {
+								$(".updateDate").text("");
+								$(".loadingrow").remove();
+								if(data){	
+									for(var i = 0; i < data.length; i++){
+										data[i].disconnectionTime = new Date(data[i].disconnectionTime).toLocaleString();
+										data[i].connectionTime = new Date(data[i].connectionTime).toLocaleString();
+										data[i].usageTime= ToolBox.Usage.toTimeString(data[i].usageTime);
+									}
+									ToolBox.Usage.usageData = data;
+								}
+								loadPage();
+							}, 
+							error:function(XMLHttpRequest, textStatus, errorThrown){
+								$(".loadingrow").remove();
+								ToolBox.Usage.usageData = [];
+								loadPage();
+								 $(".updateDate").text("Error happens when getting data from Event DB");
+						    }
+						});
+					}else{
+						loadPage();
+					}							 
+	        }
+	    });
+	
+	}
 	ToolBox.Usage = {
 			usageData:[],   
 			lastRequestData:null,
-			app:  angular.module('main', ['ngTable']).controller('usageCtrl', function($scope, ngTableParams) {
-				$scope.days = "7";
-				 $scope.$watch("days", function () {
-				        $scope.tableParams.reload();
-				  });     
-			    $scope.tableParams = new ngTableParams({
-			        page: 1,            // show first page
-			        count: 10           // count per page
-			    }, {
-			        total: 0, // length of data
-			        getData: function($defer, params) {
-			        	var thisRequestData = {user:$("#user").val(),days:$scope.days};
-			        	var loadPage = function(){
-			        		ToolBox.Usage.lastRequestData = thisRequestData;
-			        		
-			        		var data = ToolBox.Usage.usageData;
-			        		if (data == null || data.length == 0){
-			        			params.page(1);
-			        			params.total(0);
-			        		}else{
-			        			if ((params.page() - 1) * params.count() >= ToolBox.Usage.usageData.length){
-									params.page(1);
-								}
-			        			params.total(data.length);
-								$defer.resolve(data.slice((params.page() - 1) * params.count(), params.page() * params.count()));						 			           
-			        		}
-							
-			        	};
-							
-							if (ToolBox.Usage.lastRequestData == null || (thisRequestData["user"] != ToolBox.Usage.lastRequestData["user"]|| thisRequestData["days"] != ToolBox.Usage.lastRequestData["days"])){
-								ToolBox.Usage.usageData = [];
-								loadPage();
-								if($("#loading2").length == 0){
-							    	// $('#accumulatedUsing').append("<div class=\"loadingdiv\">Loading</div>"); 
-									$('#connectionTable').append("<tr id=\"loading2\" class=\"loadingrow\"><td class=\"desktopName \" ></td>"
-											+"<td class=\"desktopName \" ></td><td class=\"desktopName \" ></td><td class=\"desktopName \" ></td>"
-											+ "<td class=\"desktopName \" ></td><td class=\"desktopName \" ></td></tr>");
-							     }
-								$.ajax({
-									url: './usage/connection',
-									type: "GET",
-									data:thisRequestData,
-									success: function (data) {
-										$(".updateDate").text("");
-										$(".loadingrow").remove();
-										if(data){	
-											for(var i = 0; i < data.length; i++){
-												data[i].disconnectionTime = new Date(data[i].disconnectionTime).toLocaleString();
-												data[i].connectionTime = new Date(data[i].connectionTime).toLocaleString();
-												data[i].usageTime= ToolBox.Usage.toTimeString(data[i].usageTime);
-											}
-											ToolBox.Usage.usageData = data;
-										}
-										loadPage();
-									}, 
-									error:function(XMLHttpRequest, textStatus, errorThrown){
-										$(".loadingrow").remove();
-										ToolBox.Usage.usageData = [];
-										loadPage();
-										 $(".updateDate").text("Error happens when getting data from Event DB");
-								    }
-								});
-							}else{
-								loadPage();
-							}							 
-			        }
-			    });
-			}),
+			app:  ToolBox.NgApp.controller('usageCtrl', tableController),
 			toTimeString: function(seconds){
 				var hours = Math.floor(seconds/3600);
 				var minutes = Math.floor((seconds % 3600) /60);
@@ -217,6 +223,4 @@ if (!ToolBox.Usage || !ToolBox.Usage.init){
 			},
 	};
 }
-$(document).ready(function(){  
-	ToolBox.Usage.init();
-});
+$(document).ready(ToolBox.Usage.init);

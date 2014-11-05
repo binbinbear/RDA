@@ -77,7 +77,8 @@ public class SessionRestController {
 	    		@RequestParam(value="period", required=false, defaultValue=defaultPeriod) String period,
 	    		@RequestParam(value="pool",required=false,defaultValue="") String poolName) {
 		 
-		 	log.debug("Start to generate  ConcurrentConnectionsReport for "+days + " days");
+		   
+		 	log.info("Start to generate  ConcurrentConnectionsReport for "+days + " days");
 		 	if(poolName.equals("")) 
 		 		poolName = null;
 			List<Event> events = UsageRestController.getEvents(session, null, days, poolName);

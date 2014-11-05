@@ -54,7 +54,7 @@ public class UsageRestController {
 	    		@RequestParam(value="user", required=false, defaultValue="") String userName,
 	    		@RequestParam(value="days", required=false, defaultValue=defaultDays) String days) {
 		 ViewAPIService service = SessionUtil.getViewAPIService(session);
-		 log.debug("Start to query connections for "+userName+new Date());
+		 log.info("Start to query connections for "+userName+new Date());
 		   List<Event> events = UsageRestController.getEvents(session, userName, days,null);
 		 log.debug("Get Events: "+new Date());
 		   if (events!=null){
@@ -68,10 +68,17 @@ public class UsageRestController {
 	 @RequestMapping("/usage/accumulated")
 	    public AccumulatedUsageReport getUsageReport(HttpSession session, 
 	    		@RequestParam(value="days", required=false, defaultValue=defaultDays) String days) {
-		 	log.debug("Start to query accumlated usage for "+days + " days");
-		 	List<Connection>  connections = this.getConnections(session, "", days);
+		 AccumulatedUsageReport report=null;
+		    try{
+		    	log.info("Start to query accumlated usage for "+days + " days");
+			 	List<Connection>  connections = this.getConnections(session, "", days);
+			 	
+			 	report= ReportUtil.generateUsageReport(connections);
+		    }catch(Exception ex){
+		    	log.error(ex);
+		    }
+		    return report;
 		 	
-		 	return ReportUtil.generateUsageReport(connections);
 		}
 	 
 	 @RequestMapping(value = "/usage/connection/export")  

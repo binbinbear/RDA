@@ -494,6 +494,7 @@ if (!window.ToolBox){
 			STR_NODATA: "No data is retrieved, please check your Event DB from your administrator UI"
 	};
 }
+ToolBox.NgApp = angular.module('main', ['ngTable']);
 ToolBox.init =  function(){
 
 

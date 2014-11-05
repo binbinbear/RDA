@@ -6,9 +6,6 @@
 	<version>1.0</version>
 	<packaging>war</packaging>
 	<name>toolbox</name>
-	<properties>
-		<start-class>com.vmware.horizontoolset.Application</start-class>
-	</properties>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -252,6 +249,7 @@
 						</configuration>
 					</plugin>
 					<!-- compress js and csss -->
+
 					<plugin>
 
 						<groupId>org.apache.maven.plugins</groupId>
@@ -289,7 +287,8 @@
 											<arg value="-jar" />
 
 											<arg value="${closure-compiler}" />
-
+											<arg value="--angular_pass" />
+											
 											<arg value="--language_in" />
 
 											<arg value="ECMASCRIPT5" />
@@ -303,7 +302,6 @@
 											<targetfile />
 
 											<mapper type="regexp" from="^(.*)\.(js)$" to="\1-tempmin.\2" />
-
 
 										</apply>
 

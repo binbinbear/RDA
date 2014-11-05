@@ -295,5 +295,5 @@ if (!ToolBox.Client || !ToolBox.Client.init){
 }
 
 
+$(window).load(ToolBox.Client.init);
 
-ToolBox.Client.init();
