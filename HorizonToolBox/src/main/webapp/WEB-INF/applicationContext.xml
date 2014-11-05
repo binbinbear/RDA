@@ -35,6 +35,7 @@
     			<value>.html</value>
     			<value>/Login</value>
     			<value>/remoteassist/upload</value>
+    			<value>/deviceFilter/check</value>
     		</array>
     	</property>
      </bean> 
