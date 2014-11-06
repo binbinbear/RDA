@@ -75,8 +75,9 @@ public class LoginController{
         }
 
     	log.debug("User login :" + credential.getUsername());
+    	ViewAPIService _service;
     	try{
-    		ViewAPIService _service = ViewApiFactory.createNewAPIService(server, credential.getUsername(), credential.getPassword(), credential.getDomain());
+    		_service = ViewApiFactory.createNewAPIService(server, credential.getUsername(), credential.getPassword(), credential.getDomain());
         	SessionUtil.setUser(session, credential.getUsername());
     		SessionUtil.setSessionObj(session, _service);
     		
@@ -104,7 +105,7 @@ public class LoginController{
     	
     	try{
     		
-    		EventDBUtil _db = new EventDBUtil(credential.getUsername(), credential.getPassword(), credential.getDomain());
+    		EventDBUtil _db = new EventDBUtil(credential.getUsername(), credential.getPassword(), credential.getDomain(), _service);
     		SessionUtil.setSessionObj(session, _db);
     	}catch(Exception ex){
     		log.error("You can't use DB related features!", ex);

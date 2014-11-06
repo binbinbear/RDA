@@ -2,6 +2,9 @@ package com.vmware.horizontoolset.util;
 
 import java.util.Date;
 import java.util.List;
+
+import org.apache.log4j.Logger;
+
 import com.vmware.horizontoolset.usage.Event;
 import com.vmware.horizontoolset.usage.EventType;
 import com.vmware.vdi.admin.be.events.AdminEvent;
@@ -13,6 +16,8 @@ import com.vmware.vdi.events.enums.EventModule;
  *
  */
 public class EventImpl implements Event{
+	private static Logger log = Logger.getLogger(EventImpl.class);
+	
 	@Override
 	public int hashCode() {
 		return this.eventId;
@@ -60,7 +65,7 @@ public class EventImpl implements Event{
 		return null;
 		
 	}
-	
+
 	public EventImpl(AdminEvent event){
 		this.eventId = event.getEventId();
 		this.username = event.getUsername();
@@ -85,9 +90,9 @@ public class EventImpl implements Event{
 				AdminEventSource source = (AdminEventSource)eventSource;
 				if(source.getType().toString().equals("POOL")){
 					this.poolName = source.getName();
-					break;
+					//break;
 				}
-					
+				log.info("Event source:" + source.getType().toString() + " source name:" + source.getName());
 				
 			}
 		}
@@ -132,6 +137,17 @@ public class EventImpl implements Event{
 	@Override
 	public String getPoolName() {
 		return this.poolName;
+	}
+
+	private String farmName;
+	@Override
+	public void setFarmName(String farmName) {
+		this.farmName = farmName;
+	}
+
+	@Override
+	public String getFarmName() {
+		return this.farmName;
 	}
 
 }

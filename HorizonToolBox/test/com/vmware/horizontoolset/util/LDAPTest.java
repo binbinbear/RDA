@@ -8,19 +8,11 @@ public class LDAPTest {
 
 	@Test
 	public void testCEIP() {
-		LDAP ldap = LDAP._get_junit_ldap("10.117.160.101", "asdf", "asdf");
-		boolean isEanbled = ldap.isCEIPEnabled();
-		if (isEanbled){
-			ldap.disableCEIP();
-			assertFalse(ldap.isCEIPEnabled());
-			ldap.enableCEIP();
-			assertTrue(ldap.isCEIPEnabled());
-		}else{
-			ldap.enableCEIP();
-			assertTrue(ldap.isCEIPEnabled());
-			ldap.disableCEIP();
-			assertFalse(ldap.isCEIPEnabled());
-			
+		String asd = "12.3";
+		String[] asdf = asd.split("[.]");
+		System.out.println(asdf.length);
+		for (int i=0;i<asdf.length;i++){
+			System.out.println(asdf[i]);
 		}
 	}
 

@@ -25,7 +25,21 @@ public interface ViewAPIService extends AutoCloseable {
 	@Override
 	public void close();
 
-	public List<ViewPool> getAllPools();
+	/**
+	 * 
+	 * @return all desktop pools including rds pools, not including application pools
+	 */
+	public List<ViewPool> getAllDesktopPools();
+	
+	public List<Farm> getAllFarms();
+	
+	
+	/**
+	 * 
+	 * @return all RDS hosts
+	 */
+	public List<RDS> getAllRDS();
+	
 
 	public DesktopPool getDesktopPool(String name);
 

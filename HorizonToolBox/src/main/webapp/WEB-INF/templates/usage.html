@@ -53,7 +53,7 @@
 				<button ng-click="tableParams.reload()" class="btn btn-default">Search</button>
 			&nbsp;&nbsp; <label for="viewType">Show report for: </label>
 			<select ng-model="days">
-				<option value="1">Last 1 day</option>
+				<option value="2">Last 2 days</option>
 				<option value="7" selected="selected">Last 7 days</option>
 				<option value="30">Last 1 month</option>
 			</select>
@@ -66,7 +66,7 @@
 					<td data-title="'Disconnection Time'">{{user.disconnectionTime}}</td>
 					<td data-title="'Usage Time'">{{user.usageTime}}</td>
 					<td data-title="'Machine Name'">{{user.machineName}}</td>
-					<td data-title="'Pool Name'">{{user.poolName}}</td>
+					<td data-title="'Pool/Farm Name'">{{user.poolName || user.farmName}}</td>
 				</tr>
 				<tr id="loading2" class="loadingrow">
 						<td class="desktopName " ></td>

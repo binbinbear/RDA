@@ -7,14 +7,12 @@ import com.vmware.horizontoolset.usage.Connection;
 import com.vmware.horizontoolset.usage.Event;
 
 
-@JsonIgnoreProperties(value={"connectionEvent", "disconnectionEvent"})
+@JsonIgnoreProperties(value={ "disconnectionEvent"})
 public class ConnectionImpl implements Connection{
 
 	private String username;
 	private Event connectEvent;
 	private Event disConnectEvent;
-	private String connectionType;
-	
 	
 	
 	public ConnectionImpl(Event connectEvent, Event disconnectEvent){
@@ -22,12 +20,9 @@ public class ConnectionImpl implements Connection{
 		this.connectEvent = connectEvent;
 		this.disConnectEvent = disconnectEvent;
 	}
-	public ConnectionImpl(Event connectEvent, Event disconnectEvent, String contype){
-		this.username = connectEvent.getUserName();
-		this.connectEvent = connectEvent;
-		this.disConnectEvent = disconnectEvent;
-		this.connectionType = contype;
-	}
+	
+
+
 	
 	@Override
 	public String getUserName() {
@@ -92,9 +87,9 @@ public class ConnectionImpl implements Connection{
 
 
 	@Override
-	public String getConnectionType() {
+	public String getFarmName() {
 		
-		return this.connectionType;
+		return this.connectEvent.getFarmName();
 	}
 
 

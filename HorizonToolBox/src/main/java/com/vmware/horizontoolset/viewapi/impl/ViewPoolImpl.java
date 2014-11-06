@@ -1,7 +1,6 @@
 package com.vmware.horizontoolset.viewapi.impl;
 
 import com.vmware.vdi.vlsi.binding.vdi.resources.Desktop.DesktopInfo;
-import com.vmware.vdi.vlsi.binding.vdi.resources.Desktop.DesktopSummaryView;
 import com.vmware.horizontoolset.viewapi.ViewPool;
 
 public abstract class ViewPoolImpl implements ViewPool{

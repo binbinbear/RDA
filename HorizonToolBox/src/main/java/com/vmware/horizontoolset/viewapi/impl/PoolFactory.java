@@ -2,6 +2,7 @@ package com.vmware.horizontoolset.viewapi.impl;
 
 import org.apache.log4j.Logger;
 
+import com.vmware.vdi.vlsi.binding.vdi.resources.Application.ApplicationInfo;
 import com.vmware.vdi.vlsi.binding.vdi.resources.Desktop.DesktopInfo;
 import com.vmware.vdi.vlsi.binding.vdi.resources.Desktop.DesktopSummaryView;
 import com.vmware.horizontoolset.viewapi.SessionPool;
@@ -15,6 +16,12 @@ public class PoolFactory {
 	public static BasicViewPool getBasicViewPool(DesktopSummaryView desktop){
 		return new BasicViewPool(desktop);
 	}
+	
+	
+	public static BasicViewPool getBasicViewPool(ApplicationInfo info){
+		return new BasicViewPool(info);
+	}
+	
 	
 	public static SnapShotViewPool getPool(DesktopSummaryView desktop, ViewQueryService service){
 		

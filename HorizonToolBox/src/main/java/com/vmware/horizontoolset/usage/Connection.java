@@ -6,7 +6,19 @@ import java.util.Date;
 public interface Connection extends Comparable<Connection>{
 	public String getUserName() ;
 	public String getMachineName();
+	
+
+	/**
+	 * 
+	 * @return pool name for desktop connection
+	 */
 	public String getPoolName();
+	
+	/**
+	 * 
+	 * @return farm name for app connection
+	 */
+	public String getFarmName();
 	/**
 	 * 
 	 * @return Time in seconds
@@ -20,5 +32,5 @@ public interface Connection extends Comparable<Connection>{
 	public Event getConnectionEvent();
 	public Event getDisconnectionEvent();
 
-	public String getConnectionType();
+
 }

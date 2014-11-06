@@ -58,7 +58,7 @@ public class UsageRestController {
 		   List<Event> events = UsageRestController.getEvents(session, userName, days,null);
 		 log.debug("Get Events: "+new Date());
 		   if (events!=null){
-			   return ReportUtil.getConnections(events, userName, service);
+			   return ReportUtil.getConnections(events, userName);
 		   }
 		 log.debug("Complish Connnections: "+new Date());
 			return new ArrayList<Connection>();

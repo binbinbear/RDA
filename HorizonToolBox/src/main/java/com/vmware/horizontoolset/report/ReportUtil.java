@@ -16,6 +16,8 @@ import com.vmware.horizontoolset.usage.Connection;
 import com.vmware.horizontoolset.usage.Event;
 import com.vmware.horizontoolset.usage.EventType;
 import com.vmware.horizontoolset.util.ConnectionImpl;
+import com.vmware.horizontoolset.viewapi.Farm;
+import com.vmware.horizontoolset.viewapi.RDS;
 import com.vmware.horizontoolset.viewapi.Session;
 import com.vmware.horizontoolset.viewapi.SessionFarm;
 import com.vmware.horizontoolset.viewapi.SessionPool;
@@ -103,28 +105,24 @@ public class ReportUtil {
 		return CEIPReportUtil.generateReport(sPoolFolder);
 	}
 	
+	
 	/**
 	 * Get all connection time and disconnection time for a specific user or all users
 	 * @param events
 	 * @param userName     null to get all users
-	 * @param service 
 	 * @return 
 	 */
-	public static List<Connection> getConnections(List<Event> events, String userName, ViewAPIService service) {
+	public static List<Connection> getConnections(List<Event> events, String userName) {
 		if (userName == null){
 			userName = "";
 		}
 		List<Connection> result = new ArrayList<Connection>();
 		
 		Map<String,Event> connectionEvents = new HashMap<String, Event>();
-		//Event is sorted by descent time
-		 HashMap<String, String> poolNameTotype = new HashMap<String, String>();
-		if(service != null){
-			List<ViewPool> basicPools = service.getAllPools();
-			 for(ViewPool pool : basicPools){
-					poolNameTotype.put(pool.getName(), pool.getViewType().toString());
-				}
-		}
+		
+		
+		
+		
 		 log.debug("before tranverse events: "+new Date());
 		for (int i = events.size() -1; i>=0; i--) {
 			Event event = events.get(i);
@@ -138,11 +136,9 @@ public class ReportUtil {
 				}else if (event.getType() == EventType.Disconnection){
 					Event connectionEvent = connectionEvents.get(key);
 					if (connectionEvent!=null){
-						if(!poolNameTotype.isEmpty()){
-							result.add(new ConnectionImpl(connectionEvent, event, 
-									poolNameTotype.get(connectionEvent.getPoolName())));		
-						}else
-							result.add(new ConnectionImpl(connectionEvent, event));
+						ConnectionImpl connection = new ConnectionImpl(connectionEvent, event);
+						result.add(connection );
+						
 						connectionEvents.remove(key);
 					}
 				}
@@ -206,7 +202,7 @@ public class ReportUtil {
 		}
 		log.debug("Start to generate concurrent connections report from event:" + events.size() + "Timeunit:" + timeUnit);
 		timeUnit = timeUnit* 1000;
-		List<Connection> connections = ReportUtil.getConnections(events, null, null);
+		List<Connection> connections = ReportUtil.getConnections(events, null);
 		
 		events.clear();
 		for (Connection c: connections){
@@ -256,8 +252,4 @@ public class ReportUtil {
 		return new ConcurrentConnectionsReport(result);
 	}
 
-	public static ViewPoolReport generateViewPoolReport(List<Session> sessions) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }

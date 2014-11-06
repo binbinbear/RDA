@@ -47,7 +47,7 @@ if (!ToolBox.Session || !ToolBox.Session.init){
 		    },
 		    getViewPools: function(){
 				$.ajax({
-					url: './common/viewpools',
+					url: './common/poolfarms',
 					type: "GET",
 					success: function (data) {
 						if (!data || !data.length){
@@ -56,7 +56,7 @@ if (!ToolBox.Session || !ToolBox.Session.init){
 						 var poolbody = $("#desktoppool");
 						 for (var i= 0; i< data.length; i++){
 								var dSD = data[i];
-								var option = "<option value=\""   +  dSD.name + "\"> "+ dSD.name+"</option>";
+								var option = "<option value=\""   +  dSD + "\"> "+ dSD+"</option>";
 							 	poolbody.append(option);
 							}
 					}, 

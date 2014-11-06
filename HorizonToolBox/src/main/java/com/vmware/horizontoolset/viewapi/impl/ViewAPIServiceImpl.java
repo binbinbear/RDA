@@ -1,14 +1,7 @@
 package com.vmware.horizontoolset.viewapi.impl;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.apache.log4j.Logger;
-
-
-
-
-
-
 
 import com.vmware.vdi.vlsi.binding.vdi.infrastructure.VirtualCenter;
 import com.vmware.vdi.vlsi.binding.vdi.infrastructure.VirtualCenter.VirtualCenterInfo;
@@ -18,6 +11,8 @@ import com.vmware.vdi.vlsi.client.Query;
 import com.vmware.vdi.vlsi.client.Query.QueryFilter;
 import com.vmware.vdi.vlsi.cname.vdi.resources.DesktopCName.DesktopSummaryViewCName;
 import com.vmware.horizontoolset.util.DesktopPool;
+import com.vmware.horizontoolset.viewapi.Farm;
+import com.vmware.horizontoolset.viewapi.RDS;
 import com.vmware.horizontoolset.viewapi.Session;
 import com.vmware.horizontoolset.viewapi.SessionFarm;
 import com.vmware.horizontoolset.viewapi.SessionPool;
@@ -55,7 +50,7 @@ public class ViewAPIServiceImpl implements ViewAPIService{
 			return null;
 		}
 		Cache.emptyCache();
-		 return this._queryService.getAllPools();
+		 return this._queryService.getAllSnapShotViewPools();
 	}
 
 	
@@ -114,14 +109,14 @@ public class ViewAPIServiceImpl implements ViewAPIService{
 
 
 
-	public List<ViewPool> getAllPools()
+	public List<ViewPool> getAllDesktopPools()
 	{
 		if (this._queryService == null){
 			log.info("Closed VIEW API can't be used!");
 			return null;
 		}
 			
-		return this._queryService.getAllBasicPools();
+		return this._queryService.getAllDesktopPools();
 	}
 
 
@@ -179,6 +174,19 @@ public class ViewAPIServiceImpl implements ViewAPIService{
 
 	public void set_domain(String _domain) {
 		this._domain = _domain;
+	}
+
+	
+	public List<Farm> getAllFarms(){
+		return this._queryService.getAllFarms();
+	}
+	
+	
+
+
+	@Override
+	public List<RDS> getAllRDS() {
+		return this._queryService.getAllBasicRDSHosts();
 	}
 
 }

@@ -11,10 +11,12 @@ import com.vmware.vdi.vlsi.binding.vdi.entity.BaseImageVmId;
 import com.vmware.vdi.vlsi.binding.vdi.entity.DesktopId;
 import com.vmware.vdi.vlsi.binding.vdi.entity.FarmId;
 import com.vmware.vdi.vlsi.binding.vdi.query.QueryDefinition;
+import com.vmware.vdi.vlsi.binding.vdi.resources.Application.ApplicationInfo;
 import com.vmware.vdi.vlsi.binding.vdi.resources.Desktop;
 import com.vmware.vdi.vlsi.binding.vdi.resources.Desktop.DesktopInfo;
 import com.vmware.vdi.vlsi.binding.vdi.resources.Desktop.DesktopSummaryView;
 import com.vmware.vdi.vlsi.binding.vdi.resources.Farm.FarmInfo;
+import com.vmware.vdi.vlsi.binding.vdi.resources.RDSServer.RDSServerSummaryView;
 import com.vmware.vdi.vlsi.binding.vdi.users.Session.SessionLocalSummaryView;
 import com.vmware.vdi.vlsi.binding.vdi.utils.virtualcenter.BaseImageSnapshot;
 import com.vmware.vdi.vlsi.binding.vdi.utils.virtualcenter.BaseImageSnapshot.BaseImageSnapshotInfo;
@@ -23,6 +25,8 @@ import com.vmware.vdi.vlsi.client.Query;
 import com.vmware.vdi.vlsi.client.Query.QueryFilter;
 import com.vmware.vdi.vlsi.cname.CName;
 import com.vmware.vdi.vlsi.cname.vdi.users.SessionCName.SessionLocalSummaryViewCName;
+import com.vmware.horizontoolset.viewapi.Farm;
+import com.vmware.horizontoolset.viewapi.RDS;
 import com.vmware.horizontoolset.viewapi.SessionFarm;
 import com.vmware.horizontoolset.viewapi.SessionPool;
 import com.vmware.horizontoolset.viewapi.SnapShotViewPool;
@@ -116,6 +120,20 @@ public class ViewQueryService {
 	}
 	
 	
+	private List<RDSServerSummaryView> getRDSServerSummaryViews(){
+		log.debug("Start to query pools");
+
+		return getAllObjects(RDSServerSummaryView.class);	  
+	}
+	
+	
+	private List<ApplicationInfo> getApplicationInfos(){
+		log.debug("Start to query pools");
+
+		return getAllObjects(ApplicationInfo.class);	  
+	}
+	
+	
 	public List<SessionPool> getAllSessionPools(){
 		List<DesktopSummaryView>  results = this.getDesktopSummaryViews();
 		List<SessionPool> list = new ArrayList<SessionPool>();
@@ -140,8 +158,11 @@ public class ViewQueryService {
 	}
 
 
-	
-	public List<SnapShotViewPool> getAllPools(){
+	/**
+	 * this is a low performance function, is only called when getting snapshot report
+	 * @return
+	 */
+	public List<SnapShotViewPool> getAllSnapShotViewPools(){
 		log.debug("Start to query pools");
 		List<DesktopSummaryView> results = this.getDesktopSummaryViews();
 		List<SnapShotViewPool> list = new ArrayList<SnapShotViewPool>();
@@ -178,10 +199,13 @@ public class ViewQueryService {
 		return Query.count(this._connection, SessionLocalSummaryView.class, filter);
 	}
 
+	private List<FarmInfo> farminfolist ;
 	public List<SessionFarm> getAllSessionFarms() {
 		log.debug("Start to query farms");
 		List<SessionFarm> list = new ArrayList<SessionFarm>();
-		List<FarmInfo> farminfolist = this.getAllObjects(FarmInfo.class);
+		if (farminfolist == null){
+			farminfolist = this.getAllObjects(FarmInfo.class);
+		}
 		
 		
 	    if (farminfolist == null || farminfolist.size()==0) {
@@ -219,15 +243,45 @@ public class ViewQueryService {
 	}
 
 
-	public List<ViewPool>  getAllBasicPools() {
-		List<DesktopSummaryView> results = this.getDesktopSummaryViews();
+	public List<ViewPool>  getAllDesktopPools() {
+		List<DesktopSummaryView> desktops = this.getDesktopSummaryViews();
 		List<ViewPool>  list = new ArrayList<ViewPool>();
-	    if (results == null || results.size() == 0) {
+	    if (desktops == null || desktops.size() == 0) {
 	    	log.debug("no results in pools");
+	    }else{
+	    	for(DesktopSummaryView desktop: desktops){
+		    	list.add(PoolFactory.getBasicViewPool(desktop));
+		    }
 	    }
-	    for(DesktopSummaryView desktop: results){
-	    	list.add(PoolFactory.getBasicViewPool(desktop));
-	    }
+	    
 		return list;
+	}
+
+
+	public List<RDS> getAllBasicRDSHosts() {
+		List<RDSServerSummaryView> rdssummaryviews = this.getRDSServerSummaryViews();
+		List<RDS>  list = new ArrayList<RDS>();
+	    if (rdssummaryviews == null || rdssummaryviews.size() == 0) {
+	    	log.debug("no results in rds hosts");
+	    }else{
+	    	for(RDSServerSummaryView rds: rdssummaryviews){
+		    	list.add(new BasicRDS(rds));
+		    }
+	    }
+	    
+		return list;
+	}
+	
+	public List<Farm>  getAllFarms(){
+		if (farminfolist == null){
+			farminfolist = this.getAllObjects(FarmInfo.class);
+		}
+		List<Farm> farms = new ArrayList<Farm>();
+		for (FarmInfo info: farminfolist){
+			farms.add(new BasicFarm(info));
+		}
+		return farms;
+		
+		
 	}
 }

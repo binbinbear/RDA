@@ -6,7 +6,7 @@ if (!ToolBox.Policy || !ToolBox.Policy.init){
 
 			getViewPools: function(){
 				$.ajax({
-					url: './common/viewpools',
+					url: './common/desktoppools',
 					type: "GET",
 					success: function (data) {
 						 var poolbody = $("#desktoppool");
