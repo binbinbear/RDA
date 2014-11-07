@@ -17,7 +17,7 @@
             	<value>false</value>
             </property>
             
-            <!-- Allow 30 concurrent sessions, the 31st user kicks off the 1st user  -->
+            <!-- Allow 10 concurrent admin UI sessions, the 11st user kicks off the 1st user  -->
             <property name="maximumSessions"> 
             <value>10</value> 
             </property>
@@ -33,6 +33,7 @@
     			<value>.png</value>
     			<value>.gif</value>
     			<value>.html</value>
+    			<value>.woff</value>
     			<value>/Login</value>
     			<value>/remoteassist/upload</value>
     			<value>/deviceFilter/check</value>
