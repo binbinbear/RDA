@@ -3,8 +3,6 @@ package com.vmware.horizontoolset.util;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.log4j.Logger;
-
 import com.vmware.horizontoolset.usage.Event;
 import com.vmware.horizontoolset.usage.EventType;
 import com.vmware.vdi.admin.be.events.AdminEvent;
@@ -16,7 +14,6 @@ import com.vmware.vdi.events.enums.EventModule;
  *
  */
 public class EventImpl implements Event{
-	private static Logger log = Logger.getLogger(EventImpl.class);
 	
 	@Override
 	public int hashCode() {
@@ -90,10 +87,8 @@ public class EventImpl implements Event{
 				AdminEventSource source = (AdminEventSource)eventSource;
 				if(source.getType().toString().equals("POOL")){
 					this.poolName = source.getName();
-					//break;
-				}
-				log.info("Event source:" + source.getType().toString() + " source name:" + source.getName());
-				
+					break;
+				}				
 			}
 		}
 	

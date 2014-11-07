@@ -7,7 +7,7 @@ import com.vmware.horizontoolset.usage.Connection;
 import com.vmware.horizontoolset.usage.Event;
 
 
-@JsonIgnoreProperties(value={ "disconnectionEvent"})
+@JsonIgnoreProperties(value={"connectionEvent", "disconnectionEvent"})
 public class ConnectionImpl implements Connection{
 
 	private String username;
