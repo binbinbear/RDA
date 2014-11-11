@@ -1,16 +1,10 @@
 package com.vmware.horizontoolset.viewapi.impl;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.apache.log4j.Logger;
 
-import com.vmware.vdi.vlsi.binding.vdi.infrastructure.VirtualCenter;
-import com.vmware.vdi.vlsi.binding.vdi.infrastructure.VirtualCenter.VirtualCenterInfo;
-import com.vmware.vdi.vlsi.binding.vdi.resources.Desktop.DesktopSummaryView;
-import com.vmware.vdi.vlsi.binding.vdi.users.Session.SessionLocalSummaryView;
-import com.vmware.vdi.vlsi.client.Query;
-import com.vmware.vdi.vlsi.client.Query.QueryFilter;
-import com.vmware.vdi.vlsi.cname.vdi.resources.DesktopCName.DesktopSummaryViewCName;
-import com.vmware.horizontoolset.util.DesktopPool;
+import com.vmware.horizontoolset.viewapi.DesktopPool;
 import com.vmware.horizontoolset.viewapi.Farm;
 import com.vmware.horizontoolset.viewapi.RDS;
 import com.vmware.horizontoolset.viewapi.Session;
@@ -19,6 +13,14 @@ import com.vmware.horizontoolset.viewapi.SessionPool;
 import com.vmware.horizontoolset.viewapi.SnapShotViewPool;
 import com.vmware.horizontoolset.viewapi.ViewAPIService;
 import com.vmware.horizontoolset.viewapi.ViewPool;
+import com.vmware.vdi.vlsi.binding.vdi.infrastructure.VirtualCenter;
+import com.vmware.vdi.vlsi.binding.vdi.infrastructure.VirtualCenter.VirtualCenterInfo;
+import com.vmware.vdi.vlsi.binding.vdi.resources.Application.ApplicationInfo;
+import com.vmware.vdi.vlsi.binding.vdi.resources.Desktop.DesktopSummaryView;
+import com.vmware.vdi.vlsi.binding.vdi.users.Session.SessionLocalSummaryView;
+import com.vmware.vdi.vlsi.client.Query;
+import com.vmware.vdi.vlsi.client.Query.QueryFilter;
+import com.vmware.vdi.vlsi.cname.vdi.resources.DesktopCName.DesktopSummaryViewCName;
 public class ViewAPIServiceImpl implements ViewAPIService{
 	private static Logger log = Logger.getLogger(ViewAPIServiceImpl.class);
 	private ViewAPIConnect _connection;
@@ -109,8 +111,7 @@ public class ViewAPIServiceImpl implements ViewAPIService{
 
 
 
-	public List<ViewPool> getAllDesktopPools()
-	{
+	public List<ViewPool> getAllDesktopPools() {
 		if (this._queryService == null){
 			log.info("Closed VIEW API can't be used!");
 			return null;
@@ -119,7 +120,9 @@ public class ViewAPIServiceImpl implements ViewAPIService{
 		return this._queryService.getAllDesktopPools();
 	}
 
-
+	public List<ApplicationInfo> getAllApplicationPools() {
+		return _queryService.getAllApplicationPools();
+	}
 
 	@Override
 	public List<VirtualCenterInfo> listVirtualCenters() {

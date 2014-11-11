@@ -1,4 +1,4 @@
-package com.vmware.horizontoolset.util;
+package com.vmware.horizontoolset.viewapi;
 
 import java.util.ArrayList;
 import java.util.List;

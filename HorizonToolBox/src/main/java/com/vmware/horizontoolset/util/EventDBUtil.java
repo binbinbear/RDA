@@ -65,6 +65,11 @@ public class EventDBUtil implements AutoCloseable {
 		return results;
 	}
 	
+	public List<Event> getEvents(int daysToShow) {
+		List<Event> allEvents = EventDBCache.getEvents(vdiContext, daysToShow);
+		log.debug("All Events size:" + allEvents.size());
+		return allEvents;
+	}
 	
 	private Map<String, String> rds2Farm;
 	private String getFarmName(String RDSName) {

@@ -10,6 +10,9 @@ import javax.naming.directory.DirContext;
 
 import org.apache.log4j.Logger;
 
+import com.vmware.vdi.adamwrapper.ldap.VDIContext;
+import com.vmware.vdi.adamwrapper.ldap.VDIContextFactory;
+
 /**
  * 
  * A storage to store key-value pair. The storage is shard, with late consistency.
@@ -90,14 +93,45 @@ public class SharedStorageAccess implements AutoCloseable {
         } finally {
         }
 	}
+
+	@Override
+	public void close() throws Exception {
+		//nothing. Ctx is not owned by us and we need not to close it.
+	}
 	
-	private static String getName(String key) {
+	static String getName(String key) {
 		return namePrefix + key + namePostfix;
 	}
 	
-	@Override
-	public void close() throws Exception {
+
+	public static String defaultContextGet(String key) {
+		String name = getName(key);
 		
-		
+		VDIContext vdiCtx = null;
+		DirContext dirCtx = null;
+		try {
+			vdiCtx = VDIContextFactory.defaultVDIContext();
+			dirCtx = vdiCtx.getDirContext();
+			
+			Attributes attrs = dirCtx.getAttributes(name, new String[] {attrId});
+			Attribute a = attrs.get(attrId);
+			return (String) a.get();
+		} catch (Exception e) {
+			log.warn("Error reading SharedStorageAccess. key=" + key, e);
+			return null;
+		} finally {
+			if (dirCtx != null) {
+				try {
+					dirCtx.close();
+				} catch (Exception e) {
+				}
+			}
+			if (vdiCtx != null) {
+				try {
+					VDIContext.release(vdiCtx);
+				} catch (Exception e) {
+				}
+			}
+		}
 	}
 }

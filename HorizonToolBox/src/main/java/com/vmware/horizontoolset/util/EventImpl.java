@@ -3,6 +3,8 @@ package com.vmware.horizontoolset.util;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.vmware.horizontoolset.usage.Event;
 import com.vmware.horizontoolset.usage.EventType;
 import com.vmware.vdi.admin.be.events.AdminEvent;
@@ -14,6 +16,7 @@ import com.vmware.vdi.events.enums.EventModule;
  *
  */
 public class EventImpl implements Event{
+	private static Logger log = Logger.getLogger(EventImpl.class);
 	
 	@Override
 	public int hashCode() {
@@ -43,6 +46,8 @@ public class EventImpl implements Event{
 	private Date time;
 	private String poolName = "";
 	private int eventId = 0;
+	private String shortMessage;
+	
 	private String getValue(String all, String key){
 		//get pool name from the message
 		int index = all.indexOf(key) + key.length();
@@ -66,20 +71,20 @@ public class EventImpl implements Event{
 	public EventImpl(AdminEvent event){
 		this.eventId = event.getEventId();
 		this.username = event.getUsername();
-		String message = event.getShortMessage();
+		this.shortMessage = event.getShortMessage();
 		this.time = event.getTime();
 		 
 		if(event.getModule().equals(EventModule.Agent) && event.isInfo() ){
 			if (event.getShortMessage().contains(accept)){
 				this.type = EventType.Connection;
-				this.machineName = getValue(message, onMachine);
+				this.machineName = getValue(shortMessage, onMachine);
 			}else if (event.getShortMessage().contains(disconnect)  ){
 				this.type = EventType.Disconnection;
-				this.machineName = getValue(message, disconnect);
+				this.machineName = getValue(shortMessage, disconnect);
 				
 			}else if ( event.getShortMessage().contains(logoff)){
 				this.type = EventType.Disconnection;
-				this.machineName = getValue(message, logoff);
+				this.machineName = getValue(shortMessage, logoff);
 			}
 			//get pool name from the message
 			List sourcesList = event.getSources();
@@ -87,8 +92,10 @@ public class EventImpl implements Event{
 				AdminEventSource source = (AdminEventSource)eventSource;
 				if(source.getType().toString().equals("POOL")){
 					this.poolName = source.getName();
-					break;
-				}				
+					//break;
+				}
+				log.info("Event source:" + source.getType().toString() + " source name:" + source.getName());
+				
 			}
 		}
 	
@@ -143,6 +150,11 @@ public class EventImpl implements Event{
 	@Override
 	public String getFarmName() {
 		return this.farmName;
+	}
+
+	@Override
+	public String getShortMessage() {
+		return shortMessage;
 	}
 
 }

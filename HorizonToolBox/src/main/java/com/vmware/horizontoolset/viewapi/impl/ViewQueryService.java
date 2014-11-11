@@ -7,10 +7,19 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.vmware.horizontoolset.viewapi.Farm;
+import com.vmware.horizontoolset.viewapi.RDS;
+import com.vmware.horizontoolset.viewapi.SessionFarm;
+import com.vmware.horizontoolset.viewapi.SessionPool;
+import com.vmware.horizontoolset.viewapi.SnapShotViewPool;
+import com.vmware.horizontoolset.viewapi.Template;
+import com.vmware.horizontoolset.viewapi.VM;
+import com.vmware.horizontoolset.viewapi.ViewPool;
 import com.vmware.vdi.vlsi.binding.vdi.entity.BaseImageVmId;
 import com.vmware.vdi.vlsi.binding.vdi.entity.DesktopId;
 import com.vmware.vdi.vlsi.binding.vdi.entity.FarmId;
 import com.vmware.vdi.vlsi.binding.vdi.query.QueryDefinition;
+import com.vmware.vdi.vlsi.binding.vdi.resources.Application.ApplicationData;
 import com.vmware.vdi.vlsi.binding.vdi.resources.Application.ApplicationInfo;
 import com.vmware.vdi.vlsi.binding.vdi.resources.Desktop;
 import com.vmware.vdi.vlsi.binding.vdi.resources.Desktop.DesktopInfo;
@@ -25,16 +34,6 @@ import com.vmware.vdi.vlsi.client.Query;
 import com.vmware.vdi.vlsi.client.Query.QueryFilter;
 import com.vmware.vdi.vlsi.cname.CName;
 import com.vmware.vdi.vlsi.cname.vdi.users.SessionCName.SessionLocalSummaryViewCName;
-import com.vmware.horizontoolset.viewapi.Farm;
-import com.vmware.horizontoolset.viewapi.RDS;
-import com.vmware.horizontoolset.viewapi.SessionFarm;
-import com.vmware.horizontoolset.viewapi.SessionPool;
-import com.vmware.horizontoolset.viewapi.SnapShotViewPool;
-import com.vmware.horizontoolset.viewapi.Template;
-import com.vmware.horizontoolset.viewapi.VM;
-import com.vmware.horizontoolset.viewapi.ViewPool;
-import com.vmware.horizontoolset.viewapi.impl.Cache;
-import com.vmware.horizontoolset.viewapi.impl.VMImpl;
 import com.vmware.vim.binding.impl.vmodl.TypeNameImpl;
 import com.vmware.vim.binding.vmodl.DataObject;
 
@@ -257,7 +256,10 @@ public class ViewQueryService {
 		return list;
 	}
 
-
+	public List<ApplicationInfo> getAllApplicationPools() {
+		return getAllObjects(ApplicationInfo.class);
+	}
+	
 	public List<RDS> getAllBasicRDSHosts() {
 		List<RDSServerSummaryView> rdssummaryviews = this.getRDSServerSummaryViews();
 		List<RDS>  list = new ArrayList<RDS>();

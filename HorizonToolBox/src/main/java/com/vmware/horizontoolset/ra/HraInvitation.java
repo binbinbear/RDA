@@ -130,6 +130,12 @@ public class HraInvitation {
 	}
 	
 	public String toString() {
-		return machine + ", " + getUserNameDisplay() + ", " + os;
+		String msg = machine + ", " + getUserNameDisplay() + ", " + os + ". Ticket length=";
+		
+		if (inv == null)
+			msg += 0;
+		else
+			msg += inv.length();
+		return msg;
 	 }
 }

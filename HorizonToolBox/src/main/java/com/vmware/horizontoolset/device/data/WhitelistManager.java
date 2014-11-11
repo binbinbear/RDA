@@ -81,19 +81,25 @@ public class WhitelistManager {
 	private void ensureData() {
 		long now = System.currentTimeMillis();
 		if (now - lastLoadTimestamp > READ_CACHE_EXPIRATION) {
-			loadData();
-			lastLoadTimestamp = now;
+			if (loadData())
+				lastLoadTimestamp = now;
 		}
 	}
 	
 	///////////////////////////////////////////////////////////////////
-	private void loadData() {
+	private boolean loadData() {
 		
 		synchronized(data) {
 			
-			String val = ssa.get(STORED_ATTR_KEY);
+			String val;
+			
+			if (ssa == null)
+				val = SharedStorageAccess.defaultContextGet(STORED_ATTR_KEY);
+			else
+				val = ssa.get(STORED_ATTR_KEY);
+			
 			if (val == null)
-				return;
+				return true;
 			
 			String[] tmp = val.split(";;");
 			
@@ -120,6 +126,8 @@ public class WhitelistManager {
 				data.add(new WhitelistRecord(new DeviceInfo(s)));
 			}
 		}
+		
+		return true;
 	}
 	
 	private void saveData() {
@@ -129,7 +137,7 @@ public class WhitelistManager {
 		for (WhitelistRecord i : data) {
 			sb.append(i.deviceInfo.ViewClient_Client_ID).append(";;");
 		}
-				
+		
 		ssa.set(STORED_ATTR_KEY, sb.toString());
 	}
 }

@@ -1,4 +1,4 @@
-package com.vmware.horizontoolset.device.guidata;
+package com.vmware.horizontoolset.common.jtable;
 
 
 public class JTableResponse {

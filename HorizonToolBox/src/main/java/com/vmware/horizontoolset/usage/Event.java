@@ -8,7 +8,7 @@ public interface Event extends Comparable<Event>{
 	public Date getTime();
 	public String getMachineDNSName();
 	public String getPoolName();
-	
+	public String getShortMessage();
 	
 	public void setFarmName(String farmName);
 	public String getFarmName();

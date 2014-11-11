@@ -2,8 +2,8 @@ package com.vmware.horizontoolset.viewapi;
 
 import java.util.List;
 
-import com.vmware.horizontoolset.util.DesktopPool;
 import com.vmware.vdi.vlsi.binding.vdi.infrastructure.VirtualCenter.VirtualCenterInfo;
+import com.vmware.vdi.vlsi.binding.vdi.resources.Application.ApplicationInfo;
 
 
 
@@ -30,7 +30,9 @@ public interface ViewAPIService extends AutoCloseable {
 	 * @return all desktop pools including rds pools, not including application pools
 	 */
 	public List<ViewPool> getAllDesktopPools();
-	
+
+	public List<ApplicationInfo> getAllApplicationPools();
+
 	public List<Farm> getAllFarms();
 	
 	

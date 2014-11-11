@@ -112,6 +112,8 @@ public class SessionUtil {
 		SharedStorageAccess ssa = getSessionObj(session, SharedStorageAccess.class);
 		if (ssa == null) {
 			LDAP ldap = getSessionObj(session, LDAP.class);
+			if (ldap == null)
+				return null;
 			ssa = new SharedStorageAccess(ldap.getContext());
 			setSessionObj(session, ssa);
 		}

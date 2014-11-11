@@ -192,6 +192,7 @@ public class HraServlet extends HttpServlet {
 			Gson gson = new Gson();
 			HraInvitation inv = gson.fromJson(reader, HraInvitation.class);
 
+			log.debug("Received invitation: " + inv);
 			HraManager.add(inv);
 			
 			response.setStatus(HttpServletResponse.SC_OK);			

@@ -12,20 +12,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.vmware.horizontoolset.util.DesktopPool;
 import com.vmware.horizontoolset.util.GPOData;
 import com.vmware.horizontoolset.util.Registry;
 import com.vmware.horizontoolset.util.RunProgramWithinVM;
 import com.vmware.horizontoolset.util.SessionUtil;
+import com.vmware.horizontoolset.viewapi.DesktopPool;
 import com.vmware.horizontoolset.viewapi.impl.ViewAPIServiceImpl;
+import com.vmware.vdi.vlsi.binding.vdi.resources.Machine.MachineSummaryView;
+import com.vmware.vdi.vlsi.binding.vdi.util.SecureString;
 import com.vmware.vim.binding.vmodl.Binary;
 import com.vmware.vim25.GuestProgramSpec;
 import com.vmware.vim25.mo.Folder;
 import com.vmware.vim25.mo.InventoryNavigator;
 import com.vmware.vim25.mo.ServiceInstance;
 import com.vmware.vim25.mo.VirtualMachine;
-import com.vmware.vdi.vlsi.binding.vdi.resources.Machine.MachineSummaryView;
-import com.vmware.vdi.vlsi.binding.vdi.util.SecureString;
 
 @RestController
 public class PolicyRestController {

@@ -6,18 +6,19 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.Gson;
+import com.vmware.horizontoolset.common.jtable.JTableData;
+import com.vmware.horizontoolset.common.jtable.JTableResponse;
 import com.vmware.horizontoolset.device.data.AccessLogManager;
 import com.vmware.horizontoolset.device.data.AccessRecord;
 import com.vmware.horizontoolset.device.data.DeviceInfo;
 import com.vmware.horizontoolset.device.data.WhitelistManager;
 import com.vmware.horizontoolset.device.data.WhitelistRecord;
-import com.vmware.horizontoolset.device.guidata.JTableData;
-import com.vmware.horizontoolset.device.guidata.JTableResponse;
 import com.vmware.horizontoolset.device.guidata.RowData_AccessLog;
 import com.vmware.horizontoolset.device.guidata.RowData_Whitelist;
 import com.vmware.horizontoolset.util.LDAP;
@@ -26,6 +27,8 @@ import com.vmware.horizontoolset.util.SessionUtil;
 @RestController
 public class DeviceFilterRestController {
 
+	private static Logger log = Logger.getLogger(DeviceFilterRestController.class);
+	
     @RequestMapping("/deviceFilter/accessLog")
 	public JTableData getAccessLog(HttpSession session) {
     	JTableData ret = new JTableData();
@@ -130,6 +133,8 @@ public class DeviceFilterRestController {
 	public String check(HttpSession session,
 			@RequestParam(value="di", required=true) String diJson) {
     	
+    	log.debug("deviceFilter/check: " + diJson);
+    	
     	Gson gson = new Gson();
     	
     	String resp;
@@ -150,6 +155,7 @@ public class DeviceFilterRestController {
     		
     	} catch (Exception e) {
     		resp = "ERROR: " + e.toString();
+    		log.warn("Error checking device", e);
     	}
     	return resp;
     }
