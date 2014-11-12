@@ -59,11 +59,31 @@ public class EmailUtil {
 		serverProps.setProperty("mail.smtp.host", props.getMailHost());
 		serverProps.setProperty("mail.host",  props.getMailHost());
 		serverProps.setProperty("mail.transport.protocol", props.getProtocal());
-	
+		serverProps.setProperty("mail.smtp.port", props.getServerPort());
 		serverProps.setProperty("mail.user", props.getMailUser());
 		serverProps.setProperty("mail.password", props.getMailPassword());
 		serverProps.setProperty("mail.auth", String.valueOf(props.isAuth()));
 		serverProps.setProperty("mail.smtp.auth",String.valueOf(props.isAuth()));
+		
+		String customizedprops = _emailserverprops.getCustomizedProperty();
+		if (customizedprops!=null && !customizedprops.isEmpty()){
+			String [] all = customizedprops.split(",");
+			if (all!=null){
+				for (int i=0;i<all.length;i++){
+					if (all[i]!=null){
+						String onepair = all[i].trim();
+						if (onepair.contains("=")){
+							String[] thispair = onepair.split("=");
+							if (thispair.length == 2){
+								serverProps.setProperty(thispair[0], thispair[1]);
+							}
+							
+						}
+					}
+				}
+			}
+			
+		}
 		serverenabled = true;
 		//try to set to ldap
 		if (ssa!=null){
@@ -203,4 +223,5 @@ public class EmailUtil {
 		}
 	}
 	
+
 }
