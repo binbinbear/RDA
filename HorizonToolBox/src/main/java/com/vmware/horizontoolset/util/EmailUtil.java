@@ -15,27 +15,45 @@ import javax.mail.internet.MimeMessage;
 
 import org.apache.log4j.Logger;
 
-import com.vmware.horizontoolset.email.EmailContentProps;
+import com.google.gson.Gson;
+import com.vmware.horizontoolset.device.data.DeviceInfo;
 import com.vmware.horizontoolset.email.EmailServerProps;
 
 public class EmailUtil {
 	private static EmailServerProps _emailserverprops = new EmailServerProps();
-	private static EmailContentProps contentProps = new EmailContentProps();
 	private static boolean serverenabled = false;
-	private static boolean contentenabled = false;
 	private static Properties serverProps;
 	private static Logger log = Logger.getLogger(EmailUtil.class);
+	private static final String emailKey="EMAIL_KEY";
 	
-	public static EmailServerProps getEmailServerProps(){
+	public static EmailServerProps loadServerProps(SharedStorageAccess ssa){
+		try{
+			//try go get from ldap
+			String props;
+			if (ssa==null){
+				props= SharedStorageAccess.defaultContextGet(emailKey);
+			}else{
+				props = ssa.get(emailKey);
+			}
+			if (props!=null&&!props.isEmpty()){
+				Gson gson = new Gson();
+				
+				_emailserverprops = gson.fromJson(props, EmailServerProps.class);
+			}
+			
+			if (_emailserverprops!=null && _emailserverprops.isValid()){
+				
+				serverenabled = true;
+			}
+		}catch(Exception ex){
+			log.warn("can't load email config from ldap",ex);
+		}
+
 		return _emailserverprops;
 	}
+
 	
-	public static EmailContentProps getEmailContentProps(){
-		return contentProps;
-		
-	}
-	
-	public synchronized static boolean init(EmailServerProps props){
+	public synchronized static boolean init(EmailServerProps props, SharedStorageAccess ssa){
 		_emailserverprops = props;
 		serverProps = new Properties();
 		serverProps.setProperty("mail.smtp.host", props.getMailHost());
@@ -47,15 +65,16 @@ public class EmailUtil {
 		serverProps.setProperty("mail.auth", String.valueOf(props.isAuth()));
 		serverProps.setProperty("mail.smtp.auth",String.valueOf(props.isAuth()));
 		serverenabled = true;
+		//try to set to ldap
+		if (ssa!=null){
+			ssa.set(emailKey, JsonUtil.javaToJson(props));
+		}
+		
+		
 		return true;
 	}
 	
 	
-	public synchronized static boolean init(EmailContentProps props){
-		contentProps = props;
-		contentenabled = true;
-		return true;
-	}
 	
 	public static boolean isValidEmailAddress(String email) {
 		   try {
@@ -87,11 +106,12 @@ public class EmailUtil {
 		}
 	}
 	
-	public synchronized static void sendMail() {
-		if (!contentenabled || !serverenabled || contentProps==null || serverProps == null) {
-			return;
+	public synchronized static void sendMail(String titile, String body) {
+		loadServerProps(null);
+		if (!serverenabled){
+			log.warn("Can't send email since the props is not right");
 		}
-		String toAddress =contentProps.getToAddress();
+		String toAddress =_emailserverprops.getToAddress();
 
 		if (toAddress == null || toAddress.isEmpty()){
 			return;
@@ -109,9 +129,17 @@ public class EmailUtil {
 			}
 		}	
 		
-		String[] toall =(String[]) listTo.toArray();
+		if (listTo.size()<=0){
+			log.warn("Don't know the reciever of the email");
+			return;
+		}
+		String[] toall = new String[listTo.size()];
+		int i=0;
+		for (String r:listTo){
+			toall[i++] = r;
+		}
 		if (toall!=null && toall.length>0){
-			sendMail(toall, null, null, contentProps.getTitle(), contentProps.getBody());
+			sendMail(toall, null, null, titile, body);
 		}
 		
 	}

@@ -9,6 +9,20 @@ public class EmailServerProps {
 	private String protocal = "smtp";
 	private String mailHost="";
 	private String serverPort="25";
+	
+	
+	private String toAddress;
+	
+	//key=value,key=value
+	private String customizedProperty;
+	
+	
+	public String getCustomizedProperty() {
+		return customizedProperty;
+	}
+	public void setCustomizedProperty(String customizedProperty) {
+		this.customizedProperty = customizedProperty;
+	}
 	private boolean isAuth = true;
 
 	public String getMailUser() {
@@ -32,6 +46,11 @@ public class EmailServerProps {
 	public String getMailHost() {
 		return mailHost;
 	}
+	
+	public boolean isValid(){
+		return this.mailHost!=null && !this.mailHost.isEmpty() && this.mailUser!=null && !this.mailUser.isEmpty();
+	}
+	
 	public void setMailHost(String mailHost) {
 		this.mailHost = mailHost;
 	}
@@ -46,6 +65,12 @@ public class EmailServerProps {
 	}
 	public void setAuth(boolean isAuth) {
 		this.isAuth = isAuth;
+	}
+	public String getToAddress() {
+		return toAddress;
+	}
+	public void setToAddress(String toAddress) {
+		this.toAddress = toAddress;
 	}
 	
 
