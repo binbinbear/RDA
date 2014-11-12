@@ -15,21 +15,43 @@ import com.vmware.vdi.adamwrapper.ldap.VDIContextFactory;
 
 public class EventDBUtil implements AutoCloseable {
 	private static Logger log = Logger.getLogger(EventDBUtil.class);
-	private VDIContext vdiContext;
+	private final VDIContext vdiContext;
+	private final boolean isDefault;
 	private ViewAPIService viewapi;
 	
 	public EventDBUtil(String username, String password, String domain, ViewAPIService viewapi) throws ADAMConnectionFailedException{
 		vdiContext = VDIContextFactory.VDIContext(username, password, domain);
 		this.viewapi = viewapi;
+		isDefault = false;
 	}
 
+	private EventDBUtil() throws ADAMConnectionFailedException {
+		vdiContext = VDIContextFactory.defaultVDIContext();
+		viewapi = null;
+		isDefault = true;
+	}
+	
+	public static EventDBUtil createDefault() {
+		try {
+			return new EventDBUtil();
+		} catch (Exception e) {
+			log.error("Fail creating EventDBUtil.", e);
+		}
+		return null;
+	}
+	
 	@Override
 	public void close() {
+		this.viewapi = null;
+		
 		if (this.vdiContext!=null){
+			
 			try{
-				this.vdiContext.disposeContext();
-				this.viewapi = null;
-			}catch(Exception ex){
+				if (isDefault)
+					VDIContext.release(vdiContext);
+				else
+					vdiContext.disposeContext();
+			} catch(Exception ex) { 
 				log.warn("can't disconnect from context",ex);
 			}
 		}
@@ -66,6 +88,12 @@ public class EventDBUtil implements AutoCloseable {
 	}
 	
 	public List<Event> getEvents(int daysToShow) {
+		return getEvents(daysToShow, false);
+	}
+	
+	public List<Event> getEvents(int daysToShow, boolean forceReload) {
+		if (forceReload)
+			EventDBCache.expire();
 		List<Event> allEvents = EventDBCache.getEvents(vdiContext, daysToShow);
 		log.debug("All Events size:" + allEvents.size());
 		return allEvents;

@@ -69,10 +69,13 @@
    <bean id="SessionMsgRestController" class="com.vmware.horizontoolset.SessionMsgRestController"/>
    
    <bean id="EmailController" class="com.vmware.horizontoolset.email.EmailController"/>
+   <bean id="limitController" class="com.vmware.horizontoolset.limit.LimitController"/>
+   <bean id="limitRestController" class="com.vmware.horizontoolset.limit.LimitRestController"/>
    
   <!-- Execute once a day on 1:00 am , Seconds Minutes Hours DayofMonth Month DayofWeek -->
    <task:scheduled-tasks>   
         <task:scheduled ref="clientrestController" method="updateCachedReport" cron="0 0 1 * * ?"/>   
+        <task:scheduled ref="limitRestController" method="refresh" cron="0 30 * * * ?"/>
    </task:scheduled-tasks>  
    
 </beans>

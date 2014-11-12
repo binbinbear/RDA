@@ -33,7 +33,6 @@ import com.vmware.vdi.vlsi.binding.vdi.utils.ADDomain.ADDomainInfo;
 import com.vmware.vdi.vlsi.client.Connection;
 import com.vmware.vdi.vlsi.client.Query;
 import com.vmware.vdi.vlsi.client.Query.QueryFilter;
-import com.vmware.vdi.vlsi.cname.vdi.resources.DesktopCName.DesktopSummaryViewCName;
 import com.vmware.vdi.vlsi.cname.vdi.users.ADUserOrGroupCName;
 import com.vmware.vim.binding.vmodl.DataObject;
 import com.vmware.vim.vmomi.client.http.HttpConfiguration;

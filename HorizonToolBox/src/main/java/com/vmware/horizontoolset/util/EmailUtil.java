@@ -16,7 +16,6 @@ import javax.mail.internet.MimeMessage;
 import org.apache.log4j.Logger;
 
 import com.google.gson.Gson;
-import com.vmware.horizontoolset.device.data.DeviceInfo;
 import com.vmware.horizontoolset.email.EmailServerProps;
 
 public class EmailUtil {

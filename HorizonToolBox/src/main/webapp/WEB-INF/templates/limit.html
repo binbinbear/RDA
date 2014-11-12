@@ -45,32 +45,38 @@
 		
 		<h3 class="pageHeader">
 			<div class="pageHeaderDiv">
-								<img src="./img/window_information.png" alt="Dashboard" />
-								&nbsp;&nbsp; Device Access Policy&nbsp; 
+				<img src="./img/window_information.png" alt="Dashboard" />
+				&nbsp;&nbsp; Application Pool Usage Monitor&nbsp; 
 			</div>
 		</h3>
 		
 		<p>
-		Device Access Policy provides a whitelist to control devices that can access Horizon View. <br/>
-		When View client from a device accesses the configured View desktop, it appears in the <i>Access Log</i> table. If the client device is not in the whitelist, the connection will be reset. Administrator can add a device to the whitelist, by clicking the <i>Add</i> icon from the <i>Access Log</i> table.
+		This panel shows the user session count for all application pools. For each application, you can set a
+		limit. When the user session count exceeds the limit, an email notification will be sent to administrator.
 		</p>
 		
-		<p>
-		To setup the environment, refer to <a href="./static/deviceFilter/help.html" target="_blank">Setup Guide</a>.<br/>
-		</p>
 		
 		<br/>
 		
 		<div style="float: left; width: 450px">
-			<div id="WhitelistContainer"></div>
+			<div id="TableContainer"></div>
 		</div>
 		<div style="float: left; width: 450px; margin-left: 20px; ">
-			<div id="AccessLogContainer"></div>
+			<p>
+				The user session statistics is not updated frequently, normally in an hourly frequency.
+			</p>
+			<p>
+				<a href="./limit/forceRefresh">Force Refresh Now</a>.
+			</p>
+			<br/>
+			<p>
+				<a href="./limit/configEmail">Configure Email notification</a><br/>
+			</p>
 		</div>
 		
 		
 		<script src="./jtable/jquery.jtable.min.js"></script>
-		<script src="./js/deviceFilter.js"></script>
+		<script src="./js/limit.js"></script>
 
 	</div>
 	

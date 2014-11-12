@@ -2,6 +2,7 @@ package com.vmware.horizontoolset.util;
 
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 
@@ -35,10 +36,12 @@ public class EventImpl implements Event{
         return false;
 	}
 
-	private static final String accept = "has accepted an allocated session";
-	private static final String onMachine = "running on machine ";
-	private static final String disconnect = "has disconnected from machine ";
-	private static final String logoff = "has logged off machine ";
+	private static final String ACCEPT = "has accepted an allocated session";
+	private static final String ON_MACHINE = "running on machine ";
+	private static final String DISCONNECT = "has disconnected from machine ";
+	private static final String LOG_OFF = "has logged off machine ";
+	private static final String LOGOUT = " has logged out";
+	private static final String REQUEST_APP= " requested Application ";
 	
 	private EventType type = EventType.Others;
 	private String username;
@@ -73,19 +76,21 @@ public class EventImpl implements Event{
 		this.username = event.getUsername();
 		this.shortMessage = event.getShortMessage();
 		this.time = event.getTime();
-		 
+
 		if(event.getModule().equals(EventModule.Agent) && event.isInfo() ){
-			if (event.getShortMessage().contains(accept)){
+			if (shortMessage.contains(ACCEPT)){
 				this.type = EventType.Connection;
-				this.machineName = getValue(shortMessage, onMachine);
-			}else if (event.getShortMessage().contains(disconnect)  ){
+				this.machineName = getValue(shortMessage, ON_MACHINE);
+			}else if (shortMessage.contains(DISCONNECT)  ){
 				this.type = EventType.Disconnection;
-				this.machineName = getValue(shortMessage, disconnect);
-				
-			}else if ( event.getShortMessage().contains(logoff)){
+				this.machineName = getValue(shortMessage, DISCONNECT);
+			}else if (shortMessage.contains(LOG_OFF)){
 				this.type = EventType.Disconnection;
-				this.machineName = getValue(shortMessage, logoff);
+				this.machineName = getValue(shortMessage, LOG_OFF);
+			} else {
+				this.type = EventType.Others;
 			}
+			
 			//get pool name from the message
 			List sourcesList = event.getSources();
 			for( Object eventSource : sourcesList){
@@ -94,11 +99,17 @@ public class EventImpl implements Event{
 					this.poolName = source.getName();
 					//break;
 				}
-				log.info("Event source:" + source.getType().toString() + " source name:" + source.getName());
+				log.debug("Event source:" + source.getType().toString() + " source name:" + source.getName());
 				
 			}
+		} else if (event.getModule().equals(EventModule.Broker) 
+				&& (event.isInfo() || event.isAuditSuccess())) {
+			if (shortMessage.contains(LOGOUT)) {
+				this.type = EventType.Logout;
+			} else if (shortMessage.contains(REQUEST_APP)) {
+				this.type = EventType.RequestApp;
+			}
 		}
-	
 	}
 	
 	@Override

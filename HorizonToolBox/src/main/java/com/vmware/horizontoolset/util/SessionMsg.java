@@ -1,7 +1,6 @@
 package com.vmware.horizontoolset.util;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
