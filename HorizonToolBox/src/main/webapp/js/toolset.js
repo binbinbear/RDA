@@ -507,6 +507,7 @@ ToolBox.init =  function(){
 						"href" : $("#L1_01_03")},
 					client:{"btn": $("#L1_01"),
 						"href" : $("#L1_01_04")},
+
 				
 					remoteassist:{"btn": $("#L1_02")},
 					
@@ -514,6 +515,10 @@ ToolBox.init =  function(){
 						"href" : $("#L1_03_01")},
 					whitelist:{"btn": $("#L1_03"),
 						"href" : $("#L1_03_01")},
+						
+						
+					email:{"btn": $("#L1_04")}
+								
 					};
 
 			$(".menuBtn").removeClass("selected");

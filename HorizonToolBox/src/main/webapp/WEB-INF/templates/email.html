@@ -1,0 +1,135 @@
+<html>
+<head>
+<title>Email Notifications</title>
+</head>
+<body>
+
+	<div id="email" th:fragment="fragment">
+
+
+
+		<style type="text/css">
+div.card .field {
+	overflow: visible !important;
+	margin-top: 30px;
+}
+
+button {
+	margin-top: 50px;
+}
+
+.card>div label:first-child,.entries.lang div label:first-child {
+	width: 190px;
+	float: left;
+	text-align: right;
+	margin-right: 15px;
+	min-height: 1px;
+	margin-top: 5px;
+}
+
+.field>label:first-child {
+	width: 270px !important;
+	padding-left: 5px;
+	line-height: 140%;
+	margin-right: 15px;
+	text-align: left !important;
+}
+
+.field label {
+	display: inline-block;
+	color: #555;
+	font-size: 1.1em;
+	vertical-align: top;
+}
+
+.tray.editor div select,.tray.editor div input.ui-autocomplete-input {
+	min-width: 147px;
+}
+
+div.card div select {
+	width: 30%;
+	border: 1px solid #BBB;
+	border-radius: 4px;
+	box-sizing: content-box;
+	padding: 2px 0px;
+}
+</style>
+		<h3 class="pageHeader">
+			<table border="0" cellpadding="0" cellspacing="0" width="100%">
+				<tbody>
+					<tr>
+						<td>
+							<div class="pageHeaderDiv">
+								<div id="message"></div>
+								<img src="img/window_information.png" alt="Dashboard" />&nbsp;&nbsp;
+								Email Notifications &nbsp;
+							</div>
+						</td>
+						<td id="loadingAnim"></td>
+					</tr>
+				</tbody>
+			</table>
+		</h3>
+
+
+		<div class="poolContainer">
+
+		<div class="tab-content">
+  			<div class="tab-pane active card" id="common">
+
+			<form action="email/server" id="emailForm">
+
+				<div class="field">
+					SMTP Host: <input type="text" id="mailHost" name="mailHost"	th:value="${server.mailHost}" />
+				</div>
+
+				<div class="field">
+					SMTP Port: <input type="text" id="serverPort" name="serverPort"
+						th:value="${server.serverPort}" />
+
+				</div>
+
+				<div class="field">
+					User Name: <input type="text" id="mailUser" name="mailUser"
+						th:value="${server.mailUser}" />
+
+				</div>
+
+				<div class="field">
+					Password: <input type="password" id="mailPassword"
+						name="mailPassword" th:value="${server.mailPassword}" />
+
+				</div>
+								
+				<div class="field">
+					To Address(separated by ","): <input type="text" style="width:100%" name="toAddress" id="toAddress"
+						th:value="${server.toAddress}" />
+
+				</div>
+				
+				<div class="field">
+					Customized properties: <input type="text" style="width:100%" id="customizedProperty"
+						name="customizedProperty" th:value="${server.customizedProperty}" />
+
+				</div>
+
+
+
+
+				<div>
+					<input type="submit" id="submitBtn" data-loading-text="Loading..."
+						class="btn btn-primary submitBtn" value="Submit Server Config" />
+
+				</div>
+
+
+			</form> 
+			 </div>
+			 </div>
+
+		</div>
+	<script src="./js/email.js"></script>
+	</div>
+
+</body>
+</html>

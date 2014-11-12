@@ -68,6 +68,8 @@
    <bean id="PolicyRestController" class="com.vmware.horizontoolset.PolicyRestController"/>
    <bean id="SessionMsgRestController" class="com.vmware.horizontoolset.SessionMsgRestController"/>
    
+   <bean id="EmailController" class="com.vmware.horizontoolset.email.EmailController"/>
+   
   <!-- Execute once a day on 1:00 am , Seconds Minutes Hours DayofMonth Month DayofWeek -->
    <task:scheduled-tasks>   
         <task:scheduled ref="clientrestController" method="updateCachedReport" cron="0 0 1 * * ?"/>   
