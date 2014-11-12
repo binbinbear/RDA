@@ -10,13 +10,16 @@ import com.vmware.horizontoolset.util.HttpUtil;
 import com.vmware.horizontoolset.util.TimeInterval;
 
 public class HraInvitation {
-
+/**
+ * the following public string must be public since they are from gson
+ * Otherwise, they may be renamed by compiler.jar when buildiing
+ */
     public String machine;
     public String user;
     public String domain;
     public String os;
     
-	private String inv;
+	public String inv;
 	
 	private transient Path path;
 	private transient long time;

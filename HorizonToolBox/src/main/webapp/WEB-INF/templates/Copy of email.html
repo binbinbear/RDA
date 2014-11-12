@@ -1,0 +1,161 @@
+<html>
+<head>
+<title>Email Setup</title>
+</head>
+<body>
+
+	<div id="email" th:fragment="fragment">
+
+
+
+		<style type="text/css">
+div.card .field {
+	overflow: visible !important;
+	margin-top: 30px;
+}
+
+button {
+	margin-top: 50px;
+}
+
+.card>div label:first-child,.entries.lang div label:first-child {
+	width: 190px;
+	float: left;
+	text-align: right;
+	margin-right: 15px;
+	min-height: 1px;
+	margin-top: 5px;
+}
+
+.field>label:first-child {
+	width: 270px !important;
+	padding-left: 5px;
+	line-height: 140%;
+	margin-right: 15px;
+	text-align: left !important;
+}
+
+.field label {
+	display: inline-block;
+	color: #555;
+	font-size: 1.1em;
+	vertical-align: top;
+}
+
+.tray.editor div select,.tray.editor div input.ui-autocomplete-input {
+	min-width: 147px;
+}
+
+div.card div select {
+	width: 30%;
+	border: 1px solid #BBB;
+	border-radius: 4px;
+	box-sizing: content-box;
+	padding: 2px 0px;
+}
+</style>
+		<h3 class="pageHeader">
+			<table border="0" cellpadding="0" cellspacing="0" width="100%">
+				<tbody>
+					<tr>
+						<td>
+							<div class="pageHeaderDiv">
+								<div id="message"></div>
+								<img src="img/window_information.png" alt="Dashboard" />&nbsp;&nbsp;
+								Email Notification &nbsp;
+							</div>
+						</td>
+						<td id="loadingAnim"></td>
+					</tr>
+				</tbody>
+			</table>
+		</h3>
+
+
+		<div id="tabs" class="poolContainer">
+
+
+			<ul class="nav nav-tabs" role="tablist" id="emailTabs">
+				<li class="active"><a href="#server" role="tab" id="server-tab"
+					data-toggle="tab">Email Server</a></li>
+				<li><a href="#content" role="tab" data-toggle="tab" id="content-tab">Email
+						Content</a></li>
+			</ul>
+
+
+			<!-- Tab panes -->
+			<div class="tab-content" id="myTabContent">
+				<div class="tab-pane active card" id="server" role="tabpanel">
+					<form action="email/server">
+
+						<div class="field">
+							SMTP Host: <input type="text" id="mailHost" name="mailHost"	th:value="${server.mailHost}" />
+
+						</div>
+
+						<div class="field">
+							SMTP Port: <input type="text" id="serverPort" name="serverPort"
+								th:value="${server.serverPort}" />
+
+						</div>
+
+						<div class="field">
+							User Name: <input type="text" id="mailUser" name="mailUser"
+								th:value="${server.mailUser}" />
+
+						</div>
+
+						<div class="field">
+							Password: <input type="password" id="mailPassword"
+								name="mailPassword" th:value="${server.mailPassword}" />
+
+						</div>
+						<div>
+							<input type="submit" id="submitBtn"
+								data-loading-text="Loading..." class="btn btn-primary submitBtn"
+								value="Submit Server Config" />
+
+						</div>
+					</form>
+
+				</div>
+				<div class="tab-pane card" id="content" role="tabpanel">
+					<form action="email/content">
+
+						<div class="field">To Address(separated by ","): <input type="text" 
+								name="toAddress" th:value="${content.toAddress}" />
+
+						</div>
+
+						<div class="field">Title: <input type="text" name="title"
+								th:value="${content.title}" />
+
+						</div>
+
+						<div class="field">Content: <input type="text" name="body"
+								th:value="${content.body}" />
+
+						</div>
+						<div>
+							<input type="submit" data-loading-text="Loading..."
+								class="btn btn-primary submitBtn" value="Submit Content Config" />
+
+						</div>
+
+					</form>
+				</div>
+
+
+
+
+			</div>
+
+
+
+
+		</div>
+		<script src="./js/email.js"></script>
+	</div>
+
+</body>
+</html>
