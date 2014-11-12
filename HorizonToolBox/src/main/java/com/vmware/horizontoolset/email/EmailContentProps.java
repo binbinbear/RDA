@@ -8,8 +8,8 @@ public class EmailContentProps {
 		return toAddress;
 	}
 	
-	private String title;
-	private String body;
+	private String title="Email notification from toolbox";
+	private String body="You message is here";
 	
 	
 	public String getTitle() {

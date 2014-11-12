@@ -4,10 +4,10 @@ package com.vmware.horizontoolset.email;
 
 public class EmailServerProps {
 
-	private String mailUser="steng";
-	private String mailPassword="ca$hc0w";
+	private String mailUser="";
+	private String mailPassword="";
 	private String protocal = "smtp";
-	private String mailHost="10.112.118.148";
+	private String mailHost="";
 	private String serverPort="25";
 	private boolean isAuth = true;
 
