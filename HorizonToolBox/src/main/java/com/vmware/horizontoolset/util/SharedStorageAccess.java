@@ -60,6 +60,8 @@ public class SharedStorageAccess implements AutoCloseable {
 			ctx.modifyAttributes(name, DirContext.REPLACE_ATTRIBUTE, attrs);
 		} catch (NameNotFoundException e) {
 			create(name, value);
+		} catch (IllegalStateException e) {
+			log.debug("Set value problem: Already exist?", e);
 		} catch (NamingException e) {
 			log.error("Error set key: " + key, e);
 		}
@@ -105,6 +107,8 @@ public class SharedStorageAccess implements AutoCloseable {
 	
 
 	public static String defaultContextGet(String key) {
+		log.debug("SharedStorageAccess: using default context");
+		
 		String name = getName(key);
 		
 		VDIContext vdiCtx = null;
