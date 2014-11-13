@@ -43,16 +43,17 @@ class ConcurrencyCalculator {
 			t = en.getTime().getTime();
 			
 			//skip all events that have already been processed.
-			if (t < lastProcessedTimestamp)
+			if (t < lastProcessedTimestamp) {
+				log.debug("Skip msg by timestamp. eventTime=" + t + ", lastTime=" + lastProcessedTimestamp + ", msg=" + en.getShortMessage());
 				continue;
+			}
 			
 			if (!(en instanceof EventImpl))
 				continue;
 			
-			EventImpl ev = (EventImpl) en;
-			String msg = ev.getShortMessage();
+			String msg = en.getShortMessage();
 			
-			log.debug("msg:" + msg + ", type=" + ev.getType());
+			log.debug("msg:" + msg + ", type=" + en.getType());
 			
 			//if the event is app request...
 			Matcher m = APP_REQUEST.matcher(msg);
@@ -68,7 +69,6 @@ class ConcurrencyCalculator {
 				if (m.matches()) {
 					String user = m.group(1);
 					
-					log.debug("on logout");
 					onUserLogout(user);
 				}
 			}
@@ -79,14 +79,21 @@ class ConcurrencyCalculator {
 
 	private void onUserLogout(String user) {
 		log.debug("on logout: user=" + user);
+		
+		user = user.toLowerCase();
+		
 		for (Set<String> users : concurrencyPerApp.values()) {
-			boolean removed = users.remove(users);
+			boolean removed = users.remove(user);
 			if (removed)
 				log.debug("removed from one app");
 		}
 	}
 
 	private void onAppRequest(String user, String app) {
+		
+		app = app.toLowerCase();
+		user = user.toLowerCase();
+		
 		Set<String> users = concurrencyPerApp.get(app);
 		if (users == null) {
 			users = new HashSet<>();
@@ -98,6 +105,9 @@ class ConcurrencyCalculator {
 	}
 
 	public synchronized int getConcurrency(String appId) {
+		
+		appId = appId.toLowerCase();
+		
 		Set<String> users = concurrencyPerApp.get(appId);
 		return users == null ? 0 : users.size();
 	}

@@ -10,6 +10,7 @@ import javax.naming.directory.DirContext;
 
 import org.apache.log4j.Logger;
 
+import com.vmware.vdi.adamwrapper.exceptions.ADAMConnectionFailedException;
 import com.vmware.vdi.adamwrapper.ldap.VDIContext;
 import com.vmware.vdi.adamwrapper.ldap.VDIContextFactory;
 
@@ -26,57 +27,27 @@ import com.vmware.vdi.adamwrapper.ldap.VDIContextFactory;
  * @author nanw
  *
  */
-public class SharedStorageAccess implements AutoCloseable {
+public class SharedStorageAccess {
 
 	private static Logger log = Logger.getLogger(SharedStorageAccess.class);
 	
 	private final static String namePrefix = "CN=TEToolbox-";
-	private final static String namePostfix = ",OU=Global,OU=Properties";
+	private final static String namePostfix = "OU=Global,OU=Properties,dc=vdi,dc=vmware,dc=int";
 	private final static String attrId = "description";
 	
-	private final DirContext ctx;
-
-	public SharedStorageAccess(DirContext context) {
-		this.ctx = context;
-	}
-
-	public String get(String key) {
+	public static void delete(String key) {
 		String name = getName(key);
-		try {
-			Attributes attrs = ctx.getAttributes(name, new String[] {attrId});
-			Attribute a = attrs.get(attrId);
-			return (String) a.get();
-		} catch (NamingException e) {
-			return null;
-		}
-	}
-	
-	public void set(String key, String value) {
-		String name = getName(key);
-		try {
-			Attributes attrs = ctx.getAttributes(name, new String[] {attrId});
-			Attribute a = attrs.get(attrId);
-			a.set(0, value);
-			ctx.modifyAttributes(name, DirContext.REPLACE_ATTRIBUTE, attrs);
-		} catch (NameNotFoundException e) {
-			create(name, value);
-		} catch (IllegalStateException e) {
-			log.debug("Set value problem: Already exist?", e);
-		} catch (NamingException e) {
-			log.error("Error set key: " + key, e);
-		}
-	}
-	
-	public void delete(String key) {
-		String name = getName(key);
-		try {
-			ctx.destroySubcontext(name);
+		
+		try (VDIContext vdiCtx = VDIContextFactory.defaultVDIContext();) {
+			DirContext dirCtx = vdiCtx.getDirContext();
+			
+			dirCtx.destroySubcontext(name);
 		} catch (Exception e) {
 			log.error("Error destroying subcontext: " + key, e);
 		}
 	}
 	
-	private void create(String name, String value) {
+	private static void create(DirContext dirCtx, String name, String value) {
 		
 		Attributes attributes=new BasicAttributes();
         Attribute classes = new BasicAttribute("objectClass");
@@ -88,7 +59,7 @@ public class SharedStorageAccess implements AutoCloseable {
         attributes.put(data);
         
         try {
-        	DirContext newEntry = ctx.createSubcontext(name, attributes);
+        	DirContext newEntry = dirCtx.createSubcontext(name, attributes);
             newEntry.close();
         } catch (Exception e) {
         	log.error("Fail creating subcontext: " + name, e);
@@ -96,46 +67,53 @@ public class SharedStorageAccess implements AutoCloseable {
         }
 	}
 
-	@Override
-	public void close() throws Exception {
-		//nothing. Ctx is not owned by us and we need not to close it.
-	}
 	
 	static String getName(String key) {
-		return namePrefix + key + namePostfix;
+		return namePrefix + key + ',' + namePostfix;
 	}
 	
 
-	public static String defaultContextGet(String key) {
+	public static String get(String key) {
 		log.debug("SharedStorageAccess: using default context");
 		
-		String name = getName(key);
+		String name = getName(key); 
 		
-		VDIContext vdiCtx = null;
-		DirContext dirCtx = null;
-		try {
-			vdiCtx = VDIContextFactory.defaultVDIContext();
-			dirCtx = vdiCtx.getDirContext();
+		try (VDIContext vdiCtx = VDIContextFactory.defaultVDIContext();) {
+			DirContext dirCtx = vdiCtx.getDirContext();
 			
 			Attributes attrs = dirCtx.getAttributes(name, new String[] {attrId});
 			Attribute a = attrs.get(attrId);
 			return (String) a.get();
+		} catch (NameNotFoundException e) {
+			log.debug("LDAP key not found: " + name + ". e=" + e);
+			//omit
 		} catch (Exception e) {
 			log.warn("Error reading SharedStorageAccess. key=" + key, e);
 			return null;
-		} finally {
-			if (dirCtx != null) {
-				try {
-					dirCtx.close();
-				} catch (Exception e) {
-				}
+		} 
+		return null;
+	}
+	
+	public static void set(String key, String value) {
+		String name = getName(key);
+
+		try (VDIContext vdiCtx = VDIContextFactory.defaultVDIContext();) {
+			DirContext dirCtx = vdiCtx.getDirContext();
+			
+			try {
+				Attributes attrs = dirCtx.getAttributes(name, new String[] {attrId});
+				Attribute a = attrs.get(attrId);
+				a.set(0, value);
+				dirCtx.modifyAttributes(name, DirContext.REPLACE_ATTRIBUTE, attrs);
+			} catch (NameNotFoundException e) {
+				create(dirCtx, name, value);
+			} catch (IllegalStateException e) {
+				log.debug("Set value problem: Already exist?", e);
+			} catch (NamingException e) {
+				log.error("Error set key: " + key, e);
 			}
-			if (vdiCtx != null) {
-				try {
-					VDIContext.release(vdiCtx);
-				} catch (Exception e) {
-				}
-			}
+		} catch (ADAMConnectionFailedException e1) {
+			log.error("Fail connecting to default VDI context.", e1);
 		}
 	}
 }

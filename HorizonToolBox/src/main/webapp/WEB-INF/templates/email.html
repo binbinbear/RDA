@@ -53,6 +53,14 @@ div.card div select {
 	box-sizing: content-box;
 	padding: 2px 0px;
 }
+
+.lite-table {
+	border: none
+}
+
+table, table td {
+    border: none
+}
 </style>
 		<h3 class="pageHeader">
 			<table border="0" cellpadding="0" cellspacing="0" width="100%">
@@ -80,25 +88,12 @@ div.card div select {
 			<form action="email/server" id="emailForm">
 
 				<div class="field">
-					SMTP Host: <input type="text" id="mailHost" name="mailHost"	th:value="${server.mailHost}" />
-				</div>
-
-				<div class="field">
-					SMTP Port: <input type="text" id="serverPort" name="serverPort"
-						th:value="${server.serverPort}" />
-
-				</div>
-
-				<div class="field">
-					User Name: <input type="text" id="mailUser" name="mailUser"
-						th:value="${server.mailUser}" />
-
-				</div>
-
-				<div class="field">
-					Password: <input type="password" id="mailPassword"
-						name="mailPassword" th:value="${server.mailPassword}" />
-
+					<table broder="0" cellpadding="3" cellspacing="3" class="lite-table">
+						<tr><td>SMTP Host: </td><td width="15px"></td><td><input type="text" id="mailHost" name="mailHost"	th:value="${server.mailHost}" /></td></tr>
+						<tr><td>SMTP Port: </td><td></td><td><input type="text" id="serverPort" name="serverPort" th:value="${server.serverPort}" /></td></tr>
+						<tr><td>User Name: </td><td></td><td><input type="text" id="mailUser" name="mailUser" th:value="${server.mailUser}" /></td></tr>
+						<tr><td>Password: </td><td></td><td><input type="password" id="mailPassword" name="mailPassword" th:value="${server.mailPassword}" /></td></tr>
+					</table>
 				</div>
 								
 				<div class="field">
@@ -114,7 +109,7 @@ div.card div select {
 				</div>
 
 
-
+				<br/>
 
 				<div>
 					<input type="submit" id="submitBtn" data-loading-text="Loading..."

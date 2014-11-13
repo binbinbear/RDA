@@ -15,8 +15,6 @@ public class SessionUtil {
 	private static Logger log = Logger.getLogger(SessionUtil.class);
 	private static ConcurrentHashMap <String, ToolBoxSession> sessions = new ConcurrentHashMap<String,ToolBoxSession>();
 	
-
-	
 	//maximum sessions, default is 30
 	private static int maximumSessions = 30;
 	
@@ -106,17 +104,5 @@ public class SessionUtil {
 	
 	public static EventDBUtil getDB(HttpSession session){
 		return getSessionObj(session, EventDBUtil.class);
-	}
-	
-	public synchronized static SharedStorageAccess getSSA(HttpSession session) {
-		SharedStorageAccess ssa = getSessionObj(session, SharedStorageAccess.class);
-		if (ssa == null) {
-			LDAP ldap = getSessionObj(session, LDAP.class);
-			if (ldap == null)
-				return null;
-			ssa = new SharedStorageAccess(ldap.getContext());
-			setSessionObj(session, ssa);
-		}
-		return ssa;
 	}
 }

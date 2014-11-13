@@ -1,5 +1,7 @@
 package com.vmware.horizontoolset.util;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,20 +17,17 @@ import com.vmware.vdi.adamwrapper.ldap.VDIContextFactory;
 
 public class EventDBUtil implements AutoCloseable {
 	private static Logger log = Logger.getLogger(EventDBUtil.class);
-	private final VDIContext vdiContext;
-	private final boolean isDefault;
+	private VDIContext vdiContext;
 	private ViewAPIService viewapi;
 	
 	public EventDBUtil(String username, String password, String domain, ViewAPIService viewapi) throws ADAMConnectionFailedException{
 		vdiContext = VDIContextFactory.VDIContext(username, password, domain);
 		this.viewapi = viewapi;
-		isDefault = false;
 	}
 
 	private EventDBUtil() throws ADAMConnectionFailedException {
 		vdiContext = VDIContextFactory.defaultVDIContext();
 		viewapi = null;
-		isDefault = true;
 	}
 	
 	public static EventDBUtil createDefault() {
@@ -42,18 +41,11 @@ public class EventDBUtil implements AutoCloseable {
 	
 	@Override
 	public void close() {
-		this.viewapi = null;
+		viewapi = null;
 		
-		if (this.vdiContext!=null){
-			
-			try{
-				if (isDefault)
-					VDIContext.release(vdiContext);
-				else
-					vdiContext.disposeContext();
-			} catch(Exception ex) { 
-				log.warn("can't disconnect from context",ex);
-			}
+		if (vdiContext != null) {
+			vdiContext.close();
+			vdiContext = null;
 		}
 	}
 	
@@ -96,6 +88,16 @@ public class EventDBUtil implements AutoCloseable {
 			EventDBCache.expire();
 		List<Event> allEvents = EventDBCache.getEvents(vdiContext, daysToShow);
 		log.debug("All Events size:" + allEvents.size());
+		
+		//sort by time, ascending (early event first)
+		Collections.sort(allEvents, new Comparator<Event>() {
+
+			@Override
+			public int compare(Event o1, Event o2) {
+				return (int)(o1.getTime().getTime() - o2.getTime().getTime());
+			}
+		});
+		
 		return allEvents;
 	}
 	

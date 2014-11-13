@@ -15,15 +15,11 @@ public class WhitelistManager {
 	private static final long READ_CACHE_EXPIRATION = 120 * 1000; 
 	private static final String STORED_ATTR_KEY = "WHITELIST";
 	
-	private final SharedStorageAccess ssa;
 	private static List<WhitelistRecord> data = new LinkedList<>();
 	private static volatile long lastLoadTimestamp; 
 	
-	public WhitelistManager(SharedStorageAccess ssa) {
-		this.ssa = ssa;
-	}
 	
-	public List<WhitelistRecord> list() {
+	public static List<WhitelistRecord> list() {
 		
 		synchronized(data) {
 			ensureData();
@@ -31,7 +27,7 @@ public class WhitelistManager {
 		}
 	}
 	
-	public boolean delete(long recordId) {
+	public static boolean delete(long recordId) {
 		synchronized(data) {
 			ensureData();
 			
@@ -47,7 +43,7 @@ public class WhitelistManager {
 		return false;
 	}
 	
-	public void add(WhitelistRecord record) {
+	public static void add(WhitelistRecord record) {
 		synchronized(data) {
 			ensureData();
 			
@@ -58,7 +54,7 @@ public class WhitelistManager {
 		}
 	}
 	
-	public boolean isAllowed(DeviceInfo di) {
+	public static boolean isAllowed(DeviceInfo di) {
 		
 		if (di == null || di.ViewClient_Client_ID == null || di.ViewClient_Client_ID.isEmpty())
 			return false;
@@ -78,7 +74,7 @@ public class WhitelistManager {
 		return false;
 	}
 	
-	private void ensureData() {
+	private static void ensureData() {
 		long now = System.currentTimeMillis();
 		if (now - lastLoadTimestamp > READ_CACHE_EXPIRATION) {
 			if (loadData())
@@ -87,16 +83,11 @@ public class WhitelistManager {
 	}
 	
 	///////////////////////////////////////////////////////////////////
-	private boolean loadData() {
+	private static boolean loadData() {
 		
 		synchronized(data) {
 			
-			String val;
-			
-			if (ssa == null)
-				val = SharedStorageAccess.defaultContextGet(STORED_ATTR_KEY);
-			else
-				val = ssa.get(STORED_ATTR_KEY);
+			String val = SharedStorageAccess.get(STORED_ATTR_KEY);
 			
 			if (val == null)
 				return true;
@@ -130,7 +121,7 @@ public class WhitelistManager {
 		return true;
 	}
 	
-	private void saveData() {
+	private static void saveData() {
 		//no need to sync due to all caller synchronized
 		
 		StringBuilder sb = new StringBuilder();
@@ -138,6 +129,6 @@ public class WhitelistManager {
 			sb.append(i.deviceInfo.ViewClient_Client_ID).append(";;");
 		}
 		
-		ssa.set(STORED_ATTR_KEY, sb.toString());
+		SharedStorageAccess.set(STORED_ATTR_KEY, sb.toString());
 	}
 }

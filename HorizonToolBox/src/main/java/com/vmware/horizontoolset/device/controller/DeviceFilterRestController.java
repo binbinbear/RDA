@@ -59,8 +59,7 @@ public class DeviceFilterRestController {
 	public JTableData whitelist(HttpSession session) {
     	JTableData ret = new JTableData();
 
-    	WhitelistManager wm = new WhitelistManager(SessionUtil.getSSA(session));
-    	List<WhitelistRecord> records = wm.list();
+    	List<WhitelistRecord> records = WhitelistManager.list();
     	
     	ret.Records = new Object[records.size()];
     	
@@ -90,9 +89,7 @@ public class DeviceFilterRestController {
     	try {
     		long recordId = Long.parseLong(recordIdString);
     		
-    		WhitelistManager wm = new WhitelistManager(SessionUtil.getSSA(session));
-    		
-    		if (wm.delete(recordId))
+    		if (WhitelistManager.delete(recordId))
     			resp = JTableResponse.RESULT_OK;
     		else
     			resp = JTableResponse.error("No such record");

@@ -7,8 +7,6 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
-import com.vmware.horizontoolset.util.SessionUtil;
-
 public class AccessLogManager {
 
 	public static final int CAPACITY = 1000;	//num of unique devices
@@ -28,9 +26,7 @@ public class AccessLogManager {
 
 	public static boolean log(HttpSession session, DeviceInfo di) {
 		
-		WhitelistManager wm = new WhitelistManager(SessionUtil.getSSA(session));
-    	
-		boolean isAllowed = wm.isAllowed(di);
+		boolean isAllowed = WhitelistManager.isAllowed(di);
 		
 		record(di, isAllowed);
 		

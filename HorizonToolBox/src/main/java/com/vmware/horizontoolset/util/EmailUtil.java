@@ -25,15 +25,11 @@ public class EmailUtil {
 	private static Logger log = Logger.getLogger(EmailUtil.class);
 	private static final String emailKey="EMAIL_KEY";
 	
-	public static EmailServerProps loadServerProps(SharedStorageAccess ssa){
+	public static EmailServerProps loadServerProps(){
 		try{
 			//try go get from ldap
-			String props;
-			if (ssa==null){
-				props= SharedStorageAccess.defaultContextGet(emailKey);
-			}else{
-				props = ssa.get(emailKey);
-			}
+			String props = SharedStorageAccess.get(emailKey);
+			
 			if (props!=null&&!props.isEmpty()){
 				Gson gson = new Gson();
 				
@@ -52,7 +48,7 @@ public class EmailUtil {
 	}
 
 	
-	public synchronized static boolean init(EmailServerProps props, SharedStorageAccess ssa){
+	public synchronized static boolean init(EmailServerProps props){
 		_emailserverprops = props;
 		serverProps = new Properties();
 		serverProps.setProperty("mail.smtp.host", props.getMailHost());
@@ -85,10 +81,7 @@ public class EmailUtil {
 		}
 		serverenabled = true;
 		//try to set to ldap
-		if (ssa!=null){
-			ssa.set(emailKey, JsonUtil.javaToJson(props));
-		}
-		
+		SharedStorageAccess.set(emailKey, JsonUtil.javaToJson(props));
 		
 		return true;
 	}
@@ -115,18 +108,22 @@ public class EmailUtil {
 
 			log.info("[MailSender] Sending to: " + m.getAllRecipients());
 		//	Transport.send(msg);
-			 Transport transport = session.getTransport(EmailUtil.serverProps.getProperty("mail.transport.protocol"));
-	         transport.connect((String) EmailUtil.serverProps.getProperty("mail.smtp.host"),EmailUtil.serverProps.getProperty("mail.user"), 
+			Transport transport = session.getTransport(EmailUtil.serverProps.getProperty("mail.transport.protocol"));
+			try {
+				transport.connect((String) EmailUtil.serverProps.getProperty("mail.smtp.host"),EmailUtil.serverProps.getProperty("mail.user"), 
 	        		 EmailUtil.serverProps.getProperty("mail.password") );
-	         transport.sendMessage(msg, msg.getRecipients(Message.RecipientType.TO));
-			log.info("[MailSender] Mail sent");
+				transport.sendMessage(msg, msg.getRecipients(Message.RecipientType.TO));
+				log.info("[MailSender] Mail sent");
+			} finally {
+				transport.close();
+			}
 		}catch(Exception ex){
 			log.error("Cant' send message due to excpetion:", ex);
 		}
 	}
 	
 	public synchronized static void sendMail(String titile, String body) {
-		loadServerProps(null);
+		loadServerProps();
 		if (!serverenabled){
 			log.warn("Can't send email since the props is not right");
 		}

@@ -1,7 +1,6 @@
 package com.vmware.horizontoolset.limit;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -13,8 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.vmware.horizontoolset.common.jtable.JTableData;
 import com.vmware.horizontoolset.common.jtable.JTableResponse;
-import com.vmware.horizontoolset.util.LDAP;
-import com.vmware.horizontoolset.util.SessionUtil;
+import com.vmware.vdi.vlsi.binding.vdi.util.SecureString;
+import com.vmware.vim.binding.impl.vmodl.BinaryImpl;
+import com.vmware.vim.binding.vmodl.Binary;
 
 @RestController
 public class LimitRestController {
@@ -52,24 +52,49 @@ public class LimitRestController {
 	public String test(HttpSession session) {
     	
     	try {
-	       	LDAP ldap = SessionUtil.getLDAP(session);
-	       	String key = "toolbox";
-	       	int n = ldap.getInt(key, 0) + 1;
-	       	ldap.setAttribute(key, String.valueOf(n));
-	       	
-	       	return String.valueOf(n);
-    	} catch (Exception e) {
-    		StringWriter sw = new StringWriter();
-    		PrintWriter pw = new PrintWriter(sw);
-    		e.printStackTrace(pw);
-    		pw.close();
-    		return sw.toString();
+    		/*
+	    	AdamRoleManager arm = AdamRoleManager.getInstance();
+	    	VDIContext ctx = VDIContextFactory.defaultVDIContextUnpooled();
+	    	int n = arm.getDefinedRoles(ctx).size();
+	    	ctx.close();
+	    	
+	    	return "getDefinedRoles=" + n;
+	    	*/
+    	/*
+    	
+    		EventDBUtil dbu = EventDBUtil.createDefault();
+    		return "" + dbu.getEvents(1, true).size();
+    		*/
+    		
+    		//return SharedStorageAccess.defaultContextGet("LIMIT_MGR");
+    		return "OK";
+    		
+    	} catch (Throwable t) {
+    		log.error("", t);
+    		return t.toString();
     	}
+    	
+    	
     }
     
     @RequestMapping("/limit/refresh")
     public void refresh() {
     	LimitManager.updateAppConcurrency(null);
+    }
+    
+    public static void main(String[] args) {
+		try {
+			byte[] bytes = "asdf".getBytes("UTF-8");
+	        Binary binary = new BinaryImpl(bytes);
+	        SecureString ss = new SecureString(binary);
+
+	        String s2 = new String(ss.utf8String.asArray());
+	        System.out.println(s2);
+	        
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 }
 

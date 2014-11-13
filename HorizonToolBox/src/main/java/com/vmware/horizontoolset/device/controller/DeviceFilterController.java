@@ -41,9 +41,7 @@ public class DeviceFilterController {
     		else {
     			rec.result = AccessRecord.AccessResult.ADDED_TO_WHITELIST;
     			
-    			WhitelistManager wm = new WhitelistManager(SessionUtil.getSSA(session));
-    			
-    			wm.add(new WhitelistRecord(rec.deviceInfo));
+    			WhitelistManager.add(new WhitelistRecord(rec.deviceInfo));
     			SessionMsg.addSuccess(session, "No such record");
     		}
     		

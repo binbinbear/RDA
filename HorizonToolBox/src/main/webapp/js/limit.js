@@ -31,20 +31,32 @@ $(document).ready(function () {
 				title: 'Application Pool',
 				width: '50%',
 				key: true,
+				type: 'text',
 				create: false,
 				edit: false,
 				list: true
+			},
+			exceeded: {
+				title: "Status",
+				width: '10%',
+				edit: false,
+				type: 'img',
+				create: false,
+				display: function (data) {
+					var iconName = data.record.exceeded == 1 ? "warning_16.png" : "normal_16.png";
+					return '<img src="./img/' + iconName + '" />';
+				}
 			},		
 			concurrency: {
 				title: 'Sessions',
-				width: '20%',
+				width: '15%',
 				type: 'text',
 				create: false,
 				edit: false
 			},
 			limit: {
 				title: 'Limit',
-				width: '20%',
+				width: '15%',
 				type: 'text',
 				create: false,
 				edit: true

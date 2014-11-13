@@ -1,5 +1,11 @@
 package com.vmware.horizontoolset;
 
+import java.io.UnsupportedEncodingException;
+
+import com.vmware.vdi.vlsi.binding.vdi.util.SecureString;
+import com.vmware.vim.binding.impl.vmodl.BinaryImpl;
+import com.vmware.vim.binding.vmodl.Binary;
+
 
 public class Credential {
 	
@@ -23,11 +29,11 @@ public class Credential {
 	}
 
 	public String getPassword() {
-		return password;
+		return toExplicitString(password);
 	}
 
 	public void setPassword(String password) {
-		this.password = password;
+		this.password = toSecuredString(password);
 	}
 
 	public String getDomain() {
@@ -39,9 +45,26 @@ public class Credential {
 	}
 
 
+	private static SecureString toSecuredString(String s) {
+		try {
+			Binary b = new BinaryImpl(s.getBytes("UTF-8"));
+			return new SecureString(b);
+		} catch (UnsupportedEncodingException e) {
+			return null;
+		}
+	}
+	
+	private static String toExplicitString(SecureString s) {
+		try {
+			return new String(s.getUtf8String().asArray(), "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			return null;
+		}
+	}
+	
     private String username;
 
-    private String password;
+    private SecureString password;
 
 	private String domain;
 

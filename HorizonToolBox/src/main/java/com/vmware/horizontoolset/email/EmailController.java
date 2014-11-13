@@ -21,7 +21,7 @@ public class EmailController {
     @RequestMapping(value="/email", method=RequestMethod.GET)
     public synchronized String getEmailHome( Model model, HttpSession session) {
         model.addAttribute("view", view);
-        model.addAttribute("server", EmailUtil.loadServerProps(SessionUtil.getSSA(session)));
+        model.addAttribute("server", EmailUtil.loadServerProps());
         model.addAttribute("user", SessionUtil.getuser(session));
         
     	return Application.MAINPAGE;
@@ -30,7 +30,7 @@ public class EmailController {
     
     @RequestMapping(value="/email/server", method=RequestMethod.GET)
     public synchronized String setEmailServer(EmailServerProps props, Model model, HttpSession session) {
-    	 EmailUtil.init(props, SessionUtil.getSSA(session));
+    	 EmailUtil.init(props);
     	 try{
     		 EmailUtil.sendMail("mail config is changed", "mailconfig is changed");
     	 }catch(Exception ex){

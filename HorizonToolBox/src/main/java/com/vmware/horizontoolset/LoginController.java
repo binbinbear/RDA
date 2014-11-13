@@ -13,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.vmware.horizontoolset.util.TaskModuleUtil;
 import com.vmware.horizontoolset.util.EventDBUtil;
 import com.vmware.horizontoolset.util.LDAP;
 import com.vmware.horizontoolset.util.SessionUtil;
@@ -85,7 +86,9 @@ public class LoginController{
     		log.error("login failed, return to login page,", ex);
     		return "redirect:/Login";
     	}
-    	
+
+    	boolean anyError = false;
+
     	try{
     		LDAP _ldap; 
     		if (remoteDebug){
@@ -100,7 +103,7 @@ public class LoginController{
     		
     	}catch(Exception ex){
     		log.error("You can't use ldap related features!", ex);
-    		
+        	anyError = true;
     	}
     	
     	try{
@@ -109,7 +112,11 @@ public class LoginController{
     		SessionUtil.setSessionObj(session, _db);
     	}catch(Exception ex){
     		log.error("You can't use DB related features!", ex);
+    		anyError = true;
     	}
+    	
+    	TaskModuleUtil.onLogin(server, credential, anyError);
+    	
     	//the default page is snapshotsreport
     	return "redirect:/";
     }

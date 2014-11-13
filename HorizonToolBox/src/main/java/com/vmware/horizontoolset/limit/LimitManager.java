@@ -1,5 +1,7 @@
 package com.vmware.horizontoolset.limit;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -12,9 +14,11 @@ import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 
 import com.vmware.horizontoolset.usage.Event;
+import com.vmware.horizontoolset.util.EmailUtil;
 import com.vmware.horizontoolset.util.EventDBUtil;
-import com.vmware.horizontoolset.util.SessionUtil;
+import com.vmware.horizontoolset.util.JsonUtil;
 import com.vmware.horizontoolset.util.SharedStorageAccess;
+import com.vmware.horizontoolset.util.TaskModuleUtil;
 import com.vmware.horizontoolset.viewapi.ViewAPIService;
 import com.vmware.vdi.vlsi.binding.vdi.resources.Application.ApplicationInfo;
 
@@ -30,9 +34,8 @@ public class LimitManager {
 	
 	
 	private static volatile boolean initialized = false;
-	
-	private static ViewAPIService _api;
-	private static EventDBUtil _dbUtil;
+	private static long lastUpdate;
+	private static final long UPDATE_THRESHOLD = 10L * 60 * 1000;
 	
 	public static List<AppLimitInfo> list(HttpSession session) {
 		
@@ -45,87 +48,86 @@ public class LimitManager {
 
 	static void updateAppConcurrency(HttpSession session) {
 		
-		log.debug("LimitManager: updateAppConcurrency - entry");
+		log.debug("LimitManager: updateAppConcurrency - entry. IsScheduledTask=" + (session == null));
 		
-		if (session != null)
-			_api = SessionUtil.getViewAPIService(session);
-
-		if (_api == null)
+		long now = System.currentTimeMillis();
+		if (now - lastUpdate < UPDATE_THRESHOLD) {
+			log.debug("LimitManager: skip quick refresh");
 			return;
-
-
-		//
-		//	load current data, whether from persistent storage, or memory.
-		//
-		Map<String, AppLimitInfo> currData;
-		boolean justInitialized = false;
-		if (!initialized) {
-			log.debug("LimitManager: updateAppConcurrency - init.");
-			currData = load(session);
-
-			initialized = true;
-			justInitialized = true;
-		} else {
-			currData = new HashMap<>();
-			synchronized (apps) {
-				for (AppLimitInfo a : apps)
-					currData.put(a.appId, a);
-			}
 		}
+	
 		
-		//
-		//	Retrieve all existing apps. Migrate limit setting from existing data (currData).
-		//
-		Map<String, AppLimitInfo> newData = new HashMap<>();
-		List<ApplicationInfo> appPools = _api.getAllApplicationPools();
-
-		log.debug("LimitManager: updateAppConcurrency - existing apps=" + appPools.size());
+		try (ViewAPIService api = TaskModuleUtil.getViewAPIService(session);) {
 		
-		for (ApplicationInfo info : appPools) {
-			String id = info.data.name;
+			if (api == null)
+				return;
 			
-			AppLimitInfo a = currData.get(id);
-			if (a == null)
-				a = new AppLimitInfo(id, 0, 0);	//looks like a new app. Create the info.
-			newData.put(id, a);
+			//
+			//	load current data, whether from persistent storage, or memory.
+			//
+			Map<String, AppLimitInfo> currData;
+			boolean justInitialized = false;
+			if (!initialized) {
+				log.debug("LimitManager: updateAppConcurrency - init.");
+				currData = load(session);
+	
+				initialized = true;
+				justInitialized = true;
+			} else {
+				currData = new HashMap<>();
+				synchronized (apps) {
+					for (AppLimitInfo a : apps)
+						currData.put(a.appId, a);
+				}
+			}
+			
+			//
+			//	Retrieve all existing apps. Migrate limit setting from existing data (currData).
+			//
+			Map<String, AppLimitInfo> newData = new HashMap<>();
+			List<ApplicationInfo> appPools = api.getAllApplicationPools();
+	
+			log.debug("LimitManager: updateAppConcurrency - existing apps=" + appPools.size());
+			
+			for (ApplicationInfo info : appPools) {
+				String id = info.data.name;
+				
+				AppLimitInfo a = currData.get(id);
+				if (a == null)
+					a = new AppLimitInfo(id, 0, 0);	//looks like a new app. Create the info.
+				newData.put(id, a);
+			}
+			
+			//
+			//	list passed events, calculate current concurrency
+			//
+			int daysToPoll = justInitialized ? 7 : 1;
+			processEvents(daysToPoll);
+			
+			//
+			//	Data is ready. Store. 
+			//
+			Collection<AppLimitInfo> newSettings = newData.values();
+			synchronized (apps) {
+				apps.clear();
+				apps.addAll(newSettings);			
+			}
+	
+			//
+			//	Send notification if any limit is exceeded
+			//
+			
+			monitorLimitation(newSettings);
 		}
-		
-		//
-		//	list passed events, calculate current concurrency
-		//
-		int daysToPoll = justInitialized ? 7 : 1;
-		processEvents(session, daysToPoll);
-		
-		//
-		//	Data is ready. Store. 
-		//
-		Collection<AppLimitInfo> newSettings = newData.values();
-		synchronized (apps) {
-			apps.clear();
-			apps.addAll(newSettings);			
-		}
-
-		//
-		//	Send notification if any limit is exceeded
-		//
-		
-		monitorLimitation(newSettings);
-		
 		
 		log.debug("LimitManager: updateAppConcurrency - exit");
 	}
 
-	private static void processEvents(HttpSession session, int days) {
-		if (session != null)
-			_dbUtil = SessionUtil.getDB(session);
+	private static void processEvents(int days) {
 		
 		List<Event> events;
-		if (_dbUtil != null)
-			events = _dbUtil.getEvents(days, true);
-		else {
-			try (EventDBUtil dbu = EventDBUtil.createDefault();) {
-				events = dbu.getEvents(days, true);
-			}
+		try (EventDBUtil dbu = EventDBUtil.createDefault();) {
+			events = dbu.getEvents(days, true);
 		}
 		
 		log.info("LimitManager: processEvents: " + events.size());
@@ -134,18 +136,53 @@ public class LimitManager {
 		synchronized (apps) {
 			for (AppLimitInfo a : apps) {
 				a.concurrency = connCalc.getConcurrency(a.appId);
+				
+				log.debug("app:" + a.appId + ", c=" + a.concurrency);
 			}
 		}
+		
+		log.debug("Dump ConnCalc:" + JsonUtil.javaToJson(connCalc));
 	}
 
 	private static void monitorLimitation(Collection<AppLimitInfo> apps) {
 		log.info("LimitManager: monitorLimitation. App count=" + apps.size());
 		
 		for (AppLimitInfo a : apps) {
-			if (a.concurrency > a.limit) {
+			if (a.isLimitExceeded()) {
 				log.info("LimitManager: monitorLimitation: Exceeded: App=" + a.appId + ", limit=" + a.limit + ", current=" + a.concurrency);
+				
+				sentNotificationFor(a);
+				
+				a.messageSent = true;
+			} else {
+				a.messageSent = false;
 			}
 		}
+	}
+
+	private static void sentNotificationFor(AppLimitInfo a) {
+
+		StringBuilder content = new StringBuilder();
+
+		String serverName;
+		try {
+			serverName = InetAddress.getLocalHost().getHostAddress();
+		} catch (UnknownHostException e) {
+			serverName = "UNDETERMINED";
+		}
+		
+		content
+			.append("Application Pool Name: ").append(a.appId).append("\r\n")
+			.append("Limit: ").append(a.limit).append("\r\n")
+			.append("Current Concurrency: ").append(a.concurrency).append("\r\n")
+			.append("\r\n")
+			.append("View Connection Server: ").append(serverName).append("\r\n")
+			.append("\r\n")
+			.append("Logon Horizon Toolbox to adjust the settings: ")
+			.append("https://" + serverName + "/toolbox/limit");
+		
+		String title = "Horizon Toolbox Monitor - App Usage Limit Exceeded.";
+		EmailUtil.sendMail(title, content.toString());
 	}
 
 	public static void update(HttpSession session, String appId, int n) {
@@ -180,26 +217,13 @@ public class LimitManager {
 			}
 		}
 		
-		SharedStorageAccess ssa = SessionUtil.getSSA(session);
-		if (ssa != null)
-			ssa.set(LIMIT_MAMAGER_KEY, value.toString());
+		SharedStorageAccess.set(LIMIT_MAMAGER_KEY, value.toString());
 	}
 	
 	private static Map<String, AppLimitInfo> load(HttpSession session) {
 		log.debug("LimitManager: load - entry.");
 		
-		String value = null;
-		SharedStorageAccess ssa;
-		boolean loaded = false;
-		if (session != null) {
-			ssa =  SessionUtil.getSSA(session);
-			if (ssa != null) {
-				value = ssa.get(LIMIT_MAMAGER_KEY);				
-				loaded = true;
-			}
-		}
-		if (!loaded)
-			value = SharedStorageAccess.defaultContextGet(LIMIT_MAMAGER_KEY);
+		String value = SharedStorageAccess.get(LIMIT_MAMAGER_KEY);	
 		
 		if (value == null)
 			return Collections.emptyMap();
