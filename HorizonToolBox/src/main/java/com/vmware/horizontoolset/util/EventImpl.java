@@ -103,7 +103,7 @@ public class EventImpl implements Event{
 					this.poolName = source.getName();
 					//break;
 				}
-				log.debug("Event source:" + source.getType().toString() + " source name:" + source.getName());
+				//log.debug("Event source:" + source.getType().toString() + " source name:" + source.getName());
 				
 			}
 		} else if (event.getModule().equals(EventModule.Broker) 

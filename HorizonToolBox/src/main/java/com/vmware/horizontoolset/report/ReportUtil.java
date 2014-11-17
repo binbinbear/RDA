@@ -210,11 +210,15 @@ public class ReportUtil {
 			events.add(c.getDisconnectionEvent());
 		}
 		
+		if (events.size()==0){
+			return null;
+		}
 		java.util.Collections.sort(events);
 		
 		
 
 		int i = events.size()-1;
+		
 		long previousTime = events.get(i).getTime().getTime();
 		int currentMax = 0;
 		int currentConCurrent = 0;

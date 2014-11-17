@@ -85,11 +85,11 @@ public class EventDBCache {
 		for (AdminEvent adminevent: adminEvent){
 			
 			EventImpl event = new EventImpl(adminevent);
-			log.debug("  Type=" + event.getType() + ", msg=" + event.getShortMessage());
+			//log.debug("  Type=" + event.getType() + ", msg=" + event.getShortMessage());
 			
 			if (event.getType() != EventType.Others){
 				cachedEvents.add(event);
-				log.debug("  (added)");
+				//log.debug("  (added)");
 			}
 			
 //			log.debug("Event------");

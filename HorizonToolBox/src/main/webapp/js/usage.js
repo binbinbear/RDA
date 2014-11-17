@@ -2,6 +2,7 @@ if (!window.ToolBox){
 	window.ToolBox= {};
 }
 if (!ToolBox.Usage || !ToolBox.Usage.init){
+	
 	/**
 	 * @ngInject
 	 */
@@ -9,87 +10,68 @@ if (!ToolBox.Usage || !ToolBox.Usage.init){
 
 		$scope.days = "7";
 		 $scope.$watch("days", function () {
-		        $scope.tableParams.reload();
+		        $scope.reloadData();
 		        
-		  });     
+		  });
+		 $scope.data = [];
+		 $scope.reloadData = function(){
+			 if($("#loading2").length == 0){
+			    	// $('#accumulatedUsing').append("<div class=\"loadingdiv\">Loading</div>"); 
+					$('#connectionTable').append("<tr id=\"loading2\" class=\"loadingrow\"><td class=\"desktopName \" ></td>"
+							+"<td class=\"desktopName \" ></td><td class=\"desktopName \" ></td><td class=\"desktopName \" ></td>"
+							+ "<td class=\"desktopName \" ></td><td class=\"desktopName \" ></td></tr>");
+			     }
+	        var thisRequestData = {user:$("#user").val(),days:$scope.days};
+	        
+			 $.ajax({
+					url: './usage/connection',
+					type: "GET",
+					data:thisRequestData,
+					success: function (data) {
+						$("#exportBtn").attr("href","./usage/connection/export?days="+ $scope.days+"&user="+thisRequestData.user);
+						$(".updateDate").text("");
+						$(".loadingrow").remove();
+						if(data){	
+							for(var i = 0; i < data.length; i++){
+								data[i].disconnectionTime = new Date(data[i].disconnectionTime).toLocaleString();
+								data[i].connectionTime = new Date(data[i].connectionTime).toLocaleString();
+								data[i].usageTime= ToolBox.Usage.toTimeString(data[i].usageTime);
+							}
+							$scope.data = data;
+						}
+						$scope.tableParams.reload();
+					}, 
+					error:function(XMLHttpRequest, textStatus, errorThrown){
+						var sessionstatus = XMLHttpRequest.getResponseHeader("sessionstatus");
+						if ("timeout" == sessionstatus){
+							window.location.reload();	
+							return;
+						}
+						$(".loadingrow").remove();
+						$scope.data = [];
+						 $(".updateDate").text("Error happens when getting data from Event DB");
+						 $scope.tableParams.reload();
+				    }
+				});
+		 }
 	    $scope.tableParams = new ngTableParams({
 	        page: 1,            // show first page
 	        count: 10           // count per page
 	    }, {
 	        total: 0, // length of data
 	        getData: function($defer, params) {
-	        	var thisRequestData = {user:$("#user").val(),days:$scope.days};
-	        	$("#exportBtn").attr("href","./usage/connection/export?days="+ $scope.days+"&user="+$("#user").val());
-	        	var emptyTable = function(){
-	        		params.page(1);
-        			params.total(0);
-	        		//$("#connectionTable tbody").empty();
-	        	};
-	        	var loadPage = function(){
-	        		ToolBox.Usage.lastRequestData = thisRequestData;
-	        		
-	        		var data = ToolBox.Usage.usageData;
-	        		if (data == null || data.length == 0){
-	        			emptyTable();
-	        			
-	        		}else{
-	        			if ((params.page() - 1) * params.count() >= ToolBox.Usage.usageData.length){
+	        	var data = $scope.data;
+	        	if ((params.page() - 1) * params.count() >= data.length){
 							params.page(1);
-						}
-	        			params.total(data.length);
-						$defer.resolve(data.slice((params.page() - 1) * params.count(), params.page() * params.count()));						 			           
-	        		}
-					
-	        	};
-					
-					if (ToolBox.Usage.lastRequestData == null || (thisRequestData["user"] != ToolBox.Usage.lastRequestData["user"]|| thisRequestData["days"] != ToolBox.Usage.lastRequestData["days"])){
-						ToolBox.Usage.usageData = [];
-						emptyTable();
-						if($("#loading2").length == 0){
-					    	// $('#accumulatedUsing').append("<div class=\"loadingdiv\">Loading</div>"); 
-							$('#connectionTable').append("<tr id=\"loading2\" class=\"loadingrow\"><td class=\"desktopName \" ></td>"
-									+"<td class=\"desktopName \" ></td><td class=\"desktopName \" ></td><td class=\"desktopName \" ></td>"
-									+ "<td class=\"desktopName \" ></td><td class=\"desktopName \" ></td></tr>");
-					     }
-						$.ajax({
-							url: './usage/connection',
-							type: "GET",
-							data:thisRequestData,
-							success: function (data) {
-								$(".updateDate").text("");
-								$(".loadingrow").remove();
-								if(data){	
-									for(var i = 0; i < data.length; i++){
-										data[i].disconnectionTime = new Date(data[i].disconnectionTime).toLocaleString();
-										data[i].connectionTime = new Date(data[i].connectionTime).toLocaleString();
-										data[i].usageTime= ToolBox.Usage.toTimeString(data[i].usageTime);
-									}
-									ToolBox.Usage.usageData = data;
-								}
-								loadPage();
-							}, 
-							error:function(XMLHttpRequest, textStatus, errorThrown){
-								var sessionstatus = XMLHttpRequest.getResponseHeader("sessionstatus");
-								if ("timeout" == sessionstatus){
-									window.location.reload();	
-									return;
-								}
-								$(".loadingrow").remove();
-								ToolBox.Usage.usageData = [];
-								emptyTable();
-								 $(".updateDate").text("Error happens when getting data from Event DB");
-						    }
-						});
-					}else{
-						loadPage();
-					}							 
+				}
+	        	params.total(data.length);
+	        	$defer.resolve(data.slice((params.page() - 1) * params.count(), params.page() * params.count()));		
+												 
 	        }
 	    });
 	
 	}
 	ToolBox.Usage = {
-			usageData:[],   
-			lastRequestData:null,
 			app:  ToolBox.NgApp.controller('usageCtrl', tableController),
 			toTimeString: function(seconds){
 				var hours = Math.floor(seconds/3600);
