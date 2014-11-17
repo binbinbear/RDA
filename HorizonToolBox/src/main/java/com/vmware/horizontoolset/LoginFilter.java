@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
 
 import com.vmware.horizontoolset.util.SessionUtil;
+import com.vmware.horizontoolset.viewapi.ViewAPIService;
 
 @Component  
 public class LoginFilter extends GenericFilterBean  {  
@@ -34,6 +35,13 @@ public class LoginFilter extends GenericFilterBean  {
 		log.debug("LoginFilter do Filter:");
 
         if (requiresAuthentication((HttpServletRequest) request)) {
+        	String requestType =( (HttpServletRequest) request).getHeader("X-Requested-With");
+            if (requestType!=null && !requestType.isEmpty() && requestType.equalsIgnoreCase("XMLHttpRequest")) {
+            	((HttpServletResponse) response).setStatus(404);
+            	((HttpServletResponse) response).setHeader("sessionstatus", "timeout");
+                return;
+            } 
+            
         	log.debug("Redirect to login");
         	String loginURL = LoginController.LoginURL;
 
@@ -53,7 +61,7 @@ public class LoginFilter extends GenericFilterBean  {
 			}
 		}
 		
-		Object service = SessionUtil.getViewAPIService(request.getSession());
+		ViewAPIService service = SessionUtil.getViewAPIService(request.getSession());
 		
 		if (service == null){
 			log.debug("Not a login user, require auth");

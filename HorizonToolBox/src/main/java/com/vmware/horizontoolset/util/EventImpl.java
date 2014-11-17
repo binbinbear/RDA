@@ -74,6 +74,10 @@ public class EventImpl implements Event{
 	public EventImpl(AdminEvent event){
 		this.eventId = event.getEventId();
 		this.username = event.getUsername();
+		if (this.username==null){
+			this.username="";
+		}
+		this.username = this.username.toLowerCase();
 		this.shortMessage = event.getShortMessage();
 		this.time = event.getTime();
 

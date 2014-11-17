@@ -100,6 +100,11 @@ if (!ToolBox.Session || !ToolBox.Session.init){
 						
 					},
 					error:function(XMLHttpRequest, textStatus, errorThrown){
+						var sessionstatus = XMLHttpRequest.getResponseHeader("sessionstatus");
+						if ("timeout" == sessionstatus){
+							window.location.reload();	
+							return;
+						}
 						 ToolBox.Session.history = null;
 						 ToolBox.Session._updateHistoryStatus("Error happens: " + errorThrown);
 				    }
@@ -124,6 +129,11 @@ if (!ToolBox.Session || !ToolBox.Session.init){
 						
 					},
 					error:function(XMLHttpRequest, textStatus, errorThrown){
+						var sessionstatus = XMLHttpRequest.getResponseHeader("sessionstatus");
+						if ("timeout" == sessionstatus){
+							window.location.reload();	
+							return;
+						}
 						$(".loadingrow").remove();
 						ToolBox.Session.pools = [];
 						ToolBox.Session.farms = [];

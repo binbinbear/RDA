@@ -50,13 +50,17 @@ public class EventDBUtil implements AutoCloseable {
 	}
 	
 	public List<Event> getEvents(String username, int daysToShow,String poolName){
+		if (username == null){
+			username="";
+		}
+		username = username.toLowerCase();
 		log.debug("start to query events:"+ daysToShow + " user:"+ username+" poolName:"+poolName);
 		List<Event> allEvents = EventDBCache.getEvents(this.vdiContext,daysToShow);
 		log.debug("All Events size:" + allEvents.size());
 		List<Event> results = new ArrayList<Event>();
 		for (Event event: allEvents){
 			try{
-				if (username == null || username.length() == 0 ||(event.getUserName()!=null && event.getUserName().contains(username))){
+				if ( username.length() == 0 ||event.getUserName().contains(username)){
 					String farmname="";
 					if (event.getPoolName()==null || event.getPoolName().isEmpty()){
 						//try to set farm name

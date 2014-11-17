@@ -126,6 +126,7 @@ public class EmailUtil {
 		loadServerProps();
 		if (!serverenabled){
 			log.warn("Can't send email since the props is not right");
+			return;
 		}
 		String toAddress =_emailserverprops.getToAddress();
 

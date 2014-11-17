@@ -128,7 +128,7 @@ public class ReportUtil {
 			Event event = events.get(i);
 			String eventUserName = event.getUserName();
 			
-			if (eventUserName!=null && ( userName.length() == 0 || eventUserName.toLowerCase().contains(userName))){
+			if (eventUserName!=null && ( userName.length() == 0 || eventUserName.toLowerCase().contains(userName.toLowerCase()))){
 				
 				String key = event.getMachineDNSName() + eventUserName;
 				if (event.getType() == EventType.Connection){
@@ -224,13 +224,14 @@ public class ReportUtil {
 			if (i==0 || event.getTime().getTime() - previousTime > timeUnit){
 				result.add(new ConcurrentConnection(new Date(previousTime), currentMax));
 				long diffs = (event.getTime().getTime() - previousTime)/timeUnit;
-				if (diffs>1L){
+				if (diffs>1L || (i==0 && result.size()==1)){
 					result.add(new ConcurrentConnection(new Date(previousTime + timeUnit), currentConCurrent));
 					if (diffs>2L){
 						result.add(new ConcurrentConnection(new Date(previousTime + timeUnit*(diffs-1)), currentConCurrent));
 					}
 				}
 				previousTime = previousTime + timeUnit * diffs;
+				
 				currentMax = 0;
 			
 			}

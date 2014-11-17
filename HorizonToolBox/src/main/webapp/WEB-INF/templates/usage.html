@@ -11,7 +11,7 @@
 						<td>
 							<div class="pageHeaderDiv">
 								<img src="img/window_information.png" alt="Dashboard" />&nbsp;&nbsp;Accumulated
-								Using TIme of Users &nbsp;
+								Using Time of Users &nbsp;
 							</div>
 						</td>
 						<td id="loadingAnim"></td>
@@ -20,7 +20,7 @@
 			</table>
 		</h3>
 		<div id="accumulatedUsing" class="poolContainer">
-			<label for="usageDays">Accumulated Using Time, Show report
+			<label for="usageDays">Accumulated Using Time. Show report
 				for: </label> <select name="usageDays" id="usageDays">
 				<option value="day">Last 2 day</option>
 				<option value="week" selected="selected">Last 7 days</option>
@@ -57,8 +57,7 @@
 				<option value="7" selected="selected">Last 7 days</option>
 				<option value="30">Last 1 month</option>
 			</select>
-			  &nbsp;&nbsp; <a type="button" class="btn btn-default" id="exportBtn"
-				href="./usage/connection/export">Export as .xls file</a>
+			  &nbsp;&nbsp; <a type="button" class="btn btn-default" id="exportBtn">Export as .xls file</a>
 			<table id="connectionTable" ng-table="tableParams" class="dataTable">
 				<tr ng-repeat="user in $data">
 					<td data-title="'User Name'">{{user.userName}}</td>

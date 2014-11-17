@@ -10,6 +10,7 @@ if (!ToolBox.Usage || !ToolBox.Usage.init){
 		$scope.days = "7";
 		 $scope.$watch("days", function () {
 		        $scope.tableParams.reload();
+		        
 		  });     
 	    $scope.tableParams = new ngTableParams({
 	        page: 1,            // show first page
@@ -18,13 +19,19 @@ if (!ToolBox.Usage || !ToolBox.Usage.init){
 	        total: 0, // length of data
 	        getData: function($defer, params) {
 	        	var thisRequestData = {user:$("#user").val(),days:$scope.days};
+	        	$("#exportBtn").attr("href","./usage/connection/export?days="+ $scope.days+"&user="+$("#user").val());
+	        	var emptyTable = function(){
+	        		params.page(1);
+        			params.total(0);
+	        		//$("#connectionTable tbody").empty();
+	        	};
 	        	var loadPage = function(){
 	        		ToolBox.Usage.lastRequestData = thisRequestData;
 	        		
 	        		var data = ToolBox.Usage.usageData;
 	        		if (data == null || data.length == 0){
-	        			params.page(1);
-	        			params.total(0);
+	        			emptyTable();
+	        			
 	        		}else{
 	        			if ((params.page() - 1) * params.count() >= ToolBox.Usage.usageData.length){
 							params.page(1);
@@ -37,7 +44,7 @@ if (!ToolBox.Usage || !ToolBox.Usage.init){
 					
 					if (ToolBox.Usage.lastRequestData == null || (thisRequestData["user"] != ToolBox.Usage.lastRequestData["user"]|| thisRequestData["days"] != ToolBox.Usage.lastRequestData["days"])){
 						ToolBox.Usage.usageData = [];
-						loadPage();
+						emptyTable();
 						if($("#loading2").length == 0){
 					    	// $('#accumulatedUsing').append("<div class=\"loadingdiv\">Loading</div>"); 
 							$('#connectionTable').append("<tr id=\"loading2\" class=\"loadingrow\"><td class=\"desktopName \" ></td>"
@@ -62,9 +69,14 @@ if (!ToolBox.Usage || !ToolBox.Usage.init){
 								loadPage();
 							}, 
 							error:function(XMLHttpRequest, textStatus, errorThrown){
+								var sessionstatus = XMLHttpRequest.getResponseHeader("sessionstatus");
+								if ("timeout" == sessionstatus){
+									window.location.reload();	
+									return;
+								}
 								$(".loadingrow").remove();
 								ToolBox.Usage.usageData = [];
-								loadPage();
+								emptyTable();
 								 $(".updateDate").text("Error happens when getting data from Event DB");
 						    }
 						});
@@ -216,6 +228,11 @@ if (!ToolBox.Usage || !ToolBox.Usage.init){
 							}
 						},
 						error:function(XMLHttpRequest, textStatus, errorThrown){
+							var sessionstatus = XMLHttpRequest.getResponseHeader("sessionstatus");
+							if ("timeout" == sessionstatus){
+								window.location.reload();	
+								return;
+							}
 							ToolBox.Usage.usageReport = [];
 							ToolBox.Usage._refreshUsageChartView();
 					    }
