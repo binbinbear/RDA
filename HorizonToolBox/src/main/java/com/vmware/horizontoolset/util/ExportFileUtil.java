@@ -1,102 +1,66 @@
 package com.vmware.horizontoolset.util;
 
 import java.io.IOException;
-import java.io.OutputStream;
+import java.io.Writer;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFDataFormat;
-import org.apache.poi.hssf.usermodel.HSSFFont;
-import org.apache.poi.hssf.usermodel.HSSFRichTextString;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.hssf.util.HSSFColor;
+import org.supercsv.cellprocessor.FmtDate;
+import org.supercsv.cellprocessor.Optional;
+import org.supercsv.cellprocessor.ift.CellProcessor;
+import org.supercsv.io.CsvBeanWriter;
+import org.supercsv.prefs.CsvPreference;
 
 import com.vmware.horizontoolset.usage.Connection;
-import com.vmware.horizontoolset.usage.ExportType;
+import com.vmware.vdi.admin.be.events.AdminEvent;
+
+
 
 public class ExportFileUtil {
 	private static Logger log = Logger.getLogger(ExportFileUtil.class);
 	
-	private static HSSFCellStyle HeaderStyle;
-	private static final String[] connectionHeaders={"User","Usage time(s)","Start time","End Time","Machine", "Pool/Farm"};
+	private static final String[] connectionHeaders={"User Name","Connection Time","Disconnection Time","Usage Time(seconds)","machineName", "poolName", "farmName"};
 	
-	private static final String DateFormatString = "yy/m/d/ h:mm:ss";
+	private static final String[] connectionBeanAttrs={"username","connectionTime","disconnectionTime","usageTime","machineName", "poolName", "farmName"};
+	private static final String DateFormatString = "dd-MMM-yy HH:mm:ss";
+	private static final CellProcessor[] processors = new CellProcessor[] { 
+            new Optional(), // username (must be unique)
+            new FmtDate(DateFormatString), // connection time
+            new FmtDate(DateFormatString), // dis connect time
+            new Optional(), // usageTime
+            new Optional(), // machine
+            new Optional(), // pool
+            new Optional() // farm
+            
+    };
 	
-    @SuppressWarnings("unchecked")
-	public static void exportExcel(ExportType type,  
-           Object data, OutputStream out) throws IOException  
+	
+
+	public static void exportConnections(List<Connection> data, Writer writer) throws IOException   
     {  
-    	log.info("Start exprot eccel");
-        HSSFWorkbook workbook = new HSSFWorkbook();  
-        ExportFileUtil.setExcelStyle(workbook);
-                
-        if(type == ExportType.Connection){
-            HSSFSheet sheet = workbook.createSheet(type.toString()); 
-            sheet.setDefaultColumnWidth(15);  
-        	ExportFileUtil.exportConnectionExcel(workbook,sheet, (List<Connection>) data);
-        }      
-        workbook.write(out);
+		
+		if (data==null || data.size()==0){
+			data = new ArrayList<Connection>();
+			AdminEvent aeve = new  AdminEvent();
+			aeve.setEventId(1);
+			aeve.setMessage("login");
+			aeve.setTime(new Date());
+			aeve.setUsername("hello");
+			EventImpl event = new EventImpl(aeve);
+			ConnectionImpl conn = new ConnectionImpl(event, event);
+			data.add(conn);
+		}
+		CsvBeanWriter csvwriter = new CsvBeanWriter(writer, CsvPreference.STANDARD_PREFERENCE);
+    	log.info("Start exprot csv");
+    	csvwriter.writeHeader(connectionHeaders);
+    	for (Connection connection: data){
+    		csvwriter.write(connection,connectionBeanAttrs,processors );
+    	}
+    	
+    	csvwriter.flush();
+    	csvwriter.close();
     } 
-    private static void exportConnectionExcel(HSSFWorkbook workBook, 
-    		HSSFSheet sheet,List<Connection> list){
-    	log.info("Start export connection ");
-    	 ExportFileUtil.exportHeaders(sheet, connectionHeaders);
-    	 HSSFRow row = null;  
-    	 if(list == null) return;
-    	 log.info("Export connections size:"+list.size());
-         for(int j=0;j<list.size();j++)
-         {
-        	 HSSFCellStyle cellStyle = workBook.createCellStyle();
-             HSSFDataFormat format= workBook.createDataFormat();
-             cellStyle.setDataFormat(format.getFormat(DateFormatString));
-             
-        	 Connection connection = list.get(j);
-              row = sheet.createRow(j+1);  
-              row.createCell(0).setCellValue(connection.getUserName());
-              row.createCell(1).setCellValue(connection.getUsageTime());
-              row.createCell(2).setCellValue(connection.getConnectionTime());
-              row.getCell(2).setCellStyle(cellStyle);
-              row.createCell(3).setCellValue(connection.getDisconnectionTime());
-              row.getCell(3).setCellStyle(cellStyle);
-              row.createCell(4).setCellValue(connection.getMachineName());
-              String poolfarm = connection.getPoolName();
-              if (poolfarm ==null || poolfarm.isEmpty()){
-            	  poolfarm = connection.getFarmName();
-              }
-              row.createCell(5).setCellValue(poolfarm);
-           }      
-    }
-   
-    private static void setExcelStyle(HSSFWorkbook workbook){
-    
-        HSSFCellStyle style = workbook.createCellStyle();  
-        style.setFillForegroundColor(HSSFColor.SKY_BLUE.index);  
-        style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);  
-        style.setBorderBottom(HSSFCellStyle.BORDER_THIN);  
-        style.setBorderLeft(HSSFCellStyle.BORDER_THIN);  
-        style.setBorderRight(HSSFCellStyle.BORDER_THIN);  
-        style.setBorderTop(HSSFCellStyle.BORDER_THIN);  
-        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);  
- 
-        HSSFFont font = workbook.createFont();  
-        font.setColor(HSSFColor.VIOLET.index);  
-        font.setFontHeightInPoints((short) 12);  
-        font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);  
-        style.setFont(font);  
-        HeaderStyle = style;
-      }
-    private static void exportHeaders(HSSFSheet sheet, String[] headers){
-    	 HSSFRow row = sheet.createRow(0);  
-    	  for (int i = 0; i < headers.length; i++)  
-          {  
-              HSSFCell cell = row.createCell(i); 
-              cell.setCellStyle(HeaderStyle);
-              HSSFRichTextString text = new HSSFRichTextString(headers[i]);  
-              cell.setCellValue(text);  
-          }  
-    }
+
 }
