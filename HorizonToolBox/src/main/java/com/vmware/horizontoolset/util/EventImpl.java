@@ -2,7 +2,6 @@ package com.vmware.horizontoolset.util;
 
 import java.util.Date;
 import java.util.List;
-import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 
@@ -17,7 +16,6 @@ import com.vmware.vdi.events.enums.EventModule;
  *
  */
 public class EventImpl implements Event{
-	private static Logger log = Logger.getLogger(EventImpl.class);
 	
 	@Override
 	public int hashCode() {
@@ -81,7 +79,7 @@ public class EventImpl implements Event{
 		this.shortMessage = event.getShortMessage();
 		this.time = event.getTime();
 
-		if(event.getModule().equals(EventModule.Agent) && event.isInfo() ){
+		if(EventModule.Agent.equals(event.getModule()) && event.isInfo() ){
 			if (shortMessage.contains(ACCEPT)){
 				this.type = EventType.Connection;
 				this.machineName = getValue(shortMessage, ON_MACHINE);
@@ -106,7 +104,7 @@ public class EventImpl implements Event{
 				//log.debug("Event source:" + source.getType().toString() + " source name:" + source.getName());
 				
 			}
-		} else if (event.getModule().equals(EventModule.Broker) 
+		} else if (EventModule.Broker.equals(event.getModule())
 				&& (event.isInfo() || event.isAuditSuccess())) {
 			if (shortMessage.contains(LOGOUT)) {
 				this.type = EventType.Logout;
