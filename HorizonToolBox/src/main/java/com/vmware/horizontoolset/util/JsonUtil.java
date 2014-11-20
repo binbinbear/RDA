@@ -41,4 +41,11 @@ public class JsonUtil {
     	String jsonString = gson.toJson(obj);
     	return jsonString;
     }
+    
+    public static <T> T jsonToJava(String json, Class<T> clazz) {
+    	if (json == null)
+    		return null;
+    	Gson gson = new Gson();
+    	return gson.fromJson(json, clazz);
+    }
 }

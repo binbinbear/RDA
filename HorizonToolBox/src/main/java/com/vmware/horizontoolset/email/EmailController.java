@@ -32,7 +32,7 @@ public class EmailController {
     public synchronized String setEmailServer(EmailServerProps props, Model model, HttpSession session) {
     	 EmailUtil.init(props);
     	 try{
-    		 EmailUtil.sendMail("mail config is changed", "mailconfig is changed");
+    		 EmailUtil.sendMail("Email config is changed", "Email config is changed");
     	 }catch(Exception ex){
     		 log.warn("Eexception when sending email",ex);
     	 }

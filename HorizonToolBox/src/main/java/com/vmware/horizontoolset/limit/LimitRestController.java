@@ -79,7 +79,7 @@ public class LimitRestController {
     
     @RequestMapping("/limit/refresh")
     public void refresh() {
-    	LimitManager.updateAppConcurrency(null);
+    	LimitManager.updateAppConcurrency(null, false);
     }
     
     public static void main(String[] args) {

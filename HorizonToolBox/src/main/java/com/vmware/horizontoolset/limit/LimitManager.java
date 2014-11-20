@@ -5,6 +5,7 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,50 +40,78 @@ public class LimitManager {
 	
 	public static List<AppLimitInfo> list(HttpSession session) {
 		
-		updateAppConcurrency(session);
+		updateAppConcurrency(session, false);
 		
 		synchronized (apps) {
 			return new ArrayList<AppLimitInfo>(apps);
 		}
 	}
 
-	static void updateAppConcurrency(HttpSession session) {
+	static void updateAppConcurrency(HttpSession session, boolean force) {
 		
 		log.debug("LimitManager: updateAppConcurrency - entry. IsScheduledTask=" + (session == null));
 		
-		long now = System.currentTimeMillis();
-		if (now - lastUpdate < UPDATE_THRESHOLD) {
-			log.debug("LimitManager: skip quick refresh");
-			return;
+		//skip update if not in force mode, and updating too quick
+		if (!force) {
+			long now = System.currentTimeMillis();
+			if (now - lastUpdate < UPDATE_THRESHOLD) {
+				log.debug("LimitManager: skip quick refresh");
+				return;
+			}
+			lastUpdate = now;
 		}
-	
 		
+		List<AppLimitInfo> newDataList = getFreshNewDataList(session);
+
+		if (newDataList == null)
+			return;
+		
+		//
+		//	Data is ready. Store. 
+		//
+		synchronized (apps) {
+			apps.clear();
+			apps.addAll(newDataList);			
+		}
+
+		//
+		//	Send notification if any limit is exceeded
+		//
+		monitorLimitation(newDataList);
+		
+		log.debug("LimitManager: updateAppConcurrency - exit");
+	}
+
+	private static List<AppLimitInfo> getFreshNewDataList(HttpSession session) {
+
 		try (ViewAPIService api = TaskModuleUtil.getViewAPIService(session);) {
 		
 			if (api == null)
-				return;
+				return null;
 			
 			//
 			//	load current data, whether from persistent storage, or memory.
 			//
-			Map<String, AppLimitInfo> currData;
+			Map<String, AppLimitInfo> oldData;
 			boolean justInitialized = false;
 			if (!initialized) {
 				log.debug("LimitManager: updateAppConcurrency - init.");
-				currData = load(session);
+				oldData = load(session);
 	
 				initialized = true;
 				justInitialized = true;
 			} else {
-				currData = new HashMap<>();
+				oldData = new HashMap<>();
 				synchronized (apps) {
 					for (AppLimitInfo a : apps)
-						currData.put(a.appId, a);
+						oldData.put(a.appId, a);
 				}
 			}
 			
 			//
-			//	Retrieve all existing apps. Migrate limit setting from existing data (currData).
+			//	Retrieve all existing apps. There might be old deleted app 
+			//	in "oldData". "newData" represents the current data. We migrate
+			//	limit setting from oldData to newData.
 			//
 			Map<String, AppLimitInfo> newData = new HashMap<>();
 			List<ApplicationInfo> appPools = api.getAllApplicationPools();
@@ -92,7 +121,7 @@ public class LimitManager {
 			for (ApplicationInfo info : appPools) {
 				String id = info.data.name;
 				
-				AppLimitInfo a = currData.get(id);
+				AppLimitInfo a = oldData.remove(id);
 				if (a == null)
 					a = new AppLimitInfo(id, 0, 0);	//looks like a new app. Create the info.
 				newData.put(id, a);
@@ -101,29 +130,25 @@ public class LimitManager {
 			//
 			//	list passed events, calculate current concurrency
 			//
+			List<AppLimitInfo> newDataList = new ArrayList<>(newData.values());
+			Collections.sort(newDataList, new Comparator<AppLimitInfo>() {
+				@Override
+				public int compare(AppLimitInfo o1, AppLimitInfo o2) {
+					return o1.appId.compareTo(o2.appId);
+				}
+			});
+			
 			int daysToPoll = justInitialized ? 7 : 1;
-			processEvents(daysToPoll);
+			processEvents(daysToPoll, newDataList);
 			
-			//
-			//	Data is ready. Store. 
-			//
-			Collection<AppLimitInfo> newSettings = newData.values();
-			synchronized (apps) {
-				apps.clear();
-				apps.addAll(newSettings);			
-			}
-	
-			//
-			//	Send notification if any limit is exceeded
-			//
-			
-			monitorLimitation(newSettings);
+			return newDataList;
+		} catch (Exception e) {
+			log.error("Error retrieving current app list.", e);
+			return null;
 		}
-		
-		log.debug("LimitManager: updateAppConcurrency - exit");
 	}
-
-	private static void processEvents(int days) {
+	
+	private static void processEvents(int days, List<AppLimitInfo> dataList) {
 		
 		List<Event> events;
 		try (EventDBUtil dbu = EventDBUtil.createDefault();) {
@@ -133,25 +158,29 @@ public class LimitManager {
 		log.info("LimitManager: processEvents: " + events.size());
 		connCalc.process(events);
 		
-		synchronized (apps) {
-			for (AppLimitInfo a : apps) {
-				a.concurrency = connCalc.getConcurrency(a.appId);
-				
-				log.debug("app:" + a.appId + ", c=" + a.concurrency);
-			}
+		for (AppLimitInfo a : dataList) {
+			a.concurrency = connCalc.getConcurrency(a.appId);
+			
+			log.debug("app:" + a.appId + ", c=" + a.concurrency);
 		}
 		
 		log.debug("Dump ConnCalc:" + JsonUtil.javaToJson(connCalc));
 	}
 
+	
 	private static void monitorLimitation(Collection<AppLimitInfo> apps) {
 		log.info("LimitManager: monitorLimitation. App count=" + apps.size());
 		
 		for (AppLimitInfo a : apps) {
 			if (a.isLimitExceeded()) {
-				log.info("LimitManager: monitorLimitation: Exceeded: App=" + a.appId + ", limit=" + a.limit + ", current=" + a.concurrency);
 				
-				sentNotificationFor(a);
+				log.info("LimitManager: monitorLimitation: Exceeded: App=" + a.appId + ", limit=" + a.limit + ", current=" + a.concurrency);
+				if (a.messageSent) {
+					log.info("LimitManager: monitorLimitation: skip sending email because already sent");
+				} else {
+					log.info("LimitManager: monitorLimitation: sending email...");
+					sentNotificationFor(a);
+				}
 				
 				a.messageSent = true;
 			} else {
@@ -195,6 +224,7 @@ public class LimitManager {
 				if (a.appId.equals(appId)) {
 					if (a.limit != n) {
 						a.limit = n;
+						a.isLimitExceeded();
 						modified = true;
 						break;
 					}

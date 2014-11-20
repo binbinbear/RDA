@@ -23,32 +23,54 @@ public class EmailUtil {
 	private static boolean serverenabled = false;
 	private static Properties serverProps;
 	private static Logger log = Logger.getLogger(EmailUtil.class);
-	private static final String emailKey="EMAIL_KEY";
+	private static final String EMAIL_CONFIG = "EMAIL_KEY";
 	
 	public static EmailServerProps loadServerProps(){
+		
+		log.debug("EmailUtil.loadServerProps");
+		
 		try{
 			//try go get from ldap
-			String props = SharedStorageAccess.get(emailKey);
+			String props = SharedStorageAccess.get(EMAIL_CONFIG);
 			
-			if (props!=null&&!props.isEmpty()){
+			if (props != null && !props.isEmpty()) {
 				Gson gson = new Gson();
-				
 				_emailserverprops = gson.fromJson(props, EmailServerProps.class);
 			}
 			
-			if (_emailserverprops!=null && _emailserverprops.isValid()){
+			if (_emailserverprops != null && _emailserverprops.isValid()){
 				
 				serverenabled = true;
+				
+				initImpl(_emailserverprops);
+				log.debug("EmailUtil.loadServerProps: email config loaded.");
+				
+			} else {
+				
+				String msg = _emailserverprops == null ? "null." : "invalid.";
+				log.debug("EmailUtil.loadServerProps: email config is " + msg);
 			}
+			
 		}catch(Exception ex){
-			log.warn("can't load email config from ldap",ex);
+			log.warn("can't load email config from ldap", ex);
 		}
 
 		return _emailserverprops;
 	}
 
 	
-	public synchronized static boolean init(EmailServerProps props){
+	public synchronized static boolean init(EmailServerProps props) {
+		
+		boolean success = initImpl(props);
+		
+		//try to set to ldap
+		SharedStorageAccess.set(EMAIL_CONFIG, JsonUtil.javaToJson(props));
+		
+		return success;
+
+	}
+	
+	private static boolean initImpl(EmailServerProps props) {
 		_emailserverprops = props;
 		serverProps = new Properties();
 		serverProps.setProperty("mail.smtp.host", props.getMailHost());
@@ -80,9 +102,6 @@ public class EmailUtil {
 			
 		}
 		serverenabled = true;
-		//try to set to ldap
-		SharedStorageAccess.set(emailKey, JsonUtil.javaToJson(props));
-		
 		return true;
 	}
 	
@@ -123,14 +142,19 @@ public class EmailUtil {
 	}
 	
 	public synchronized static void sendMail(String titile, String body) {
+		
 		loadServerProps();
-		if (!serverenabled){
-			log.warn("Can't send email since the props is not right");
+		
+		if (!serverenabled) {
+			log.warn("Can't send email since config is not valid.");
 			return;
 		}
+		
 		String toAddress =_emailserverprops.getToAddress();
 
 		if (toAddress == null || toAddress.isEmpty()){
+			
+			log.warn("Can't send email since config is not valid.");
 			return;
 		}
 		String[] tempTo = toAddress.split(",");

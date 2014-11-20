@@ -24,7 +24,7 @@ public class LimitController {
 
     @RequestMapping("/limit/forceRefresh")
     public String forceRefresh(HttpSession session) {
-    	LimitManager.updateAppConcurrency(session);
+    	LimitManager.updateAppConcurrency(session, true);
     	return "redirect:/limit";
     }
 }

@@ -92,32 +92,6 @@ public class EventDBCache {
 				//log.debug("  (added)");
 			}
 			
-//			log.debug("Event------");
-//			log.debug("  id=" + adminevent.getEventId());
-//			log.debug("  fullMessage=" + adminevent.getFullMessage());
-//			log.debug("  moduleString=" + adminevent.getModuleString());
-//			log.debug("  severityString=" + adminevent.getSeverityString());
-//			log.debug("  shortMsg=" + adminevent.getShortMessage());
-//			log.debug("  thread=" + adminevent.getThread());
-//			log.debug("  timeString=" + adminevent.getTimeString());
-//			log.debug("  userDomainName=" + adminevent.getUserDomainName());
-//			log.debug("  userName=" + adminevent.getUsername());
-//			log.debug("  userSID=" + adminevent.getUserSID());
-//			log.debug("  toString=" + adminevent.toString());
-//			log.debug("  module.toString=" + adminevent.getModule().toString());
-//			log.debug("  sources:");
-//			for (Object o : adminevent.getSources()) {
-//				log.debug("    class=" + o.getClass());
-//				
-//				if (o instanceof AdminEventSource) {
-//					AdminEventSource aes = (AdminEventSource) o;
-//					log.debug("    id=" + aes.getId());
-//					log.debug("    name=" + aes.getName());
-//					log.debug("    type=" + aes.getType());
-//					log.debug("    type=" + aes.getType());
-//				}
-//				log.debug("    toString=" + o);
-//			}
 		}
 		log.debug("Events after updating:"+ cachedEvents.size());
 	}
