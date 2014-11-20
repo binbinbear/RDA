@@ -24,7 +24,7 @@ public class ExportFileUtil {
 	private static final String[] connectionHeaders={"User Name","Connection Time","Disconnection Time","Usage Time(seconds)","machineName", "poolName", "farmName"};
 	
 	private static final String[] connectionBeanAttrs={"username","connectionTime","disconnectionTime","usageTime","machineName", "poolName", "farmName"};
-	private static final String DateFormatString = "dd-MMM-yy HH:mm:ss";
+	private static final String DateFormatString = "yyyy.MM.dd HH:mm:ss";
 	private static final CellProcessor[] processors = new CellProcessor[] { 
             new Optional(), // username (must be unique)
             new FmtDate(DateFormatString), // connection time
@@ -42,15 +42,7 @@ public class ExportFileUtil {
     {  
 		
 		if (data==null || data.size()==0){
-			data = new ArrayList<Connection>();
-			AdminEvent aeve = new  AdminEvent();
-			aeve.setEventId(1);
-			aeve.setMessage("login");
-			aeve.setTime(new Date());
-			aeve.setUsername("hello");
-			EventImpl event = new EventImpl(aeve);
-			ConnectionImpl conn = new ConnectionImpl(event, event);
-			data.add(conn);
+			return;
 		}
 		CsvBeanWriter csvwriter = new CsvBeanWriter(writer, CsvPreference.STANDARD_PREFERENCE);
     	log.info("Start exprot csv");

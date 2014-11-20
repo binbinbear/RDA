@@ -28,7 +28,7 @@ if (!ToolBox.Usage || !ToolBox.Usage.init){
 					type: "GET",
 					data:thisRequestData,
 					success: function (data) {
-						$("#exportBtn").attr("href","./usage/connection/export?days="+ $scope.days+"&user="+thisRequestData.user);
+						$("#exportBtn").attr("href","./usage/connection/export?days="+ $scope.days+"&user="+encodeURIComponent(thisRequestData.user));
 						$(".updateDate").text("");
 						$(".loadingrow").remove();
 						if(data){	
