@@ -52,14 +52,14 @@ namespace HRAInstaller
             };
 
             installForAdmin = new Step[] {
-                new Step {message="Installing for administrator..."},
-                new Step {f=InstallAdminEx, message="Install AdminEx web model into View Connection Server..."},
+                new Step {message="Installing for helpdesk..."},
+                //new Step {f=InstallAdminEx, message="Install AdminEx web model into View Connection Server..."},
                 new Step {f=EnableWindowsRAFeature, message="Enable Windows Feature: Remote Assistance..."},
                 new Step {f=CopyHRALauncher, message="Copy HRA launcher..."},
                 new Step {f=RegisterHRAFileType, message="Associate HRA file type..."},
-                new Step {f=InstallAdminExShortcutOnDesktop, message="Install AdminEx shortcut on desktop..."},
+                //new Step {f=InstallAdminExShortcutOnDesktop, message="Install AdminEx shortcut on desktop..."},
                 new Step {f=ConfigFirewallRuleForRemoteAssistance, message="Configure Firewall..."},
-                new Step {f=CheckAdminEx, message="Checking AdminEx web model availability..."},
+                //new Step {f=CheckAdminEx, message="Checking AdminEx web model availability..."},
             };
 
             installLauncher = new Step[] {

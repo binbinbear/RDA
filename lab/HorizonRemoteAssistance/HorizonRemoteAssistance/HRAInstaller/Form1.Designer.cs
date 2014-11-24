@@ -95,7 +95,7 @@
             this.btn_installAdmin.Name = "btn_installAdmin";
             this.btn_installAdmin.Size = new System.Drawing.Size(112, 68);
             this.btn_installAdmin.TabIndex = 4;
-            this.btn_installAdmin.Text = "Install for Admin";
+            this.btn_installAdmin.Text = "Install for Helpdesk";
             this.btn_installAdmin.UseVisualStyleBackColor = true;
             this.btn_installAdmin.Click += new System.EventHandler(this.btn_installAdmin_Click);
             // 
@@ -107,7 +107,7 @@
             this.textBox2.Multiline = true;
             this.textBox2.Name = "textBox2";
             this.textBox2.ReadOnly = true;
-            this.textBox2.Size = new System.Drawing.Size(337, 68);
+            this.textBox2.Size = new System.Drawing.Size(337, 81);
             this.textBox2.TabIndex = 5;
             this.textBox2.TabStop = false;
             this.textBox2.Text = resources.GetString("textBox2.Text");
@@ -123,7 +123,8 @@
             this.textBox3.Size = new System.Drawing.Size(319, 68);
             this.textBox3.TabIndex = 6;
             this.textBox3.TabStop = false;
-            this.textBox3.Text = resources.GetString("textBox3.Text");
+            this.textBox3.Text = "Install the helpdesk component on this computer. Admin or IT help launches remote" +
+                " assistance from this computer.";
             // 
             // textBox4
             // 
@@ -152,10 +153,10 @@
             this.linkLabel1.AutoSize = true;
             this.linkLabel1.Location = new System.Drawing.Point(15, 422);
             this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(88, 13);
+            this.linkLabel1.Size = new System.Drawing.Size(189, 13);
             this.linkLabel1.TabIndex = 11;
             this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = "Version: 0.1 Beta";
+            this.linkLabel1.Text = "Version: 0.2 Beta, For Horizon Toolbox";
             this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
             // linkLabel2

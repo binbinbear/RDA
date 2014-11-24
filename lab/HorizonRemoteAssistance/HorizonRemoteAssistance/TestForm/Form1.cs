@@ -36,66 +36,14 @@ namespace TestForm
 
         private void button1_Click_1(object sender, EventArgs e)
         {
-            MessageBox.Show(textBox1.Text);
+            string sysDir = Environment.GetFolderPath(Environment.SpecialFolder.System);
+            if (!sysDir.EndsWith("\\"))
+                sysDir += "\\";
+            string msraPath = sysDir + "msra.exe";
+            MessageBox.Show(sysDir);
         }
 
         private void button2_Click(object sender, EventArgs e)
-        {
-            Process proc = new Process();
-            proc.StartInfo.FileName = @"msra.exe";
-            proc.StartInfo.Arguments = "/openfile c:\\1.a";
-            proc.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-
-            proc.Start();
-
-            IntPtr windowHandle;
-            while (true)
-            {
-                Thread.Sleep(100);
-
-                proc.Refresh();
-                //windowHandle = proc.MainWindowHandle;
-
-                windowHandle = WindowUtil.FindWindowInProcess(proc, s => s.Equals("Remote Assistance"));
-                if (!IntPtr.Zero.Equals(windowHandle))
-                    break;
-            }
-
-            WriteTextUsingHandle(windowHandle, "******");
-        }
-
-
-        public static bool WriteTextUsingHandle(IntPtr hWnd, String text)
-        {
-            WindowUtil.HideWindow(hWnd);
-
-            HanldesInfo windowInfo = WindowUtil.GetChildWindows(hWnd, false, "", String.Empty);
-
-            //fill text
-            IntPtr h = windowInfo.FindWindow("Edit");
-            if (h == IntPtr.Zero)
-                return false;
-
-            WindowUtil.FillTextField(h, text);
-
-            Thread.Sleep(1000);
-
-            //click button
-            h = windowInfo.FindWindow("Button", "OK");
-            if (h == IntPtr.Zero)
-                h = windowInfo.FindWindow("Button");
-
-            if (h == IntPtr.Zero)
-                return false;
-
-            WindowUtil.Click(h);
-
-            WindowUtil.ForceShowWindow(hWnd);
-
-            return true;
-        }
-
-        private void button3_Click(object sender, EventArgs e)
         {
         }
 

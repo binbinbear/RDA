@@ -8,6 +8,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestForm", "TestForm\TestForm.csproj", "{B5A57AF5-D2F1-49F2-B02A-9C877BADBED8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test2", "Test2\Test2.csproj", "{D8D98C47-B07F-4601-95F0-5683E0CD2EA5}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D1177226-105F-4037-85C4-405D41962844} = {D1177226-105F-4037-85C4-405D41962844}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HRA Installer", "HRAInstaller\HRA Installer.csproj", "{72CFF1B6-275E-41CA-8EB2-CDCC8E8C57F7}"
 	ProjectSection(ProjectDependencies) = postProject

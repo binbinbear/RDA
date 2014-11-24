@@ -3,6 +3,12 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using System.Management;
+using System.Net;
+using System.Diagnostics;
+using System.Threading;
+using Microsoft.Win32;
+using System.Reflection;
+using ETEUtils;
 
 namespace Test2
 {
@@ -10,16 +16,39 @@ namespace Test2
     {
         static void Main(string[] args)
         {
-            ManagementClass objMC = new ManagementClass("Win32_ServerFeature");
-            ManagementObjectCollection objMOC = objMC.GetInstances();
-            foreach (ManagementObject objMO in objMOC)
+            string[] url = 
             {
-                string featureName = (string)objMO.Properties["Name"].Value;
-                string id = objMO.Properties["Id"].Value.ToString();
-                Console.WriteLine("" + id + " - " + featureName);
-            }
+                "https://192.168.0.202/toolbox/remoteassist/upload",
+                "https://192.168.0.11/toolbox/remoteassist/upload",
+                "https://192.168.0.11/toolbox/remoteassist/upload",
+                "https://192.168.0.201/toolbox/remoteassist/upload",
+                "https://192.168.0.201/toolbox/remoteassist/upload"
+            };
 
-            Console.WriteLine("Done.");
+            HttpUtil._IgnoreSSL();
+
+            int success = HttpUtil.BatchGet(url, "aa", "bb", "cc");
+            Console.WriteLine("Done: " + success);
+            Console.ReadKey();
+            
+        }
+
+        private static void HttpGet(string url, DownloadStringCompletedEventHandler onComplete)
+        {
+            using (WebClient wb = new WebClient())
+            {
+                wb.Proxy = null;
+
+                try
+                {
+                    wb.DownloadStringAsync(new Uri(url));
+                    wb.DownloadStringCompleted += onComplete;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                }
+            }
         }
     }
 }

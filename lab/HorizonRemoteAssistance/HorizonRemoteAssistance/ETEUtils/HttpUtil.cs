@@ -10,6 +10,17 @@ namespace ETEUtils
 {
     public class HttpUtil
     {
+
+        public static void SetDefaultConnectionLimit(int n)
+        {
+            ServicePointManager.DefaultConnectionLimit = n;
+        }
+
+        public static void SetNoProxy()
+        {
+            WebRequest.DefaultWebProxy = null;
+        }
+
         public static bool Get(string url, string var, string content)
         {
             return Get(url, var, content, null);
@@ -19,6 +30,8 @@ namespace ETEUtils
         {
             using (var wb = new WebClient())
             {
+                wb.Proxy = null;
+
                 wb.Headers["User-Agent"] = "ETEUtils";
 
                 wb.QueryString.Add(var, content);
@@ -95,6 +108,65 @@ namespace ETEUtils
             }
             //addrs.Add(hostname);
             return addrs;
+        }
+
+        //
+        // Batchly get multiple URLs simultaneously, blocks until all requests are done. 
+        // Return number of response contains expectedResponse
+        public static int BatchGet(string[] url, string var, string content, string expectedResponse)
+        {
+            CountdownLatch cdl = new CountdownLatch(url.Length);
+            object syncLock = new object();
+            int success = 0;
+
+            DownloadStringCompletedEventHandler onComplete = (object sender, DownloadStringCompletedEventArgs e) =>
+            {
+                lock (syncLock)
+                {
+                    Log.Info("On Complete: " + e.UserState);
+
+                    Exception error = e.Error;
+                    if (error != null)
+                    {
+                        Log.Info("  Error=" + e.Error);
+                    }
+                    else
+                    {
+                        string result = e.Result;
+                        Log.Info("  Result=" + e.Result);
+                        if (expectedResponse == null || (result != null && result.Contains(expectedResponse)))
+                            success++;
+                    }
+                }
+
+                cdl.Signal();
+            };
+
+            foreach (string s in url)
+            {
+                Log.Info("Requesting: " + s);
+
+                using (WebClient wb = new WebClient())
+                {
+                    wb.Proxy = null;
+                    wb.Headers["User-Agent"] = "ETEUtils";
+                    wb.QueryString.Add(var, content);
+                    try
+                    {
+                        wb.DownloadStringAsync(new Uri(s), s);
+                        wb.DownloadStringCompleted += onComplete;
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Info(ex);
+                        cdl.Signal();
+                    }
+                }
+            }
+
+            cdl.Wait();
+            Log.Info("BatchGet complete. Success=" + success);
+            return success;
         }
     }
 }

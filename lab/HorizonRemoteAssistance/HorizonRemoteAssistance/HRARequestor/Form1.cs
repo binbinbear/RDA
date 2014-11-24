@@ -10,6 +10,7 @@ using System.IO;
 using System.Threading;
 using System.Net;
 using System.Runtime.InteropServices;
+using ETEUtils;
 
 namespace HRARequestor
 {
@@ -60,7 +61,7 @@ namespace HRARequestor
 
         private void button5_Click(object sender, EventArgs e)
         {
-            Util.InitiateSSLTrust();
+            HttpUtil._IgnoreSSL();
 
             using (var wb = new WebClient())
             {

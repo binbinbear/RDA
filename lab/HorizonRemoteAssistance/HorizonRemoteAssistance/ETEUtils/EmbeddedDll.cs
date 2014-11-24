@@ -6,7 +6,7 @@ using System.IO;
 
 namespace ETEUtils
 {
-    class EmbeddedDll
+    public class EmbeddedDll
     {
 
         static Dictionary<string, Assembly> dic = new Dictionary<string, Assembly>();

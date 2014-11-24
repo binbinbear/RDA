@@ -27,17 +27,18 @@ namespace HRAInstaller
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (checkBox1.Checked)
-            {
+            //if (checkBox1.Checked)
+            //{
                 //Launch AdminEx
-                Process.Start(Config.AdminExUrl);
-            }
+            //    Process.Start(Config.AdminExUrl);
+            //}
 
             Close();
         }
 
         private void Form2_Load(object sender, EventArgs e)
         {
+            /*
             if (Config.installType == Config.INSTALL_FOR_ADMIN)
             {
                 checkBox1.Visible = true;
@@ -48,7 +49,8 @@ namespace HRAInstaller
                 checkBox1.Visible = false;
                 checkBox1.Checked = false;
             }
-         
+            */
+
             this.FormClosing += new FormClosingEventHandler(Form2_FormClosing);
 
             backgroundWorker = new BackgroundWorker();

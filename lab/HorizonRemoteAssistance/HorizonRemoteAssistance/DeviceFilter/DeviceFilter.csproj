@@ -31,7 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL" />
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\lib\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
@@ -68,11 +70,6 @@
       <Name>ETEUtils</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="Newtonsoft.Json.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
@@ -83,6 +80,6 @@
   -->
   <PropertyGroup>
     <PostBuildEvent>cd $(OutDir)
-$(SolutionDir)Tools\ilmerge.exe /ndebug /target:winexe $(TargetFileName) /out:DeviceFilterAgent.exe  /log ETEUtils.dll Newtonsoft.Json.dll</PostBuildEvent>
+$(SolutionDir)Tools\ilmerge.exe /ndebug /target:winexe $(TargetFileName) /out:DeviceFilterAgent.exe  /log ETEUtils.dll $(SolutionDir)lib\Newtonsoft.Json.dll</PostBuildEvent>
   </PropertyGroup>
 </Project>

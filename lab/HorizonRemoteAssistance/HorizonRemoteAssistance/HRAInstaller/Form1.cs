@@ -20,6 +20,13 @@ namespace HRAInstaller
 
         private void button1_Click(object sender, EventArgs e)
         {
+            if (!ViewUtil.IsViewAgentInstalled())
+            {
+                DialogResult ret = MessageBox.Show(this, "View Agent installation not found. Horizon Remote Assistance could not work without View Agent. Are you sure to continue?", "Horizon Remote Assistance Installer", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                if (ret != DialogResult.Yes)
+                    return;
+            }
+
             doInstall(Config.INSTALL_FOR_END_USER);
         }
 
@@ -32,23 +39,25 @@ namespace HRAInstaller
         {
             Shown += delegate(object o, EventArgs ea)
             {
-                MessageBox.Show("This is development build and is not published. \r\nContact EUC Technical Enablement team for the formal build.", "Horizon Remote Assistance", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                //MessageBox.Show("This is development build and is not published. \r\nContact EUC Technical Enablement team for the formal build.", "Horizon Remote Assistance", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             };
 
-            bool isOnServer = ViewUtil.IsViewConnectionServerInstalled();
-            bool isOnViewDesktop = ViewUtil.IsViewAgentInstalled();
+            //bool isOnServer = ViewUtil.IsViewConnectionServerInstalled();
+            //bool isOnServer = true;
 
-            btn_install.Enabled = isOnViewDesktop;
-            textBox2.Enabled = isOnViewDesktop;
+            //bool isOnViewDesktop = ViewUtil.IsViewAgentInstalled();
 
-            btn_installAdmin.Enabled = isOnServer;
-            textBox3.Enabled = isOnServer;
+            //btn_install.Enabled = isOnViewDesktop;
+            //textBox2.Enabled = isOnViewDesktop;
+            
+            //btn_installAdmin.Enabled = true;    // isOnServer;
+            //textBox3.Enabled = true;    // isOnServer;
 
 
-            if (!isOnServer && !isOnViewDesktop)
-            {
-                MessageBox.Show("It seems the current system is neither a View connection server nor a View desktop (View agent not found). This tool must be run on either of them.");
-            }
+            //if (!isOnServer && !isOnViewDesktop)
+            //{
+            //    MessageBox.Show("It seems the current system is neither a View connection server nor a View desktop (View agent not found). This tool must be run on either of them.");
+            //}
         }
 
         private void btn_installAdmin_Click(object sender, EventArgs e)

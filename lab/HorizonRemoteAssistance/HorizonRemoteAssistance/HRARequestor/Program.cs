@@ -6,6 +6,7 @@ using System.Net.Security;
 using System.Reflection;
 using System.Net.Sockets;
 using System.IO;
+using ETEUtils;
 
 namespace HRARequestor
 {
@@ -17,16 +18,17 @@ namespace HRARequestor
         [STAThread]
         static void Main()
         {
-            EmbeddedDll.Load("Newtonsoft.Json.dll");
-
             string[] args = Environment.GetCommandLineArgs();
+
+            Log.InitInLocalAppData("VMware\\Horizon Remote Assistance\\", "requestor.log");
+            Log.Info(Assembly.GetExecutingAssembly().GetName().ToString());
 
             foreach (string a in args)
             {
                 string arg = a.ToLower();
                 if ("-server".Equals(arg))
                 {
-                    Logger.Log("Start server mode");
+                    Log.Info("Start server mode");
                     Server.Start();
                     Application.Exit();
                     return;
@@ -34,7 +36,7 @@ namespace HRARequestor
 
                 if ("-form".Equals(arg))
                 {
-                    Logger.Log("Start form mode");
+                    Log.Info("Start form mode");
 
                     Application.EnableVisualStyles();
                     Application.SetCompatibleTextRenderingDefault(false);
@@ -48,13 +50,13 @@ namespace HRARequestor
                 {
                     string debugFile = arg.Substring("-postfile:".Length);
                     HraInvitation._debugPostFile = debugFile;
-                    Logger.Log("Posting file: " + debugFile);
+                    Log.Info("Posting file: " + debugFile);
                     SendInvitationToBroker();
                     return;
                 }
             }
 
-            Logger.Log("Start requestor mode");
+            Log.Info("Start requestor mode");
 
             DialogResult ret = MessageBox.Show("Do you want to invite your administrator to assist you? The request may take several seconds or minutes to be sent.", "Horizon Remote Assistance", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
             if (ret.Equals(DialogResult.OK))
@@ -93,35 +95,27 @@ namespace HRARequestor
             catch (Exception e)
             {
                 MessageBox.Show("An error occured starting Remote Assistance. Details:\n" + e.ToString());
-                Logger.Log(e);
+                Log.Info(e);
                 return;
             }
 
             text = _MassageContent(text);
-            Logger.Log("-----------------Temp Inv----------------------");
-            Logger.Log(text);
-            Logger.Log("-----------------------------------------------");
+            Log.Info("-----------------Temp Inv----------------------");
+            Log.Info(text);
+            Log.Info("-----------------------------------------------");
 
             //
             //  Post remote assistance request (including invitation file) to AdminEx on all brokers
             //
+            string[] urls = new string[brokerAddrs.Length];
+            for (int i = 0; i < brokerAddrs.Length; i++)
+                urls[i] = "https://" + brokerAddrs[i] + "/toolbox/remoteassist/upload";
 
-            Util.UriHackFix();
-
-            int success = 0;
-            foreach (string addr in brokerAddrs)
-            {
-                try
-                {
-                    if (PostRequest(addr, text))
-                        success++;
-                }
-                catch (Exception e)
-                {
-                    Logger.Log(e);
-                    MessageBox.Show(e.Message + ". Connection Server: " + addr);
-                }
-            }
+            HttpUtil._IgnoreSSL();
+            HttpUtil.UriHackFix();
+            HttpUtil.SetDefaultConnectionLimit(20);
+            HttpUtil.SetNoProxy();  //no proxy between View Agent and View Broker. Set no proxy will boost performance for his app.
+            int success = HttpUtil.BatchGet(urls, "inv", text, null);
 
             //
             //  Show result
@@ -160,20 +154,18 @@ namespace HRARequestor
                         addrs.Add(ipa.ToString());
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Logger.Log(e);
+                //Log.Info(e);
                 return false;
             }
             addrs.Add(brokerAddr);
 
-            Logger.Log("Posting to broker: " + brokerAddr);
-
-            //string address = "http://xxxxxxxxx:8080/admin_ex/hra";
+            Log.Info("Posting to broker: " + brokerAddr);
 
             foreach (string addr in addrs)
             {
-                string url = "https://" + addr + "/admin_ex/hra";
+                string url = "https://" + addr + "/toolbox/remoteassist/upload";
                 if (HttpGet(url, "inv", content))
                 {
                     return true;
@@ -189,20 +181,19 @@ namespace HRARequestor
                 wb.Headers["User-Agent"] = "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:25.0) Gecko/20100101 Firefox/25.0";
 
                 wb.QueryString.Add(var, content);
-
-                Logger.Log("Requesting: " + url);
+                Log.Info("Requesting: " + url);
 
                 try
                 {
                     //we should post, however View Connection server has disabled POST.
                     //string ret = wb.UploadValues(.UploadString(url, );
                     string ret = wb.DownloadString(url);
-                    Logger.Log("Response: " + ret);
+                    Log.Info("Response: " + ret);
                     return true;
                 }
                 catch (Exception ex)
                 {
-                    Logger.Log(ex);
+                    Log.Info(ex);
                     return false;
                 }
             }
@@ -218,7 +209,7 @@ namespace HRARequestor
         private static string[] GetBrokerAddresses()
         {
             string brokerAddrs = RegUtil.ReadLocalMachine(@"SOFTWARE\VMware, Inc.\VMware VDM\Agent\Configuration", "Broker");
-            Logger.Log("Brokers from registry: " + brokerAddrs);
+            Log.Info("Brokers from registry: " + brokerAddrs);
 
             if (brokerAddrs == null || brokerAddrs.Trim().Equals(""))
                 return null;
