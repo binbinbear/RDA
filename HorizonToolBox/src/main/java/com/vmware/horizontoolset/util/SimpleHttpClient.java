@@ -13,10 +13,11 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.conn.scheme.Scheme;
+import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.apache.http.conn.ssl.X509HostnameVerifier;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
 
 
@@ -31,7 +32,7 @@ public class SimpleHttpClient implements Serializable{
 	private HttpClient client;
 	public SimpleHttpClient(){
 		//accept un-trusted ssl certificate
-		X509HostnameVerifier hostnameVerifier = SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER;
+		X509HostnameVerifier hostnameVerifier = SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER;
 		
 		X509TrustManager tm = new X509TrustManager() {
 
@@ -61,11 +62,11 @@ public class SimpleHttpClient implements Serializable{
 		try {
 			ctx = SSLContext.getInstance("TLS");
 			ctx.init(null, new TrustManager[]{tm}, null); 
-			SSLConnectionSocketFactory sslSocketFactory = new SSLConnectionSocketFactory(
-					ctx,
-	                hostnameVerifier);
-			
-			client = HttpClientBuilder.create().setSSLSocketFactory(sslSocketFactory).build();
+			SSLSocketFactory sslSocketFactory = new SSLSocketFactory(ctx);
+			sslSocketFactory.setHostnameVerifier(hostnameVerifier);
+			client = new DefaultHttpClient();
+			Scheme https = new Scheme("https", sslSocketFactory, 443);  
+            client.getConnectionManager().getSchemeRegistry().register(https);  
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			log.warn("Can't create new client since:", e);

@@ -36,17 +36,17 @@ public class LoginController{
 	public static final String SubmitURL = "/Login/Submit";
 	private static Logger log = Logger.getLogger(LoginController.class);
 
-	protected static String server = "localhost";
-	private static boolean remoteDebug = false;
-	public static void setRemoteDebug(boolean newdebug){
-		LoginController.remoteDebug = newdebug;
+	private String server = "localhost";
+	private boolean remoteDebug = false;
+	public void setRemoteDebug(boolean newdebug){
+		this.remoteDebug = newdebug;
 	}
 	
 	
-	private static String brokerXMLAPI =  "https://"+server+"/broker/xml";;
+	private String brokerXMLAPI =  "https://"+this.server+"/broker/xml";;
 	private static String message = "<?xml version=\"1.0\"?> <broker version=\"1.0\">  <get-configuration/> </broker>";
- 	public static void setServer(String server) {
-		LoginController.server = server;
+ 	public void setServer(String server) {
+		this.server = server;
 		brokerXMLAPI = "https://"+server+"/broker/xml";
 	}
 
@@ -55,7 +55,7 @@ public class LoginController{
 	public String index( Model model) {
 		log.debug("Receive index request");
 		if (domains.isEmpty()){
-			LoginController.getDomains();
+			this.getDomains();
 		}
 		model.addAttribute("domains", domains);
 		return "login";
@@ -125,7 +125,7 @@ public class LoginController{
 	
 	private static SimpleHttpClient httpClient = new SimpleHttpClient();
 	
-	private static void getDomainsFromXMLAPI(){
+	private void getDomainsFromXMLAPI(){
 		String result = httpClient.post(brokerXMLAPI, message);
 		/**
 		<name>domain</name>
@@ -155,7 +155,7 @@ public class LoginController{
 		}
 		
 	}
-	private static synchronized void getDomains() {
+	private synchronized void getDomains() {
 		if (!domains.isEmpty()){
 			return;
 		}
