@@ -16,7 +16,7 @@ import com.vmware.vdi.adamwrapper.ldap.VDIContextFactory;
 
 /**
  * 
- * A storage to store key-value pair. The storage is shard, with late consistency.
+ * A storage to store key-value pair. The storage is shared, with late consistency.
  * 
  * Shared: the storage will be shared across multiple View Connection servers.
  * Late consistency: Changes to the storage is only visible to other readers 

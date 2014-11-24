@@ -12,7 +12,7 @@ import com.vmware.horizontoolset.util.TimeInterval;
 public class HraInvitation {
 /**
  * the following public string must be public since they are from gson
- * Otherwise, they may be renamed by compiler.jar when buildiing
+ * Otherwise, they may be renamed by compiler.jar when building
  */
     public String machine;
     public String user;
@@ -41,7 +41,7 @@ public class HraInvitation {
 	}
 	
 	private void parseTimeout() {
-		//DtLength="360"
+		//DtLength="60"
 
 		final String FLAG = "DtLength=\"";
 		
@@ -55,7 +55,10 @@ public class HraInvitation {
 				if (k < 0)
 					break;
 				String txt = inv.substring(j, k);
-				timeoutSeconds = Integer.parseInt(txt);
+				timeoutSeconds = Integer.parseInt(txt) * 60;
+				
+				if (timeoutSeconds < 360)
+					timeoutSeconds = 360;
 			} while (false);
 		} catch (Exception e) {
 			timeoutSeconds = 360;
