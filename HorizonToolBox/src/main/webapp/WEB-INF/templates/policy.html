@@ -38,15 +38,18 @@
 					items: [
 						{ type: 'button',  id: 'item1',  caption: 'New', img: 'icon-page', hint: 'Create a new policy' },
 						{ type: 'button',  id: 'item2',  caption: 'Edit', img: 'icon-page', hint: 'Edit a policy' },
-						{ type: 'button',  id: 'item3',  caption: 'Delete', img: 'icon-page', hint: 'Delete a policy' },
-						{ type: 'button',  id: 'item4',  caption: 'Increase Priority', img: 'icon-page', hint: 'Increase the priority of a policy' },
-						{ type: 'button',  id: 'item5',  caption: 'Decrease Priority', img: 'icon-page', hint: 'Decrease the priority of a policy' }
+						{ type: 'button',  id: 'item3',  caption: 'Delete', img: 'icon-page', hint: 'Delete a policy' }
 					],
 					onClick: function (event) {
 						switch (event.target) {
 							case 'item1':
-								//put your logic here
-								alert("come here");
+								addARecord();	
+								 
+ 								var myrecords = w2ui.grid1.records;
+								w2ui.grid1.clear();
+								w2ui.grid1.total = myrecords.length;
+								w2ui.grid1.records = myrecords;
+								//openPopup();								
 								w2ui.grid1.refresh();
 								break;
 							case 'item2':
@@ -54,16 +57,15 @@
 								w2ui.grid1.refresh();
 								break;
 							case 'item3':
-								 w2ui.grid1.delete(true);
-								 w2ui.grid1.refresh();
+								 w2ui.grid1.delete(false);
+								 //ugly workaround here
+								//var myrecords = w2ui.grid1.records;
+								//w2ui.grid1.clear();
+								//w2ui.grid1.total = myrecords.length;
+								//w2ui.grid1.records = myrecords;							
+								w2ui.grid1.refresh();
 
-								break;
-							case 'item4':
-								//put your logic here
-								break;
-							case 'item5':
-								//put your logic here
-								break;								
+								break;							
 							}	
 					}
 				}
@@ -104,32 +106,39 @@
 			name: 'grid1',
 			url : 'http://localhost:8080/toolbox/data/policy',
 			method: 'GET', // need this to avoid 412 error on Safari
+			recid   : 'name',
 			show: { 
 				selectColumn: true
 			},			
 			multiSelect: false,
-			
-	        columns: [
-	            { field: 'name', caption: 'Name', sortable: true, size: '180px' },
-	            { field: 'priority', caption: 'Priority', sortable: true, size: '180px' },
-	            { field: 'enabled', caption: 'Enabled',sortable: true,  size: '40%' },
-	            { field: 'description', caption: 'Description',sortable: true,  size: '120px' }
-	        ]
+			columns: [
+				{ field: 'name', caption: 'Name', size: '180px' },
+				{ field: 'priority', caption: 'Priority', size: '80px', sortable: true, resizable: true, render: 'int',
+					editable: { type: 'int', min: 1, max: 32756 }
+				},
+				{ field: 'enabled', caption: 'Enabled', size: '40%' },
+				{ field: 'description', caption: 'Description', size: '120px' }
+			]		
 	    },
 	    grid2: { 
 	        name: 'grid2',
-	        columns: [
-	            { field: 'state', caption: 'State', size: '80px' },
-	            { field: 'title', caption: 'Title', size: '100%' },
-	            { field: 'priority', caption: 'Priority', size: '80px', attr: 'align="center"' }
-	        ],
+			columns: [
+				{ field: 'name', caption: 'Name', size: '180px' },
+				{ field: 'priority', caption: 'Priority', size: '80px', sortable: true, resizable: true, render: 'int',
+					editable: { type: 'int', min: 1, max: 32756 }
+				},
+				{ field: 'enabled', caption: 'Enabled', size: '40%' },
+				{ field: 'description', caption: 'Description', size: '120px' }
+			],
+			show: { 
+				selectColumn: true
+			},
 	        records: [
-	            { recid: 1, state: 'Open', title: 'Short title for the record', priority: 2 },
-	            { recid: 2, state: 'Open', title: 'Short title for the record', priority: 3 },
-	            { recid: 3, state: 'Closed', title: 'Short title for the record', priority: 1 },
+				{ recid: 1, name: 'John', priority: '1', enabled: true, description: 'fake policy' },
+				{ recid: 2, name: 'Stuart', priority: '2', enabled: true, description: 'fake policy' }
 	        ]
 	    }
-	}
+	};
 	
 	$(function () {
 	    // initialization
@@ -139,8 +148,101 @@
 	    // in memory initialization
 	    $().w2grid(config.grid2);
 	});
+	
+	//	Add a new policy record into Policy grid
+	function addARecord() {
+		var g = Math.random();
+		//To-do : Add fake policy temporarily
+		w2ui['grid1'].add( { recid: g, name: 'Policy New', priority: '2', enabled: true, description: 'real policy' } );  
+	};
+	
 	</script>	
-		
+	
+<script type="text/javascript">
+	//initialize the new policy dialog
+var newpolicyconfig = {
+    newpolicylayout: {
+        name: 'newpolicylayout',
+        padding: 0,
+        panels: [
+             { type: 'top', size: 50, content: '<div style="padding: 7px;"><form> Policy Name: <input type="text" name="policyname"/> Description: <input type="text" name="description"/></form></div>', style: 'border-bottom: 1px solid silver' },                 
+             { type: 'left', size: 200, resizable: true, minSize: 120 },
+             { type: 'main', minSize: 350, overflow: 'hidden' }
+        ]
+    },
+    newpolicysidebar: {
+        name: 'newpolicysidebar',
+        nodes: [ 
+            { id: 'general', text: 'General', group: true, expanded: true, nodes: [
+                { id: 'grid', text: 'Grid', img: 'icon-page', selected: true },
+                { id: 'html', text: 'Some HTML', img: 'icon-page' }
+            ]}
+        ],
+        onClick: function (event) {
+            switch (event.target) {
+                case 'grid':
+                    w2ui.newpolicylayout.content('main', w2ui.newpolicygrid);
+                    break;
+                case 'html':
+                    w2ui.newpolicylayout.content('main', '<div style="padding: 10px">Some HTML</div>');
+                    $(w2ui.newpolicylayout.el('main'))
+                        .removeClass('w2ui-grid')
+                        .css({ 
+                            'border-left': '1px solid silver'
+                        });
+                    break;
+            }
+        }
+    },
+    newpolicygrid: { 
+        name: 'newpolicygrid',
+        style: 'border: 0px; border-left: 1px solid silver',
+        columns: [
+            { field: 'state', caption: 'State', size: '80px' },
+            { field: 'title', caption: 'Title', size: '100%' },
+            { field: 'priority', caption: 'Priority', size: '80px', attr: 'align="center"' }
+        ],
+        records: [
+            { recid: 1, state: 'Open', title: 'Short title for the record', priority: 2 },
+            { recid: 2, state: 'Open', title: 'Short title for the record', priority: 3 },
+            { recid: 3, state: 'Closed', title: 'Short title for the record', priority: 1 },
+        ]
+    }
+};
+
+$(function () {
+    // initialization in memory
+    $().w2layout(newpolicyconfig.newpolicylayout);
+    $().w2sidebar(newpolicyconfig.newpolicysidebar);
+    $().w2grid(newpolicyconfig.newpolicygrid);
+});
+
+function openPopup() {
+    w2popup.open({
+        title   : 'Popup',
+        width   : 800,
+        height  : 600,
+        showMax : true,
+        body    : '<div id="main" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px;"></div>',
+        onOpen  : function (event) {
+            event.onComplete = function () {
+                $('#w2ui-popup #main').w2render('newpolicylayout');
+                w2ui.newpolicylayout.content('left', w2ui.newpolicysidebar);
+                w2ui.newpolicylayout.content('main', w2ui.newpolicygrid);
+            }
+        },
+        onToggle: function (event) { 
+            event.onComplete = function () {
+                w2ui.newpolicylayout.resize();
+            }
+        }        
+    });
+}
+</script>	
+
+<script>
+
+</script>
 		
 
 <!--  
