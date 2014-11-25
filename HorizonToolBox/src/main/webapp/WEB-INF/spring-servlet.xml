@@ -81,6 +81,8 @@
    <bean id="limitController" class="com.vmware.horizontoolset.limit.LimitController"/>
    <bean id="limitRestController" class="com.vmware.horizontoolset.limit.LimitRestController"/>
    
+   <bean id="infoRestController" class="com.vmware.horizontoolset.ProductInfoRestController"/>
+   
   <!-- Execute once a day on 1:00 am , Seconds Minutes Hours DayofMonth Month DayofWeek -->
    <task:scheduled-tasks>   
         <task:scheduled ref="clientrestController" method="updateCachedReport" cron="0 0 1 * * ?"/>   

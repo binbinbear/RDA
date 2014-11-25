@@ -29,6 +29,7 @@
     			<value>/remoteassist/upload</value>
     			<value>/deviceFilter/check</value>
     			<value>/limit/refresh</value>
+    			<value>/about</value>
     		</array>
     	</property>
      </bean> 
