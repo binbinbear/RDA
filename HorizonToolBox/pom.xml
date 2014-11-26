@@ -12,6 +12,8 @@
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>1.0.2.RELEASE</version>
 	</parent>
+	
+	
 
 	<dependencies>
 		<dependency>
@@ -378,10 +380,27 @@
 
 		</profile>
 	</profiles>
+<properties>
+<BUILD_MAJOR>2.0.0</BUILD_MAJOR>
+<BUILD_MINOR>${maven.build.timestamp}</BUILD_MINOR>
+</properties>
 
 	<build>
-		<finalName>${project.artifactId}</finalName>
-		<plugins>
+	<finalName>${project.artifactId}</finalName>
+	
+	
+<resources>
+    <resource>
+		<includes>
+			<include>*.properties</include>
+		</includes>
+        <directory>${project.basedir}/src/main/java</directory>
+        <filtering>true</filtering>
+    </resource>
+</resources>
+	
+	
+	<plugins>
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -406,9 +425,8 @@
 					<target>1.7</target>
 				</configuration>
 			</plugin>
-
-
-
+	
+		
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -493,6 +511,7 @@
 
 
 	</pluginRepositories>
+	
 
 
 </project>

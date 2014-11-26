@@ -322,6 +322,19 @@
 // This initializes the menu
 $(function() {
 	$('ul.jd_menu').jdMenu();
+	  $( "#aboutdialog" ).dialog({
+	        autoOpen: false,
+	        height: "auto",
+	        width: "auto",
+	        title: "About",
+	        buttons : [ {
+	    		text : "Ok",
+	    		click : function() {
+	    			$(this).dialog("close");
+	    		}
+	    	} ]
+	    });
+	  $('a.ui-dialog-titlebar-close').hide();
 });
 
 (function($){
@@ -496,7 +509,22 @@ if (!window.ToolBox){
 }
 ToolBox.NgApp = angular.module('main', ['ngTable']);
 ToolBox.init =  function(){
-
+	
+	var popup = function popup() {
+		$.ajax({
+			url: './about',
+			type: "GET",
+			success: function (data) {
+				$("div[name=version]").empty();
+				$("div[name=version]").append("Version:"+data.version);
+			    $( "#aboutdialog" ).dialog( "open" );
+			}, 
+			error: function(data) {
+			}
+		});
+	   
+	};
+	$("#about").click(popup);
 
 			var map = {
 					session: {"btn": $("#L1_01"),
