@@ -74,7 +74,7 @@
    <bean id="deviceFilterController" class="com.vmware.horizontoolset.device.controller.DeviceFilterController"/>
    <bean id="deviceFilterRestController" class="com.vmware.horizontoolset.device.controller.DeviceFilterRestController"/>
    <bean id="policyController" class="com.vmware.horizontoolset.PolicyController"/>
-   <bean id="PolicyRestController" class="com.vmware.horizontoolset.PolicyRestController"/>
+
    <bean id="SessionMsgRestController" class="com.vmware.horizontoolset.SessionMsgRestController"/>
    
    <bean id="EmailController" class="com.vmware.horizontoolset.email.EmailController"/>
@@ -82,6 +82,9 @@
    <bean id="limitRestController" class="com.vmware.horizontoolset.limit.LimitRestController"/>
    
    <bean id="infoRestController" class="com.vmware.horizontoolset.ProductInfoRestController"/>
+   
+   <bean id="PolicyRestNewController" class="com.vmware.horizontoolset.policy.PolicyRestController"/>
+   
    
   <!-- Execute once a day on 1:00 am , Seconds Minutes Hours DayofMonth Month DayofWeek -->
    <task:scheduled-tasks>   
