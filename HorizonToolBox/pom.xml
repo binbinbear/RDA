@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.vmware</groupId>
 	<artifactId>toolbox</artifactId>
-	<version>1.0</version>
+	<version>2.0.0</version>
 	<packaging>war</packaging>
 	<name>toolbox</name>
 
@@ -385,7 +385,7 @@
 	</profiles>
 
 <properties>
-<BUILD_MAJOR>2.0.0</BUILD_MAJOR>
+<BUILD_MAJOR>${project.version}</BUILD_MAJOR>
 <BUILD_MINOR>${maven.build.timestamp}</BUILD_MINOR>
 </properties>
 
