@@ -12,8 +12,6 @@
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>1.0.2.RELEASE</version>
 	</parent>
-	
-	
 
 	<dependencies>
 		<dependency>
@@ -208,7 +206,12 @@
 			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/sqljdbc4.jar</systemPath>
 		
 		</dependency>
-
+		
+		 <dependency>
+			<groupId>com.googlecode.json-simple</groupId>
+			<artifactId>json-simple</artifactId>
+			<version>1.1</version>
+		  </dependency>
 
 		<dependency>
 			<groupId>javax.mail</groupId>
@@ -380,6 +383,7 @@
 
 		</profile>
 	</profiles>
+
 <properties>
 <BUILD_MAJOR>2.0.0</BUILD_MAJOR>
 <BUILD_MINOR>${maven.build.timestamp}</BUILD_MINOR>
@@ -391,16 +395,16 @@
 	
 <resources>
     <resource>
-		<includes>
+    		<includes>
 			<include>*.properties</include>
 		</includes>
         <directory>${project.basedir}/src/main/java</directory>
         <filtering>true</filtering>
     </resource>
 </resources>
-	
-	
-	<plugins>
+
+
+		<plugins>
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -425,8 +429,9 @@
 					<target>1.7</target>
 				</configuration>
 			</plugin>
-	
-		
+
+
+
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -511,7 +516,6 @@
 
 
 	</pluginRepositories>
-	
 
 
 </project>
