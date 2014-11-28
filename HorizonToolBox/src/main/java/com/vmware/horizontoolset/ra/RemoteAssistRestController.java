@@ -1,7 +1,9 @@
 package com.vmware.horizontoolset.ra;
 
 import java.io.OutputStream;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -14,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.Gson;
+import com.vmware.horizontoolset.util.JsonUtil;
+import com.vmware.horizontoolset.util.SessionUtil;
 
 @RestController
 public class RemoteAssistRestController {
@@ -26,7 +30,7 @@ public class RemoteAssistRestController {
     }
     
     @RequestMapping(value = "/remoteassist/download/{file_id}", method = RequestMethod.GET)
-    public void download(
+    public void download(HttpSession session,
         @PathVariable("file_id") String fileId, 
         HttpServletResponse response) {
     	
@@ -43,12 +47,12 @@ public class RemoteAssistRestController {
 				return;
 			}
 			
-			log.info("Downloading invitation: " + inv);
+			String userName = SessionUtil.getuser(session);
+			log.info("[Remote Assistance] User: [" + userName + "] is launching invitation: " + inv);
 			
-	        response.setContentType("application/octet-stream");
+	        response.setContentType("application/octet-stream; name=\"Invitation.HorizonRemoteAssistance\"");
 	        response.setHeader("Content-disposition","attachment; filename=\"Invitation.HorizonRemoteAssistance\"");
-	        
-	        String content = inv.getInvContent();
+	        String content = JsonUtil.javaToJson(inv);
 	        byte[] bytes = content.getBytes("UTF-8");
 	        
 	        response.setContentLength(bytes.length);
@@ -84,22 +88,32 @@ public class RemoteAssistRestController {
 		if (invs.isEmpty()) {
 			html.append("<tr><td colspan=20><i>No remote assistance request</i></td></tr>");
 		} else {
+			
+			Set<String> alreadyRequested = new HashSet<>();
+			
 			for (int i = 0; i < invs.size(); i++) {
 				HraInvitation inv = invs.get(i);
 				String type = (i % 2 == 0) ? "" : " class='tr_even'";
-				String action;
+				String status;
+				String action = "";
 				if (inv.started)
-					action = "Processed";
+					status = "Processed";
 				else if (inv.isTimeout())
-					action = "Stale";
-				else
+					status = "Stale";
+				else if (alreadyRequested.contains(inv.machine))
+					status = "Re-submitted";
+				else {
+					alreadyRequested.add(inv.machine);
 					//action = "<a href='javascript:launchRA(" + inv.id + ")'><img src='img/start.png' class='start_icon'> Start Assist</a>";
+					status = "Waiting";
 					action = "<a href='remoteassist/download/" + inv.id + "'><img src='img/start.png' class='start_icon'> Start Assist</a>";
+				}
 				html.append("<tr").append(type)
 					.append("><td>").append(inv.getStaleDisplay())
 					.append("</td><td>").append(inv.getUserNameDisplay())
 					.append("</td><td>").append(inv.machine)
 					.append("</td><td>").append(inv.os)
+					.append("</td><td>").append(status)
 					.append("</td><td>").append(action)
 					.append("</td></tr>\n");
 			}

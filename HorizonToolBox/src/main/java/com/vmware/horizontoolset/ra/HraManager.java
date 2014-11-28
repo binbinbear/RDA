@@ -3,9 +3,13 @@ package com.vmware.horizontoolset.ra;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 public class HraManager {
 	
-	private static ArrayList<HraInvitation> invitations = new ArrayList<>(); 
+	private static Logger log = Logger.getLogger(HraManager.class);
+	
+	private static List<HraInvitation> invitations = new ArrayList<>(); 
 	
 	static {
 //		add(HraInvitation._createTest());
@@ -17,7 +21,17 @@ public class HraManager {
 		
 		clearLegacy();
 		
+		for (HraInvitation i : invitations) {
+			if (i.nonce != 0	//old client backward compatibility 
+					&& i.nonce == inv.nonce) {
+				//already exist. Duplicated post/receive.
+				log.info("HraManager: deduplication of inv ticket from " + inv.machine);
+				return;
+			}
+		}
+
 		inv.init();
+		
 		invitations.add(0, inv);
 	}
 

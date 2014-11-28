@@ -20,7 +20,9 @@ public class HraInvitation {
     public String os;
     
 	public String inv;
-	
+	public String code;
+	public int nonce;
+
 	private transient Path path;
 	private transient long time;
 	private transient long timeoutSeconds;
