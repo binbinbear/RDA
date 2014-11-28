@@ -113,7 +113,7 @@ namespace ETEUtils
         //
         // Batchly get multiple URLs simultaneously, blocks until all requests are done. 
         // Return number of response contains expectedResponse
-        public static int BatchGet(string[] url, string var, string content, string expectedResponse)
+        public static int BatchGet(string[] url, Dictionary<string, string> parameters, string expectedResponse)
         {
             CountdownLatch cdl = new CountdownLatch(url.Length);
             object syncLock = new object();
@@ -150,7 +150,10 @@ namespace ETEUtils
                 {
                     wb.Proxy = null;
                     wb.Headers["User-Agent"] = "ETEUtils";
-                    wb.QueryString.Add(var, content);
+
+                    foreach (string k in parameters.Keys)
+                        wb.QueryString.Add(k, parameters[k]);
+
                     try
                     {
                         wb.DownloadStringAsync(new Uri(s), s);

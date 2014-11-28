@@ -22,48 +22,63 @@ namespace HRARequestor
 
             Log.InitInLocalAppData("VMware\\Horizon Remote Assistance\\", "requestor.log");
             Log.Info(Assembly.GetExecutingAssembly().GetName().ToString());
+            Log.Info("Time: " + DateTime.Now);
+            Log.Info("Current Directory: " + Environment.CurrentDirectory);
+            Log.Info("Machine Name: " + Environment.MachineName);
+            Log.Info("OS Version: " + Environment.OSVersion);
+            Log.Info("User Domain Name: " + Environment.UserDomainName);
+            Log.Info("User Name: " + Environment.UserName);
+            Log.Info("Version: " + Environment.Version);
+            Log.Info("System Directory: " + Environment.SystemDirectory);
 
-            foreach (string a in args)
+            try
             {
-                string arg = a.ToLower();
-                if ("-server".Equals(arg))
+                foreach (string a in args)
                 {
-                    Log.Info("Start server mode");
-                    Server.Start();
-                    Application.Exit();
-                    return;
+                    string arg = a.ToLower();
+                    if ("-server".Equals(arg))
+                    {
+                        Log.Info("Start server mode");
+                        Server.Start();
+                        Application.Exit();
+                        return;
+                    }
+
+                    if ("-form".Equals(arg))
+                    {
+                        Log.Info("Start form mode");
+
+                        Application.EnableVisualStyles();
+                        Application.SetCompatibleTextRenderingDefault(false);
+
+                        Application.Run(new Form1());
+                        Application.Exit();
+                        return;
+                    }
+
+                    if (arg.StartsWith("-postfile:"))
+                    {
+                        string debugFile = arg.Substring("-postfile:".Length);
+                        HraInvitation._debugPostFile = debugFile;
+                        Log.Info("Posting file: " + debugFile);
+                        SendInvitationToBroker();
+                        return;
+                    }
                 }
 
-                if ("-form".Equals(arg))
+                Log.Info("Start requestor mode");
+
+                DialogResult ret = MessageBox.Show("Do you want to invite your administrator to assist you? The request may take several seconds or minutes to be sent.", "Horizon Remote Assistance", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+                if (ret.Equals(DialogResult.OK))
                 {
-                    Log.Info("Start form mode");
-
-                    Application.EnableVisualStyles();
-                    Application.SetCompatibleTextRenderingDefault(false);
-
-                    Application.Run(new Form1());
-                    Application.Exit();
-                    return;
-                }
-
-                if (arg.StartsWith("-postfile:"))
-                {
-                    string debugFile = arg.Substring("-postfile:".Length);
-                    HraInvitation._debugPostFile = debugFile;
-                    Log.Info("Posting file: " + debugFile);
                     SendInvitationToBroker();
-                    return;
                 }
             }
-
-            Log.Info("Start requestor mode");
-
-            DialogResult ret = MessageBox.Show("Do you want to invite your administrator to assist you? The request may take several seconds or minutes to be sent.", "Horizon Remote Assistance", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
-            if (ret.Equals(DialogResult.OK))
+            catch (Exception e)
             {
-                SendInvitationToBroker();
+                Log.Error(e);
             }
-
+            Log.Info("Exit");
             Application.Exit();
         }
 
@@ -87,10 +102,10 @@ namespace HRARequestor
             //
             //  Start remote assistance (MSRA), and generate invitation file
             //
-            string text;
+            HraInvitation inv ;
             try
             {
-                text = HraInvitation.create();
+                inv = HraInvitation.create();
             }
             catch (Exception e)
             {
@@ -99,7 +114,7 @@ namespace HRARequestor
                 return;
             }
 
-            text = _MassageContent(text);
+            String text = _MassageContent(inv.ToJson());
             Log.Info("-----------------Temp Inv----------------------");
             Log.Info(text);
             Log.Info("-----------------------------------------------");
@@ -115,7 +130,9 @@ namespace HRARequestor
             HttpUtil.UriHackFix();
             HttpUtil.SetDefaultConnectionLimit(20);
             HttpUtil.SetNoProxy();  //no proxy between View Agent and View Broker. Set no proxy will boost performance for his app.
-            int success = HttpUtil.BatchGet(urls, "inv", text, null);
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("inv", text);
+            int success = HttpUtil.BatchGet(urls, parameters, null);
 
             //
             //  Show result
@@ -141,63 +158,6 @@ namespace HRARequestor
             
         }
 
-        private static bool PostRequest(string brokerAddr, string content)
-        {
-            List<string> addrs = new List<string>();
-
-            try
-            {
-                IPAddress[] addresses = Dns.GetHostAddresses(brokerAddr);
-                foreach (IPAddress ipa in addresses)
-                {
-                    if (ipa.AddressFamily == AddressFamily.InterNetwork)
-                        addrs.Add(ipa.ToString());
-                }
-            }
-            catch (Exception)
-            {
-                //Log.Info(e);
-                return false;
-            }
-            addrs.Add(brokerAddr);
-
-            Log.Info("Posting to broker: " + brokerAddr);
-
-            foreach (string addr in addrs)
-            {
-                string url = "https://" + addr + "/toolbox/remoteassist/upload";
-                if (HttpGet(url, "inv", content))
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        private static bool HttpGet(string url, string var, string content)
-        {
-            using (var wb = new WebClient())
-            {
-                wb.Headers["User-Agent"] = "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:25.0) Gecko/20100101 Firefox/25.0";
-
-                wb.QueryString.Add(var, content);
-                Log.Info("Requesting: " + url);
-
-                try
-                {
-                    //we should post, however View Connection server has disabled POST.
-                    //string ret = wb.UploadValues(.UploadString(url, );
-                    string ret = wb.DownloadString(url);
-                    Log.Info("Response: " + ret);
-                    return true;
-                }
-                catch (Exception ex)
-                {
-                    Log.Info(ex);
-                    return false;
-                }
-            }
-        }
 
         private static string _MassageContent(string s)
         {

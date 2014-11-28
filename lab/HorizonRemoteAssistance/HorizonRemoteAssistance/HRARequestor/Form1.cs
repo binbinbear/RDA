@@ -32,6 +32,7 @@ namespace HRARequestor
         {
             using (var wb = new WebClient())
             {
+                /*
                 string text = HraInvitation.create();
                 string address = "http://10.112.119.165:8080/admin_ex/hra";
                 try
@@ -44,6 +45,7 @@ namespace HRARequestor
                 {
                     MessageBox.Show("An error occured posting remote assistance data. Details:\n" + ex.ToString());
                 }
+                */
             }
         }
 

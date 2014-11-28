@@ -33,6 +33,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\lib\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
@@ -41,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="HraInvitationLauncher.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="LoginAutomator.cs" />
     <Compile Include="Program.cs" />
@@ -79,6 +84,8 @@
   </Target>
   -->
   <PropertyGroup>
-    <PostBuildEvent>copy "$(TargetPath)" "$(SolutionDir)HRAInstaller\files\."</PostBuildEvent>
+    <PostBuildEvent>cd $(OutDir)
+$(SolutionDir)Tools\ilmerge.exe /ndebug /target:winexe "$(TargetFileName)" /out:HRA_Launcher.exe  /log Newtonsoft.Json.dll
+copy "HRA_Launcher.exe" "$(SolutionDir)HRAInstaller\files\$(TargetFileName)"</PostBuildEvent>
   </PropertyGroup>
 </Project>

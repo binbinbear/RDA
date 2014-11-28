@@ -52,16 +52,15 @@ namespace HRARequestor
 
             using (HttpListenerResponse response = context.Response)
             {
-
-                string verificationCode = request.QueryString.Get("v");
-                if (!validate(verificationCode))
+                if (!validate(request))
                 {
                     response.StatusCode = 401;  //unauthorized
                 }
                 else
                 {
                     // Construct a response.
-                    string responseString = HraInvitation.create();
+                    HraInvitation inv = HraInvitation.create();
+                    string responseString = inv.ToJson();
                     byte[] buffer = System.Text.Encoding.UTF8.GetBytes(responseString);
                     // Get a response stream and write the response to it.
                     response.ContentLength64 = buffer.Length;
@@ -73,6 +72,19 @@ namespace HRARequestor
             }
         }
 
+        private static bool validate(HttpListenerRequest request)
+        {
+            string verificationCode = request.QueryString.Get("v");
+            if (!validate(verificationCode))
+                return false;
+
+            //verify the requestor is a broker server
+            //TODO
+
+            return true;
+        }
+
+        
         private static bool validate(string code)
         {
             if (code == null)

@@ -9,7 +9,7 @@ namespace HRALauncher
     class LoginAutomator
     {
 
-        internal static bool FillPasswordAndProceed(Process proc)
+        internal static bool FillPasswordAndProceed(Process proc, string code)
         {
             Logger.Log("Locating login...");
 
@@ -32,30 +32,36 @@ namespace HRALauncher
             if (loginDlgHandle == IntPtr.Zero)
                 return false;
 
-            Logger.Log("Hide login");
+            Logger.Log("Hide login. Code=" + code);
             WindowUtil.HideWindow(loginDlgHandle);
 
             HandlesInfo windowInfo = WindowUtil.GetChildWindows(loginDlgHandle, false, "", String.Empty);
 
-            for (int i = 0; i < 50; i++)    //retry 5 seconds
+            for (int i = 0; i < 100; i++)    //retry 10 seconds
             {
-                Logger.Log("Locating edit");
+                //Logger.Log("Locating edit");
                 //fill text
                 IntPtr h = windowInfo.FindWindow("Edit");
                 if (h == IntPtr.Zero)
+                {
+                    Logger.Log("Edit - exit");
                     return false;
+                }
 
-                Logger.Log("Fill edit");
-                WindowUtil.FillTextField(h, "******");
+                //Logger.Log("Fill edit");
+                WindowUtil.FillTextField(h, code);
 
-                Logger.Log("Locating confirm");
+                //Logger.Log("Locating confirm");
                 //click button
                 h = windowInfo.FindWindow("Button", "OK");
                 if (h == IntPtr.Zero)
                     h = windowInfo.FindWindow("Button");
 
                 if (h == IntPtr.Zero)
+                {
+                    Logger.Log("Button - exit");
                     return false;
+                }
 
                 Logger.Log("Confirming");
                 WindowUtil.Click(h);

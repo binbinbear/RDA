@@ -19,8 +19,10 @@ namespace HRAInstaller
         public static readonly string AdminExUrl = "https://localhost/admin_ex";
         public static readonly string AdminExShortcutName = "Horizon Remote Assistance Administroator";
 
-        public static readonly string HRARequestorName = "Horizon Remote Assistance.exe";
-        public static readonly string HRARequestorPath = Util.GetAllUserDesktopFolderPriorNET40() + "\\" + Config.HRARequestorName;
+        public static readonly string HRARequestorDir = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles) + @"\VMware\Horizon Remote Assistance";
+        public static readonly string HRARequestorName = "Horizon Remote Assistance";
+        public static readonly string HRARequestorPath = HRARequestorDir + "\\" + Config.HRARequestorName + ".exe";
+        public static readonly string HRARequestorDesktopShortcut = Util.GetAllUserDesktopFolderPriorNET40() + "\\" + Config.HRARequestorName + ".lnk";
         public static readonly string MsraPath = Environment.GetFolderPath(Environment.SpecialFolder.System) + "\\msra.exe";
     }
 }

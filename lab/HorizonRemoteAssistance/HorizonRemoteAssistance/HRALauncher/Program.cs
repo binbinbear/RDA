@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
+using System.Reflection;
 
 namespace HRALauncher
 {
@@ -15,44 +16,24 @@ namespace HRALauncher
             string[] args = Environment.GetCommandLineArgs();
 
             if (args.Length != 2)
+            {
+                Logger.Log("Incorrect argument count.");
                 return;
+            }
+
+            LogEnvironment();
 
             string invitationFileName = args[1];
-
-            //invitationFileName = invitationFileName + ".msrcIncident";
-
             Logger.Log(invitationFileName);
-
-            //File.Move(invitationFileName, newName);
-
-            //MessageBox.Show(newName);
-
-            Logger.Log("Time: " + DateTime.Now);
-            Logger.Log("Current Directory: " + Environment.CurrentDirectory);
-            Logger.Log("Machine Name: " + Environment.MachineName);
-            Logger.Log("OS Version: " + Environment.OSVersion);
-            Logger.Log("User Domain Name: " + Environment.UserDomainName);
-            Logger.Log("User Name: " + Environment.UserName);
-            Logger.Log("Version: " + Environment.Version);
-            Logger.Log("System Directory: " + Environment.SystemDirectory);
             Logger.Log("");
-            Logger.Log("Starting MSRA...");
-            Process proc = new Process();
-            proc.StartInfo.FileName = "msra.exe";
-            proc.StartInfo.Arguments = "/openfile \"" + invitationFileName + "\"";
-            proc.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
 
-            proc.Start();
-
-            LoginAutomator.FillPasswordAndProceed(proc);
-
-            Logger.Log("Waiting for MSRA complete...");
-            proc.WaitForExit();
-
-            Logger.Log("Clean up...");
             try
             {
-                File.Delete(invitationFileName);
+                using (HraInvitationLauncher inv = HraInvitationLauncher.Load(invitationFileName))
+                {
+                    inv.SaveIncidentFile();
+                    inv.LaunchMSRA();
+                }
             }
             catch (Exception e)
             {
@@ -63,5 +44,17 @@ namespace HRALauncher
             Application.Exit();
         }
 
+        static void LogEnvironment()
+        {
+            Logger.Log(Assembly.GetExecutingAssembly().GetName().ToString());
+            Logger.Log("Time: " + DateTime.Now);
+            Logger.Log("Current Directory: " + Environment.CurrentDirectory);
+            Logger.Log("Machine Name: " + Environment.MachineName);
+            Logger.Log("OS Version: " + Environment.OSVersion);
+            Logger.Log("User Domain Name: " + Environment.UserDomainName);
+            Logger.Log("User Name: " + Environment.UserName);
+            Logger.Log("Version: " + Environment.Version);
+            Logger.Log("System Directory: " + Environment.SystemDirectory);
+        }
     }
 }

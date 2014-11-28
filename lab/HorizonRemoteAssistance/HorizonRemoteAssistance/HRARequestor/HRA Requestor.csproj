@@ -51,7 +51,7 @@
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>.\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\lib\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -149,7 +149,7 @@
   -->
   <PropertyGroup>
     <PostBuildEvent>cd $(OutDir)
-$(SolutionDir)Tools\ilmerge.exe /ndebug /target:winexe "$(TargetFileName)" /out:HRA_Requestor.exe  /log ETEUtils.dll $(SolutionDir)lib\Newtonsoft.Json.dll
+$(SolutionDir)Tools\ilmerge.exe /ndebug /target:winexe "$(TargetFileName)" /out:HRA_Requestor.exe  /log ETEUtils.dll Newtonsoft.Json.dll
 copy "HRA_Requestor.exe" "$(SolutionDir)HRAInstaller\files\$(TargetFileName)"</PostBuildEvent>
   </PropertyGroup>
 </Project>

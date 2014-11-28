@@ -156,7 +156,7 @@
             this.linkLabel1.Size = new System.Drawing.Size(189, 13);
             this.linkLabel1.TabIndex = 11;
             this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = "Version: 0.2 Beta, For Horizon Toolbox";
+            this.linkLabel1.Text = "Version: 0.3 Beta, For Horizon Toolbox";
             this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
             // linkLabel2

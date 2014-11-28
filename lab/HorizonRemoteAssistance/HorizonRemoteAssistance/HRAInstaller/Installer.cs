@@ -44,8 +44,9 @@ namespace HRAInstaller
 
             installForEndUser = new Step[] {
                 new Step {message="Installing for virtual desktop..."},
+                new Step {f=TerminateProcess_HRARequestor, message="Check existing HRA Requestor..."},
                 new Step {f=CopyHRARequestorToAllUserDesktop, message="Install Horizon Remote Assistance to desktop (all user)..."},
-                new Step {f=EnableWindowsRAFeatureForClient, message="Enable Windows Feature (Win2008): Remote Assistance..."},
+                new Step {f=EnableWindowsRAFeatureForClient, message="Enable Windows Feature: Remote Assistance..."},
                 new Step {f=AllowRemoteAssistance, message="Allow receiving remote assistance..."},
                 new Step {f=ConfigFirewallRuleForRemoteAssistance, message="Configure Firewall..."}
 
@@ -54,6 +55,7 @@ namespace HRAInstaller
             installForAdmin = new Step[] {
                 new Step {message="Installing for helpdesk..."},
                 //new Step {f=InstallAdminEx, message="Install AdminEx web model into View Connection Server..."},
+                new Step {f=TerminateProcess_HRALauncher, message="Check existing HRA Launcher..."},
                 new Step {f=EnableWindowsRAFeature, message="Enable Windows Feature: Remote Assistance..."},
                 new Step {f=CopyHRALauncher, message="Copy HRA launcher..."},
                 new Step {f=RegisterHRAFileType, message="Associate HRA file type..."},
@@ -72,10 +74,12 @@ namespace HRAInstaller
 
             uninstall = new Step[] {
                 new Step {message="Uninstalling..."},
+                new Step {f=TerminateProcess_HRARequestor, message="Check existing HRA Requestor..."},
+                new Step {f=TerminateProcess_HRALauncher, message="Check existing HRA Launcher..."},
                 new Step {f=RemoveAdminEx, message="Remove AdminEx web model from View Connection Server..."},
                 new Step {f=DeregisterHRAFileType, message="Remove HRA file type association..."},
                 new Step {f=RemoveHRALauncher, message="Remove HRA launcher..."},
-                new Step {f=RemoveAdminExShortcutFromDesktop, message="Remove AdminEx shortcut on desktop..."},
+                new Step {f=RemoveAdminExShortcutFromDesktop, message="Remove AdminEx shortcut..."},
                 new Step {f=RemoveHRARequestorFromAllUserDesktop, message="Remove Horizon Remote Assistance from desktop (all user)..."},
                 new Step {f=RemoveAdminExGenerated, message="Remove AdminEx web model generated..."},
             };
@@ -140,6 +144,20 @@ namespace HRAInstaller
 
         ////////////////////////////////////////////////////////////////////////////////////////////
 
+        public static void TerminateProcess_HRARequestor()
+        {
+            int killed = Util.KillProcesses("Horizon Remote Assistance");
+            if (killed > 0)
+                msg("  Found: " + killed);
+        }
+
+        public static void TerminateProcess_HRALauncher()
+        {
+            int killed = Util.KillProcesses("Horizon Remote Assistance Launcher");
+            if (killed > 0)
+                msg("  Found: " + killed);
+        }
+
         public static void EnableWindowsRAFeatureForClient()
         {
             if (File.Exists(Config.MsraPath))
@@ -196,7 +214,7 @@ namespace HRAInstaller
 
         private static void InstallAdminExShortcutOnDesktop()
         {
-            string fileName = Util.CreateUrlShortcutOnDesktop(Config.AdminExShortcutName, Config.AdminExUrl, Config.HRALauncherPath);
+            string fileName = Util.CreateUrlShortcutOnCurrentUserDesktop(Config.AdminExShortcutName, Config.AdminExUrl, Config.HRALauncherPath);
             msg("  " + fileName);
         }
 
@@ -210,18 +228,38 @@ namespace HRAInstaller
 
         private static void CopyHRARequestorToAllUserDesktop()
         {
+            //create dir
+            msg("  " + Config.HRARequestorDir);
+            Directory.CreateDirectory(Config.HRARequestorDir);
+
+            //copy file
             string fileName = Config.HRARequestorPath;
             msg("  " + fileName);
             Util.SaveEmbeddedResToFile("HRAInstaller.files.Horizon Remote Assistance.exe", fileName);
+
+            //link to default desktop
+            fileName = Util.CreateExeShortcutOnAllUserDesktop(Config.HRARequestorName, "Horizon Remote Assistance Requestor", Config.HRARequestorPath);
+            msg("  " + fileName);
         }
 
         private static void RemoveHRARequestorFromAllUserDesktop()
         {
-            string fileName = Config.HRARequestorPath;
-            if (File.Exists(fileName))
+            DeleteFileOrDir(Config.HRARequestorPath);
+            DeleteFileOrDir(Config.HRARequestorDir);
+            DeleteFileOrDir(Config.HRARequestorDesktopShortcut);
+        }
+
+        private static void DeleteFileOrDir(string path)
+        {
+            if (File.Exists(path))
             {
-                msg("  " + fileName);
-                File.Delete(fileName);
+                msg("  " + path);
+                File.Delete(path);
+            }
+            else if (Directory.Exists(path))
+            {
+                msg("  " + path);
+                Directory.Delete(path, true);
             }
         }
 
@@ -235,16 +273,8 @@ namespace HRAInstaller
 
         private static void RemoveHRALauncher()
         {
-            if (File.Exists(Config.HRALauncherPath))
-            {
-                msg("  " + Config.HRALauncherPath);
-                File.Delete(Config.HRALauncherPath);
-            }
-            if (Directory.Exists(Config.HRALauncherDir))
-            {
-                msg("  " + Config.HRALauncherDir);
-                Directory.Delete(Config.HRALauncherDir);
-            }
+            DeleteFileOrDir(Config.HRALauncherPath);
+            DeleteFileOrDir(Config.HRALauncherDir);
         }
 
         private static void InstallAdminEx()
@@ -271,11 +301,7 @@ namespace HRAInstaller
         private static void RemoveAdminEx()
         {
             string fileName = ViewUtil.GetViewConnectionServerAppPath() + "\\admin_ex.war";
-            if (File.Exists(fileName))
-            {
-                msg("  " + fileName);
-                File.Delete(fileName);
-            }
+            DeleteFileOrDir(fileName);
         }
 
         private static void RemoveAdminExGenerated()
