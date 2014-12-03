@@ -4,7 +4,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class USBCategory {
-//Allow other input devices:
+	
+	//Allow other input devices:
 	private boolean allowOther;
 
 	public boolean isAllowOther() {

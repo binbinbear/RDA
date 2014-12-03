@@ -1,3 +1,12 @@
+$.extend(true, $.hik.jtable.prototype.options, {
+	//columnResizable: false,
+	//animationsEnabled: false,
+	jqueryuiTheme: true,
+	ajaxSettings: {
+		type: 'GET'
+	}
+	
+});
 if (!window.ToolBox){
 	window.ToolBox= {};
 }
@@ -20,34 +29,48 @@ if (!ToolBox.Policy || !ToolBox.Policy.init){
 					}
 				});
 			},
-
-			init: function(){
-				$('#myTab a').click(function (e) {
-					  e.preventDefault()
-					  $(this).tab('show')
-					})
-				$("#submitBtn").click(ToolBox.Policy.updatePlicies);			
-				ToolBox.Policy.getViewPools();
+			AddProfile: function(){
+				
+				 $( "#CreateProfile" ).dialog( "open" );
+				// $( "#accordion" ).accordion("open");
+			},
+			openassign: function(){
+				
+				 //alert("null");
+			},
+			
+			clean: function(){
+				$.ajax({
+					url: './policy/profile/clean',
+					type: "GET",
+					success: function (data) {
+						
+					}, 
+					error: function(data) {
+					}
+				});
 			},
 
+			init: function(){
+				
+				$("#AddProfile").click(ToolBox.Policy.AddProfile);
+				$("#openassign").click(ToolBox.Policy.openassign);
+				
+			},
+
+			
 			updatePlicies: function (){
-				$( "#message" ).empty();
+				$("#message").empty();
 		    	$("#message").append("<div class=\"loadingdiv\"></div>");
 		    	
 				$.ajax({
 					url: './policy/updatepolicies',
 					type: "GET",
-					//做一个判断，传有值得参数。for e: if $("#desktoppool").val() == "" | $("#desktoppool").val().equal(null)),不加入data
+					//?????,???????for e: if $("#desktoppool").val() == "" | $("#desktoppool").val().equal(null)),???data
 					data:{pool:$("#desktoppool").val(), clipboard:$("#clipboard").val(), 
 						  device:$("#device").val(), productionLogs:$("#productionLogs").val(), 
-						  debugLogs:$("#debugLogs").val(), logSize:$("#logSize").val(), 
-						  logDirectory:$("#logDirectory").val(), 
-						  sendLogs:$("#sendLogs").val(), interval:$("#interval").val(),
-						  overallCPU:$("#overallCPU").val(), overallMemory:$("#overallMemory").val(),
-						  processCPU:$("#processCPU").val(), processMemory:$("#processMemory").val(),
-						  processCheck:$("#processCheck").val(), certificateRevocation:$("#certificateRevocation").val(),
-						  cachedRevocation:$("#cachedRevocation").val(), checkTimeout:$("#checkTimeout").val(),
-						  //
+
+
 						  lossless:$("#lossless").val(), maximum:$("#maximum").val(),
 						  MTU:$("#MTU").val(), floor:$("#floor").val(),
 						  enDisAudio:$("#enDisAudio").val(), limit:$("#limit").val(),
@@ -106,7 +129,7 @@ if (!ToolBox.Policy || !ToolBox.Policy.init){
 						var loadingDiv = $(".loadingdiv");
 				    	loadingDiv.removeClass("loadingdiv");
 				    	$(function(){
-							var tr="<div class='ui-state-error ui-corner-all' style='padding: 0 .7em; display:none;'><p><span class='ui-icon ui-icon-alert' style='float: left; margin-right: .3em;'></span>ERROR !</p></div>";
+							var tr="<div class='ui-state-error ui-corner-all' style='padding: 0 .7em; display:none;'><p><span class='ui-icon ui-icon-//alert' style='float: left; margin-right: .3em;'></span>ERROR !</p></div>";
 							$( "#message" ).empty();
 							$( "#message" ).append( tr );
 							//setTimeout("$( '#message' ).empty();",2000);
@@ -117,21 +140,269 @@ if (!ToolBox.Policy || !ToolBox.Policy.init){
 			}
 	};
 }
+function checkLength( o, n, min, max ) {
+    if ( o.val().length > max || o.val().length < min ) {
+		//alert("profile name is required");
+	  return false;
+	} else {
+	  return true;
+	}
+ }
+
+function editprofile(pName) {
+	//alert("profile Id="+pName);
+	
+    $.ajax({
+	    url: './policy/profile/getprofile',
+		type: "GET",
+		data: {profileName:pName},
+		success: function (data) {
+			//TODO
+			//alert("common: "+data.commonCategory.blockAll+","+data.commonCategory.daysToKeepLogs);
+			//alert("pcoip: "+data.pcoipCategory.clipboardRediretion+","+data.pcoipCategory.turnOffLossLess);
+			//alert("usb: "+data.usbCategory.allowOther+","+data.usbCategory.hidBootable);
+			$("#ConfigureProfile").dialog("open");
+			
+			$("#blockAll").val( String(data.commonCategory.blockAll) );
+			$("#daysToKeepLogs").val(data.commonCategory.daysToKeepLogs);
+			$("#clipboardRediretion").val(data.pcoipCategory.clipboardRediretion);
+			$("#turnOffLossLess").val( String(data.pcoipCategory.turnOffLossLess) );
+			$("#allowOther").val( String(data.usbCategory.allowOther) ); 
+			$("#hidBootable").val( String(data.usbCategory.hidBootable) );
+		}, 
+		error: function(data) {
+			//alert("error");
+		}
+    });	
+ }
+
+function deleteprofile(proName){
+	 //alert("delete "+proName);
+	 $.ajax({
+		    url: './policy/profile/delete',
+			type: "GET",
+			data: {profileName:proName},
+			success: function (data) {
+				$('#profilelist').jtable('load');
+			}, 
+			error: function(data) {
+				
+			}
+	    });	
+}
 
 
-$(document).ready(function(){  
+$(function() { 
+	 var name = $("#proname"),     
+     autor = $( "#autor" ),
+     allFields = $( [] ).add( name ).add( autor );
+	 var profileNameOut;
+	 $("#CreateProfile").dialog({
+	      autoOpen: false,
+	      height: 300,
+	      width: 350,
+	      modal: true,
+	      buttons:{
+	      "Create": function() {
+	    	  var bValid = true;
+	          allFields.removeClass( "ui-state-error" );
+	          bValid = bValid && checkLength( name, "proname", 1, 16 );
+	          var profileName = $("#proname").val();
+	          profileNameOut=profileName;
+	          var desc = $("#desc").val();
+	          //alert(profileName+","+desc);
+	          if(bValid) {
+		          $.ajax({
+						url: './policy/profile/create',
+						type: "GET",
+						data: {proname:profileName, description:desc},
+						success: function (data) {
+							if(data){
+								$( "#CreateProfile" ).dialog( "close" );
+								$( "#ConfigureProfile" ).dialog( "open" );
+							}else{
+								alert("name already exit!");
+							}
+						}, 
+						error: function(data) {
+							//alert("error");
+						}
+				 });
+	          }
+	        },
+	       "Cancel": function() {
+	          $( this ).dialog( "close" );
+	        }
+      },
+      close: function() {
+        allFields.val( "" ).removeClass( "ui-state-error" );
+      }
+	 });
+	 $("#ConfigureProfile").dialog({
+	      autoOpen: false,
+	      height: "auto",
+	      width: "auto",
+	      title: "Profile",
+	      modal: true, 
+	      buttons : [  {
+	    		text : "save",
+	    		click : function() {	
+	    			$.ajax({
+						url: './policy/profile/updatecommon',
+						type: "GET",
+						data:{profile:profileNameOut,blockAll:$("#blockAll").val(), daysToKeepLogs:$("#daysToKeepLogs").val()},
+						success: function (data) {
+							$('#profilelist').jtable('load');
+							//alert("updatecommon success");
+						}, 
+						error: function(data) {
+							//alert("updatecommon error");
+						}
+					});
+	    			//alert("clipboardRediretion="+$("#clipboardRediretion").val())
+	    			$.ajax({
+						url: './policy/profile/updatepcoip',
+						type: "GET",
+						data:{profile:profileNameOut, clipboardRediretion:$("#clipboardRediretion").val(),turnOffLossLess:$("#turnOffLossLess").val()},
+						success: function (data) {
+							//alert("updatepcoip success");
+						}, 
+						error: function(data) {
+							//alert("updatepcoip error");
+						}
+					});
+	    			$.ajax({
+						url: './policy/profile/updateusb',
+						type: "GET",
+						data:{profile:profileNameOut, allowOther:$("#allowOther").val(), hidBootable:$("#hidBootable").val()},
+						success: function (data) {
+							//alert("updateusb success");
+						}, 
+						error: function(data) {
+							////alert("updateusb error");
+						}
+					});
+	    			
+	    			$(this).dialog("close");
+	    		}
+	    	},
+	    	{
+	    		text : "cancel",
+	    		click : function() {
+	    			$(this).dialog("close");
+	    		}}],
+	      hide: {
+	        effect: "explode",
+	        duration: 1000
+	      }
+	    });
+
+	 $( "#tabs" ).tabs();
+	 $( "#Tabs-common" ).tabs().addClass( "ui-tabs-vertical ui-helper-clearfix" );
+	 $( "#Tabs-common li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
+	 $( "#Tabs-pcoip" ).tabs().addClass( "ui-tabs-vertical ui-helper-clearfix" );
+	 $( "#Tabs-pcoip li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
+	 $( "#Tabs-usb" ).tabs().addClass( "ui-tabs-vertical ui-helper-clearfix" );
+	 $( "#Tabs-usb li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
+
+	
+	  $('#profilelist').jtable({
+			title: 'Profile',
+			 paging: false, //Enable paging
+	      //   pageSize: 10, //Set page size (default: 10)
+			sorting: false,
+	       // defaultSorting:'recordId DSC',
+			selecting: true, //Enable selecting
+			multiselect: true, //Allow multiple selecting
+			selectingCheckboxes: true,
+			selectOnRowClick: false, 
+			actions: {
+				listAction: './policy/profile/getnamelist',
+				//listAction: './policy/profile/list',
+			},
+			fields: {
+				recordId: {
+					key: true,
+					//create: false,
+					edit: false,
+					list: false
+				},		
+				name: {
+					title: 'Profile name',
+					width: '23%',
+					type: 'text',
+					//create: false,
+					edit: false
+				},
+				description: {
+					title: 'Description',
+					width: '35%',
+					type: 'text',
+					//create: false,
+					edit: false
+				},
+				Action: {
+					//title: 'Edit/Delete',
+					width: '20%',
+					edit: false,
+					display: function(data) {
+							return '<button class="jtable-command-button jtable-edit-command-button" onclick="editprofile(\''
+								+ data.record.name
+								+ '\')" title="edit"></button>&nbsp&nbsp&nbsp&nbsp<button class="jtable-command-button jtable-delete-command-button" onclick="deleteprofile(\''
+								+ data.record.name
+								+ '\')" title="delete"></button>';
+					}
+				}
+			}
+		});
+	  $('#assignmentlist').jtable({
+			title: 'Assignment',
+			paging: false,
+			sorting: false,
+			defaultSorting: 'ProfileTime DESC',
+			selecting: false, //Enable selecting
+			multiselect: false, //Allow multiple selecting
+			selectingCheckboxes: false, //Show checkboxes on first column
+			//selectOnRowClick: false, //Enable this to only select using checkboxes
+			actions: {
+			},
+			fields: {
+				recordId: {
+					key: true,
+					create: false,
+					edit: false,
+					list: false
+				},		
+				ProfileName: {
+					title: 'Assignment',
+					width: '23%',
+					type: 'text',
+					create: false,
+					edit: false
+				},
+				ProfileTime: {
+					title: 'Time',
+					width: '12%',
+					type: 'text',
+					create: false,
+					edit: false
+				},
+			
+				ProfileAutor: {
+					title: 'Autor',
+					width: '70px',
+					type: 'text',
+					create: false,
+					edit: false,
+					sorting: false
+				}
+			}
+		});
+	  
+	$('#profilelist').jtable('load');
+	  
+	//$('#profilelist').jtable('load');
+	//$('#assignmentlist').jtable('load');
 	ToolBox.Policy.init();
+	
 });
-/*
-  <script>
-  $(function() {
-    $( "#dialog" ).dialog();
-  });
-  </script>
-</head>
-<body>
- 
-<div id="dialog" title="Basic dialog">
-  <p>This is the default dialog which is useful for displaying information. The dialog window can be moved, resized and closed with the 'x' icon.</p>
-</div>
-*/

@@ -1,6 +1,6 @@
 package com.vmware.horizontoolset.policy.model;
 public class PCoIPCategory {
-//Configure clipboard redirection:
+	//Configure clipboard redirection:
 	private  ClipboardRediretion clipboardRediretion;
 
 	public ClipboardRediretion getClipboardRediretion() {
