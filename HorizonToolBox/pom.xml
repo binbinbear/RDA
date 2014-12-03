@@ -28,19 +28,12 @@
 
 		<dependency>
 			<groupId>com.vmware</groupId>
-			<artifactId>view-vmodl-client</artifactId>
+			<artifactId>view-api-client</artifactId>
 			<version>1.0</version>
 			<scope>system</scope>
-			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/view-vmodl-client.jar</systemPath>
+			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/view-api-client.jar</systemPath>
 		</dependency>
-
-		<dependency>
-			<groupId>com.vmware</groupId>
-			<artifactId>vlsi-client</artifactId>
-			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/vlsi-client.jar</systemPath>
-		</dependency>
+		
 		<dependency>
 			<groupId>com.vmware</groupId>
 			<artifactId>adamwrapper</artifactId>
@@ -65,13 +58,7 @@
 			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/winauth.jar</systemPath>
 		</dependency>
 
-		<dependency>
-			<groupId>com.vmware</groupId>
-			<artifactId>vlsi-core</artifactId>
-			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/vlsi-core.jar</systemPath>
-		</dependency>
+
 
 		<dependency>
 			<groupId>com.vmware</groupId>
