@@ -52,7 +52,7 @@ public class SessionUtil {
 		return ts;
 	}
 	
-	private static <T> T getSessionObj(HttpSession session, Class<T> klass) {
+	public static <T> T getSessionObj(HttpSession session, Class<T> klass) {
 		ToolBoxSession ts = getOrNewToolBoxSession(session);
 		return ts == null ? null : ts.get(klass);
 	}
