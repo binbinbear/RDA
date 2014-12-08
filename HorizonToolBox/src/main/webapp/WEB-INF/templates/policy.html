@@ -11,14 +11,14 @@
 			rel="stylesheet" type="text/css" />
 
 		<link href="./css/cupertino/jquery-ui.custom.min.css" rel="stylesheet" />
-		<style>
+<style>
 .ui-tabs-vertical {
 	width: 55em;
 }
 .ui-tabs-vertical .ui-tabs-nav {
 	padding: .2em .1em .2em .2em;
 	float: left;
-	width: 12em;
+	width: 25em;
 }
 
 .ui-tabs-vertical .ui-tabs-nav li {
@@ -42,8 +42,8 @@
 
 .ui-tabs-vertical .ui-tabs-panel {
 	padding: 1em;
-	float: right;
-	width: 40em;
+	float: left;
+	width: 26em;
 }
 
 h3.pageHeader {
@@ -69,6 +69,11 @@ tr.jtable-data-row {
 tr.jtable-no-data-row {
 	font-size: 10px
 }
+
+table table .jtable-column-header {
+	display:none
+}
+
 </style>
 
 		<h3 class="pageHeader">
@@ -90,7 +95,7 @@ tr.jtable-no-data-row {
 
 
 		<div>
-			<button id="AddProfile">Add Profile</button>  <button id="openassign">Assign</button>
+			<button id="openassign">Assign</button>
 		</div>
 
 		<br />
@@ -137,10 +142,10 @@ tr.jtable-no-data-row {
 
 					
 						<ul>
-							<li><a href="#policy1-1">Block all devices <br />unless
-									they are <br />included via <br />Include filter rule
+							<li><a href="#policy1-1">Block all devices unless
+									they are <br />included via Include filter rule
 							</a></li>
-							<li><a href="#policy1-2">Number of days to <br/>keep
+							<li><a href="#policy1-2">Number of days to keep
 									production logs
 							</a></li>
 						</ul>
@@ -163,10 +168,9 @@ tr.jtable-no-data-row {
 				<div id="Tabs-pcoip">
 					<div id="tabs12">
 						<ul>
-							<li><a href="#policy2-1">Configure clipboard <br />redirection
+							<li><a href="#policy2-1">Configure clipboard redirection
 							</a></li>
-							<li><a href="#policy2-2">Turn off Build-to <br />-Lossless
-									feature
+							<li><a href="#policy2-2">Turn off Build-to-Lossless feature
 							</a></li>
 
 						</ul>
@@ -200,7 +204,7 @@ tr.jtable-no-data-row {
 				<div id="Tabs-usb">
 					
 						<ul>
-							<li><a href="#policy3-1">Allow other <br />input devices
+							<li><a href="#policy3-1">Allow other input devices
 							</a></li>
 							<li><a href="#policy3-2">Allow HID-Bootable</a></li>
 						</ul>

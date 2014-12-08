@@ -1,4 +1,8 @@
 package com.vmware.horizontoolset.policy.model;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class PCoIPCategory {
 	//Configure clipboard redirection:
 	private  ClipboardRediretion clipboardRediretion;

@@ -36,19 +36,43 @@ if (!ToolBox.Policy || !ToolBox.Policy.init){
 			},
 			openassign: function(){
 				
-				 //alert("null");
-			},
-			
-			clean: function(){
-				$.ajax({
-					url: './policy/profile/clean',
-					type: "GET",
-					success: function (data) {
-						
-					}, 
-					error: function(data) {
-					}
-				});
+				  var $profileRows = $('#profilelist').jtable('selectedRows');
+				  var profileArray = "[";
+				  $profileRows.each(function () {
+					  var record = $(this).data('record');
+					  var name = record.name;
+					  alert(name);
+					  profileArray = profileArray + "\"" + name +"\",";
+				  });
+				  profileArray = profileArray + "]";
+				  
+				  var $poolRows = $('#assignmentlist').jtable('selectedRows');
+				  var poolArray = "[";
+				  $poolRows.each(function () {
+					    var record = $(this).data('record');
+					    var name = record.name;
+					    alert(name);
+					    poolArray = poolArray + "\"" + name +"\",";
+				  });
+				  poolArray = poolArray +"]";
+				  
+				  alert(poolArray);
+				  alert(profileArray);
+				  $.ajax({
+					    url: './policy/profile/assignprofiles',
+						type: "GET",
+						data: {poolNames:poolArray, profileNames:profileArray},
+						success: function (data) {
+							alert("assign success");
+							//TODO
+							$('#assignmentlist').jtable('load');
+						}, 
+						error: function(data) {
+							alert("assign error");
+						}
+				    });	
+				  
+		            
 			},
 
 			init: function(){
@@ -140,6 +164,7 @@ if (!ToolBox.Policy || !ToolBox.Policy.init){
 			}
 	};
 }
+
 function checkLength( o, n, min, max ) {
     if ( o.val().length > max || o.val().length < min ) {
 		//alert("profile name is required");
@@ -191,6 +216,21 @@ function deleteprofile(proName){
 	    });	
 }
 
+function deletePoolProfile(pooName,proName){
+/*	alert(pooName+"->"+proName);
+	$.ajax({
+	    url: './policy/profile/deletepoolprofile',
+		type: "GET",
+		data: {poolName:pooName, profileName:proName},
+		success: function (data) {
+			//$('#assignmentlist').jtable('load');
+		}, 
+		error: function(data) {
+			
+		}
+    });*/	
+}
+
 
 $(function() { 
 	 var name = $("#proname"),     
@@ -222,6 +262,7 @@ $(function() {
 								$( "#ConfigureProfile" ).dialog( "open" );
 							}else{
 								alert("name already exit!");
+								$('#profilelist').jtable('load');
 							}
 						}, 
 						error: function(data) {
@@ -250,13 +291,17 @@ $(function() {
 	    			$.ajax({
 						url: './policy/profile/updatecommon',
 						type: "GET",
-						data:{profile:profileNameOut,blockAll:$("#blockAll").val(), daysToKeepLogs:$("#daysToKeepLogs").val()},
+						data:{profile:profileNameOut, blockAll:$("#blockAll").val(), daysToKeepLogs:$("#daysToKeepLogs").val()},
 						success: function (data) {
-							$('#profilelist').jtable('load');
-							//alert("updatecommon success");
+/*							alert("updatecommon success"+data);
+							if(data==null){
+								alert("the profile has already been deleted");
+								$("#ConfigureProfile").dialog("close");
+				    			$('#profilelist').jtable('load');
+							}*/
 						}, 
 						error: function(data) {
-							//alert("updatecommon error");
+							alert("updatecommon error");
 						}
 					});
 	    			//alert("clipboardRediretion="+$("#clipboardRediretion").val())
@@ -266,6 +311,11 @@ $(function() {
 						data:{profile:profileNameOut, clipboardRediretion:$("#clipboardRediretion").val(),turnOffLossLess:$("#turnOffLossLess").val()},
 						success: function (data) {
 							//alert("updatepcoip success");
+/*							if(data==null){
+								alert("the profile has already been deleted");
+								$("#ConfigureProfile").dialog("close");
+				    			$('#profilelist').jtable('load');
+							}*/
 						}, 
 						error: function(data) {
 							//alert("updatepcoip error");
@@ -277,13 +327,19 @@ $(function() {
 						data:{profile:profileNameOut, allowOther:$("#allowOther").val(), hidBootable:$("#hidBootable").val()},
 						success: function (data) {
 							//alert("updateusb success");
+/*							if(data==null){
+								alert("the profile has already been deleted");
+								$("#ConfigureProfile").dialog("close");
+				    			$('#profilelist').jtable('load');
+							}*/
 						}, 
 						error: function(data) {
 							////alert("updateusb error");
 						}
 					});
-	    			
 	    			$(this).dialog("close");
+	    			$('#profilelist').jtable('load');
+	    			
 	    		}
 	    	},
 	    	{
@@ -308,10 +364,18 @@ $(function() {
 	
 	  $('#profilelist').jtable({
 			title: 'Profile',
-			 paging: false, //Enable paging
-	      //   pageSize: 10, //Set page size (default: 10)
+			toolbar: {
+			    items: [{
+			        text: '+Add',
+			        click: function () {
+			        	 $( "#CreateProfile" ).dialog( "open" );
+			        }
+			    }]
+			},
+			paging: false, //Enable paging
+			// pageSize: 10, //Set page size (default: 10)
 			sorting: false,
-	       // defaultSorting:'recordId DSC',
+			// defaultSorting:'recordId DSC',
 			selecting: true, //Enable selecting
 			multiselect: true, //Allow multiple selecting
 			selectingCheckboxes: true,
@@ -359,12 +423,13 @@ $(function() {
 			title: 'Assignment',
 			paging: false,
 			sorting: false,
-			defaultSorting: 'ProfileTime DESC',
-			selecting: false, //Enable selecting
-			multiselect: false, //Allow multiple selecting
-			selectingCheckboxes: false, //Show checkboxes on first column
-			//selectOnRowClick: false, //Enable this to only select using checkboxes
+			//defaultSorting: 'ProfileTime DESC',
+			selecting: true, //Enable selecting
+			multiselect: true, //Allow multiple selecting
+			selectingCheckboxes: true, //Show checkboxes on first column
+			selectOnRowClick: false, //Enable this to only select using checkboxes
 			actions: {
+				listAction: './pool/viewpools/getviewpools',
 			},
 			fields: {
 				recordId: {
@@ -373,36 +438,106 @@ $(function() {
 					edit: false,
 					list: false
 				},		
-				ProfileName: {
-					title: 'Assignment',
-					width: '23%',
+				//CHILD TABLE DEFINITION FOR "EXAMS"
+	              Exams: {
+	                  title: '',
+	                  width: '5%',
+	                  sorting: false,
+	                  edit: false,
+	                  create: false,
+	                  display: function (data) {
+	                      //Create an image that will be used to open child table
+	                	  var $img = $('<img src="./jtable/themes/jqueryui/plus_16.png" />');
+	                      //Open child table when user clicks the image
+	                	  $img.click(function () {    
+	                		var poolName = data.record.name;
+	                    	var i=0;
+							var x;
+	                    	i=$('#assignmentlist').jtable('isChildRowOpen', $img.closest('tr'));
+	                    	  
+	                    	if(i)
+	                    		$('#assignmentlist').jtable('closeChildTable', $img.closest('tr'),
+	          	                    	  function (data) { //opened handler
+	                                        data.childTable.jtable('close');
+	                                   });
+	                    	else
+	                          $('#assignmentlist').jtable('openChildTable',
+	                                  $img.closest('tr'), //Parent row
+	                                  {
+	                                  //title: data.record.name + ' - Profiles',
+	                                  actions: {
+	                                      //listAction: '/Demo/ExamList?StudentId=' + studentData.record.StudentId,	             
+	                                	  listAction: './policy/profile/getpoolprofiles?poolName=' + data.record.name,	   
+	                                  },
+	                                  fields: {
+	                                	  recordId: {
+	                      					key: true,
+	                      					create: true,
+	                      					edit: false,
+	                      					list: false
+	                      				},		
+	                      				TestColumn: {
+	                      				    title: '',
+	                      				  width: '15%',
+	                      				    display: function (data) {
+	                      				        return '';
+	                      				    }
+	                      				},
+	                      				name: {
+	                      				//	title: 'Profile name',
+	                      					width: '73%',
+	                      					type: 'text',
+	                      					//create: false,
+	                      					edit: false
+	                      				},
+	                      				
+	                    				Action: {
+	                    					//title: 'Edit/Delete',
+	                    					width: '20%',
+	                    					edit: false,
+	                    					display: function(data) {
+	                    					  var $bu1= $('<button class="jtable-command-button jtable-delete-command-button" title="delete"></button>');	                     
+	                   	                      //Open child table when user clicks the image
+	                   	                      $bu1.click(function () { 
+												  $.ajax({
+													    url: './policy/profile/deletepoolprofile',
+														type: "GET",
+														data: {poolName:poolName, profileName:data.record.name},
+														success: function (data) {
+															//$('#assignmentlist').jtable('load');
+														}, 
+														error: function(data) {
+															
+														}
+												    });
+												  x.childTable.jtable('load');
+	                   	                      });
+	                   	                      return $bu1;
+	                    				  }	                    					
+	                    				}	                                    
+	                                  }
+	                              }, function (data) { //opened handler
+	                            	  x=data;
+	                                  data.childTable.jtable('load');
+	                              });		                          
+	                      });
+	                      //Return image to show on the person row	    
+	                      return $img;
+	                  }
+	              },
+				name: {
+					title: 'Pool',
+					width: '100%',
 					type: 'text',
 					create: false,
 					edit: false
 				},
-				ProfileTime: {
-					title: 'Time',
-					width: '12%',
-					type: 'text',
-					create: false,
-					edit: false
-				},
-			
-				ProfileAutor: {
-					title: 'Autor',
-					width: '70px',
-					type: 'text',
-					create: false,
-					edit: false,
-					sorting: false
-				}
 			}
-		});
+		}); 
 	  
 	$('#profilelist').jtable('load');
-	  
-	//$('#profilelist').jtable('load');
-	//$('#assignmentlist').jtable('load');
+	$('#assignmentlist').jtable('load');
+
 	ToolBox.Policy.init();
 	
 });
