@@ -1,0 +1,34 @@
+#-----------------------------------------------------
+#  Set how many logs to keep in the repository
+#-----------------------------------------------------
+
+MAX_FULL_LOGS_TO_KEEP: 2
+
+MAX_QUICK_LOGS_TO_KEEP: 7
+
+
+#-----------------------------------------------------
+#  The directory to store logs. Must be quoted.
+#-----------------------------------------------------
+
+OUTPUT_DIR: ".\collected logs"
+
+
+#-----------------------------------------------------
+#  Whether remote tasks are executed in parallel. (0/1)
+#-----------------------------------------------------
+
+PARALLEL_MODE: 1
+
+
+#-----------------------------------------------------
+#  Servers to generate & collect Horizon View DCT logs from.
+#-----------------------------------------------------
+
+
+#myBroker1
+#myBroker2.mydomain.local
+#192.168.0.100
+
+broker1
+broker2
