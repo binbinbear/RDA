@@ -1,4 +1,4 @@
-package com.vmware.horizontoolset.util.polfile;
+package com.vmware.horizontoolset.policy.polfile;
 
 public class PolFileException extends RuntimeException {
 	

@@ -1,4 +1,4 @@
-package com.vmware.horizontoolset.util.polfile;
+package com.vmware.horizontoolset.policy.polfile;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.vmware.horizontoolset.util.polfile.PolEntry.PolEntryType;
+import com.vmware.horizontoolset.policy.polfile.PolEntry.PolEntryType;
 
 /**
  * 
@@ -266,8 +266,9 @@ public class PolFile {
 
 					// We've reached the end of the value name. Now read in the
 					// type and size fields, and the data bytes
-					int typeId = (int) (bytes[i + 7] << 24 | bytes[i + 6] << 16
-							| bytes[i + 5] << 8 | bytes[i + 4]);
+//					int typeId = (int) (bytes[i + 7] << 24 | bytes[i + 6] << 16
+//							| bytes[i + 5] << 8 | bytes[i + 4]);
+					int typeId = readUnsignedInt(bytes, i + 4);
 					PolEntryType type = PolEntryType.fromId(typeId);
 					if (type == null)
 						throw new PolFileException("Incorrect PolEntryType: "
@@ -278,8 +279,9 @@ public class PolFile {
 						throw new PolFileException("Expect ';'. Actual:"
 								+ curChar + ", i=" + i);
 
-					int size = bytes[i + 13] << 24 | bytes[i + 12] << 16
-							| bytes[i + 11] << 8 | bytes[i + 10];
+//					int size = bytes[i + 13] << 24 | bytes[i + 12] << 16
+//							| bytes[i + 11] << 8 | bytes[i + 10];
+					int size = readUnsignedInt(bytes, i + 10);
 					if ((size > 0xFFFF) || (size < 0))
 						throw new PolFileException("Incorrect size: " + size
 								+ ", i=" + i);
@@ -323,6 +325,25 @@ public class PolFile {
 				throw new PolFileException("Unreachable code");
 			}
 		}
+	}
+
+	private static int readUnsignedInt(byte[] bytes, int i) {
+		int c1 = bytes[i + 3];
+		if (c1 < 0)
+			c1 += 256;
+		int c2 = bytes[i + 2];
+		if (c2 < 0)
+			c2 += 256;
+		int c3 = bytes[i + 1];
+		if (c3 < 0)
+			c3 += 256;
+		int c4 = bytes[i];
+		if (c4 < 0)
+			c4 += 256;
+		
+		int n = c1 << 24 | c2 << 16
+				| c3 << 8 | c4;
+		return n;
 	}
 
 	public void save() {
@@ -435,5 +456,13 @@ public class PolFile {
             }
             System.out.println("-----");
 		}
+	}
+	
+	public static void main(String[] args) {
+		byte[] bytes = {(byte)0xD0, 0x03, 0x00, 0x00};
+		
+		int n = readUnsignedInt(bytes, 0);
+		
+		System.out.println(n);
 	}
 }

@@ -1,4 +1,4 @@
-package com.vmware.horizontoolset.util.polfile;
+package com.vmware.horizontoolset.policy.polfile;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
@@ -91,5 +91,21 @@ public class BitUtil {
 	
 	public static char getUnicodeChar(byte[] bytes, int offset) {
 		return new String(bytes, offset, 2, ENCODING).charAt(0);
+	}
+
+	public static void dump(byte[] bytes) {
+		StringBuilder sb = new StringBuilder();
+		sb.append('[');
+		for (int i = 0; i < bytes.length; i++) {
+			if (i > 0)
+				sb.append(' ');
+			int n = bytes[i];
+			if (n < 0)
+				n += 256;
+			sb.append(Integer.toHexString(n).toUpperCase());
+		}
+		sb.append(']');
+		System.out.println(sb);
+		
 	}
 }
