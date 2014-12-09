@@ -1,4 +1,4 @@
-package com.vmware.horizontoolset.util.polfile;
+package com.vmware.horizontoolset.policy.polfile;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
