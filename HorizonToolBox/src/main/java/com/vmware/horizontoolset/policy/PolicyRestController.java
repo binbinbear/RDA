@@ -1,7 +1,6 @@
 package com.vmware.horizontoolset.policy;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -17,18 +16,15 @@ import org.springframework.web.bind.annotation.RestController;
 import com.vmware.horizontoolset.common.jtable.JTableData;
 import com.vmware.horizontoolset.policy.model.CommonCategory;
 import com.vmware.horizontoolset.policy.model.PCoIPCategory;
-import com.vmware.horizontoolset.policy.model.PoliciesUtility;
 import com.vmware.horizontoolset.policy.model.PoolItem;
 import com.vmware.horizontoolset.policy.model.Profile;
 import com.vmware.horizontoolset.policy.model.ProfileItem;
 import com.vmware.horizontoolset.policy.model.USBCategory;
 import com.vmware.horizontoolset.report.ReportUtil;
 import com.vmware.horizontoolset.report.SessionReport;
-import com.vmware.horizontoolset.report.ViewPoolReport;
 import com.vmware.horizontoolset.util.JsonUtil;
 import com.vmware.horizontoolset.util.SessionUtil;
 import com.vmware.horizontoolset.util.SharedStorageAccess;
-import com.vmware.horizontoolset.viewapi.Farm;
 import com.vmware.horizontoolset.viewapi.Session;
 import com.vmware.horizontoolset.viewapi.SessionFarm;
 import com.vmware.horizontoolset.viewapi.SessionPool;
