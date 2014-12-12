@@ -327,6 +327,10 @@ $(function() {
 	        height: "auto",
 	        width: "auto",
 	        title: "About",
+	        closeOnEscape: false,
+	        open: function(event, ui) {
+	            $(".ui-dialog-titlebar-close").hide();
+	        },
 	        buttons : [ {
 	    		text : "Ok",
 	    		click : function() {
@@ -334,7 +338,6 @@ $(function() {
 	    		}
 	    	} ]
 	    });
-	  $('a.ui-dialog-titlebar-close').hide();
 });
 
 (function($){
