@@ -78,8 +78,13 @@ public class EventDBCache {
 		eventFilter.setFilterDays(days);
 		eventFilter.setFilterText(filterText);
 		eventFilter.setPageSize(pagingSize);
-		List<AdminEvent> adminEvent = AdminEventManager.getInstance().getEventList(
-				vdiContext, eventFilter);
+		List<AdminEvent> adminEvent = new ArrayList<AdminEvent>();
+		try {
+			adminEvent = AdminEventManager.getInstance().getEventList(
+					vdiContext, eventFilter);
+		} catch (Exception e) {
+			log.error("error getting events", e);
+		}
 		log.debug("New Events:" + adminEvent.size());
 
 		for (AdminEvent adminevent: adminEvent){

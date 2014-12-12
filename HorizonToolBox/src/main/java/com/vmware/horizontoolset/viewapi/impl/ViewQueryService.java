@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.vmware.horizontoolset.viewapi.ConnectionServer;
 import com.vmware.horizontoolset.viewapi.Farm;
 import com.vmware.horizontoolset.viewapi.RDS;
 import com.vmware.horizontoolset.viewapi.SessionFarm;
@@ -18,6 +19,7 @@ import com.vmware.horizontoolset.viewapi.ViewPool;
 import com.vmware.vdi.vlsi.binding.vdi.entity.BaseImageVmId;
 import com.vmware.vdi.vlsi.binding.vdi.entity.DesktopId;
 import com.vmware.vdi.vlsi.binding.vdi.entity.FarmId;
+import com.vmware.vdi.vlsi.binding.vdi.infrastructure.ConnectionServer.ConnectionServerInfo;
 import com.vmware.vdi.vlsi.binding.vdi.query.QueryDefinition;
 import com.vmware.vdi.vlsi.binding.vdi.resources.Application.ApplicationData;
 import com.vmware.vdi.vlsi.binding.vdi.resources.Application.ApplicationInfo;
@@ -285,5 +287,16 @@ public class ViewQueryService {
 		return farms;
 		
 		
+	}
+	
+
+	public List<ConnectionServer> getAllConnectionServers() {
+		com.vmware.vdi.vlsi.binding.vdi.infrastructure.ConnectionServer cs = this._connection.get(com.vmware.vdi.vlsi.binding.vdi.infrastructure.ConnectionServer.class);
+		List<ConnectionServer> servers = new ArrayList<ConnectionServer>();
+		ConnectionServerInfo[] infos=cs.list();
+		for (int i=0;i<infos.length;i++){
+			servers.add(new ConnectionServerImpl(infos[i]));
+		}
+		return servers;
 	}
 }

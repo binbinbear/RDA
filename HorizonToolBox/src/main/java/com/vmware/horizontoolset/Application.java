@@ -3,6 +3,7 @@ package com.vmware.horizontoolset;
 
 import org.apache.log4j.Logger;
 
+import com.vmware.horizontoolset.util.LDAP;
 import com.vmware.horizontoolset.util.SessionUtil;
 
 
@@ -14,6 +15,9 @@ public class Application {
     
     public Application(){
     	log.info("Horizon Tool Set Application is being loaded!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+    }
+    public void setViewServerPath(String viewServerPath){
+    	LDAP.setViewServerPath(viewServerPath);
     }
 
 	

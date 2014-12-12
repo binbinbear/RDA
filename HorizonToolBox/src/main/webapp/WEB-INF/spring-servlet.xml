@@ -42,12 +42,20 @@
   
   <bean id="loginController" class="com.vmware.horizontoolset.LoginController">
    <property name="server"> 
-            <value>127.0.0.1</value>
+            <value>localhost</value>
             </property> 
             
             <!-- please make sure this is false when publishing -->
             <property name="remoteDebug">
             	<value>false</value>
+            </property>
+            <property name="matchedVersions">
+            	<array>
+            		<value>6.0.0</value>
+            		<value>6.0.1</value>
+            		<value>6.0.2</value>
+            		<value>6.1.0</value>
+            	</array>
             </property>
   </bean>
 <bean id="logoutController" class="com.vmware.horizontoolset.LogoutController"/>

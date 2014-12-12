@@ -61,7 +61,8 @@
 						</div>
 						<div class="ui-panel-content">
 							<!-- ngIf: error -->
-							<form id="loginForm" name="loginForm" action="Login/Submit"
+							<div th:if="${message!=null}" class="alert alert-danger ng-scope ng-binding" th:text="${message}"></div>
+							<form id="loginForm" name="loginForm" action="submitlogin"
 								class="form-horizontal ng-pristine ng-invalid ng-invalid-required"
 								autocomplete="off">
 		

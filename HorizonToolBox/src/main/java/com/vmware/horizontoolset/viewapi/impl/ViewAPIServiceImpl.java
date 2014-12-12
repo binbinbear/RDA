@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.vmware.horizontoolset.viewapi.ConnectionServer;
 import com.vmware.horizontoolset.viewapi.DesktopPool;
 import com.vmware.horizontoolset.viewapi.Farm;
 import com.vmware.horizontoolset.viewapi.RDS;
@@ -135,25 +136,7 @@ public class ViewAPIServiceImpl implements ViewAPIService{
 		return ret;
 	}
 
-	
-	@Override
-	public DesktopPool getDesktopPool(String name) {
-    	
-    	QueryFilter filter = QueryFilter.equals(
-    			DesktopSummaryViewCName.DESKTOP_SUMMARY_VIEW_CNAME.desktopSummaryData.name, name);
-    	
-    	List<DesktopSummaryView> ret = new ArrayList<>();
-        try (Query<DesktopSummaryView> query = new Query<>(this._connection, DesktopSummaryView.class, filter)) {
-            for (DesktopSummaryView info : query) {
-               ret.add(info);
-            }
-        }
-        
-        if (ret.isEmpty())
-        	return null;
-        
-    	return new DesktopPool(this._connection, ret.get(0));
-    }
+
 
 	public String get_user() {
 		return _user;
@@ -192,4 +175,12 @@ public class ViewAPIServiceImpl implements ViewAPIService{
 		return this._queryService.getAllBasicRDSHosts();
 	}
 
+	private List<ConnectionServer> catchedServers;
+	@Override
+	public List<ConnectionServer> getConnectionServers() {
+		if (catchedServers == null || catchedServers.isEmpty()){
+			catchedServers = this._queryService.getAllConnectionServers();
+		}
+		return catchedServers;
+	}
 }

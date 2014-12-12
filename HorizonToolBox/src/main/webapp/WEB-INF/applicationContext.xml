@@ -14,6 +14,9 @@
             </property>
 
 
+           <property name="viewServerPath"> 
+            <value>C:\Program Files\VMware\VMware View\Server</value>
+            </property> 
     </bean> 
     
     <bean id="loginFilter" class="com.vmware.horizontoolset.LoginFilter"> 
@@ -26,6 +29,7 @@
     			<value>.html</value>
     			<value>.woff</value>
     			<value>/Login</value>
+    			<value>/submitlogin</value>
     			<value>/remoteassist/upload</value>
     			<value>/deviceFilter/check</value>
     			<value>/limit/refresh</value>

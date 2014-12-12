@@ -10,7 +10,7 @@ public class LDAPTest {
 
 	@Test
 	public void testCEIP() {
-		LDAP ldap =  LDAP._get_junit_ldap("10.117.160.101", "asdf", "asdf");
+		LDAP ldap =  LDAP._get_junit_ldap("10.117.160.101", "asdf", "asdf", "stengdomain");
 		boolean isEanbled = ldap.isCEIPEnabled();
 		if (isEanbled){
 			ldap.disableCEIP();

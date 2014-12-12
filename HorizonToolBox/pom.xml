@@ -21,8 +21,8 @@
 
         <dependency>
             <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
-            <version>2.5</version>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.1.0</version>
             <scope>provided</scope>
         </dependency>
 
@@ -62,27 +62,27 @@
 
 		<dependency>
 			<groupId>com.vmware</groupId>
-			<artifactId>vdm-admin</artifactId>
-			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/vdm-admin.jar</systemPath>
-		</dependency>
-		
-		<dependency>
-			<groupId>com.vmware</groupId>
 			<artifactId>coreadmin</artifactId>
 			<version>1.0</version>
 			<scope>system</scope>
 			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/coreadmin.jar</systemPath>
-		
 		</dependency>
-
+		
 		<dependency>
 			<groupId>com.vmware</groupId>
 			<artifactId>events-common</artifactId>
 			<version>1.0</version>
 			<scope>system</scope>
 			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/events-common.jar</systemPath>
+		
+		</dependency>
+
+		<dependency>
+			<groupId>com.vmware</groupId>
+			<artifactId>events-server</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/events-server.jar</systemPath>
 		
 		</dependency>
 		
@@ -399,6 +399,7 @@
 				<configuration>
 					<filesets>
 						<fileset>
+							<directory>../Tomcat/HorizonToolbox/webapps</directory>
 							<directory>${project.build.directory}</directory>
 
 						</fileset>
@@ -465,6 +466,47 @@
 
 			</plugin>
 
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+					    <id>prepareTomcat</id>
+						<phase>package</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<tasks>
+								<copy todir="../Tomcat/HorizonToolbox/webapps" overwrite="true" >
+									<fileset dir="target" includes="toolbox.war" />
+								</copy>
+								<copy todir="../Tomcat/HorizonToolbox/" overwrite="true">
+									<fileset dir="src/main/webapp" includes="*.txt" />
+								</copy>
+							</tasks>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<finalName>HorizonToolbox${project.version}</finalName>
+					<appendAssemblyId>false</appendAssemblyId>
+					<descriptors>
+						<descriptor>build/assembly.xml</descriptor>
+					</descriptors>
+				</configuration>
+				<executions>
+					<execution>
+						<id>make-assembly</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 
 		</plugins>
 

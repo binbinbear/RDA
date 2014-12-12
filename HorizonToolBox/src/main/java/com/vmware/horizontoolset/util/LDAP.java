@@ -1,6 +1,6 @@
 package com.vmware.horizontoolset.util;
 
-import java.net.InetAddress;
+import java.io.File;
 import java.util.Hashtable;
 
 import javax.naming.Context;
@@ -17,74 +17,49 @@ import javax.naming.directory.SearchResult;
 import org.apache.log4j.Logger;
 
 import com.vmware.horizontoolset.report.CEIPReportUtil;
-import com.vmware.vdi.common.winauth.UserContext;
-import com.vmware.vdi.common.winauth.UserContextFactory;
-import com.vmware.vdi.common.winauth.sasl.WinAuthSASLClient;
+import com.vmware.vdi.adamwrapper.exceptions.ADAMConnectionFailedException;
+import com.vmware.vdi.adamwrapper.ldap.VDIContext;
+import com.vmware.vdi.adamwrapper.ldap.VDIContextFactory;
 
 public class LDAP implements AutoCloseable {
 	/**
 	 * 
 	 */
 	private static Logger log = Logger.getLogger(LDAP.class);
-	private static final String ADAM_URL_PROPERTY_NAME = "ADAM_URL";
 
 	private Hashtable<String, Object> env = new Hashtable<String, Object>();
-	private DirContext ctx;
-	private static final String COMMON_CONFIG_DN = "CN=Common,OU=Global,OU=Properties";
+	private VDIContext vdiContext;
+	private DirContext dirContext;
+	private static final String COMMON_CONFIG_DN = "CN=Common,OU=Global,OU=Properties,DC=vdi,DC=vmware,DC=int";
 
 	private static final String LDAP_SEARCH_FILTER = "(objectClass=pae-VDMProperties)";
-	private static final String BINARY_ATTRIBUTES = "java.naming.ldap.attributes.binary";
-	private static final String BASE_DN = "dc=vdi,dc=vmware,dc=int";
 
 	@Override
 	public void close() {
 		log.info("Release resource: Start to close the ctx");
 		try {
-			if (ctx != null) {
-				this.ctx.close();
-				this.ctx = null;
+			if (vdiContext != null) {
+				this.vdiContext.disposeContext();
+				this.vdiContext = null;
+				this.dirContext = null;
 			}
-		} catch (NamingException e) {
+		} catch (Exception e) {
 			log.warn("Can't close the ctx", e);
 		}
 	}
 
+	public VDIContext getVDIContext(){
+		return this.vdiContext;
+	}
 	DirContext getContext() {
-		return ctx;
+		
+		return this.dirContext;
 	}
 	
 	// TODO: FIXME: only local host is supported by this default context.
-	public LDAP(String servername, String domain, String username,
-			String password) {
-
-		try {
-			UserContext user = UserContextFactory.userContext(domain, username,
-					password);
-
-			env.put(Context.INITIAL_CONTEXT_FACTORY,
-					"com.sun.jndi.ldap.LdapCtxFactory");
-			String server = System.getProperty(ADAM_URL_PROPERTY_NAME,
-					"ldap://" + servername + ":389");
-
-			log.info("LDAP Server :" + server);
-			env.put(Context.PROVIDER_URL, server + "/" + BASE_DN);
-			env.put(Context.SECURITY_AUTHENTICATION, WinAuthSASLClient.NAME);
-			String fqdn = InetAddress.getByName(servername).getHostName();
-			env.put(WinAuthSASLClient.SPN, "ldap/" + fqdn);
-			env.put(WinAuthSASLClient.USER, user);
-			env.put(BINARY_ATTRIBUTES,
-					"pae-SecurIDConf pae-DisplayIcon pae-IconData");
-			/*
-			 * enable referrals
-			 */
-			env.put(Context.REFERRAL, "follow");
-
-			ctx = new InitialDirContext(env);
-		} catch (Exception e) {
-			log.warn("Can't connect to server", e);
-			e.printStackTrace();
-		}
-
+	public LDAP(String username, String password, String domain) throws ADAMConnectionFailedException {
+		this.vdiContext = VDIContextFactory.VDIContext(username, password, domain);
+		this.dirContext = vdiContext.getDirContext();
 	}
 
 	protected static String getAttribute(Attributes attributes, String attrId,
@@ -116,18 +91,17 @@ public class LDAP implements AutoCloseable {
 	 * @param password
 	 */
 	@Deprecated
-	private LDAP(String hostname, String username, String password){
+	private LDAP(String hostname, String username, String password, String domain){
 
         env.put(Context.INITIAL_CONTEXT_FACTORY,
                 "com.sun.jndi.ldap.LdapCtxFactory");
-        env.put(Context.PROVIDER_URL, "ldap://" + hostname + ":389/"
-                + BASE_DN);
+        env.put(Context.PROVIDER_URL, "ldap://" + hostname + ":389/");
 
         env.put(Context.SECURITY_AUTHENTICATION, "DIGEST-MD5");
         env.put(Context.SECURITY_PRINCIPAL, username);
         env.put(Context.SECURITY_CREDENTIALS, password);
 		 try {
-				ctx = new InitialDirContext(env);
+			 dirContext = new InitialDirContext(env);
 			} catch (NamingException e) {
 				log.warn("Can't connect to server", e);
 				e.printStackTrace();
@@ -143,14 +117,14 @@ public class LDAP implements AutoCloseable {
 	 * @param password
 	 */
 	@Deprecated
-	public static LDAP _get_junit_ldap(String hostname, String username, String password){
-		return new LDAP(hostname, username, password);
+	public static LDAP _get_junit_ldap(String hostname, String username, String password, String domain){
+		return new LDAP(hostname, username, password, domain);
 	}
 	
 
 	   
 	public String getValue(String key){
-		   if (ctx ==null){
+		   if (dirContext ==null){
 			   log.warn("Can't get since ctx is null!");
 			   return null;
 		   }
@@ -163,7 +137,7 @@ public class LDAP implements AutoCloseable {
 
 		try {
 
-			answers = ctx.search(COMMON_CONFIG_DN, LDAP_SEARCH_FILTER,
+			answers = dirContext.search(COMMON_CONFIG_DN, LDAP_SEARCH_FILTER,
 					attributesToReturn, searchObject);
 
 			if (answers.hasMore()) {
@@ -179,7 +153,7 @@ public class LDAP implements AutoCloseable {
 	}
 
 	public boolean getBool(String key, boolean def) {
-		if (ctx == null) {
+		if (dirContext == null) {
 			log.warn("Can't get since ctx is null!");
 			return false;
 		}
@@ -196,7 +170,7 @@ public class LDAP implements AutoCloseable {
 	}
 
 	public int getInt(String key, int defaultVal) {
-		if (ctx == null)
+		if (dirContext == null)
 			return defaultVal;
 
 		String val = getValue(key);
@@ -211,14 +185,14 @@ public class LDAP implements AutoCloseable {
 	}
 
 	public void setAttribute(String key, Object value) {
-		if (ctx == null) {
+		if (dirContext == null) {
 			log.warn("Can't set since ctx is null!");
 			return;
 		}
 		try {
 			BasicAttributes attrs = new BasicAttributes();
 			attrs.put("pae-" + key, value);
-			ctx.modifyAttributes(COMMON_CONFIG_DN,
+			dirContext.modifyAttributes(COMMON_CONFIG_DN,
 					DirContext.REPLACE_ATTRIBUTE, attrs);
 		} catch (NamingException e) {
 			// TODO Auto-generated catch block
@@ -242,16 +216,18 @@ public class LDAP implements AutoCloseable {
 		CEIPReportUtil.resetCount();
 	}
 
+	private static String viewServerPath;
+	public static void setViewServerPath(String viewServerPath){
+		LDAP.viewServerPath = viewServerPath;
+	}
 	public String getCEIPFolder() {
 		String path = this.getValue(CEIPSpoolDirectory);
 		if (!isEmptyString(path)) {
 			return path;
 		}
 
-		String tempDir = System.getProperty("java.io.tmpdir");
-		if (tempDir == null || tempDir.length() == 0) {
-			tempDir = "tmp";
-		}
+		String tempDir = LDAP.viewServerPath + File.separator + "broker" + File.separator + "temp"; 
+		
 		log.debug("CEIP directory is:" + tempDir);
 		return tempDir;
 	}
@@ -269,6 +245,7 @@ public class LDAP implements AutoCloseable {
 //	   public static void main(String args[]){
 //		   LDAP ldap = new LDAP("10.112.118.27", "administrator", "ca$hc0w");
 //		   ldap.enableCEIP();
+//		   System.out.println(ldap.isCEIPEnabled());
 //	   }
 	   
 }

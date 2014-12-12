@@ -12,7 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
+import com.vmware.horizontoolset.check.VersionChecker;
 import com.vmware.horizontoolset.util.TaskModuleUtil;
 import com.vmware.horizontoolset.util.EventDBUtil;
 import com.vmware.horizontoolset.util.LDAP;
@@ -33,13 +33,16 @@ public class LoginController{
 	}
 	
 	public static final String LoginURL = "/Login";
-	public static final String SubmitURL = "/Login/Submit";
+	public static final String SubmitURL = "/submitlogin";
 	private static Logger log = Logger.getLogger(LoginController.class);
 
 	private String server = "localhost";
 	private boolean remoteDebug = false;
 	public void setRemoteDebug(boolean newdebug){
 		this.remoteDebug = newdebug;
+	}
+	public void setMatchedVersions(String[] versions){
+		VersionChecker.setMatchedVersions(versions);
 	}
 	
 	
@@ -54,10 +57,14 @@ public class LoginController{
 	@RequestMapping(value = LoginURL, method = RequestMethod.GET)
 	public String index( Model model) {
 		log.debug("Receive index request");
+		return loginPageWithMessage(model, null);
+	}
+	private String loginPageWithMessage(Model model,String message){
 		if (domains.isEmpty()){
 			this.getDomains();
 		}
 		model.addAttribute("domains", domains);
+		model.addAttribute("message", message);
 		return "login";
 	}
 	
@@ -84,18 +91,25 @@ public class LoginController{
     		
     	}catch(Exception ex){
     		log.error("login failed, return to login page,", ex);
-    		return "redirect:/Login";
+    		return loginPageWithMessage(model, ex.getMessage());
     	}
 
     	boolean anyError = false;
 
     	try{
-    		LDAP _ldap; 
+    		VersionChecker.isServerMatched(_service);
+    	}catch(Exception ex){
+    		log.error("Version Incompatiable,",ex);
+    		SessionUtil.releaseSession(session);
+    		return loginPageWithMessage(model, ex.getMessage());
+    	}
+    	LDAP _ldap = null;
+    	try{
     		if (remoteDebug){
     			log.warn("THIS IS DEBUG MODE LDAP and domain is not used!!!!!!!!!");
-    			_ldap = LDAP._get_junit_ldap(server,credential.getUsername(), credential.getPassword());
+    			_ldap = LDAP._get_junit_ldap(server,credential.getUsername(), credential.getPassword(), credential.getDomain());
     		}else{
-    			_ldap =  new LDAP(server, credential.getDomain(), credential.getUsername(), credential.getPassword()); 
+    			_ldap =  new LDAP(credential.getUsername(), credential.getPassword(),  credential.getDomain()); 
     		}
     		
     		
@@ -107,9 +121,10 @@ public class LoginController{
     	}
     	
     	try{
-    		
-    		EventDBUtil _db = new EventDBUtil(credential.getUsername(), credential.getPassword(), credential.getDomain(), _service);
+    		if (_ldap !=null){
+    			EventDBUtil _db = new EventDBUtil(_ldap.getVDIContext(), _service);
     		SessionUtil.setSessionObj(session, _db);
+    		}
     	}catch(Exception ex){
     		log.error("You can't use DB related features!", ex);
     		anyError = true;

@@ -20,9 +20,9 @@ public class EventDBUtil implements AutoCloseable {
 	private VDIContext vdiContext;
 	private ViewAPIService viewapi;
 	
-	public EventDBUtil(String username, String password, String domain, ViewAPIService viewapi) throws ADAMConnectionFailedException{
-		vdiContext = VDIContextFactory.VDIContext(username, password, domain);
+	public EventDBUtil(VDIContext vdiContext, ViewAPIService viewapi) throws ADAMConnectionFailedException{
 		this.viewapi = viewapi;
+		this.vdiContext = vdiContext;
 	}
 
 	private EventDBUtil() throws ADAMConnectionFailedException {
