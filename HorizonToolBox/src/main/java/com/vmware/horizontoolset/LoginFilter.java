@@ -31,7 +31,7 @@ public class LoginFilter extends GenericFilterBean  {
 	public void doFilter(ServletRequest request, ServletResponse response,
 			FilterChain chain) throws IOException, ServletException {
 		
-		log.debug("LoginFilter do Filter:");
+		//log.debug("LoginFilter do Filter:");
 
         if (requiresAuthentication((HttpServletRequest) request)) {
         	String requestType =( (HttpServletRequest) request).getHeader("X-Requested-With");
@@ -55,7 +55,7 @@ public class LoginFilter extends GenericFilterBean  {
 	private boolean requiresAuthentication(HttpServletRequest request) {
 		for (int i=0;i<allows.length;i++){
 			if (request.getServletPath().contains(allows[i])){
-				log.debug("No need to filter since it's allowed");
+				//log.debug("No need to filter since it's allowed");
 				return false;
 			}
 		}
@@ -63,10 +63,10 @@ public class LoginFilter extends GenericFilterBean  {
 		Object service = SessionUtil.getViewAPIService(request.getSession());
 		
 		if (service == null){
-			log.debug("Not a login user, require auth");
+			//log.debug("Not a login user, require auth");
 			return true;
 		}
-		log.debug("Don't need auth");
+		//log.debug("Don't need auth");
 		return false;
 	}
 
