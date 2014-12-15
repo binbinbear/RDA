@@ -110,12 +110,17 @@ namespace ETEUtils
             return addrs;
         }
 
+        public static int BatchGet(string[] urls, Dictionary<string, string> parameters)
+        {
+            return BatchGet(urls, parameters, null, false);
+        }
+
         //
         // Batchly get multiple URLs simultaneously, blocks until all requests are done. 
         // Return number of response contains expectedResponse
-        public static int BatchGet(string[] url, Dictionary<string, string> parameters, string expectedResponse)
+        public static int BatchGet(string[] urls, Dictionary<string, string> parameters, string expectedResponse, bool returnOnAnySuccess)
         {
-            CountdownLatch cdl = new CountdownLatch(url.Length);
+            CountdownLatch cdl = new CountdownLatch(urls.Length);
             object syncLock = new object();
             int success = 0;
 
@@ -139,10 +144,13 @@ namespace ETEUtils
                     }
                 }
 
-                cdl.Signal();
+                if (returnOnAnySuccess && success > 0)
+                    cdl._TrickSignalAll();
+                else
+                    cdl.Signal();
             };
 
-            foreach (string s in url)
+            foreach (string s in urls)
             {
                 Log.Info("Requesting: " + s);
 

@@ -53,8 +53,8 @@ namespace HRARequestor
         private void button3_Click(object sender, EventArgs e)
         {
             //string s = RegUtil.ReadLocalMachine(@"SOFTWARE\VMware, Inc.\VMware Drivers", "vsockDll.status");
-            string s = RegUtil.ReadLocalMachine(@"SOFTWARE\VMware, Inc.\VMware VDM\Agent\Configuration", "Broker");
-            MessageBox.Show(s);
+            //string s = RegUtil.ReadLocalMachine(@"SOFTWARE\VMware, Inc.\VMware VDM\Agent\Configuration", "Broker");
+            //MessageBox.Show(s);
         }
 
         private void button4_Click(object sender, EventArgs e)

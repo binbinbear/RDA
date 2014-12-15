@@ -39,13 +39,46 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WindowUtil.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ETEUtils\ETEUtils.csproj">
       <Project>{D1177226-105F-4037-85C4-405D41962844}</Project>
       <Name>ETEUtils</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="GPMGMTLib">
+      <Guid>{C2F48CC2-305B-4672-BAA7-76A57738F48A}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+    </COMReference>
+    <COMReference Include="GPOADMINCUSTOMLib">
+      <Guid>{C849A630-C13D-4148-BA9E-E4D57D128F0E}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+    </COMReference>
+    <COMReference Include="GPOADMINLib">
+      <Guid>{CDFA97AF-30C4-46B3-BDF8-66B95F676C0A}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+    </COMReference>
+    <COMReference Include="snapinLib">
+      <Guid>{A9BF4065-8A09-457B-99D3-A78FEC725279}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>2</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+    </COMReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

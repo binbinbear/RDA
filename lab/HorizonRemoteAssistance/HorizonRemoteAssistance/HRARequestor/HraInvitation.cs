@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Threading;
 using System.Windows.Forms;
 using Newtonsoft.Json;
+using ETEUtils;
 
 namespace HRARequestor
 {
@@ -67,13 +68,13 @@ namespace HRARequestor
                 {
                     if (p.MainModule.FileVersionInfo.CompanyName.Equals("Microsoft Corporation"))
                     {
-                        Logger.Log("Kill existing MSRA processes: " + p.Id);
+                        Log.Info("Kill existing MSRA processes: " + p.Id);
                         p.Kill();
                     }
                 }
                 catch (Exception e)
                 {
-                    Logger.Log(e);
+                    Log.Error(e);
                 }
             }
         }
@@ -86,7 +87,7 @@ namespace HRARequestor
             //string path = @"Z:\remote assist\";
             fileName = path + "hra.msrcIncident";
 
-            Logger.Log("Temp invitation file: " + fileName);
+            Log.Info("Temp invitation file: " + fileName);
 
             File.Delete(fileName);
 

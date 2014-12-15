@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Microsoft.Win32;
 
 namespace ETEUtils
 {
@@ -8,10 +9,10 @@ namespace ETEUtils
     {
         public static string[] GetBrokerAddresses()
         {
-            string brokerAddrs = RegUtil.ReadLocalMachine(@"SOFTWARE\VMware, Inc.\VMware VDM\Agent\Configuration", "Broker");
+            string brokerAddrs = Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\VMware, Inc.\VMware VDM\Agent\Configuration", "Broker", String.Empty).ToString();
             Log.Info("Brokers from registry: " + brokerAddrs);
 
-            if (brokerAddrs == null || brokerAddrs.Trim().Equals(""))
+            if (brokerAddrs == null || brokerAddrs.Equals(String.Empty))
                 return null;
 
             string[] addrs = brokerAddrs.Split(' ');

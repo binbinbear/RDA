@@ -38,11 +38,11 @@
 		
 			<p>Run the installer in end-user desktop, e.g. virtual machine which has View agent, and choose the "Install for end-user" option to install the end-user component.</p>
 			
-			<p>Normally you can do this on the master template of a View desktop pool, or configure the Group Policy in AD Controller, e.g. for pool specific OU.</p>
+			<p>Normally you can do this on the master template of a View desktop pool.</p>
 		
 			<h4>3. Install component for Helpdesk.</h4>
 			
-			<p>Run the same installer in desktop from where the administrator or IT helpdesk will do the remote assistance. Choose the "Install for helpdesk" option to install this component.</p>
+			<p>Run the same installer in desktops from where the administrators or IT specialists will do the remote assistance. Choose the "Install for helpdesk" option to install this component.</p>
 			
 			<br>
 			<br>
@@ -51,13 +51,43 @@
 
 			<p>That's all.</p>
 
-			<h3>User Scenario</h3>
+			<h3>Typical User Scenario</h3>
 			<ol>
 				<li><b>User creates support request</b>: Desktop end-user clicks "Horizon Remote Assistance" icon on his/her View desktop, to initiate the remote assist request.</li>
 				<li><b>Admin support</b>: Administrator sees requests from the web portal. and by clicking the start button associated with a request to launch the support.</li>
 				<li><b>User confirmation</b>: A message box is shown in user desktop, and user confirmation is needed to establish the connection.</li>
 				<li>Further, full control can be requested by administrator, and still user confirmation is needed.</li>
 			</ol>
+			
+			<br>
+			<br>
+			<h3>Custom Configuration</h3>
+			<p>If Horizon Toolbox is not listening on default port 18443, you need to configure port for Horizon Remote Assistance in VM. 
+			This can be achieved by either of the following two ways:</p>
+			<ol>
+				<li>Add parameter "-port &lt;number&gt;" to command line (E.g. you can modify the command line in the shortcut on desktop), or</li>
+				<li>Add registry value "port", with type REG_SZ, under key "HKEY_LOCAL_MACHINE\SOFTWARE\VMware, Inc.\VMware Toolbox\HorizonRemoteAssistance". Create the key and the value if needed.</li>
+			</ol>
+			
+			<br>
+			<br>
+			<h3>Troubleshooting</h3>
+			<b>Client side logs:</b><br>
+			<blockquote>
+				<i>&lt;user_directory&gt;\AppData\Local\VMware\Horizon Remote Assistance\requestor.log</i>
+			</blockquote>
+			<p>For example:</p>
+			<blockquote>
+				<i>C:\Users\Watermelon\AppData\Local\VMware\Horizon Remote Assistance\requestor.log</i>
+			</blockquote>
+			<b>Server side logs:</b><br>
+			<blockquote>
+				<i>&lt;HorizonToolbox_dir&gt;\webapps\toolbox\horizontoolbox.log</i>
+			</blockquote>
+			<p>For example:</p>
+			<blockquote>
+				<i>C:\HorizonToolbox\webapps\toolbox\horizontoolbox.log</i>
+			</blockquote>
 		</div>
 
 		<div id="footer">

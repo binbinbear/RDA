@@ -4,14 +4,17 @@ using System.Text;
 using System.Net;
 using System.Windows.Forms;
 using System.IO;
+using ETEUtils;
+using Microsoft.Win32;
 
 namespace HRARequestor
 {
     class Server
     {
         private static volatile bool quit = false;
+        private static string serverKey;
 
-        public static void Start()
+        public static void Start(int port, string serverKey)
         {
             if (!HttpListener.IsSupported)
             {
@@ -19,11 +22,13 @@ namespace HRARequestor
                 return;
             }
 
+            Server.serverKey = serverKey;
+
             // Create a listener.
             using (HttpListener listener = new HttpListener())
             {
                 // Add the prefixes. 
-                listener.Prefixes.Add("http://*:32121/hra/");
+                listener.Prefixes.Add("http://*:" + port + "/hra/");
                 listener.Start();
 
                 Console.WriteLine("Listening...");
@@ -36,7 +41,7 @@ namespace HRARequestor
                     }
                     catch (Exception e)
                     {
-                        Console.WriteLine(e);
+                        Log.Info(e);
                     }
                 }
 
@@ -80,6 +85,7 @@ namespace HRARequestor
 
             //verify the requestor is a broker server
             //TODO
+            //request.RemoteEndPoint.Address.ToString()
 
             return true;
         }
@@ -90,7 +96,9 @@ namespace HRARequestor
             if (code == null)
                 return false;
 
-            return true;
+            if ("*".Equals(serverKey) || code.Equals(serverKey, StringComparison.OrdinalIgnoreCase))
+                return true;
+            return false;
         }
     }
 }

@@ -16,39 +16,57 @@ namespace Test2
     {
         static void Main(string[] args)
         {
-            string[] url = 
-            {
-                "https://192.168.0.202/toolbox/remoteassist/upload",
-                "https://192.168.0.11/toolbox/remoteassist/upload",
-                "https://192.168.0.11/toolbox/remoteassist/upload",
-                "https://192.168.0.201/toolbox/remoteassist/upload",
-                "https://192.168.0.201/toolbox/remoteassist/upload"
-            };
+            object o = Registry.GetValue(@"HKEY_LOCAL_MACHINE\Software\VMware, Inc.\VMware Toolbox\HorizonRemoteAssistance", "port2", String.Empty);
+            Console.WriteLine(o);
+            o = Registry.GetValue(@"HKEY_LOCAL_MACHINE\Software\VMware, Inc.\VMware Toolbox\HorizonRemoteAssistance", "serverKey2", null);
+            Console.WriteLine(o);
 
-            HttpUtil._IgnoreSSL();
-
-            int success = HttpUtil.BatchGet(url, "aa", "bb", "cc");
-            Console.WriteLine("Done: " + success);
             Console.ReadKey();
-            
-        }
+            //PolFile pol = new PolFile();
 
-        private static void HttpGet(string url, DownloadStringCompletedEventHandler onComplete)
-        {
-            using (WebClient wb = new WebClient())
+            //pol.LoadFile(@"Z:\EnablementPrjs\policy\registry.pol");
+            //pol.SaveFile(@"c:\r1.pol");
+
+            /*
+            try
             {
-                wb.Proxy = null;
+                string userDomain = Environment.GetEnvironmentVariable("USERDNSDOMAIN");
+                Console.WriteLine(userDomain);
+                if (userDomain == null || userDomain.Trim().Length == 0)
+                    userDomain = "asdf.nanw";
+                GPMGMTLib.GPM gpm = new GPMGMTLib.GPM();
+                GPMGMTLib.IGPMConstants gpc = gpm.GetConstants();
+                GPMGMTLib.IGPMDomain gpd = gpm.GetDomain(userDomain, "", gpc.UseAnyDC);
+                GPMGMTLib.GPMSearchCriteria searchOBJ = gpm.CreateSearchCriteria();
+                GPMGMTLib.IGPMGPOCollection gpoc = gpd.SearchGPOs(searchOBJ);
+                string outputString = "";
+                foreach (GPMGMTLib.GPMGPO name in gpoc)
+                {
+                    outputString += "ID: " + name.ID + "\tName: " + name.DisplayName + "\r\n";
+                }
+                Console.WriteLine(outputString);
 
-                try
-                {
-                    wb.DownloadStringAsync(new Uri(url));
-                    wb.DownloadStringCompleted += onComplete;
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex);
-                }
+                string strGPO = "StarterGPO_notepad";
+                string strOU = "OU=NestedOU2,OU=TestOU,DC=asdf,DC=nanw";
+
+                searchOBJ.Add(gpc.SearchPropertyGPODisplayName, gpc.SearchOpEquals, strGPO);
+                GPMGMTLib.GPMGPOCollection objGPOlist = gpd.SearchGPOs(searchOBJ);
+
+                GPMGMTLib.GPMSOM gpSom = gpd.GetSOM(strOU);
+                //GPMGMTLib.IGPMGPO gpo = gpd.CreateGPO();
+                //GPMGMTLib.IGPMGPO gpo = (GPMGMTLib.IGPMGPO)objGPOlist[1];
+
+                GPMGMTLib.IGPMGPO gpo = gpd.CreateGPO();
+                gpo.DisplayName = "TestOutCome";
+                //gpo.Import();
+                gpSom.CreateGPOLink(-1, gpo);
+                //Console.ReadKey();
             }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+            //*/
         }
     }
 }

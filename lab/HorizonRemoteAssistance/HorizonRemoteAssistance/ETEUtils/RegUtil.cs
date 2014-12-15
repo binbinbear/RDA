@@ -5,26 +5,22 @@ using Microsoft.Win32;
 
 namespace ETEUtils
 {
-    class RegUtil
+    public class RegUtil
     {
-        public static string ReadLocalMachine(string key, string attr)
+        public static int ReadStringAsInt(string key, string attr, int defaultValue)
         {
-            try
-            {
-                RegistryKey rk = Registry.LocalMachine.OpenSubKey(key);
-                if (rk == null)
-                    return null;
+            object val = Registry.GetValue(key, attr, null);
 
-                Object o = rk.GetValue(attr);
-                if (o == null)
-                    return null;
+            int result;
+            if (val == null || !int.TryParse(val.ToString(), out result))
+                return defaultValue;
+            return result;
+        }
 
-                return o.ToString();
-            }
-            catch (Exception)
-            {
-                return null;
-            }
+        public static string ReadString(string key, string attr, string defaultValue)
+        {
+            object ret = Registry.GetValue(key, attr, null);
+            return ret == null ? defaultValue : ret.ToString();
         }
     }
 }

@@ -374,7 +374,7 @@ namespace HRAInstaller
         {
             string appPath = Config.HRALauncherPath;
 
-            if (Registry.GetValue("HKEY_CLASSES_ROOT\\HorizonRemoteAssistance", String.Empty, String.Empty) == null)
+            if (Registry.GetValue("HKEY_CLASSES_ROOT\\HorizonRemoteAssistance", String.Empty, null) == null)
             {
                 msg("  HKEY_LOCAL_MACHINE\\Software\\Classes\\HorizonRemoteAssistance");
                 Registry.SetValue("HKEY_LOCAL_MACHINE\\Software\\Classes\\HorizonRemoteAssistance", "", "Remote Assistance for Horizon View");
@@ -391,7 +391,7 @@ namespace HRAInstaller
 
         private static void DeregisterHRAFileType()
         {
-            if (Registry.GetValue("HKEY_CLASSES_ROOT\\HorizonRemoteAssistance", String.Empty, String.Empty) != null)
+            if (Registry.GetValue("HKEY_CLASSES_ROOT\\HorizonRemoteAssistance", String.Empty, null) != null)
             {
                 msg("  HKEY_LOCAL_MACHINE\\Software\\Classes\\HorizonRemoteAssistance");
                 Registry.LocalMachine.DeleteSubKeyTree("Software\\Classes\\HorizonRemoteAssistance");

@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Net.Sockets;
 using System.IO;
 using ETEUtils;
+using Microsoft.Win32;
 
 namespace HRARequestor
 {
@@ -18,60 +19,32 @@ namespace HRARequestor
         [STAThread]
         static void Main()
         {
-            string[] args = Environment.GetCommandLineArgs();
-
             Log.InitInLocalAppData("VMware\\Horizon Remote Assistance\\", "requestor.log");
-            Log.Info(Assembly.GetExecutingAssembly().GetName().ToString());
-            Log.Info("Time: " + DateTime.Now);
-            Log.Info("Current Directory: " + Environment.CurrentDirectory);
-            Log.Info("Machine Name: " + Environment.MachineName);
-            Log.Info("OS Version: " + Environment.OSVersion);
-            Log.Info("User Domain Name: " + Environment.UserDomainName);
-            Log.Info("User Name: " + Environment.UserName);
-            Log.Info("Version: " + Environment.Version);
-            Log.Info("System Directory: " + Environment.SystemDirectory);
 
             try
             {
-                foreach (string a in args)
+                LogEnvironment();
+
+                Config conf = Config.ProcessArgs();
+                if (conf == null)
                 {
-                    string arg = a.ToLower();
-                    if ("-server".Equals(arg))
-                    {
-                        Log.Info("Start server mode");
-                        Server.Start();
-                        Application.Exit();
-                        return;
-                    }
-
-                    if ("-form".Equals(arg))
-                    {
-                        Log.Info("Start form mode");
-
-                        Application.EnableVisualStyles();
-                        Application.SetCompatibleTextRenderingDefault(false);
-
-                        Application.Run(new Form1());
-                        Application.Exit();
-                        return;
-                    }
-
-                    if (arg.StartsWith("-postfile:"))
-                    {
-                        string debugFile = arg.Substring("-postfile:".Length);
-                        HraInvitation._debugPostFile = debugFile;
-                        Log.Info("Posting file: " + debugFile);
-                        SendInvitationToBroker();
-                        return;
-                    }
+                    Log.Error("Invalid argumetns");
+                    return;
                 }
 
-                Log.Info("Start requestor mode");
+                Log.Info("Conf.port=" + conf.Port);
 
-                DialogResult ret = MessageBox.Show("Do you want to invite your administrator to assist you? The request may take several seconds or minutes to be sent.", "Horizon Remote Assistance", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
-                if (ret.Equals(DialogResult.OK))
+                if (conf.IsServerMode)
                 {
-                    SendInvitationToBroker();
+                    Log.Info("Start server mode");
+                    Server.Start(conf.Port, conf.ServerKey);
+                }
+                else
+                {
+                    Log.Info("Start requestor mode");
+                    DialogResult ret = MessageBox.Show("Do you want to invite your administrator to assist you? The request may take several seconds or minutes to be sent.", "Horizon Remote Assistance", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+                    if (ret.Equals(DialogResult.OK))
+                        SendInvitationToBroker(conf.Port);
                 }
             }
             catch (Exception e)
@@ -82,12 +55,25 @@ namespace HRARequestor
             Application.Exit();
         }
 
-        private static void SendInvitationToBroker()
+        private static void LogEnvironment()
+        {
+            Log.Info(Assembly.GetExecutingAssembly().GetName().ToString());
+            Log.Info("Time: " + DateTime.Now);
+            Log.Info("Current Directory: " + Environment.CurrentDirectory);
+            Log.Info("Machine Name: " + Environment.MachineName);
+            Log.Info("OS Version: " + Environment.OSVersion);
+            Log.Info("User Domain Name: " + Environment.UserDomainName);
+            Log.Info("User Name: " + Environment.UserName);
+            Log.Info("Version: " + Environment.Version);
+            Log.Info("System Directory: " + Environment.SystemDirectory);
+        }
+
+        private static void SendInvitationToBroker(int port)
         {
             //
             //  Read brokers from registry
             //
-            string[] brokerAddrs = GetBrokerAddresses();
+            string[] brokerAddrs = HorizonViewUtil.GetBrokerAddresses();
             if (brokerAddrs == null || brokerAddrs.Length == 0)
             {
                 MessageBox.Show("Broker address not found in registry. Contact your administrator");
@@ -124,7 +110,7 @@ namespace HRARequestor
             //
             string[] urls = new string[brokerAddrs.Length];
             for (int i = 0; i < brokerAddrs.Length; i++)
-                urls[i] = "https://" + brokerAddrs[i] + "/toolbox/remoteassist/upload";
+                urls[i] = "https://" + brokerAddrs[i] + ":" + port + "/toolbox/remoteassist/upload";
 
             HttpUtil._IgnoreSSL();
             HttpUtil.UriHackFix();
@@ -132,7 +118,7 @@ namespace HRARequestor
             HttpUtil.SetNoProxy();  //no proxy between View Agent and View Broker. Set no proxy will boost performance for his app.
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             parameters.Add("inv", text);
-            int success = HttpUtil.BatchGet(urls, parameters, null);
+            int success = HttpUtil.BatchGet(urls, parameters);
 
             //
             //  Show result
@@ -165,30 +151,6 @@ namespace HRARequestor
             //return HttpUtility.UrlEncode(s);
             return s.Replace("#", "%23").Replace("&", "%26").Replace("+", "%2B");
         }
-
-        private static string[] GetBrokerAddresses()
-        {
-            string brokerAddrs = RegUtil.ReadLocalMachine(@"SOFTWARE\VMware, Inc.\VMware VDM\Agent\Configuration", "Broker");
-            Log.Info("Brokers from registry: " + brokerAddrs);
-
-            if (brokerAddrs == null || brokerAddrs.Trim().Equals(""))
-                return null;
-
-            string[] addrs = brokerAddrs.Split(' ');
-
-            List<string> ret = new List<string>();
-            foreach (string s in addrs)
-            {
-                if (s == null)
-                    continue;
-                string s2 = s.Trim();
-                if (s2.Length == 0)
-                    continue;
-                ret.Add(s2);
-            }
-            return ret.ToArray();
-        }
-
 
     }
 }

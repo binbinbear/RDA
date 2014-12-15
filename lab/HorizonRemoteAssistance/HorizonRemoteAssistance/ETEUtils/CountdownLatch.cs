@@ -26,6 +26,15 @@ namespace ETEUtils
                 signal.Set();
         }
 
+        /*
+         *  Signal any waiting of the countdownlatch, as all producers have signaled.
+         */
+        public void _TrickSignalAll()
+        {
+            Interlocked.Add(ref remain, -1);
+            signal.Set();
+        }
+
         public void Wait()
         {
             signal.WaitOne();

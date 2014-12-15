@@ -4,18 +4,14 @@ using System.Windows.Forms;
 using ETEUtils;
 using System.Diagnostics;
 using Newtonsoft.Json.Linq;
+using Microsoft.Win32;
+using System.Reflection;
 
 namespace DeviceFilter
 {
     static class Program
     {
-        private static string _testServer;
-        private static string VERSION = "10-22-2014";
-
-        private static bool isDebug()
-        {
-            return _testServer != null;
-        }
+        private static Config conf;
 
         /// <summary>
         /// The main entry point for the application.
@@ -23,35 +19,28 @@ namespace DeviceFilter
         [STAThread]
         static void Main()
         {
-            string[] args = Environment.GetCommandLineArgs();
-
-            if (args.Length < 2 || !args[1].Equals("-client", StringComparison.OrdinalIgnoreCase))
-                return;
-
-            if (args.Length > 2)
-            {
-                string s = args[2];
-                if (s.Equals("-version", StringComparison.OrdinalIgnoreCase))
-                {
-                    MessageBox.Show("Device Filter: " + VERSION);
-                    return;
-                }
-
-                _testServer = args[2];
-            }
-
-            if (isDebug())
-                Log.Init();
-            else
-                Log.InitInLocalAppData("VMware\\Horizon Toolbox", "DeviceFilter.log");
+            Log.InitInLocalAppData("VMware\\Horizon Toolbox", "DeviceFilter.log");
 
             try
             {
+                LogEnvironment();
+
+                conf = Config.ProcessArgs();
+                if (conf == null)
+                {
+                    Log.Error("Invalid argumetns");
+                    return;
+                }
+
+                if (!conf.IsFilterMode)
+                    return;
+                
+                Log.Info("Conf.port=" + conf.Port);
 
                 if (!queryAnyBroker())
                 {
                     Log.Info("Disconnect");
-                    if (isDebug())
+                    if (conf.IsDebug)
                     {
                         MessageBox.Show("DEBUG: skip disconnect");
                     }
@@ -69,7 +58,20 @@ namespace DeviceFilter
             {
                 Log.Error(e);
             }
-            Log.Info("exit");
+            Log.Info("Exit");
+        }
+
+        public static void LogEnvironment()
+        {
+            Log.Info(Assembly.GetExecutingAssembly().GetName().ToString());
+            Log.Info("Time: " + DateTime.Now);
+            Log.Info("Current Directory: " + Environment.CurrentDirectory);
+            Log.Info("Machine Name: " + Environment.MachineName);
+            Log.Info("OS Version: " + Environment.OSVersion);
+            Log.Info("User Domain Name: " + Environment.UserDomainName);
+            Log.Info("User Name: " + Environment.UserName);
+            Log.Info("Version: " + Environment.Version);
+            Log.Info("System Directory: " + Environment.SystemDirectory);
         }
 
         private static bool queryAnyBroker()
@@ -79,9 +81,9 @@ namespace DeviceFilter
             Log.Info("Device Info: " + deviceInfoStr);
 
             //DEBUG start
-            if (isDebug())
+            if (conf.IsDebug)
             {
-                return PostDeviceInfoToServer(_testServer, deviceInfoStr);
+                return PostDeviceInfoToServer(conf.DebugServer, deviceInfoStr);
             }
             //DEBUG end
 
@@ -94,39 +96,27 @@ namespace DeviceFilter
 
             HttpUtil._IgnoreSSL();
 
-            foreach (string broker in brokers)
-            {
-                Log.Info("Querying broker: " + broker);
+            string[] urls = new string[brokers.Length];
+            for (int i = 0; i < brokers.Length; i++)
+                urls[i] = "https://" + brokers[i] + ":" + conf.Port + "/toolbox/deviceFilter/check";
 
-                List<string> addrs = HttpUtil.resolveIPv4Addrs(broker);
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("di", deviceInfoStr);
 
-                foreach (string addr in addrs)
-                {
-                    try
-                    {
-                        if (PostDeviceInfoToServer(addr, deviceInfoStr))
-                        {
-                            return true;
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        Log.Info(e);
-                        continue;
-                    }
-                }
-            }
+            int success = HttpUtil.BatchGet(urls, parameters, "ACCESS_ALLOWED", true);
 
-            return false;
+            return success > 0;
         }
 
+        //*
         private static bool PostDeviceInfoToServer(string host, string value)
         {
-            string url = isDebug() ? "http://" : "https://";
-            url += host + "/toolbox/deviceFilter/check";
+            string url = conf.IsDebug ? "http://" : "https://";
+            url += host + ':' + conf.Port + "/toolbox/deviceFilter/check";
 
             return HttpUtil.Get(url, "di", value, "ACCESS_ALLOWED");
         }
+        //*/
 
         private static string GetDeviceInfoJson()
         {

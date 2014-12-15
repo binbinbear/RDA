@@ -3,6 +3,6 @@
     <ProjectView>ShowAllFiles</ProjectView>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <StartArguments>-client 10.112.117.10</StartArguments>
+    <StartArguments>-client -server 10.112.117.10 -version</StartArguments>
   </PropertyGroup>
 </Project>
