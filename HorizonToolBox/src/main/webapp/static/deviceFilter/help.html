@@ -39,15 +39,46 @@
 			<p>Refer to <a href="http://pubs.vmware.com/view-50/index.jsp#com.vmware.view.administration.doc/GUID-AB42F842-BD66-4856-9E61-1A392BF93B6F.html">this document</a> about how to configure the OnConnect and OnReconnect event.</p>
 			<p>The command line should be:</p>
 			<blockquote>
-				<i>DeviceFilter.exe -client</i>
+				<i>&lt;path_where_you_put_the_exe&gt;\DeviceFilter.exe -client</i>
+			</blockquote>
+			For example:
+			<blockquote>
+				<i>c:\my_files\DeviceFilter.exe -client</i>
 			</blockquote>
 			<p>Normally you can do this on the master template of a View desktop pool, or configure the Group Policy in AD Controller, e.g. for pool specific OU.</p>
 			
 			<h4>3. Make sure the View connection server has Horizon Toolbox installed.</h4>
+			<p>The Horizon Toolbox must be installed on View Connection server for Device Filter to work. If there are multiple
+			brokers (replica servers), it's not necessary to install Horizon Toolbox on all of them, but it's recommended to do
+			so, which will shorten Device Filter query time in some cases.</p>
+			
+			<p>That's all. The whitelist can be managed by https://your_View_connection_server:18443/toolbox/deviceFilter</p>
 
-			<p>That's all. The whitelist can be managed by https://your_View_connection_server/toolbox/deviceFilter</p>
-
-
+			<h3>Customized Configuration</h3>
+			<p>If Horizon Toolbox is not listening on default port 18443, you need to configure port for DeviceFilter in VM. 
+			This can be achieved by any of the following two ways:</p>
+			<ol>
+				<li>Add parameter "-port &lt;number&gt;" to command line, or</li>
+				<li>Add registry value "port", with type REG_SZ, under key "HKEY_LOCAL_MACHINE\SOFTWARE\VMware, Inc.\VMware Toolbox\DeviceFilter". Create the key and the value if needed.</li>
+			</ol>
+			
+			<h3>Troubleshooting</h3>
+			<b>Client side logs:</b><br>
+			<blockquote>
+				<i>&lt;your user directory&gt;\AppData\Local\VMware\Horizon Toolbox\DeviceFilter.log</i>
+			</blockquote>
+			<p>For example:</p>
+			<blockquote>
+				<i>C:\Users\Watermelon\AppData\Local\VMware\Horizon Toolbox\DeviceFilter.log</i>
+			</blockquote>
+			<b>Server side logs:</b><br>
+			<blockquote>
+				<i>&lt;HorizonToolbox_dir&gt;\webapps\toolbox\horizontoolbox.log</i>
+			</blockquote>
+			<p>For example:</p>
+			<blockquote>
+				<i>C:\HorizonToolbox\webapps\toolbox\horizontoolbox.log</i>
+			</blockquote>
 		</div>
 
 		<div id="footer">
