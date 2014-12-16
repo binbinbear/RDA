@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 
 import com.vmware.horizontoolset.viewapi.ViewAPIService;
+import com.vmware.horizontoolset.viewapi.operator.ViewOperator;
 
 public class SessionUtil {
 
@@ -105,4 +106,22 @@ public class SessionUtil {
 	public static EventDBUtil getDB(HttpSession session){
 		return getSessionObj(session, EventDBUtil.class);
 	}
+
+	/**
+	 * @author Gao Xiaoning
+	 * @param session
+	 * @return
+	 */
+	public static ViewOperator getViewOperator(HttpSession session) {
+		ViewOperator vo = getSessionObj(session, ViewOperator.class);
+		if (null == vo) {
+			ViewAPIService api = getSessionObj(session, ViewAPIService.class);
+			if (api == null)
+				return null;
+			vo = new ViewOperator(api.getConn());
+			setSessionObj(session, vo);
+		}		
+		return vo;
+	}
+
 }

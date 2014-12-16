@@ -19,6 +19,7 @@ import com.vmware.vdi.vlsi.binding.vdi.infrastructure.VirtualCenter.VirtualCente
 import com.vmware.vdi.vlsi.binding.vdi.resources.Application.ApplicationInfo;
 import com.vmware.vdi.vlsi.binding.vdi.resources.Desktop.DesktopSummaryView;
 import com.vmware.vdi.vlsi.binding.vdi.users.Session.SessionLocalSummaryView;
+import com.vmware.vdi.vlsi.client.Connection;
 import com.vmware.vdi.vlsi.client.Query;
 import com.vmware.vdi.vlsi.client.Query.QueryFilter;
 import com.vmware.vdi.vlsi.cname.vdi.resources.DesktopCName.DesktopSummaryViewCName;
@@ -136,7 +137,25 @@ public class ViewAPIServiceImpl implements ViewAPIService{
 		return ret;
 	}
 
-
+	
+	@Override
+	public DesktopPool getDesktopPool(String name) {
+    	
+		QueryFilter filter = QueryFilter.equals(
+    			DesktopSummaryViewCName.DESKTOP_SUMMARY_VIEW_CNAME.desktopSummaryData.name, name);
+    	
+		List<DesktopSummaryView> ret = new ArrayList<>();
+		try (Query<DesktopSummaryView> query = new Query<>(this._connection, DesktopSummaryView.class, filter)) {
+		for (DesktopSummaryView info : query) {
+			ret.add(info);
+		}
+		}
+        
+		if (ret.isEmpty())
+			return null;
+        
+		return new DesktopPool(this._connection, ret.get(0));
+	}
 
 	public String get_user() {
 		return _user;
@@ -183,4 +202,13 @@ public class ViewAPIServiceImpl implements ViewAPIService{
 		}
 		return catchedServers;
 	}
+	/**
+	 * @author Gao Xiaoning get view client connection
+	 * 
+	 */
+	@Override
+	public Connection getConn() {
+		return this._connection;
+	}
+
 }
