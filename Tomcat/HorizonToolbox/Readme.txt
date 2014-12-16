@@ -8,7 +8,10 @@ Installation guide:
 	 Step 1: Unzip "HorizonToolbox1.5.zip" to any folder, for example, the target folder is "C:/HorizonToolbox1.5/". 
      Step 2: Open "Command Prompt" and go to "bin" folder in your target folder, for example, "cd C:/HorizonToolbox1.5/bin"
      Step 3: Execute "service.bat install", you should see "The service 'Tomcat8' has been installed."
-
+     	Trouble shoot: If you see an error message "JRE_HOME not found", please make sure that the environment variable "JRE_HOME" take effect.
+	 Step 4(Optional): Edit your fire wall inbound rule for allowing 18443 port. 
+	 	Tip: You can change the default 18443 port to any other port.
+	  
 Startup:
      Double click "tomcat8w.exe",  you will see a GUI.
      Switch to "Java" tab, and adjust the "Maximum memory pool" to "512" or bigger, Click "Apply"
@@ -23,14 +26,14 @@ UnInstall:
     Step 2: Execute "service.bat remove" 
     Step 3: Optional: Delete "HorizonToolbox1.5" folder 
 
-Some Optional configurations:
+Optional configurations:
+    If you want to specify HTTPS port or SSL certificate:
+        Edit "HorizonToolbox1.5\conf\server.xml", modify: 
+        <Connector port="18443" protocol="org.apache.coyote.http11.Http11NioProtocol" maxThreads="150" SSLEnabled="true" scheme="https" secure="true" clientAuth="false" sslProtocol="TLS" keystoreFile="conf/toolbox.keystore" keystorePass="123456" /> 
+       
     If your View connection server is not installed in the default folder:
-    	Edit "HorizonToolbox1.5\webapps\toolbox\WEB-INF\applicationContext.xml"
+    	Edit "HorizonToolbox1.5\webapps\toolbox\WEB-INF\applicationContext.xml", 
 	    Modify "<value>C:\Program Files\VMware\VMware View\Server</value>" according to your folder path.
- 
-    If you want to specify HTTPS port other than the default port 18443:
-        Edit "HorizonToolbox\conf\web.xml", 
-        Modify "<Connector port="18443" " according to your port.      
 
 	If your View administrator UI(https://[connectionserver]/admin) does not use the default "443" port:
     	Edit "HorizonToolbox1.5\webapps\toolbox\WEB-INF\spring-servlet.xml",  
@@ -39,7 +42,7 @@ Some Optional configurations:
     Please shutdown and restart Horizon Toolbox with "tomcat8w.exe" after you have saved your configuration. 
 
 Usage guide:
-1, Login
+1, Login with IE9/10, Chrome, Firefox or Safari. 
 https://[YourServer]:18443/toolbox/Login
    You can login with either "Read only administrators" or "Administrators". 
    "Read only administrators" can't enable CEIP, can't setup device access policy.
