@@ -8,6 +8,8 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import com.vmware.horizontoolset.viewapi.ConnectionServer;
+import com.vmware.horizontoolset.viewapi.Container;
+import com.vmware.horizontoolset.viewapi.Domain;
 import com.vmware.horizontoolset.viewapi.Farm;
 import com.vmware.horizontoolset.viewapi.RDS;
 import com.vmware.horizontoolset.viewapi.SessionFarm;
@@ -16,9 +18,11 @@ import com.vmware.horizontoolset.viewapi.SnapShotViewPool;
 import com.vmware.horizontoolset.viewapi.Template;
 import com.vmware.horizontoolset.viewapi.VM;
 import com.vmware.horizontoolset.viewapi.ViewPool;
+import com.vmware.vdi.vlsi.binding.vdi.resources.Desktop.CustomizationSettings;
 import com.vmware.vdi.vlsi.binding.vdi.entity.BaseImageVmId;
 import com.vmware.vdi.vlsi.binding.vdi.entity.DesktopId;
 import com.vmware.vdi.vlsi.binding.vdi.entity.FarmId;
+import com.vmware.vdi.vlsi.binding.vdi.entity.ViewComposerDomainAdministratorId;
 import com.vmware.vdi.vlsi.binding.vdi.infrastructure.ConnectionServer.ConnectionServerInfo;
 import com.vmware.vdi.vlsi.binding.vdi.query.QueryDefinition;
 import com.vmware.vdi.vlsi.binding.vdi.resources.Application.ApplicationData;
@@ -29,6 +33,10 @@ import com.vmware.vdi.vlsi.binding.vdi.resources.Desktop.DesktopSummaryView;
 import com.vmware.vdi.vlsi.binding.vdi.resources.Farm.FarmInfo;
 import com.vmware.vdi.vlsi.binding.vdi.resources.RDSServer.RDSServerSummaryView;
 import com.vmware.vdi.vlsi.binding.vdi.users.Session.SessionLocalSummaryView;
+import com.vmware.vdi.vlsi.binding.vdi.utils.ADContainer;
+import com.vmware.vdi.vlsi.binding.vdi.utils.ADContainer.ADContainerInfo;
+import com.vmware.vdi.vlsi.binding.vdi.utils.ADDomain;
+import com.vmware.vdi.vlsi.binding.vdi.utils.ADDomain.ADDomainInfo;
 import com.vmware.vdi.vlsi.binding.vdi.utils.virtualcenter.BaseImageSnapshot;
 import com.vmware.vdi.vlsi.binding.vdi.utils.virtualcenter.BaseImageSnapshot.BaseImageSnapshotInfo;
 import com.vmware.vdi.vlsi.client.Connection;
@@ -45,15 +53,52 @@ public class ViewQueryService {
 	private Desktop _desktop;
 	private BaseImageSnapshot _snapshotService;
 	private Connection _connection;
-
+	private Container _adContainer = null;
 	public ViewQueryService(Connection connect){
 		this._connection = connect;
 		this._desktop = connect.get(Desktop.class);
 		this._snapshotService = connect.get(BaseImageSnapshot.class);
-
+		
 	}
 	
 	
+	private ADContainerInfo[]  _containerInfos;
+	ADContainerInfo[] getContainers(ViewComposerDomainAdministratorId adminID){
+		if (adminID ==null){
+			log.info("adminID is null!!");
+			return null;
+		}
+		if (_containerInfos == null){
+			 ADContainer _container = _connection.get(ADContainer.class);
+			 _containerInfos= _container.listByViewComposerDomainAdministrator(adminID);
+			 
+		}
+		return _containerInfos;
+	}
+	
+	
+	
+	public ADContainerInfo getContainer(CustomizationSettings customSettings){
+		if (customSettings == null){
+			log.info("customSettings is null!!");
+			return null;
+		}
+		ADContainerInfo[] infos =  getContainers(customSettings.domainAdministrator);
+		if (infos == null){
+			log.info("can't get infos");
+			return null;
+		}
+		
+		String id = customSettings.getAdContainer().getId();
+		String validID = id.substring(id.lastIndexOf('/')).toLowerCase();
+		for (int i=0;i<infos.length;i++){
+			ADContainerInfo info =infos[i];
+			if (info.getRdn()!=null && info.getId().id.toLowerCase().contains(validID)){
+				return info;
+			}
+		}
+		return null;
+	}
 	public DesktopInfo getDesktopInfo(DesktopSummaryView summary){
 		DesktopInfo desktopinfo = this._desktop.get(summary.id);
 		

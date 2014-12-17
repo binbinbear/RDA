@@ -6,8 +6,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.vmware.vdi.vlsi.binding.vdi.entity.BaseImageSnapshotId;
 import com.vmware.vdi.vlsi.binding.vdi.entity.BaseImageVmId;
 import com.vmware.vdi.vlsi.binding.vdi.resources.Desktop.DesktopInfo;
+import com.vmware.vdi.vlsi.binding.vdi.utils.ADContainer.ADContainerInfo;
 import com.vmware.vdi.vlsi.binding.vdi.utils.virtualcenter.BaseImageSnapshot.BaseImageSnapshotInfo;
 import com.vmware.horizontoolset.report.SnapShotReport;
+import com.vmware.horizontoolset.viewapi.Container;
 import com.vmware.horizontoolset.viewapi.LinkedClonePool;
 import com.vmware.horizontoolset.viewapi.SnapShot;
 import com.vmware.horizontoolset.viewapi.VM;
@@ -129,6 +131,20 @@ public class LinkedClonePoolImpl extends ViewPoolImpl implements LinkedClonePool
 		
 		report.addOrUpdateVM(thisvm);
 		
+	}
+
+	private Container _container;
+	
+	@Override
+	public Container getADContainer() {
+		if (this._container==null){
+			log.info("start to get ad container");
+			ADContainerInfo adinfo = super.service.getContainer(this.info.automatedDesktopData.customizationSettings);
+			if (adinfo != null){
+				this._container = new ContainerImpl(adinfo);
+			}
+		}
+		return this._container;
 	}
 
 }
