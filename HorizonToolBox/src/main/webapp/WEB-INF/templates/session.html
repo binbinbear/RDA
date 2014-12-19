@@ -26,7 +26,8 @@
 				<option value="week" selected="selected">Last 7 days</option>
 				<option value="month">Last 1 month</option>
 			</select>
-			Select desktop pool or RDS farm: 
+			<label for="desktoppool">Select desktop pool or RDS farm: </label>
+			
 			<select id="desktoppool" name="desktoppool">
 				<option value="all" selected="selected">ALL</option>
 			</select>
@@ -38,8 +39,8 @@
 			<div class="loadingdiv">Loading</div>
 		</div>
 
-		<div class="poolContainer" ng-controller="sessionCtrl">
-			<h3 class="pageHeader">
+
+		<h3 class="pageHeader">
 				<table border="0" cellpadding="0" cellspacing="0" width="100%">
 					<tbody>
 						<tr>
@@ -56,7 +57,11 @@
 					</tbody>
 				</table>
 			</h3>
-			<h4>Desktop Sessions:</h4>
+			
+			
+		<div class="poolContainer" ng-controller="sessionCtrl">
+			
+			<label>Desktop Sessions:</label>
 			<table ng-table="desktopParams" class="dataTable">
 				<tr ng-repeat="pool in $data">
 					<td data-title="'Pool Name'">{{pool.name}}</td>
@@ -70,7 +75,7 @@
 				</tr>
 			</table>
 			<br></br> <br></br>
-			<h4>Application Sessions:</h4>
+			<label>Application Sessions:</label>
 			<table ng-table="appParams" class="dataTable">
 				<tr ng-repeat="farm in $data">
 					<td data-title="'Farm Name'">{{farm.name}}</td>

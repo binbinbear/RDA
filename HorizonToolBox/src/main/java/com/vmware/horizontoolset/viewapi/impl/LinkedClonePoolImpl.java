@@ -16,7 +16,7 @@ import com.vmware.horizontoolset.viewapi.VM;
 import com.vmware.horizontoolset.viewapi.ViewType;
 
 
-@JsonIgnoreProperties(value={"snapShot"})
+@JsonIgnoreProperties(value={"snapShot","adcontainer"})
 public class LinkedClonePoolImpl extends ViewPoolImpl implements LinkedClonePool{
 
 	public LinkedClonePoolImpl(DesktopInfo info, ViewQueryService service){

@@ -393,3 +393,8 @@ For sessions line chart view
 .ui-icon-alert { background-position: 0 -144px; }
 .ui-icon-info { background-position: -16px -144px; }
 
+th.header div{
+	font-size:12px;
+}
+
+

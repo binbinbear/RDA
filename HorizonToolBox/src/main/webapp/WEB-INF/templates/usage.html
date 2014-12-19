@@ -32,9 +32,9 @@
 			</div>
 			<div id="loading1" class="loadingdiv">Loading</div>
 		</div>
-		<div class="poolContainer" ng-controller="usageCtrl"
-			style="width: 100%; height: 90%; overflow: scroll; ">
-			<h3 class="pageHeader">
+
+					
+		<h3 class="pageHeader">
 				<table border="0" cellpadding="0" cellspacing="0" width="100%">
 					<tbody>
 						<tr>
@@ -48,10 +48,14 @@
 					</tbody>
 				</table>
 			</h3>
-			<label for="viewType">Account Name: </label> <input type="text"
+			
+		<div class="poolContainer" ng-controller="usageCtrl"
+			style="width: 100%; height: 90%; overflow: scroll; overflow-x: hidden;">
+
+			<label>Account Name: </label> <input type="text"
 				id="user" name="user" value="" /> 
 				<button ng-click="reloadData()" class="btn btn-default">Search</button>
-			&nbsp;&nbsp; <label for="viewType">Show report for: </label>
+			&nbsp;&nbsp; <label>Show report for: </label>
 			<select ng-model="days">
 				<option value="2">Last 2 days</option>
 				<option value="7" selected="selected">Last 7 days</option>
