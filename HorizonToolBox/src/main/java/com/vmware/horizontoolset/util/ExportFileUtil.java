@@ -21,9 +21,9 @@ import com.vmware.vdi.admin.be.events.AdminEvent;
 public class ExportFileUtil {
 	private static Logger log = Logger.getLogger(ExportFileUtil.class);
 	
-	private static final String[] connectionHeaders={"User Name","Connection Time","Disconnection Time","Usage Time(seconds)","machineName", "poolName", "farmName"};
+	private static final String[] connectionHeaders={"User Name","Connection Time","Disconnection Time","Usage Time(seconds)","machineName", "poolName", "farmName", "Login Delay Time(ms)"};
 	
-	private static final String[] connectionBeanAttrs={"username","connectionTime","disconnectionTime","usageTime","machineName", "poolName", "farmName"};
+	private static final String[] connectionBeanAttrs={"username","connectionTime","disconnectionTime","usageTime","machineName", "poolName", "farmName", "loginDelayTime"};
 	private static final String DateFormatString = "yyyy.MM.dd HH:mm:ss";
 	private static final CellProcessor[] processors = new CellProcessor[] { 
             new Optional(), // username (must be unique)
@@ -32,7 +32,8 @@ public class ExportFileUtil {
             new Optional(), // usageTime
             new Optional(), // machine
             new Optional(), // pool
-            new Optional() // farm
+            new Optional(), // farm
+            new Optional() // login delay time
             
     };
 	

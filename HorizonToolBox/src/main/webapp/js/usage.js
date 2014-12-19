@@ -36,6 +36,12 @@ if (!ToolBox.Usage || !ToolBox.Usage.init){
 								data[i].disconnectionTime = new Date(data[i].disconnectionTime).toLocaleString();
 								data[i].connectionTime = new Date(data[i].connectionTime).toLocaleString();
 								data[i].usageTime= ToolBox.Usage.toTimeString(data[i].usageTime);
+								if (data[i].loginDelayTime ==0){
+									data[i].loginDelayTime = "Unknown";
+								}else{
+									data[i].loginDelayTime= ToolBox.Usage.toTimeString(data[i].loginDelayTime/1000);
+								}
+								
 							}
 							$scope.data = data;
 						}
@@ -76,7 +82,7 @@ if (!ToolBox.Usage || !ToolBox.Usage.init){
 			toTimeString: function(seconds){
 				var hours = Math.floor(seconds/3600);
 				var minutes = Math.floor((seconds % 3600) /60);
-				seconds = seconds%60;
+				seconds = seconds - Math.floor(seconds/60) *60;
 				hours = hours > 9 ? hours : "0" + hours;
 				minutes = minutes > 9 ? minutes : "0" + minutes; 
 				seconds = seconds >9 ? seconds: "0" + seconds;

@@ -27,6 +27,18 @@ public interface Connection extends Comparable<Connection>{
 	
 	public Date getConnectionTime();
 	
+	/**
+	 * 
+	 * @return loggedin time. Warning: this may be null, so use getConnectionTime() may be better most of time
+	 */
+	public Date getLoggedInTime();
+	
+	/**
+	 * 
+	 * @return delay time for this login in MILLISECONDS, loggedInTime - connectionTime. 0 means unknown
+	 */
+	public long getLoginDelayTime();
+	
 	public Date getDisconnectionTime();
 
 	public Event getConnectionEvent();

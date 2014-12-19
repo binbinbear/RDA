@@ -35,7 +35,11 @@ public class EventImpl implements Event{
 	}
 
 	private static final String ACCEPT = "has accepted an allocated session";
-	private static final String ON_MACHINE = "running on machine ";
+	
+	private static final String LOGGEDIN = "has logged in to a new session";
+	
+	
+	private static final String ON_MACHINE = " on machine ";
 	private static final String DISCONNECT = "has disconnected from machine ";
 	private static final String LOG_OFF = "has logged off machine ";
 	private static final String LOGOUT = " has logged out";
@@ -83,6 +87,10 @@ public class EventImpl implements Event{
 			if (shortMessage.contains(ACCEPT)){
 				this.type = EventType.Connection;
 				this.machineName = getValue(shortMessage, ON_MACHINE);
+			}else if (shortMessage.contains(LOGGEDIN)){
+				this.type= EventType.Loggedin;
+				this.machineName = getValue(shortMessage, ON_MACHINE);
+				
 			}else if (shortMessage.contains(DISCONNECT)  ){
 				this.type = EventType.Disconnection;
 				this.machineName = getValue(shortMessage, DISCONNECT);

@@ -120,6 +120,8 @@ public class ReportUtil {
 		
 		Map<String,Event> connectionEvents = new HashMap<String, Event>();
 		
+		Map<String,Event> loggedInEvents = new HashMap<String, Event>();
+		
 		
 		
 		
@@ -133,13 +135,16 @@ public class ReportUtil {
 				String key = event.getMachineDNSName() + eventUserName;
 				if (event.getType() == EventType.Connection){
 					connectionEvents.put(key, event);
-				}else if (event.getType() == EventType.Disconnection){
+				} else if (event.getType() == EventType.Loggedin){
+					loggedInEvents.put(key, event);
+				} else if (event.getType() == EventType.Disconnection){
 					Event connectionEvent = connectionEvents.get(key);
 					if (connectionEvent!=null){
-						ConnectionImpl connection = new ConnectionImpl(connectionEvent, event);
+						ConnectionImpl connection = new ConnectionImpl(connectionEvent, loggedInEvents.get(key), event);
 						result.add(connection );
 						
 						connectionEvents.remove(key);
+						loggedInEvents.remove(key);
 					}
 				}
 
