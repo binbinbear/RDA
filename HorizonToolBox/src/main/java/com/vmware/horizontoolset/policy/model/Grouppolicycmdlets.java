@@ -10,12 +10,16 @@ import java.util.Map.Entry;
 
 public class Grouppolicycmdlets {
 
+	private String aduser;
+	private String adpass;
 	private String ad;
 	String csvFile;
 	String psCsvFile;
 
-	public Grouppolicycmdlets (String ad) {
+	public Grouppolicycmdlets (String ad, String aduser, String adpass) {
 		this.ad=ad;
+		this.aduser = aduser;
+		this.adpass = adpass;
 		Random random = new Random();
 		StringBuffer csvName = new StringBuffer();
 		for (int i = 0; i < 5; i++) {
@@ -54,6 +58,22 @@ public class Grouppolicycmdlets {
 		return runPowerShell("Get-Host", map);
 	}
 
+	public List<Map<String, String>> copyItem(Map<String, String> map){
+		//copy-item -path c:\temp\xxx.pol -destination \\eucsolutionad.eucsolution.com\c$\temp\xxx.pol
+		return runPowerShellDirect("Copy-Item", map);
+	}
+	
+	private List<Map<String, String>> runPowerShellDirect(String cmd,
+			Map<String, String> map) {
+		Iterator<String> idata = map.keySet().iterator();
+	      while (idata.hasNext()) {
+	         String name = idata.next();
+	         String value = map.get(name);
+	         cmd += " -" + name + " " + value;
+	      }
+	      return getPSOutput(cmd);
+	}
+
 	private List<Map<String, String>> runPowerShell(String cmd,
 	         Map<String, String> map) {
 	      Iterator<String> idata = map.keySet().iterator();
@@ -62,7 +82,14 @@ public class Grouppolicycmdlets {
 	         String value = map.get(name);
 	         cmd += " -" + name + " " + value;
 	      }
-	      return getPSOutput("Invoke-Command -scriptblock {import-module grouppolicy;" + cmd + "} -computerName " + this.ad);
+
+		String pSCredential = "$Username = \'"
+	    		  + this.aduser
+	    		  + "\';$Password = \'"
+	    		  + this.adpass
+	    		  + "\';$pass = ConvertTo-SecureString -AsPlainText $Password -Force;"
+	    		  + "$Cred = New-Object System.Management.Automation.PSCredential -ArgumentList $Username,$pass;";
+	      return getPSOutput(pSCredential + "Invoke-Command -scriptblock {import-module grouppolicy;" + cmd + "} -computerName " + this.ad);
 	   }
 
 	public List<Map<String, String>> getPSOutput(String psGetCmd) {
@@ -85,7 +112,9 @@ public class Grouppolicycmdlets {
 
 	public static void main(String[] args) throws IOException {
 		//import-module grouppolicy
-		Grouppolicycmdlets grouppolicycmdlets = new Grouppolicycmdlets("eucsolutionad.eucsolution.com");
+		Grouppolicycmdlets grouppolicycmdlets = new Grouppolicycmdlets("eucsolutionad.eucsolution.com",
+				"eucsolution\\administrator",
+				"VMware123");
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("name", "test667");
 		List<Map<String, String>> aaa = grouppolicycmdlets.newGPO(map);
