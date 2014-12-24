@@ -28,6 +28,11 @@ public class Grouppolicycmdlets {
 		}
 		csvFile = csvName.toString() + ".csv";
 		psCsvFile = "c:\\\\temp\\\\" + csvFile;
+		String cmd = "$net = new-object -ComObject WScript.Network;";
+		cmd += "$net.MapNetworkDrive(\"u:\", \"\\\\" + this.ad + 
+				"\\c$\\temp\", $false, \"" + 
+				this.aduser + "\", \"" + this.adpass + "\")";
+		PowerConsole2.execute(cmd);
 	}
 
 	public List<Map<String, String>> getGPO(Map<String, String> map){
@@ -59,7 +64,7 @@ public class Grouppolicycmdlets {
 	}
 
 	public List<Map<String, String>> copyItem(Map<String, String> map){
-		//copy-item -path c:\temp\xxx.pol -destination \\eucsolutionad.eucsolution.com\c$\temp\xxx.pol
+		//copy-item -path c:\temp\xxx.pol -destination u:\xxx.pol
 		return runPowerShellDirect("Copy-Item", map);
 	}
 	
