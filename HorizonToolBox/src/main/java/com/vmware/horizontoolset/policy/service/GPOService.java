@@ -30,7 +30,7 @@ public class GPOService {
 	
 	private List<Map<String, String>> copyGPO(String gpoName){
 		Map<String,String> copyGpoParam = new HashMap<String,String>();
-		copyGpoParam.put("sourceName", "test111");	//Default Domain Policy
+		copyGpoParam.put("sourceName", "'Default Domain Policy'");	//Default Domain Policy
 		copyGpoParam.put("targetName", "'" + gpoName + "'");
 		
 		if(grouppolicycmdlets.getGPO(copyGpoParam).size()==0){

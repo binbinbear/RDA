@@ -1,0 +1,52 @@
+{
+  "policies": {
+    "SSL": {
+      "policyId": "SSL",
+      "hasOptions": true,
+      "items": {
+        "policy2-3-6": {
+          "bytes": [],
+          "type": "REG_DWORD",
+          "keyName": "Software\\Policies\\Teradici\\PCoIP\\pcoip_admin_defaults",
+          "valueName": "pcoip.ask_clients_to_use_vcs_sni"
+        },
+        "policy2-3-5": {
+          "bytes": [],
+          "type": "REG_SZ",
+          "keyName": "Software\\Policies\\Teradici\\PCoIP\\pcoip_admin_defaults",
+          "valueName": "pcoip.ca_cert_store_name"
+        },
+        "policy2-3-4": {
+          "bytes": [],
+          "type": "REG_DWORD",
+          "keyName": "Software\\Policies\\Teradici\\PCoIP\\pcoip_admin_defaults",
+          "valueName": "pcoip.ssl_cert_min_key_length"
+        },
+        "policy2-3-3": {
+          "bytes": [],
+          "type": "REG_SZ",
+          "keyName": "Software\\Policies\\Teradici\\PCoIP\\pcoip_admin_defaults",
+          "valueName": "pcoip.cert_store_name"
+        },
+        "policy2-3-2": {
+          "bytes": [],
+          "type": "REG_DWORD",
+          "keyName": "Software\\Policies\\Teradici\\PCoIP\\pcoip_admin_defaults",
+          "valueName": "pcoip.ssl_cert_type"
+        },
+        "policy2-3-1": {
+          "bytes": [],
+          "type": "REG_DWORD",
+          "keyName": "Software\\Policies\\Teradici\\PCoIP\\pcoip_admin_defaults",
+          "valueName": "pcoip.ssl_cert_deny_legacy_connections"
+        },
+        "policy2-3-7": {
+          "bytes": [],
+          "type": "REG_DWORD",
+          "keyName": "Software\\Policies\\Teradici\\PCoIP\\pcoip_admin_defaults",
+          "valueName": "pcoip.ssl_disable_aes_128"
+        }
+      }
+    }
+  }
+}
