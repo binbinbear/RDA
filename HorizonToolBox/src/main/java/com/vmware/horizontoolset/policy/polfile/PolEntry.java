@@ -271,7 +271,7 @@ public class PolEntry implements Comparable<PolEntry> {
 
 		boolean firstSpecial, secondSpecial;
 
-		firstSpecial = this.valueName.startsWith("**");
+		firstSpecial = this.valueName.startsWith("**");		//disabled 放在最前
 		secondSpecial = other.valueName.startsWith("**");
 
 		if (firstSpecial == true && secondSpecial == false) {

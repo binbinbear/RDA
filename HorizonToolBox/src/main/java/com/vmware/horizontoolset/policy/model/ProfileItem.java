@@ -1,9 +1,8 @@
 package com.vmware.horizontoolset.policy.model;
 
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class ProfileItem {
-	
+	//存ldap 模型
 	public ProfileItem(){}
 	
 	public ProfileItem(String name) {

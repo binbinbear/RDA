@@ -154,6 +154,8 @@ public class PolFile {
 		return entries.remove(k);
 	}
 
+	//TODO disabled
+	
 	public void load(String fileName) {
 		this.fileName = fileName;
 		load();

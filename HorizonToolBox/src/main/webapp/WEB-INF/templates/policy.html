@@ -1,51 +1,136 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <title>Report Assist</title>
 <link href="css/report.css" rel="stylesheet" />
-<link href="css/cupertino/jquery-ui.custom.min.css" rel="stylesheet" />
+
 </head>
 <body>
 
 	<div id="policy" th:fragment="fragment">
 		<link href="./jtable/themes/jqueryui/jtable_jqueryui.min.css"
 			rel="stylesheet" type="text/css" />
+		<link href="css/bootstrap.min.css" rel="stylesheet" />
 
-		<link href="./css/cupertino/jquery-ui.custom.min.css" rel="stylesheet" />
+
 <style>
 .ui-tabs-vertical {
 	width: 55em;
 }
-.ui-tabs-vertical .ui-tabs-nav {
-	padding: .2em .1em .2em .2em;
+.di-title{
+	background: #2E9DD5;
+	color: #FAFAFA;
+	font-weight: bold;
+	font-size: 16px;
+	padding: .3em 1em;
+	font-family: monospace;
+	margin: 0 0 0 0;
+}
+.layout1 {
+	display: none;
+	position: absolute;
+	top: 300px;
+	left: 500px;
+	width: 20%;
+	height: 20%;
+	z-index: 1001;
+	text-align: center;
+}
+.btn.btn-primary {
+	width: 80px;
+	height: 40px;
+	color: #ffffff;
+	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+	background-color: #BBDDF0;
+	background-image: -moz-linear-gradient(top, #0088cc, #0044cc);
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#0088cc), to(#BBDDF0));
+	background-image: -webkit-linear-gradient(top, #0088cc, #0044cc);
+	background-image: -o-linear-gradient(top, #0088cc, #0044cc);
+	background-image: linear-gradient(to bottom, #0088cc, #CCE4F2);
+	background-repeat: repeat-x;
+	border-color: #0044cc #0044cc #002a80;
+	border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0088cc', endColorstr='#ff0044cc', GradientType=0);
+	filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+}
+#configuredialog .ui-dialog-titlebar { 
+	display:none; 
+
+}
+.ui-dialog-titlebar-close { 
+	display:none; 
+
+}
+
+.buttongroup
+{
+	position:absolute;
+	bottom:0px;
+	left:300px;
+}
+.control-label {
 	float: left;
-	width: 25em;
+	width: 100px;
+	padding-top: 5px;
+	text-align: left;
 }
-
-.ui-tabs-vertical .ui-tabs-nav li {
-	clear: left;
-	width: 100%;
-	border-bottom-width: 1px !important;
-	border-right-width: 0 !important;
-	margin: 0 -1px .2em 0;
+.over {
+	 display: none;
+	 position: absolute;
+	 top: 0;
+	 left: 0;
+	 width: 100%;
+	 height: 100%;
+	 background-color: #f5f5f5;
+	 opacity:0.5;
+	 z-index: 1000;
 }
-
-.ui-tabs-vertical .ui-tabs-nav li a {
-	display: block;
+.layout {
+    display: none;
+    position: absolute;
+    top: 40%;
+    left: 40%;
+    width: 20%;
+    height: 20%;
+    z-index: 1001;
+    text-align:center;
 }
-
-.ui-tabs-vertical .ui-tabs-nav li.ui-tabs-active {
-	padding-bottom: 0;
-	padding-right: .1em;
-	border-right-width: 1px;
-	border-right-width: 1px;
+.ui-dialog{
+	position:absolute;
+	left:150px;
+	top:100px;
+	width:500px;
+	height:750px;
+	padding:7px;
+	background:rgb(255,255,255,);
+	border:1px solid rgba(255,255,255,0.6);
+	-webkit-border-radius:8px;
+	-moz-border-radius:8px;
+	border-radius:8px;
+	-moz-box-shadow:0 2px 16px #000,0 0 1px #000,0 0 1px #000;
+	-webkit-box-shadow:0 2px 16px #000,0 0 1px #000,0 0 1px #000;
+	box-shadow:0 2px 16px #000,0 0 1px #000,0 0 1px #000;
 }
-
-.ui-tabs-vertical .ui-tabs-panel {
-	padding: 1em;
-	float: left;
-	width: 26em;
+.help-inline {
+	margin-top: 6px;
 }
-
+.nav-pills>li>a {
+	color: #000;
+}
+.nav-pills>li.active>a, .nav-pills>li.active>a:hover, .nav-pills>li.active>a:focus {
+	color: #fff;
+	background-color: #428bca;
+}
+.control-label .required {
+	color: #e02222;
+	font-size: 12px;
+	padding-left: 2px;
+}
+input[class*="span"].m-wrap {
+	float: none;
+	height: 34px !important;
+	margin-left: 0;
+}
 h3.pageHeader {
 	font-size: 16px
 }
@@ -65,13 +150,113 @@ th.jtable-column-header {
 tr.jtable-data-row {
 	font-size: 10px
 }
-
+.controls {
+	margin-left: 180px;
+}
 tr.jtable-no-data-row {
 	font-size: 10px
 }
 
-table table .jtable-column-header {
-	display:none
+table table table .jtable-column-header {
+	display: none
+}
+
+.scroll-content {
+	overflow-y: auto;
+	width: 100%;
+	height: 300px;
+}
+
+div.jtable-main-container table.jtable tbody>tr.jtable-child-row>td div .jtable-main-container table.jtable tbody>tr
+{
+	background: #FFFFFF;
+}
+
+div.jtable-main-container div.jtable-title div.jtable-toolbar span.jtable-toolbar-item span.jtable-toolbar-item-icon
+{
+	width: 24px;
+	height: 18px;
+}
+
+.ui-widget-content {
+	background: #F8F8F8;
+}
+
+
+#main-nav {
+   margin-left: 1px;
+}
+
+#main-nav.nav-tabs.nav-stacked > li > a {
+   padding: 10px 8px;
+   font-size: 12px;
+   font-weight: 600;
+   color: #4A515B;
+   background: #E9E9E9;
+   background: -moz-linear-gradient(top, #FAFAFA 0%, #E9E9E9 100%);
+   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#FAFAFA), color-stop(100%,#E9E9E9));
+   background: -webkit-linear-gradient(top, #FAFAFA 0%,#E9E9E9 100%);
+   background: -o-linear-gradient(top, #FAFAFA 0%,#E9E9E9 100%);
+   background: -ms-linear-gradient(top, #FAFAFA 0%,#E9E9E9 100%);
+   background: linear-gradient(top, #FAFAFA 0%,#E9E9E9 100%);
+   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FAFAFA', endColorstr='#E9E9E9');
+   -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#FAFAFA', endColorstr='#E9E9E9')";
+   border: 1px solid #D5D5D5;
+   border-radius: 4px;
+}
+
+#main-nav.nav-tabs.nav-stacked > li > a > span {
+    color: #4A515B; }
+
+#main-nav.nav-tabs.nav-stacked > li.active > a, #main-nav.nav-tabs.nav-stacked > li > a:hover {
+    color: #FFF;
+    background: #3C4049;
+    background: -moz-linear-gradient(top, #4A515B 0%, #3C4049 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#4A515B), color-stop(100%,#3C4049));
+    background: -webkit-linear-gradient(top, #4A515B 0%,#3C4049 100%);
+    background: -o-linear-gradient(top, #4A515B 0%,#3C4049 100%);
+    background: -ms-linear-gradient(top, #4A515B 0%,#3C4049 100%);
+    background: linear-gradient(top, #4A515B 0%,#3C4049 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#4A515B', endColorstr='#3C4049');
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#4A515B', endColorstr='#3C4049')";
+    border-color: #2B2E33;
+}
+#main-nav.nav-tabs.nav-stacked > li.active > a, #main-nav.nav-tabs.nav-stacked > li > a:hover > span {
+    color: #FFF;
+}
+
+#main-nav.nav-tabs.nav-stacked > li {
+    margin-bottom: 4px;
+}
+
+
+.navbar-static-top {
+    background-color: #212121;
+    margin-bottom: 5px;
+}
+
+.navbar-brand {
+    background: url('') no-repeat 10px 8px;
+    display: inline-block;
+    vertical-align: middle;
+    padding-left: 50px;
+    color: #fff;
+}
+
+.card {
+	padding: 20px;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	-webkit-box-shadow: 4px 4px 10px #ccc;
+	-moz-box-shadow: 4px 4px 10px #ccc;
+	background: #fff;
+	overflow-y: auto;
+	border: 1px solid #F8F8F8;
+	bottom: 30px;
+	top: 0;
+	height: 550px;
+	right: 0;
+	left: 0;
 }
 
 </style>
@@ -84,7 +269,7 @@ table table .jtable-column-header {
 							<div class="pageHeaderDiv">
 								<div id="message"></div>
 								<img src="img/window_information.png" alt="Dashboard" />&nbsp;&nbsp;
-								Policy functions &nbsp;
+								Desktop Agent Policy  &nbsp;
 							</div>
 						</td>
 						<td id="loadingAnim"></td>
@@ -92,150 +277,499 @@ table table .jtable-column-header {
 				</tbody>
 			</table>
 		</h3>
-
-
-		<div>
-			<button id="openassign">Assign</button>
-		</div>
+	 <p>
+      Device Agent Policy shows Proflie list and Assignment list.
+      You can add a new profile in this panel and assign the selected profiles to the selected pools.
+      </p>
 
 		<br />
-		<div style="float: left; width: 450px">
-			<div id="profilelist"></div>
-		</div>
-		<div style="float: left; width: 450px; margin-left: 20px;">
-			<div id="assignmentlist"></div>
-		</div>
+	
+		
 
-
-
-		<div id="CreateProfile" title="new profile">
-
-			<form>
-				<table>
+		<div class="pageHeader">
+			<table border="none" cellpadding="0" cellspacing="0" width="100%">
+				<tbody>
 					<tr>
-						<td><label for="name">Profile name:</label></td>
-						<td><input type="text" name="name" id="proname"
-							class="text ui-widget-content ui-corner-all" /></td>
+						<td style="vertical-align: top;float: left; width: 400px">
+							
+								<div id="profilelist"></div>
+								
+    <div id="layout1" class="layout1"> 
+    <img src="img/spinner.gif" id="spinner1" alt="loading..." /></div>
+								 
+			  
+						</td>
+						<td  align="center" style="vertical-align: 200px;"><br /> <br /> <br />
+							<p>
+								<img src="img/arrow1.png" alt="assign" id="openassign"
+									onmouseover='src="img/arrow2.png"'
+									title="click to assign the selected profile to the selected pool"
+									onmouseout='src="img/arrow1.png"' style="cursor: hand" />
+							</p></td>
+
+						<td style="width: 400px; vertical-align: top;">
+							<div>
+								<div id="assignmentlist" style="width: 400px; magrin-top: 50px;"></div>
+							</div>
+						</td>
 					</tr>
-					<tr>
-						<td><label for="description">description:</label></td>
-						<td><textarea rows="5" cols="23" name="desc" id="desc" 
-							class="text ui-widget-content ui-corner-all" /></td>
-					</tr>
-				</table>
-			</form>
+				</tbody>
+			</table>
 		</div>
 
-		<div id="ConfigureProfile">
+ <div id="over" class="over"></div>
+    <div id="layout" class="layout"> 
+    <img src="img/spinner.gif" id="spinner1" alt="loading..." /></div>
+		 <div id="ConfigureProfile">
+		
+  <div class=" di-title">
+    <p></p>
+  </div><br/>
+
+		 
+<div>
+			<ul class="row nav nav-tabs" id="Tab">
+				<li id="General" class="col-md-3 active"><a  href="#CreateProfile">General</a></li>
+				<li id="commonTab" class="col-md-3 "><a  href="#Tabs-common">Common Policies</a></li>
+				<li id="pcoipTab" class="col-md-3 "><a href="#Tabs-pcoip">PCoIP Policies</a></li>
+				<li id="usbTab" class="col-md-3 "><a href="#Tabs-usb">USB Policies</a></li>
+			</ul>
 
 
-			<div id="tabs">
-				<ul>
-					<li id="commonTab"><a href="#Tabs-common">Common Policies</a></li>
-					<li id="pcoipTab"><a href="#Tabs-pcoip">PCoIP Policies</a></li>
-					<li id="usbTab"><a href="#Tabs-usb">USB Policies</a></li>
-				</ul>
+			<div class="tab-content " style="font-size: 12px;" >
+			
+				<div class="tab-pane active card" id="CreateProfile">
+			
+				   	<div class="control-group">
 
+													<label for="name" class="control-label">Profile name:<span class="required">*</span></label>
+                                                          
+													<div class="controls">
+														<input type="text" class=" m-wrap" name="name" id="proname"/>&nbsp;&nbsp;
+														<span id="inputerror" style="color:red" class="glyphicon glyphicon-remove hide"></span>
+													
+														 <span id="inputok" style="color:green" class="glyphicon glyphicon-ok  hide"></span>
+													</div><br/>
 
+												</div>
+												<div class="control-group">
+													<label for="description" class="control-label">Description:</label>
 
-				<div id="Tabs-common">
+													<div class="controls">
 
-					
-						<ul>
-							<li><a href="#policy1-1">Block all devices unless
-									they are <br />included via Include filter rule
-							</a></li>
-							<li><a href="#policy1-2">Number of days to keep
-									production logs
-							</a></li>
-						</ul>
+											<textarea rows="5" cols="33" name="desc" id="desc" />
 
-						<div id="policy1-1">
-							<select id="blockAll" name="blockAll" title="blockAll">
-								<option selected="selected" value="true">Allow all devices</option>
-								<option value="false">Disabled all devices</option>
-							</select>
+													</div>
+													
+												</div>
+											<br/><br/>
+<div id="namecheck1" class="alert alert-danger hide" role="alert"> Name is required.Please provide a new profile name</div>
+<div id="namecheck2" class="alert alert-danger hide" role="alert"> Name is exist.Please provide a new profile name</div>
+								
+								<div class="buttongroup">
+												<button type="button" class="btn btn-lg btn-primary" disabled="disabled">Back</button>&nbsp;&nbsp;
+												<button type="button" class="btn btn-primary next">Next</button>&nbsp;&nbsp;
+												<button id="hided-savebutton" type="button" class="btn btn-primary save">Save</button>&nbsp;&nbsp;
+												<button type="button" class="btn btn-primary cancel">Cancel</button>
+				</div>			
+				</div>
+
+				<div class="tab-pane" id="Tabs-common"><br/>
+					<div class="row">
+						<div class="col-md-4" style="height:550px; overflow:auto;">
+							<ul class="nav nav-pills nav-stacked slide" id="subTab1">
+								<li><a href="#policy1-1">Block all devices unless they are included via Include filter rule</a></li>
+								<li><a href="#policy1-2">Number of days to keep production logs </a></li>
+								<li><a href="#policy1-3">Maximum number if debug logs </a></li>
+								<li><a href="#policy1-4">Maximun debug log size in Megabytes </a></li>
+								<li><a href="#policy1-5">log directory </a></li>
+								<li><a href="#policy1-6">Send logs to a Syslog server </a></li>
+								<li><a href="#policy1-7">CPU and Memory Sampling Interval in Seconds </a></li>
+								<li><a href="#policy1-8">Overall CPU usage percentage to issue log info </a></li>
+								<li><a href="#policy1-9">Overall memory usage percentage to issue log info </a></li>
+								<li><a href="#policy1-10">Process CPU usage percentage to issue log info </a></li>
+							</ul>
 						</div>
-						<div id="policy1-2">
-							<input id="daysToKeepLogs" name="daysToKeepLogs"
-								title="daysToKeepLogs" />
-						</div>
+						<div class="col-md-8 ">
+							<div class="tab-content">
+								<div class="tab-pane row card" id="policy1-1">
+									<div class="row">
+										<div class="col-md-12">Block all devices unless they are included via Include filter rule:</div>
+									</div>
+									<div class="row">
+										<div class="col-md-4">
 
+											<input type="radio" name="SSL_connections_enabled_1-1" id="SSL1-1_1" value="2"/>Not Configued <br />
+											<input type="radio" name="SSL_connections_enabled_1-1"  id="SSL1-1_2" value="0" />Enabled <br />
+											<input type="radio" name="SSL_connections_enabled_1-1"  id="SSL1-1_3" value="1" />Disabled <br />
+											</div>
+										<div class="col-md-8"></div>
+									</div>
+									<br />
+									<div class="row">
+										<div class="col-md-12">
+											Options:<br /> <select id="blockAll" name="blockAll"
+												title="blockAll">
+												<option selected="selected" value="true">Allow all
+													devices</option>
+												<option value="false">Disabled all devices</option>
+											</select>
+											</div>
+									</div>
+
+
+								</div>
+								<div class="tab-pane row card" id="policy1-2">
+
+									<div class="row">
+										<div class="col-md-12">Number of days to keep production logs:</div>
+									</div>
+									<div class="row">
+										<div class="col-md-4">
+											<input type="radio" name="SSL_connections_enabled_1-2" id="SSL1-2_1" value="2"/>Not Configued <br />
+											<input type="radio" name="SSL_connections_enabled_1-2"  id="SSL1-2_2" value="0" />Enabled <br />
+											<input type="radio" name="SSL_connections_enabled_1-2"  id="SSL1-2_3" value="1" />Disabled <br />
+										</div>
+										<div class="col-md-8"></div>
+									</div>
+									<br /> 
+									<div class="row">
+										<div class="col-md-12">
+											Options:<br /> <input id="daysToKeepLogs"
+												name="daysToKeepLogs" title="daysToKeepLogs" />
+										</div>
+										
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="buttongroup">
+												<button type="button" class="btn btn-primary back">Back</button>&nbsp;&nbsp;
+												<button type="button" class="btn btn-primary next">Next</button>&nbsp;&nbsp;
+												<button type="button" class="btn btn-primary save">Save</button>&nbsp;&nbsp;
+												<button type="button" class="btn btn-primary cancel">Cancel</button>
+				</div>
 				</div>
 
 
 
-				<div id="Tabs-pcoip">
-					<div id="tabs12">
-						<ul>
-							<li><a href="#policy2-1">Configure clipboard redirection
-							</a></li>
-							<li><a href="#policy2-2">Turn off Build-to-Lossless feature
-							</a></li>
 
-						</ul>
 
-						<div id="policy2-1">
-							<select id="clipboardRediretion" name="clipboardRediretion" title="clipboardRediretion">
-								<option selected="selected" value="CLIENT2AGENT">Enabled client to
-									agent only</option>
-								<option value="DISABLED">Disabled in both directions</option>
-								<option value="ENABLED">Enabled in both directions</option>
-								<option value="AGENT2Client">Enabled agent to client only</option>
-							</select>
+				<div class="tab-pane" id="Tabs-pcoip"><br/>
+
+					<div class="row">
+						<div class="col-md-4" style="height:550px; overflow:auto;">
+							<ul class="nav nav-pills nav-stacked slide" id="subTab2">
+								<li><a href="#policy2-1">Configure clipboard redirection </a></li>
+								<li><a href="#policy2-2">Turn off Build-to-Lossless	feature </a></li>
+								<li><a href="#policy2-3">Configure SSL connections to satisfy Security Tools </a></li>
+							    <li><a href="#policy2-4">Configure the PCoIP session MTU</a></li>
+							    <li><a href="#policy2-5">Configure the PCoIP session bandwidth floor</a></li>
+							    <li><a href="#policy2-6">Enable/disable audio in the PCoIP session</a></li>
+							    <li><a href="#policy2-7">Configure the PCoIP session audio bandwidth limit</a></li>
+							    <li><a href="#policy2-8">Configure PCoIP image quality levels</a></li>
+							    <li><a href="#policy2-9">Configure PCoIP USB allowed and unallowed device rules</a></li>
+							    <li><a href="#policy2-10">Configure PCoIP session encryption algorithms</a></li>
+							     <li><a href="#policy2-11">Configure the PCoIP session audio bandwidth limit</a></li>
+							    <li><a href="#policy2-12">Configure PCoIP image quality levels</a></li>
+							    <li><a href="#policy2-13">Configure PCoIP USB allowed and unallowed device rules</a></li>
+							    <li><a href="#policy2-14">Configure PCoIP session encryption algorithms</a></li>
+							    
+							</ul>
+						</div>
+						<div class="col-md-8">
+							<div class="tab-content">
+								<div class="tab-pane row card" id="policy2-1">
+									<div class="row">
+										<div class="col-md-12">Configure clipboard redirection:</div>
+
+									</div>
+									<div class="row">
+										<div class="col-md-4">
+											<input type="radio" name="SSL_connections_enabled_2-1" id="SSL2-1_1" value="2"/>Not Configued <br />
+											<input type="radio" name="SSL_connections_enabled_2-1"  id="SSL2-1_2" value="0" />Enabled <br />
+											<input type="radio" name="SSL_connections_enabled_2-1"  id="SSL2-1_3" value="1" />Disabled <br />
+										</div>
+										<div class="col-md-8"></div>
+									</div>
+									<br /> 
+									<div class="row">
+										<div class="col-md-12">
+											Options:<br /> <select id="clipboardRediretion"
+												name="clipboardRediretion" title="clipboardRediretion">
+												<option selected="selected" value="CLIENT2AGENT">Enabled
+													client to agent only</option>
+												<option value="DISABLED">Disabled in both
+													directions</option>
+												<option value="ENABLED">Enabled in both directions</option>
+												<option value="AGENT2Client">Enabled agent to
+													client only</option>
+											</select>
+
+										</div>
+									</div>
+
+
+								</div>
+								<div class="tab-pane row card" id="policy2-2">
+									<div class="row">
+										<div class="col-md-12">Turn off Build-to-Lossless feature:</div>
+
+									</div>
+									<div class="row">
+										<div class="col-md-4">
+											<input type="radio" name="SSL_connections_enabled_2-2" id="SSL2-2_1" value="2" />Not Configued <br />
+											<input type="radio" name="SSL_connections_enabled_2-2"  id="SSL2-2_2" value="0" />Enabled <br />
+											<input type="radio" name="SSL_connections_enabled_2-2"  id="SSL2-2_3" value="1" />Disabled <br />
+										</div>
+										<div class="col-md-8"></div>
+									</div>
+									<br />
+									<div class="row">
+										<div class="col-md-12">
+											Options:<br /> <select id="turnOffLossLess"
+												name="turnOffLossLess" title="turnOffLossLess">
+												<option value="true">Enabled</option>
+												<option selected="selected" value="false">Disabled</option>
+											</select>
+
+										</div>
+										
+									</div>
+
+
+								</div>
+
+								<div class="tab-pane row card" id="policy2-3" >
+									<div class="row">
+										<div class="col-md-12" ><b>Configue SSl connections to satisfy Security Tools:</b></div>
+
+									</div>
+									<div class="row">
+										<div class="col-md-6">
+											<input type="radio" name="SSL_connections_enabled_2-3" id="SSL2-3_1" value="2"/>Not Configued <br />
+											<input type="radio" name="SSL_connections_enabled_2-3"  id="SSL2-3_2" value="0" />Enabled <br />
+											<input type="radio" name="SSL_connections_enabled_2-3"  id="SSL2-3_3" value="1" />Disabled <br />
+										</div>
+										<div class="col-md-6"></div>
+									</div>
+									<br /> 
+									<div class="row">
+										<div class="col-md-12" >
+											<b>Options:</b><br />
+											<table  class="table" style="font-size: 12px;" >
+												<tbody>
+													<tr>
+														<td id="policy2-3_content" style="padding: 10px;">
+															<p >
+																<input type="checkbox" id="policy2-3-1" value="0" />Disalbe
+																connections from VMware View 5.1 and earlier<br />
+															</p>
+															<p>
+																How a Server chooses the certificate it presents to
+																post-VMware View 5.1 components:<br /> <select
+																	id="policy2-3-2">
+																	<option selected="selected" value="0">From the
+																		certificate Store</option>
+																<option value="1">From the Certificate Store
+																		if possible,otherwise generate</option>
+																	<option value="2">Generate a unique
+																		self-signed certificate</option>
+																</select>
+															</p>
+
+															<p>
+																Name of the Machine account's Certificate Store to
+																search for a certificate:<br /> <input id="policy2-3-3"
+																	value="MY" />
+															</p>
+
+															<p>
+																The minimum keylength enforced when validating the
+																certificate(1024,2048 or 4096):<br /> <select
+																	id="policy2-3-4">
+																	<option selected="selected" value="1024">1024</option>
+																	<option value="2048">2048</option>
+																	<option value="4096">4096</option>
+																</select>
+															</p>
+
+															<p>
+																Name of the Machine account's Certificate Store for a
+																Certificate Authority's certificate:<br /> <input
+																	id="policy2-3-5" value="ROOT" />
+															</p>
+
+															<p>
+																<input type="checkbox" id="policy2-3-6" value="0" />Server
+																instructs client to request the View Connection Server's
+																certificate<br />
+															</p>
+															<p>
+																<input type="checkbox" id="policy2-3-7" value="0" />Enforce
+																AES-256 or stronger ciphers for SSL connection
+																negotiation<br />
+															</p>
+
+														</td>
+													</tr>
+												</tbody>
+											</table>
+
+										</div>
+										
+									</div>
+
+
+								</div>
+
+							</div>
 						</div>
 
-
-						<div id="policy2-2">
-							<select id="turnOffLossLess" name="turnOffLossLess" title="turnOffLossLess">
-								<option value="true">Enabled</option>
-								<option selected="selected" value="false">Disabled</option>
-							</select>
-
-						</div>
 
 					</div>
+					<div class="buttongroup">
+												<button type="button" class="btn btn-primary back">Back</button>&nbsp;&nbsp;
+												<button type="button" class="btn btn-primary next">Next</button>&nbsp;&nbsp;
+												<button type="button" class="btn btn-primary save">Save</button>&nbsp;&nbsp;
+												<button type="button" class="btn btn-primary cancel">Cancel</button>
+				</div>
+
 				</div>
 
 
 
 
-
-				<div id="Tabs-usb">
-					
-						<ul>
-							<li><a href="#policy3-1">Allow other input devices
-							</a></li>
-							<li><a href="#policy3-2">Allow HID-Bootable</a></li>
-						</ul>
-						<div id="policy3-1">
-							<select id="allowOther" name="allowOther" title="allowOther">
-								<option value="true">Enabled</option>
-								<option selected="selected" value="false">Disabled</option>
-							</select>
+				<div class="tab-pane" id="Tabs-usb"><br/>
+					<div class="row">
+						<div class="col-md-4" style="height:550px; overflow:auto;">
+							<ul class="nav nav-pills nav-stacked slide" id="subTab3">
+								<li><a href="#policy3-1">Allow other	input devices </a></li>
+								<li><a href="#policy3-2">Allow HID-Bootable</a></li>
+								<li><a href="#policy3-3">Exclude Vid/Pid Device from Split</a></li>
+								<li><a href="#policy3-4">Split Vid/Pid Device</a></li>
+								<li><a href="#policy3-5">Allow Audio Input Devices</a></li>
+								<li><a href="#policy3-6">Allow Audio Output Devices</a></li>
+								<li><a href="#policy3-7">Allow keyboard and Mouse Devices</a></li>
+								<li><a href="#policy3-8">Include Vid/Pid Device</a></li>
+								<li><a href="#policy3-9">Exclude Device Family</a></li>
+								<li><a href="#policy3-10">Force MMR to use software overlay</a></li>
+							</ul>
 						</div>
-						<div id="policy3-2">
-							<select id="hidBootable" name="hidBootable" title="hidBootable">
-								<option value="true">Enabled</option>
-								<option selected="selected" value="false">Disabled</option>
-							</select>
-						</div>
+						<div class="col-md-8 ">
+							<div class="tab-content">
+								<div class="tab-pane row card" id="policy3-1">
+									<div class="row">
+										<div class="col-md-12">Allow other input devices:</div>
+									</div>
+									<div class="row">
+										<div class="col-md-4">
+											<input type="radio" name="SSL_connections_enabled_3-1" id="SSL3-1_1" value="2"/>Not Configued <br />
+											<input type="radio" name="SSL_connections_enabled_3-1"  id="SSL3-1_2" value="0" />Enabled <br />
+											<input type="radio" name="SSL_connections_enabled_3-1"  id="SSL3-1_3" value="1" />Disabled <br />
+										</div>
+										<div class="col-md-8"></div>
+									</div>
+									<br /> 
+									<div class="row">
+										<div class="col-md-12">
+											Options:<br />
+											<table style="font-size: 14px;">
+												<tbody>
+													<tr>
+														<td id="policy3-1_content"><select id="allowOther"
+															name="allowOther" title="allowOther">
+																<option value="true">Enabled</option>
+																<option selected="selected" value="false">Disabled</option>
+														</select></td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+										
+									</div>
+								</div>
 
+								<div class="tab-pane row card" id="policy3-2">
+									<div class="row">
+										<div class="col-md-12">Allow HID-Bootable:</div>
+									</div>
+									<div class="row">
+										<div class="col-md-4">
+											<input type="radio" name="SSL_connections_enabled_3-2" id="SSL3-2_1" value="2" />Not Configued <br />
+											<input type="radio" name="SSL_connections_enabled_3-2"  id="SSL3-2_2" value="0" />Enabled <br />
+											<input type="radio" name="SSL_connections_enabled_3-2"  id="SSL3-2_3" value="1" />Disabled <br />
+										</div>
+										<div class="col-md-8"></div>
+									</div>
+									<br />
+									<div class="row">
+										<div class="col-md-12">
+											Options:<br />
+											<table style="font-size: 14px;">
+												<tbody>
+													<tr>
+														<td id="policy3-2_content"><select id="hidBootable"
+															name="hidBootable" title="hidBootable">
+																<option value="true">Enabled</option>
+																<option selected="selected" value="false">Disabled</option>
+														</select></td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+										
+									</div>
+								</div>
+							</div>
+
+
+						</div>
+					</div>
+<div class="buttongroup">
+												<button type="button" class="btn btn-primary back">Back</button>&nbsp;&nbsp;
+												<button type="button" class="btn btn-lg btn-primary" disabled="disabled">Next</button>&nbsp;&nbsp;
+												<button type="button" class="btn btn-primary save">Save</button>&nbsp;&nbsp;
+												<button type="button" class="btn btn-primary cancel">Cancel</button>
 				</div>
 
+				</div></div>
 			</div>
-
-
-
 		</div>
+		
+		<div id="assign-confirm" title="Assign the profie?">
+  				<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>The selected profiles will be assigned to the selected pools. Are you sure?</p>
+		</div>
+		<div id="delete-profile-confirm" title="Delete the profie?">
+  				<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>This profile will be permanently deleted and cannot be recovered. Are you sure?</p>
+		</div>
+		<div id="delete-poolprofile-confirm" title="Delete the profie?">
+  				<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>The profile will be deleted from the pool.Are you sure?</p>
+		</div>
+		<div id="priority-confirm" title="Change the priority?">
+  				<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>This pool's profile priority will be changed. Are you sure?</p>
+		</div>
+		
+		<div id="change-priority-success" title="success">
+		
+  			<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>This pool's profile priority has been changed successfully!</p>
+</div>
+	<div id="delete-profile-success" title="success">
+		
+  			<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>The profile has been deleted successfully!</p>
+</div>
+<div id="assign-success" title="success">
+		
+  			<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>The selected profiles has been assigned successfully!</p>
+</div>
 
-
-
-
+         <img src="img/spinner.gif" id="spinner2" alt="loading..." style="display: none;" />
 		<script src="./jtable/jquery.jtable.min.js"></script>
+		<script src="./js/bootstrap.min.js"></script>
 
 		<script src="./js/policy.js"></script>
+	
 	</div>
-
 </body>
 </html>
