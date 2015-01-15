@@ -1,0 +1,190 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Client Access Control</title>
+<link href="./jquery/jquery-ui.css" rel="stylesheet">
+<link href="./css/libs/cupertino/jquery-ui.min.css" rel="stylesheet" />
+<link href="./jtable/themes/jqueryui/jtable_jqueryui.min.css"
+	rel="stylesheet" type="text/css" />
+
+<link href="./css/styles/styles.css" rel="stylesheet" />
+<link href="./css/styles/jquery-ui-1.8.20.custom.css" rel="stylesheet" />
+
+<link href="./css/empower.css" rel="stylesheet" />
+
+<script src="./jquery/external/jquery/jquery.js"></script>
+<script src="./jquery/jquery-ui.js"></script>
+<script src="./js/lib/jquery.dataTables-1.9.4.min.js"></script>
+<script src="./js/lib/jquery-1.8.3.min.js"></script>
+<script src="./js/lib/jquery.jgrowl_minified.js"></script>
+<script src="./js/lib/jquery-ui-1.8.24.min.js"></script>
+<script src="./js/lib/jquery.validate.min.js"></script>
+<script src="./js/lib/raphael-2.1.2.min.js"></script>
+<script src="./js/lib/elycharts-2.1.5.min.js"></script>
+<script src="./js/lib/jquery.iframe-transport.js"></script>
+<script src="./js/lib/jquery.remotipart.js"></script>
+<script src="./js/script.js"></script>
+<script src="./js/rails.js"></script>
+<script src="./js/appcopy.js"></script>
+<script src="./js/vcenterlogin.js"></script>
+<script language="javascript">
+	$(function() {
+		var tab_config = SNAPVOLUMES.main_tabs.defaultConfig();
+		SNAPVOLUMES.activity_tabs = $("#activity_data").tabs(tab_config).find(
+				'#activity_nav').removeClass('ui-corner-all').end();
+		SNAPVOLUMES.navbar.setupActivityTab('Pending_Actions', []);
+		SNAPVOLUMES.main_tabs.hideDisabledTabs(false);
+		$(window).bind('hashchange', function() {
+			SNAPVOLUMES.navbar.loadActivityTab();
+		});
+		SNAPVOLUMES.activity_tabs.toggle(true);
+		$('#whereami').text('activity');
+	});
+</script>
+</head>
+<body>
+	<div id="container">
+
+		<div id="body">
+			<div id="Filter">
+				<table>
+					<tr>
+						<td><h1 style="margin-top: 0px">Empower Desktop Pool by</h1></td>
+						<td class="logo"><span class="ir"></span></td>
+						<td width="47%"><p align="right">
+								<span><a href="./m2av?f=logout">Logout</a></span>
+							</p></td>
+					</tr>
+				</table>
+			</div>
+			<div class="inner clearfix">
+				<div id="main_nav" class="clearfix ui-corner-all"
+					style="background: #6183A6">
+					<ul id="main_nav_buttons">
+						<li class="ui-state-default ui-corner-all "><a
+							id="empower_btn" href="./empower.html">Empower Pool</a></li>
+						<li
+							class="ui-state-default ui-corner-all ui-state-active ui-tabs-selected"><a
+							id="compy_btn" href="./appcopy.html">Copy AppStack</a></li>
+							<!--  
+						<li class="ui-state-default ui-corner-all"><a id="import_btn"
+							href="./appimport.html">Import AppStack</a></li>-->
+					</ul>
+
+				</div>
+				<div id="main"
+					class="clearfix ui-tabs ui-widget ui-widget-content ui-corner-all ui-tabs-collapsible">
+					<!-- div for AppStack copy -->
+					<div id="copy_appstack" class="visible ">
+						<p>
+							<b>Copy AppStack:</b> Target AppStack has same applications as
+							source AppStack, Specifiy the target AppStack location details
+						</p>
+						<form id="copy_appstack_form"
+							class="ui-widget-content-b ui-corner-all" method="post">
+							<p class="clearfix">
+								<label for="ak_source" class="onefifth left">Source
+									AppStack:</label> <select id="ak_source" class="half required"
+									name="sourceAppStack"></select>
+							</p>
+
+							<p class="clearfix">
+								<label for="ak_name" class="onefifth left">Name:</label> <input
+									id="ak_name" type="text" name="name" class="half required"
+									maxlength="100">
+							</p>
+
+							<p class="clearfix">
+								<label for="ak_datastores_sel" class="onefifth left">Storage:</label>
+								<select id="ak_datastores_sel" class="half required"
+									name="datastores"></select>
+							</p>
+
+							<p class="clearfix">
+								<label for="ak_path" class="onefifth left">Path:</label> <input
+									id="ak_path" type="text" class="half required" name="path"
+									maxlength="100">
+							</p>
+
+							<div class="clearfix head-margin">
+								<label for="ak_description" class="onefifth left">Description:</label>
+								<div class="half left">
+									<textarea id="ak_description" class="wide"
+										name="ap_description" rows="5" cols="60" ></textarea>
+								</div>
+							</div>
+						</form>
+
+						<div class="clearfix">
+							<button id="save_copy_appstack_btn"
+								class="right ui-button ui-widget ui-state-default  ui-button-text-only">
+								<span class="ui-button-text">Copy</span>
+							</button>
+						</div>
+					</div>
+<div id="loginFilter" class="invisible">
+	<table>
+		<tr>
+		<td style="vertical-align:top"><div style="width: 300px">
+			<form action="./m2av" method="POST">
+			<fieldset>
+			<label for="msg" id="msg"></label>
+				<p>
+				<label for="vcenter[IP]">vCenter Server</label>
+				<input type="text" name="vcenter[IP]" id="vcenter_IP" value="" class="text ui-widget-content ui-corner-all" >
+				</p><p>
+				<label for="vcenter[name]">Administrator User Name</label>
+				<input type="text" name="vcenter[name]" id="vcenter_name" value="" class="text ui-widget-content ui-corner-all">
+				</p><p>
+				<label for="vcenter[password]">Password</label>
+				<input type="password" name="vcenter[password]" id="vcenter_password" value="" class="text ui-widget-content ui-corner-all">
+				</p>
+				<input name="f" value="vcenterLogin" type="hidden"  />
+				<input name="refer" value="copy" type="hidden"  /> 
+				
+				<!-- Allow form submission with keyboard without duplicating the dialog button -->
+				<div class="actions">
+				<button id="login_btn" class="right ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" style="font-size: 14px;">
+					<span class="ui-button-text">Login</span>
+				</button>
+				</div>
+			</fieldset>
+			</form>
+		</div></td>
+		<td style="vertical-align:top">
+			<div style="width: 450px; margin-top: 20px; ">
+				<img src='./img/copy_appStack.png'/>
+			</div>
+		</td>
+		</tr>
+		</table>
+</div>
+		</div>
+		</div>
+		</div>
+		<div id="dialog-progress" title="Progress dialog title">
+			<div class="ui-progressbar"></div>
+		</div>
+
+		<div id="alertMessage" title="Alert Message">
+			<span class="ui-icon ui-icon-alert"
+				style="float: left; margin: 0 7px 20px 0;"></span>
+			<div id='alertMsg'></div>
+		</div>
+	</div>
+	<div class="footer">
+		<div class="inner">
+			<div class="left half">
+				<span>Version: 2.5</span> <span id="version"></span>
+			</div>
+			<div id="copyright" class="right half">
+				<span id="copyright"> app volume&nbsp; <span
+					class="spaceFooter"> 2014-2014 VMware, Inc. All rights
+						reserverd &nbsp; </span>
+				</span>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Client Access Control</title>
+<link href="./jquery/jquery-ui.css" rel="stylesheet">
+<link href="./css/libs/cupertino/jquery-ui.min.css" rel="stylesheet" />
+<link href="./jtable/themes/jqueryui/jtable_jqueryui.min.css"
+	rel="stylesheet" type="text/css" />
+
+<link href="./css/styles/styles.css" rel="stylesheet" />
+<link href="./css/styles/jquery-ui-1.8.20.custom.css" rel="stylesheet" />
+
+<link href="./css/empower.css" rel="stylesheet" />
+
+<script src="./jquery/external/jquery/jquery.js"></script>
+<script src="./jquery/jquery-ui.js"></script>
+<script src="./js/lib/jquery.dataTables-1.9.4.min.js"></script>
+<script src="./js/lib/jquery-1.8.3.min.js"></script>
+<script src="./js/lib/jquery.jgrowl_minified.js"></script>
+<script src="./js/lib/jquery-ui-1.8.24.min.js"></script>
+<script src="./js/lib/jquery.validate.min.js"></script>
+<script src="./js/lib/raphael-2.1.2.min.js"></script>
+<script src="./js/lib/elycharts-2.1.5.min.js"></script>
+<script src="./js/lib/jquery.iframe-transport.js"></script>
+<script src="./js/lib/jquery.remotipart.js"></script>
+<script src="./js/script.js"></script>
+<script src="./js/rails.js"></script>
+<script language="javascript">
+	$(function() {
+		var tab_config = SNAPVOLUMES.main_tabs.defaultConfig();
+		SNAPVOLUMES.activity_tabs = $("#activity_data").tabs(tab_config).find(
+				'#activity_nav').removeClass('ui-corner-all').end();
+		SNAPVOLUMES.navbar.setupActivityTab('Pending_Actions', []);
+		SNAPVOLUMES.main_tabs.hideDisabledTabs(false);
+		$(window).bind('hashchange', function() {
+			SNAPVOLUMES.navbar.loadActivityTab();
+		});
+		SNAPVOLUMES.activity_tabs.toggle(true);
+		$('#whereami').text('activity');
+	});
+</script>
+</head>
+<body>
+	<div id="container">
+
+		<div id="body">
+			<div id="Filter">
+				<table >
+					<tr>
+						<td><h1 style="margin-top: 0px">Empower Desktop Pool by</h1></td>
+						<td class="logo"><span class="ir"></span></td>
+						<td width="47%"><p align="right">
+								<span><a href="./m2av?f=logout">Logout</a></span>
+							</p></td>
+					</tr>
+				</table>
+
+			</div>
+			<div class="inner clearfix">
+				<div id="main_nav" class="clearfix ui-corner-all"
+					style="background: #6183A6">
+					<ul id="main_nav_buttons">
+						<li
+							class="ui-state-default ui-corner-all"><a
+							id="empower_btn" href="./empower.html">Empower Pool</a></li>
+						<li class="ui-state-default ui-corner-all"><a id="compy_btn"
+							href="./appcopy.html">Copy AppStack</a></li>
+					<!--	<li class="ui-state-default ui-corner-all"><a id="import_btn"
+							href="./appimport.html">Import AppStack</a></li>-->
+					</ul>
+				</div>
+				<div id="main"
+					class="clearfix ui-tabs ui-widget ui-widget-content ui-corner-all ui-tabs-collapsible">
+	<div id="content">
+			<h3>What is Empower Desktop Pool by App Volumes</h3>
+			<p>
+			Enpower Desktop Pool by App Volumes tool provides an easy way to associate existing Horizon 
+			View desktop pools with App Volumes. App Stacks managed by App Volumes can be 
+			attached to users/desktops from a desktop pool perspective. 
+			</p>
+			
+			<b>Why Using It?</b>
+			<p>
+			By using this tool to attach App Stacks to desktop pool, base OS will be separated 
+			from applications, and application upgrade will be less distruptive in the future: 
+			no recreation of virtual desktops, no recompose (for Linked-Clone pool), and fast.
+			</p>
+			
+			<h3>Setup Guide</h3>
+			<b>Preconditions</b>
+			<ol>
+				<li>Existing Horizon View environment</li>
+				<li>App Volumes manager is installed, and App Stacks have been prepared. (<a href="http://www.vmware.com/cn/products/appvolumes" target="_blank">Official web site for App Volumes</a>)</li>
+				<li>App Volumes agent is installed in desktops of target pools.</li>
+			</ol>
+						
+			<h4>Working with manual pool</h4>
+			<p>
+			There is no further configuration for manual pool, except the preconditions. Use this tool attach App Stacks to a selected desktop pool, that's all.
+			</p>
+			
+			<h4>Working with automated pool</h4>
+			<p>
+				Automated pool (linked clone, or not) will have desktop dynamically created.
+				To make sure newly created desktops have App Stacks automatically attached 
+				as configured for the owner desktop pool (configured in this tool), an additional
+				change is required for the desktop pool master VM template:
+			</p>
+			
+			<blockquote>
+				<ol>
+					<li><b>Download this <a href="./resources/autoAttach.exe">autoAttach.exe</a> 
+					(right click the link, select Save As...)</b>
+					</li>
+					<li><b>
+					configure it to be auto started when Windows starts.</b>
+					</li>
+				</ol>
+			</blockquote>
+			
+			<p>
+				The application will communicate with this Migrate to App Volumes tool which is installed on View Connection
+				server. The script will attach App Stacks which are configured for its owner desktop pool. 
+				in future, desktop pool related App Stack attach/detatch can be operated in this Migrate to App 
+				Volumes tool, so as to avoid changing of desktop pool master VM template for this purpose.
+			</p>
+			<p>
+				For more information, contact VMware EUC Technical Enablement team.
+			</p>
+		</div>
+	</div>
+	</div></div></div>
+	<div class="footer">
+		<div class="inner">
+			<div class="left half">
+				<span>Version: 2.5</span> <span id="version"></span>
+			</div>
+			<div id="copyright" class="right half">
+				<span id="copyright"> app volume&nbsp; <span
+					class="spaceFooter"> 2014-2014 VMware, Inc. All rights
+						reserverd &nbsp; </span>
+				</span>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

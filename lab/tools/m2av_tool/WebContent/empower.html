@@ -1,0 +1,228 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Client Access Control</title>
+<link href="./jquery/jquery-ui.css" rel="stylesheet">
+<link href="./css/libs/cupertino/jquery-ui.min.css" rel="stylesheet" />
+<link href="./jtable/themes/jqueryui/jtable_jqueryui.min.css"
+	rel="stylesheet" type="text/css" />
+
+<link href="./css/styles/styles.css" rel="stylesheet" />
+<link href="./css/styles/jquery-ui-1.8.20.custom.css" rel="stylesheet" />
+
+<link href="./css/empower.css" rel="stylesheet" />
+<script src="./jquery/external/jquery/jquery.js"></script>
+<script src="./jquery/jquery-ui.js"></script>
+<script src="./js/lib/jquery.dataTables-1.9.4.min.js"></script>
+<script src="./js/lib/jquery-1.8.3.min.js"></script>
+<script src="./js/lib/jquery.jgrowl_minified.js"></script>
+<script src="./js/lib/jquery-ui-1.8.24.min.js"></script>
+<script src="./js/lib/jquery.validate.min.js"></script>
+<script src="./js/lib/raphael-2.1.2.min.js"></script>
+<script src="./js/lib/elycharts-2.1.5.min.js"></script>
+<script src="./js/lib/jquery.iframe-transport.js"></script>
+<script src="./js/lib/jquery.remotipart.js"></script>
+<script src="./js/script.js"></script>
+<script src="./js/rails.js"></script>
+<script src="jquery/external/jquery/jquery.js"></script>
+<script src="jquery/jquery-ui.js"></script>
+<script src="./jtable/jquery.jtable.min.js"></script>
+<script src="./js/empower.js"></script>
+<script src="./js/viewlogin.js"></script>
+</head>
+<script language="javascript">
+	$(function() {
+		var tab_config = SNAPVOLUMES.main_tabs.defaultConfig();
+		SNAPVOLUMES.activity_tabs = $("#activity_data").tabs(tab_config).find(
+				'#activity_nav').removeClass('ui-corner-all').end();
+		SNAPVOLUMES.navbar.setupActivityTab('Pending_Actions', []);
+		SNAPVOLUMES.main_tabs.hideDisabledTabs(false);
+		$(window).bind('hashchange', function() {
+			SNAPVOLUMES.navbar.loadActivityTab();
+		});
+		SNAPVOLUMES.activity_tabs.toggle(true);
+		$('#whereami').text('activity');
+	});
+</script>
+</head>
+<body>
+	<div id="container">
+		<div id="body">
+			<div id="Filter">
+				<table>
+					<tr>
+						<td><h1 style="margin-top: 0px">Empower Desktop Pool by</h1></td>
+						<td class="logo"><span class="ir"></span></td>
+						<td width="47%"><p align="right">
+								<span><a href="./m2av?f=logout">Logout</a></span>
+							</p></td>
+					</tr>
+				</table>
+			</div>
+			<div class="inner clearfix">
+				<div id="main_nav" class="clearfix ui-corner-all"
+					style="background: #6183A6">
+					<ul id="main_nav_buttons">
+						<li
+							class="ui-state-default ui-corner-all ui-state-active ui-tabs-selected"><a
+							id="empower_btn" href="./empower.html">Empower Pool</a></li>
+						<li class="ui-state-default ui-corner-all"><a id="compy_btn"
+							href="./appcopy.html">Copy AppStack</a></li>
+						<!--<li class="ui-state-default ui-corner-all"><a id="import_btn"
+							href="./appimport.html">Import AppStack</a></li>-->
+					</ul>
+
+				</div>
+				<div id="main"
+					class="clearfix ui-tabs ui-widget ui-widget-content ui-corner-all ui-tabs-collapsible">
+					<div id="contentarea">
+						<p>App Volumes technology changes how applications are
+							managed. This tool helps you to apply or remove app stacks to
+							multiple desktops or entitled users of of existing Horizon View
+							desktop pools.</p>
+						<table>
+							<tr>
+								<td style="vertical-align: top"><div
+										style="float: left; width: 250px; margin-top: 10px;">
+										<table>
+											<tr>
+												<td><a href="./m2av?f=refresh"><b>App Stacks:</b></a></td>
+											</tr>
+										</table>
+										<img id="progress_icon_app_stacks" src="./img/loading_32.gif" />
+										<div id="appStacks"></div>
+									</div></td>
+								<td style="vertical-align: top"><div
+										style="float: left; margin-left: 30px;">
+										<br /> <br />
+										<P>
+											<button id="btnApply"
+												class="ui-button ui-state-default ui-button-text-only ui-button-text-icon-primary">
+												<span
+													class="ui-button-icon-primary ui-icon ui-icon-plusthick"></span>
+												<span class="ui-button-text">&nbsp;&nbsp;Apply&nbsp;&nbsp;</span>
+											</button>
+										</P>
+										<p>
+											<button id="btnRemove"
+												class="ui-button ui-state-default ui-button-text-only ui-button-text-icon-primary">
+												<span
+													class="ui-button-icon-primary ui-icon ui-icon-minusthick"></span>
+												<span class="ui-button-text">Remove</span>
+											</button>
+										</p>
+									</div></td>
+								<td style="vertical-align: top"><div
+										style="width: 485px; margin-left: 20px;">
+										<table>
+											<tr>
+												<td><div style="padding-top: 5px; padding-right: 10px">
+														<b>Targets</b>
+													</div></td>
+												<td nowrap>
+													<div id='desktopPools'>
+														Desktop Pool:&nbsp; <img id="progress_icon_pools"
+															src="./img/loading_32.gif" />
+													</div>
+												</td>
+												<td nowrap>
+													<div id="typeRadio" style="padding-left: 15px">
+														Type:&nbsp; <input type='radio' name='targetType'
+															id='radio_computer' value='computer' checked="checked" /><label
+															for='radio_computer'>Computer</label> <input type='radio'
+															name='targetType' id='radio_user' value='user' /><label
+															for='radio_user'>User</label>
+													</div>
+												</td>
+											</tr>
+										</table>
+										<div id="TableContainer"></div>
+									</div></td>
+							</tr>
+						</table>
+					</div>
+<div id="loginFilter" class="invisible">
+	<table>
+		<tr>
+		<td style="vertical-align:top"><div style="width: 300px">
+			<form action="./m2av" method="POST">
+			<label for="msg" id="msg"></label>
+			<fieldset>
+				<input name="f" value="viewLogin" type="hidden"  /> 
+				<p><label for="view[IP]" >View Connection Server</label>
+				<input type="text" name="view[IP]" id="view_IP" value="localhost" class="text ui-widget-content ui-corner-all">
+				</p><p>
+				<label for="view[name]">Administrator User Name</label>
+				<input type="text" name="view[name]" id="view_name" value="" class="text ui-widget-content ui-corner-all">
+				</p><p>
+				<label for="view[password]">Password</label>
+				<input type="password" name="view[password]" id="view_password" value="" class="text ui-widget-content ui-corner-all">
+				</p><p>
+				<label for="view[domain]">Domain</label>
+				<input type="text" name="view[domain]" id="view_domain" value="" class="text ui-widget-content ui-corner-all">
+				</p>
+				<!-- Allow form submission with keyboard without duplicating the dialog button -->
+				<div class="actions">
+				<button id="login_btn" class="right ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" style="font-size: 14px;">
+					<span class="ui-button-text">Login</span>
+				</button>
+				</div>
+			</fieldset>
+			</form>
+		</div></td>
+		<td style="vertical-align:top">
+			<div style="width: 450px; margin-left: 20px; ">
+				<img src='./img/m2av_diagram.png'/>
+			</div>
+		</td>
+		</tr>
+		</table>
+</div>
+					<p>
+						<i>IMPORTANT: Make sure App Volumes agent is installed in
+							desktops. For details, refer to <a href="./help.html"
+							target="_blank">Setup Guide</a>.
+						</i>
+					</p>
+				</div>
+
+			</div>
+			<div id="dialog-confirm" title="Confirmation">
+				<span class="ui-icon ui-icon-alert"
+					style="float: left; margin: 0 7px 20px 0;"></span>
+				<div id='confirmMsg'></div>
+			</div>
+			<div id="dialog-remove" title="Confirmation">
+				<span class="ui-icon ui-icon-alert"
+					style="float: left; margin: 0 7px 20px 0;"></span>
+				<div id='removeMsg'></div>
+			</div>
+
+			<div id="dialog-loading" title="Processing...">
+				<span><img id="progress_icon" src="./img/loading_32.gif"
+					style="float: left; margin: 0 7px 20px 0;" /></span>
+				<div id='msg'></div>
+			</div>
+			<div id="alertMessage" title="Alert Message">
+				<span class="ui-icon ui-icon-alert"
+					style="float: left; margin: 0 7px 20px 0;"></span>
+				<div id='alertMsg'></div>
+			</div>
+		</div>
+	</div>
+	<div class="footer">
+		<div class="inner">
+			<div class="left half">
+				<span>Version: 2.5</span> <span id="version"></span>
+			</div>
+			<div id="copyright" class="right half">
+				<span id="copyright"> app volume&nbsp; <span
+					class="spaceFooter"> 2014-2014 VMware, Inc. All rights
+						reserverd &nbsp; </span>
+				</span>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

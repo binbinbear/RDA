@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Client Access Control</title>
+<link href="./jquery/jquery-ui.css" rel="stylesheet">
+<link href="./css/libs/cupertino/jquery-ui.min.css" rel="stylesheet" />
+<link href="./jtable/themes/jqueryui/jtable_jqueryui.min.css"
+	rel="stylesheet" type="text/css" />
+
+<link href="./css/styles/styles.css" rel="stylesheet" />
+<link href="./css/styles/jquery-ui-1.8.20.custom.css" rel="stylesheet" />
+<link href="./css/M2avLogin.css" rel="stylesheet" />
+<script src="./jquery/external/jquery/jquery.js"></script>
+<script src="./jquery/jquery-ui.js"></script>
+<script src="./js/login.js"></script>
+</head>
+<body>
+<body class="login">
+	<div id="container">
+		<div id="body">
+			<div class="inner">
+				<form id="login_box" class="" action="./m2av" method="post">
+					<span id="flash_messages"> </span>
+					<input name="f" value="login" type="hidden" /> 
+					<div class="config_header">
+						<p>Login using your Active Directory credentials</p>
+					</div>
+					<p class="clearfix">
+						<label class="onesixthlog left">Host Address:</label> <input
+							id="host_address" class="required ui-widget-content medsm"
+							type="text" size="30" name="volume[host]" >
+						<br>
+					</p>
+					<p class="clearfix">
+						<label class="onesixthlog left">Username:</label> <input
+							id="user_account_name" class="required ui-widget-content medsm"
+							type="text" size="30" name="volume[name]" >
+						<br>
+					</p>
+					<p>
+						<label class="onesixthlog left">Password:</label> <input
+							id="user_password" class="ui-widget-content medsm"
+							type="password" size="30" name="volume[password]" >
+					</p>
+					<div class="actions">
+						<button id="login_btn"
+							class="right ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+							style="font-size: 16px;">
+							<span class="ui-button-text">Login</span>
+						</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
