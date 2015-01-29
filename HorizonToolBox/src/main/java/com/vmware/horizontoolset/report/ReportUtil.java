@@ -16,14 +16,11 @@ import com.vmware.horizontoolset.usage.Connection;
 import com.vmware.horizontoolset.usage.Event;
 import com.vmware.horizontoolset.usage.EventType;
 import com.vmware.horizontoolset.util.ConnectionImpl;
-import com.vmware.horizontoolset.viewapi.Farm;
-import com.vmware.horizontoolset.viewapi.RDS;
+import com.vmware.horizontoolset.util.EventImpl;
 import com.vmware.horizontoolset.viewapi.Session;
 import com.vmware.horizontoolset.viewapi.SessionFarm;
 import com.vmware.horizontoolset.viewapi.SessionPool;
 import com.vmware.horizontoolset.viewapi.SnapShotViewPool;
-import com.vmware.horizontoolset.viewapi.ViewAPIService;
-import com.vmware.horizontoolset.viewapi.ViewPool;
 import com.vmware.horizontoolset.viewapi.ViewType;
 import com.vmware.horizontoolset.viewapi.impl.SessionFarmImpl;
 import com.vmware.horizontoolset.viewapi.impl.SessionPoolImpl;
@@ -116,39 +113,51 @@ public class ReportUtil {
 		if (userName == null){
 			userName = "";
 		}
+		userName = userName.toLowerCase();
 		List<Connection> result = new ArrayList<Connection>();
 		
 		Map<String,Event> connectionEvents = new HashMap<String, Event>();
 		
-		Map<String,Event> loggedInEvents = new HashMap<String, Event>();
 		
+		if (events.size()==0){
+			return result;
+		}
 		
-		
+		int eventsSize = events.size();
+		Date earliestDate = events.get(eventsSize -1 ).getTime();
 		
 		 log.debug("before tranverse events: "+new Date());
-		for (int i = events.size() -1; i>=0; i--) {
+		for (int i = eventsSize -1; i>=0; i--) {
 			Event event = events.get(i);
 			String eventUserName = event.getUserName();
 			
-			if (eventUserName!=null && ( userName.length() == 0 || eventUserName.toLowerCase().contains(userName.toLowerCase()))){
+			if (eventUserName!=null && ( userName.length() == 0 || eventUserName.contains(userName))){
 				
 				String key = event.getMachineDNSName() + eventUserName;
 				if (event.getType() == EventType.Connection){
 					connectionEvents.put(key, event);
-				} else if (event.getType() == EventType.Loggedin){
-					loggedInEvents.put(key, event);
-				} else if (event.getType() == EventType.Disconnection){
+				}else if (event.getType() == EventType.Disconnection){
 					Event connectionEvent = connectionEvents.get(key);
 					if (connectionEvent!=null){
-						ConnectionImpl connection = new ConnectionImpl(connectionEvent, loggedInEvents.get(key), event);
-						result.add(connection );
+						ConnectionImpl connection = new ConnectionImpl(connectionEvent, event);
+						result.add(connection);
 						
 						connectionEvents.remove(key);
-						loggedInEvents.remove(key);
+					}else{
+						connectionEvent = new EventImpl(event, earliestDate);
+						//if a disconnect event happens without a connect event, this should be a long time event.
+						ConnectionImpl connection = new ConnectionImpl(connectionEvent, event);
+						result.add(connection );
 					}
 				}
 
 			}
+		}
+		Date unknownDate = new Date(0);
+		//for the connectionEvents without disconnection events, they should be connecting events
+		for (Event event: connectionEvents.values()){
+			ConnectionImpl connection = new ConnectionImpl(event, new EventImpl(event, unknownDate));
+			result.add(connection );
 		}
 		 log.debug("after tranverse events: "+new Date());
 		
@@ -212,7 +221,10 @@ public class ReportUtil {
 		events.clear();
 		for (Connection c: connections){
 			events.add(c.getConnectionEvent());
-			events.add(c.getDisconnectionEvent());
+			if (c.getDisconnectionTime().getTime()>0){
+				events.add(c.getDisconnectionEvent());
+			}
+			
 		}
 		
 		if (events.size()==0){
@@ -223,7 +235,6 @@ public class ReportUtil {
 		
 
 		int i = events.size()-1;
-		
 		long previousTime = events.get(i).getTime().getTime();
 		int currentMax = 0;
 		int currentConCurrent = 0;
@@ -233,14 +244,13 @@ public class ReportUtil {
 			if (i==0 || event.getTime().getTime() - previousTime > timeUnit){
 				result.add(new ConcurrentConnection(new Date(previousTime), currentMax));
 				long diffs = (event.getTime().getTime() - previousTime)/timeUnit;
-				if (diffs>1L || (i==0 && result.size()==1)){
+				if (diffs>1L){
 					result.add(new ConcurrentConnection(new Date(previousTime + timeUnit), currentConCurrent));
 					if (diffs>2L){
 						result.add(new ConcurrentConnection(new Date(previousTime + timeUnit*(diffs-1)), currentConCurrent));
 					}
 				}
 				previousTime = previousTime + timeUnit * diffs;
-				
 				currentMax = 0;
 			
 			}

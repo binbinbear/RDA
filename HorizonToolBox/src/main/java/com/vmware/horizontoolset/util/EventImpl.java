@@ -35,15 +35,9 @@ public class EventImpl implements Event{
 	}
 
 	private static final String ACCEPT = "has accepted an allocated session";
-	
-	private static final String LOGGEDIN = "has logged in to a new session";
-	
-	
-	private static final String ON_MACHINE = " on machine ";
+	private static final String ON_MACHINE = "running on machine ";
 	private static final String DISCONNECT = "has disconnected from machine ";
 	private static final String LOG_OFF = "has logged off machine ";
-	private static final String LOGOUT = " has logged out";
-	private static final String REQUEST_APP= " requested Application ";
 	
 	private EventType type = EventType.Others;
 	private String username;
@@ -73,6 +67,21 @@ public class EventImpl implements Event{
 		
 	}
 
+	//create a dummy connect or disconnect event. 
+	public EventImpl(Event pairevent, Date time){
+		this.username = pairevent.getUserName();
+		this.farmName = pairevent.getFarmName();
+		this.machineName = pairevent.getMachineDNSName();
+		this.time = time;
+		if (pairevent.getType()==EventType.Connection){
+			this.type = EventType.Disconnection;
+		}else if (pairevent.getType()==EventType.Disconnection){
+			this.type = EventType.Connection;
+		}
+		this.poolName = pairevent.getPoolName();
+		
+	}
+	
 	public EventImpl(AdminEvent event){
 		this.eventId = event.getEventId();
 		this.username = event.getUsername();
@@ -87,10 +96,6 @@ public class EventImpl implements Event{
 			if (shortMessage.contains(ACCEPT)){
 				this.type = EventType.Connection;
 				this.machineName = getValue(shortMessage, ON_MACHINE);
-			}else if (shortMessage.contains(LOGGEDIN)){
-				this.type= EventType.Loggedin;
-				this.machineName = getValue(shortMessage, ON_MACHINE);
-				
 			}else if (shortMessage.contains(DISCONNECT)  ){
 				this.type = EventType.Disconnection;
 				this.machineName = getValue(shortMessage, DISCONNECT);
@@ -112,14 +117,7 @@ public class EventImpl implements Event{
 				//log.debug("Event source:" + source.getType().toString() + " source name:" + source.getName());
 				
 			}
-		} else if (EventModule.Broker.equals(event.getModule())
-				&& (event.isInfo() || event.isAuditSuccess())) {
-			if (shortMessage.contains(LOGOUT)) {
-				this.type = EventType.Logout;
-			} else if (shortMessage.contains(REQUEST_APP)) {
-				this.type = EventType.RequestApp;
-			}
-		}
+		} 
 	}
 	
 	@Override

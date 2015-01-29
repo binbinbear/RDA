@@ -14,10 +14,9 @@ public class ConnectionImpl implements Connection{
 	private Event connectEvent;
 	private Event disConnectEvent;
 	
-	private Event loggedInEvent;
-	public ConnectionImpl(Event connectEvent, Event loggedInEvent , Event disconnectEvent){
+	
+	public ConnectionImpl(Event connectEvent, Event disconnectEvent){
 		this.username = connectEvent.getUserName();
-		this.loggedInEvent = loggedInEvent;
 		this.connectEvent = connectEvent;
 		this.disConnectEvent = disconnectEvent;
 	}
@@ -34,6 +33,9 @@ public class ConnectionImpl implements Connection{
 
 	@Override
 	public long getUsageTime() {
+		if (this.getDisconnectionTime().getTime() == 0){
+			return ((new Date()).getTime() - this.getConnectionTime().getTime())/1000; 
+		}
 		return (this.getDisconnectionTime().getTime() - this.getConnectionTime().getTime())/1000;
 	}
 
@@ -64,7 +66,7 @@ public class ConnectionImpl implements Connection{
 			return -1;
 		}
 		
-		return this.getDisconnectionTime().compareTo(o.getConnectionTime());
+		return this.getDisconnectionTime().compareTo(o.getDisconnectionTime());
 	}
 
 
@@ -96,20 +98,24 @@ public class ConnectionImpl implements Connection{
 
 
 	@Override
-	public Date getLoggedInTime() {
-		if (this.loggedInEvent == null) return null;
-		return this.loggedInEvent.getTime();
+	public String getDisConnectionTimeStr() {
+		Date time = this.getDisconnectionTime();
+		if (time.getTime() == 0L){
+			return "unknown";
+		}
+		return time.toString();
 	}
 
 
 
 
 	@Override
-	public long getLoginDelayTime() {
-		Date loggedInTime = this.getLoggedInTime();
-		if (loggedInTime == null) return 0;
-		long delay= loggedInTime.getTime() - this.getConnectionTime().getTime();
-		return delay>0 ? delay: 0;
+	public String getConnectionTimeStr() {
+		Date time = this.getConnectionTime();
+		if (time.getTime() == 0L){
+			return "unknown";
+		}
+		return time.toString();
 	}
 
 
