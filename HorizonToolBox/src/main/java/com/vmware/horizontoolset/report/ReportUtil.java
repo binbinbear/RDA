@@ -65,8 +65,6 @@ public class ReportUtil {
 			}
 		}
 		
-		
-		
 		ArrayList<SessionFarm> farms = new ArrayList<SessionFarm>();
 		for(String name: farmmap.keySet()){
 			farms.add(new SessionFarmImpl(name, farmmap.get(name)));
@@ -84,7 +82,6 @@ public class ReportUtil {
 	            }  
 	        });  
 	    }
-		
 		
 	    if (pools.size()>0){
 		    Collections.sort(pools,new Comparator<SessionPool>(){  
