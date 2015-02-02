@@ -35,9 +35,12 @@ public class EventImpl implements Event{
 	}
 
 	private static final String ACCEPT = "has accepted an allocated session";
+	private static final String LOGGEDIN = "has logged in to a new session";
 	private static final String ON_MACHINE = "running on machine ";
 	private static final String DISCONNECT = "has disconnected from machine ";
 	private static final String LOG_OFF = "has logged off machine ";
+	private static final String LOGOUT = " has logged out";
+	private static final String REQUEST_APP= " requested Application ";
 	
 	private EventType type = EventType.Others;
 	private String username;
@@ -117,7 +120,14 @@ public class EventImpl implements Event{
 				//log.debug("Event source:" + source.getType().toString() + " source name:" + source.getName());
 				
 			}
-		} 
+		} else if (EventModule.Broker.equals(event.getModule())
+				&& (event.isInfo() || event.isAuditSuccess())) {
+			if (shortMessage.contains(LOGOUT)) {
+				this.type = EventType.Logout;
+			} else if (shortMessage.contains(REQUEST_APP)) {
+				this.type = EventType.RequestApp;
+			}
+		}
 	}
 	
 	@Override

@@ -14,14 +14,19 @@ public class ConnectionImpl implements Connection{
 	private Event connectEvent;
 	private Event disConnectEvent;
 	
-	
-	public ConnectionImpl(Event connectEvent, Event disconnectEvent){
+	private Event loggedInEvent;
+	public ConnectionImpl(Event connectEvent, Event loggedInEvent , Event disconnectEvent){
 		this.username = connectEvent.getUserName();
+		this.loggedInEvent = loggedInEvent;
 		this.connectEvent = connectEvent;
 		this.disConnectEvent = disconnectEvent;
 	}
 
-	
+	public ConnectionImpl(Event connectEvent, Event disconnectEvent){
+		this.username = connectEvent.getUserName();
+		this.connectEvent = connectEvent;
+		this.disConnectEvent = disconnectEvent;
+	}	
 
 	
 	@Override
@@ -94,7 +99,22 @@ public class ConnectionImpl implements Connection{
 		return this.connectEvent.getFarmName();
 	}
 
+	@Override
+	public Date getLoggedInTime() {
+		if (this.loggedInEvent == null) return null;
+		return this.loggedInEvent.getTime();
+	}
 
+
+
+
+	@Override
+	public long getLoginDelayTime() {
+		Date loggedInTime = this.getLoggedInTime();
+		if (loggedInTime == null) return 0;
+		long delay= loggedInTime.getTime() - this.getConnectionTime().getTime();
+		return delay>0 ? delay: 0;
+	}
 
 
 	@Override
