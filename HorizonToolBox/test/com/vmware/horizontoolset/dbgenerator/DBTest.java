@@ -94,7 +94,12 @@ public class DBTest {
 			s = s + s1;
 			s = s + " has accepted an allocated session for user ";
 			s = s + s2;
-		} else {
+		} else if (i==2){
+			s = "User ";
+			s = s + s1;
+			s = s + " has disconnected from machine ";
+			s = s + s2;
+		}else{
 			s = "User ";
 			s = s + s1;
 			s = s + " has logged off machine ";
@@ -116,16 +121,16 @@ public class DBTest {
 			Random rand = new Random();
 			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 			Calendar cal = Calendar.getInstance();
-			cal.set(2014, 9, 1);
+			cal.set(2015, 3, 1);
 			long start = cal.getTimeInMillis();
-			cal.set(2014, 9, 30);
+			cal.set(2015, 3, 5);
 			long end = cal.getTimeInMillis();
 			Date d ;
 			
 			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver").newInstance();
 			System.out.println("DB Driver has registered successfully！");
-			String url = "jdbc:sqlserver://10.112.116.239:1433;DatabaseName=View";
-			String user = "administrator";
+			String url = "jdbc:sqlserver://10.112.119.39:1433;DatabaseName=neweventdb";
+			String user = "eventdb";
 			String password = "ca$hc0w";
 			Connection conn = DriverManager.getConnection(url, user, password);
 			System.out.println("DB has been connected successfully");
@@ -249,6 +254,54 @@ public class DBTest {
 					pstmt.executeUpdate();
 					System.out.println("Success4");
 					
+					
+					
+					sql = "INSERT INTO event(Module,EventType,ModuleAndEventText,Time,Source,Severity,Node,Acknowledged,DesktopId) VALUES(?,?,?,?,?,?,?,?,?)";
+					pstmt = conn.prepareStatement(sql);
+					pstmt.setString(1, "Agent");
+					pstmt.setString(2, EventType[1]);
+					pstmt.setString(3, ModuleAndEvent(3, use, ma));
+					tt.setHours(tt.getHours() + new Random().nextInt(3) + 1);
+					pstmt.setTimestamp(4, tt);
+					pstmt.setString(5, Source);
+					pstmt.setString(6, "INFO");
+					pstmt.setString(7, Node);
+					pstmt.setInt(8, 1);
+					pstmt.setString(9, pool);
+					pstmt.executeUpdate();
+					System.out.println("Success3");
+
+					sql2 = "INSERT INTO event_data(EventID,Name,StrValue) VALUES(?,?,?)";
+					pstmt = conn.prepareStatement(sql1);
+					rs = pstmt.executeQuery();
+					ii = 0;
+					if (rs.next())
+						ii = rs.getInt(1);
+					System.out.println(ii);
+					pstmt = conn.prepareStatement(sql2);
+					pstmt.setInt(1, ii);
+					pstmt.setString(2, "UserDisplayName");
+					pstmt.setString(3, use);
+					pstmt.executeUpdate();
+					pstmt.setString(2, "MachineName");
+					pstmt.setString(3, ma);
+					pstmt.executeUpdate();
+					pstmt.setString(2, "poolName");
+					pstmt.setString(3,pool);
+					pstmt.executeUpdate();
+					pstmt.setString(2, "poolname");
+					pstmt.setString(3,pool);
+					pstmt.executeUpdate();
+					pstmt.setString(2, "poolId");
+					pstmt.setString(3,pool);
+					pstmt.executeUpdate();
+					pstmt.setString(2, "PoolId");
+					pstmt.setString(3,pool);
+					pstmt.executeUpdate();
+					pstmt.setString(2, "DesktopId");
+					pstmt.setString(3,pool);
+					pstmt.executeUpdate();
+					System.out.println("Success4");
 
 				}
 		catch (SQLException e) {

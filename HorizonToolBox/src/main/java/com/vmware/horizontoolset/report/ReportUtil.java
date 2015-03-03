@@ -5,8 +5,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 
@@ -112,6 +114,7 @@ public class ReportUtil {
 		}
 		userName = userName.toLowerCase();
 		List<Connection> result = new ArrayList<Connection>();
+		Set<String> usedConnectionEvents = new HashSet<String>();
 		
 		Map<String,Event> connectionEvents = new HashMap<String, Event>();
 		
@@ -144,7 +147,8 @@ public class ReportUtil {
 						
 						connectionEvents.remove(key);
 						loggedInEvents.remove(key);
-					}else{
+						usedConnectionEvents.add(key);
+					}else if (! usedConnectionEvents.contains(key)){
 						connectionEvent = new EventImpl(event, earliestDate);
 						//if a disconnect event happens without a connect event, this should be a long time event.
 						ConnectionImpl connection = new ConnectionImpl(connectionEvent, loggedInEvents.get(key), event);
