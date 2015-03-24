@@ -546,8 +546,6 @@ ToolBox.init =  function(){
 					
 					policy:{"btn": $("#L1_03"),
 						"href" : $("#L1_03_01")},
-					whitelist:{"btn": $("#L1_03"),
-						"href" : $("#L1_03_01")},
 						
 						
 					email:{"btn": $("#L1_04")}
