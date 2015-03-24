@@ -370,41 +370,30 @@ class AdminEventSqlServerQuery extends AdminEventDbQuery {
      *      .vdi.admin.be.events.AdminEventFilter, int, int)
      */
     @Override
-    public String getEventQuery(AdminEventFilter filter, int index, int count) {
-        // SELEC TOP count * FROM
+    public String getEventQuery(AdminEventFilter filter, int index, int count) { // SELEC TOP count * FROM
         StringBuilder buffer = new StringBuilder();
-        buffer.append("SELECT TOP ");
-        buffer.append(count);
-        buffer.append(" ");
-        buffer.append(this.eventColumnList);
-        buffer.append(" FROM ");
 
         // (SELECT TOP index+count * FROM event WHERE time=? ORDER BY time DESC,
         // eventid DESC) AS v
-        buffer.append("(SELECT TOP ");
-        buffer.append(index + count);
+        buffer.append("SELECT TOP ");
+        buffer.append(count);
         buffer.append(getColumnListFrom());
         buffer.append(this.eventTableName);
         buffer.append(getLeftJoinClause());
         buffer.append(" WHERE ");
         buffer.append(EventAttribute.PROP_TIME);
         buffer.append(">=?");
-        buffer.append(this.getEventSourceQuery(filter));
-        buffer.append(this.getEventUserQuery(filter));
+        
+        buffer.append(" AND ");
+        buffer.append(EventAttribute.PROP_MODULE.name);
+        buffer.append("=?");
+
         buffer.append(" ORDER BY ");
         buffer.append(EventAttribute.PROP_TIME);
-        buffer.append(" DESC, ");
-        buffer.append(EventDBConnection.EVENTID);
         buffer.append(" DESC");
-        buffer.append(") AS v");
-
-        // ORDER BY time, eventid
-        buffer.append(" ORDER BY ");
-        buffer.append(EventAttribute.PROP_TIME);
-        buffer.append(", ");
-        buffer.append(EventDBConnection.EVENTID);
-
+        
         String query = buffer.toString();
+        
         return query;
     }
 }
@@ -422,8 +411,7 @@ class AdminEventOracleQuery extends AdminEventDbQuery {
      *      .vmware .vdi.admin.be.events.AdminEventFilter, int, int)
      */
     @Override
-    public String getEventQuery(AdminEventFilter filter, int index, int count) {
-        // SELEC * FROM
+    public String getEventQuery(AdminEventFilter filter, int index, int count) { // SELEC * FROM
         StringBuilder buffer = new StringBuilder();
         buffer.append("SELECT ");
         buffer.append(this.eventColumnList);
@@ -441,13 +429,14 @@ class AdminEventOracleQuery extends AdminEventDbQuery {
         buffer.append(" WHERE ");
         buffer.append(EventAttribute.PROP_TIME);
         buffer.append(">=?");
-        buffer.append(this.getEventSourceQuery(filter));
-        buffer.append(this.getEventUserQuery(filter));
+        buffer.append(" AND ");
+        buffer.append(EventAttribute.PROP_MODULE.name);
+        buffer.append("=?");
+        
         buffer.append(" ORDER BY ");
         buffer.append(EventAttribute.PROP_TIME);
-        buffer.append(" DESC, ");
-        buffer.append(EventDBConnection.EVENTID);
         buffer.append(" DESC");
+      
         buffer.append(") v");
 
         buffer.append(")");

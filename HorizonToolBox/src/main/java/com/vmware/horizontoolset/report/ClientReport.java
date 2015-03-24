@@ -2,6 +2,8 @@ package com.vmware.horizontoolset.report;
 
 import java.util.HashMap;
 
+import com.vmware.horizon.auditing.report.AbstractReport;
+
 public class ClientReport extends AbstractReport{
 	
 	public ClientReport(){

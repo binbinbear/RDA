@@ -245,12 +245,7 @@ public class AdminEventDatabase extends DBConnection {
             // prepare the event query parameters
             int param = 1;
             stmt.setTimestamp(param++, new java.sql.Timestamp(time.getTime()));
-            if (filter.getSource() != null) {
-                stmt.setString(param++, Util.normalize(filter.getSource().getId()));
-            }
-            if (filter.getSid() != null) {
-                stmt.setString(param++, filter.getSid());
-            }
+            stmt.setString(param++, "Agent");
 
             // execute the event query statement
             stmt.execute();

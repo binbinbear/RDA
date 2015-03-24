@@ -1,10 +1,10 @@
-package com.vmware.horizontoolset.report;
+package com.vmware.horizon.auditing.report;
 
 import java.util.Date;
 
 public abstract class AbstractReport {
 	private Date updatedDate;
-	AbstractReport(){
+	public AbstractReport(){
 		this.updatedDate =new Date();
 	}
 	public Date getUpdatedDate() {

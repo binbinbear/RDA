@@ -1,8 +1,7 @@
-package com.vmware.horizontoolset.report;
+package com.vmware.horizon.auditing.report;
 
 import java.util.Collection;
 
-import com.vmware.horizontoolset.usage.AccumulatedUsage;
 
 
 public class AccumulatedUsageReport extends AbstractReport{

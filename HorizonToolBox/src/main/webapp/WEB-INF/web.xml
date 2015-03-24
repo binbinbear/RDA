@@ -43,7 +43,7 @@
     <url-pattern>/*</url-pattern>
   </filter-mapping>
   <session-config>
-    <session-timeout>15</session-timeout>
+    <session-timeout>60</session-timeout>
   </session-config>
   <servlet>
     <servlet-name>spring</servlet-name>
@@ -61,13 +61,5 @@
     <welcome-file>index</welcome-file>
     <welcome-file>toolset</welcome-file>
   </welcome-file-list>
-   <security-constraint> <!-- Authorization setting for SSL --> 
-   <web-resource-collection > 
-   <web-resource-name >SSL</web-resource-name> 
-   <url-pattern>/*</url-pattern> 
-   </web-resource-collection> 
-   <user-data-constraint> 
-   <transport-guarantee>CONFIDENTIAL</transport-guarantee> 
-   </user-data-constraint> 
-   </security-constraint> 
+
 </web-app>

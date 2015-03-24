@@ -2,6 +2,7 @@ package com.vmware.horizontoolset.report;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.vmware.horizon.auditing.report.AbstractReport;
 import com.vmware.horizontoolset.viewapi.Farm;
 import com.vmware.horizontoolset.viewapi.ViewPool;
 

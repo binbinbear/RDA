@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.vmware.horizontoolset.report.ReportUtil;
+import com.vmware.horizontoolset.report.ReportUtilExtension;
 import com.vmware.horizontoolset.report.SnapShotReport;
 import com.vmware.horizontoolset.util.SessionUtil;
 import com.vmware.horizontoolset.viewapi.SnapShotViewPool;
@@ -40,7 +40,7 @@ public class SnapShotRestController {
 				 ViewAPIService service = SessionUtil.getViewAPIService(session);
 					log.info("Start to get all pools");
 		     	List<SnapShotViewPool> list = service.getDetailedAutoPools();
-		     	lastReport= ReportUtil.generateSnapShotReport(list);
+		     	lastReport= ReportUtilExtension.generateSnapShotReport(list);
 			 }
 		 }catch(Throwable ex){
 			 log.error("Can't refresh snapshot report", ex);

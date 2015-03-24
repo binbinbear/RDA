@@ -1,7 +1,6 @@
-package com.vmware.horizontoolset.report;
+package com.vmware.horizon.auditing.report;
 
 import java.util.Collection;
-import com.vmware.horizontoolset.usage.ConcurrentConnection;
 
 public class ConcurrentConnectionsReport extends AbstractReport{
 	private Collection<ConcurrentConnection> concurrentConnections;

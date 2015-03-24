@@ -10,8 +10,9 @@ import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 
-import com.vmware.horizontoolset.usage.Event;
-import com.vmware.horizontoolset.util.EventImpl;
+import com.vmware.horizon.auditing.db.EventImpl;
+import com.vmware.horizon.auditing.report.Event;
+
 
 /**
  * Count concurrent users per app, by associating a set object (all connected users)

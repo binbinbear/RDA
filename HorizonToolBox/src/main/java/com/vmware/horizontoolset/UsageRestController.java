@@ -16,11 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.vmware.horizontoolset.report.AccumulatedUsageReport;
-import com.vmware.horizontoolset.report.ReportUtil;
-import com.vmware.horizontoolset.usage.Connection;
-import com.vmware.horizontoolset.usage.Event;
-import com.vmware.horizontoolset.util.EventDBUtil;
+import com.vmware.horizon.auditing.EventsAuditing;
+import com.vmware.horizon.auditing.report.AccumulatedUsageReport;
+import com.vmware.horizon.auditing.report.Connection;
+import com.vmware.horizontoolset.report.ReportUtilExtension;
 import com.vmware.horizontoolset.util.ExportFileUtil;
 import com.vmware.horizontoolset.util.SessionUtil;
 import com.vmware.horizontoolset.viewapi.ViewAPIService;
@@ -31,37 +30,22 @@ public class UsageRestController {
 	 private static final String defaultDays = "30";
 		private static Logger log = Logger.getLogger(UsageRestController.class);
 		
-		static List<Event> getEvents(HttpSession session, String userName, String days, String poolName){
-			try{
-				 EventDBUtil db = SessionUtil.getDB(session);
-				    if (db!=null){
-				    	int daysToShow = Integer.parseInt(days);
-				    	if (daysToShow<=0){
-				    		daysToShow = Integer.parseInt(defaultDays);
-				    	}
-				    	return  db.getEvents(userName, daysToShow,poolName);
-				    }
-			}catch(Exception ex){
-				log.error("Can't get events from DB",ex);
-			}
-
-			 return null;
-			    
-		}
-		
+	
 	 @RequestMapping("/usage/connection")
 	    public List<Connection> getConnections(HttpSession session, 
 	    		@RequestParam(value="user", required=false, defaultValue="") String userName,
 	    		@RequestParam(value="days", required=false, defaultValue=defaultDays) String days) {
 		 ViewAPIService service = SessionUtil.getViewAPIService(session);
 		 log.info("Start to query connections for "+userName+new Date());
-		   List<Event> events = UsageRestController.getEvents(session, userName, days,null);
+		 int daysToShow = Integer.parseInt(days);
+	    	if (daysToShow<=0){
+	    		daysToShow = Integer.parseInt(defaultDays);
+	    	}
 		 log.debug("Get Events: "+new Date());
-		   if (events!=null){
-			   return ReportUtil.getConnections(events, userName);
-		   }
-		 log.debug("Complish Connnections: "+new Date());
-			return new ArrayList<Connection>();
+		EventsAuditing auditing = SessionUtil.getSessionObj(session, EventsAuditing.class);
+		
+		 return auditing.getConnections(userName,daysToShow, "") ;
+		  
 		}
 	 
 	 
@@ -71,9 +55,13 @@ public class UsageRestController {
 		 AccumulatedUsageReport report=null;
 		    try{
 		    	log.info("Start to query accumlated usage for "+days + " days");
-			 	List<Connection>  connections = this.getConnections(session, "", days);
 			 	
-			 	report= ReportUtil.generateUsageReport(connections);
+		    	EventsAuditing auditing = SessionUtil.getSessionObj(session, EventsAuditing.class);
+		    	int daysToShow = Integer.parseInt(days);
+		    	if (daysToShow<=0){
+		    		daysToShow = Integer.parseInt(defaultDays);
+		    	}
+			 	report= auditing.getAccumulatedUsageReport(daysToShow);
 		    }catch(Exception ex){
 		    	log.error(ex);
 		    }

@@ -31,7 +31,7 @@ public class LoginFilter extends GenericFilterBean  {
 	public void doFilter(ServletRequest request, ServletResponse response,
 			FilterChain chain) throws IOException, ServletException {
 		
-		//log.debug("LoginFilter do Filter:");
+		log.debug("LoginFilter do Filter:");
 
         if (requiresAuthentication((HttpServletRequest) request)) {
         	String requestType =( (HttpServletRequest) request).getHeader("X-Requested-With");

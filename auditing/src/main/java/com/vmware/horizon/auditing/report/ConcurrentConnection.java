@@ -1,4 +1,4 @@
-package com.vmware.horizontoolset.usage;
+package com.vmware.horizon.auditing.report;
 
 import java.util.Date;
 

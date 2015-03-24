@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vmware.horizontoolset.report.ClientReport;
-import com.vmware.horizontoolset.report.ReportUtil;
+import com.vmware.horizontoolset.report.ReportUtilExtension;
 import com.vmware.horizontoolset.util.LDAP;
 import com.vmware.horizontoolset.util.SessionUtil;
 
@@ -50,7 +50,7 @@ public class ClientRestController {
     		File spoolFolder = new File(previousFolder);
     		log.debug("spool path:"+spoolFolder.getAbsolutePath());
     		if (spoolFolder.isDirectory()){
-    			cachedreport = ReportUtil.generateClientReport(previousFolder);
+    			cachedreport = ReportUtilExtension.generateClientReport(previousFolder);
     		}else{
     			log.debug("Spool folder is not found");
     			if (cachedreport == null){

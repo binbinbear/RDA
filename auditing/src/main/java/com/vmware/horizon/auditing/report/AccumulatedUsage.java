@@ -1,4 +1,4 @@
-package com.vmware.horizontoolset.usage;
+package com.vmware.horizon.auditing.report;
 
 public class AccumulatedUsage implements Comparable<AccumulatedUsage>{
 	private String userName;
@@ -17,10 +17,7 @@ public class AccumulatedUsage implements Comparable<AccumulatedUsage>{
 	public void addTime(long newtime){
 		this.usageTime  =this.usageTime + newtime;
 	}
-	/**
-	 * Sort by descent usageTime, then by username
-	 */
-	@Override
+
 	public int compareTo(AccumulatedUsage o) {
 		if (this.usageTime>o.usageTime){
 			return -1;

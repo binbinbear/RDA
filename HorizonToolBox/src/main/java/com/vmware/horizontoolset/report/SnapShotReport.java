@@ -3,6 +3,7 @@ package com.vmware.horizontoolset.report;
 import java.util.Collection;
 import java.util.HashMap;
 
+import com.vmware.horizon.auditing.report.AbstractReport;
 import com.vmware.horizontoolset.viewapi.Template;
 import com.vmware.horizontoolset.viewapi.VM;
 

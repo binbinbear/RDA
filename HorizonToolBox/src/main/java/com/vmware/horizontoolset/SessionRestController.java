@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.vmware.horizontoolset.report.ConcurrentConnectionsReport;
-import com.vmware.horizontoolset.report.ReportUtil;
+import com.vmware.horizon.auditing.EventsAuditing;
+import com.vmware.horizon.auditing.report.ConcurrentConnectionsReport;
+import com.vmware.horizontoolset.report.ReportUtilExtension;
 import com.vmware.horizontoolset.report.SessionReport;
-import com.vmware.horizontoolset.usage.Event;
 import com.vmware.horizontoolset.util.SessionUtil;
 import com.vmware.horizontoolset.viewapi.Session;
 import com.vmware.horizontoolset.viewapi.SessionFarm;
@@ -44,11 +44,11 @@ public class SessionRestController {
                 int allCount = service.getSessionCount();
                 if (allCount<500){
                 	List<Session> sessions = service.getAllSessions();
-                	cachedreport = ReportUtil.generateSessionReport(sessions);
+                	cachedreport = ReportUtilExtension.generateSessionReport(sessions);
                 }else{
                     List<SessionPool> pools = service.getSessionPools();
                     List<SessionFarm> farms = service.getSessionFarms();
-                    cachedreport = ReportUtil.generateSessionReport(pools, farms);
+                    cachedreport = ReportUtilExtension.generateSessionReport(pools, farms);
                 }
 
                
@@ -81,18 +81,15 @@ public class SessionRestController {
 		 	log.info("Start to generate  ConcurrentConnectionsReport for "+days + " days");
 		 	if(poolName.equals("")) 
 		 		poolName = null;
-			List<Event> events = UsageRestController.getEvents(session, null, days, poolName);
-			if (events!=null){
-				int daysToShow = Integer.parseInt(days);
-		    	if (daysToShow<=0){
-		    		daysToShow = Integer.parseInt(defaultDays);
-		    	}
-		    	long periodL = Long.parseLong(period);
-				log.info("ok for events"+events.size());
-				return  ReportUtil.getConcurrentConnectionsReport(events, periodL);
-			}
-		 	
-		 	return null;
+		 	EventsAuditing auditing = SessionUtil.getSessionObj(session, EventsAuditing.class);
+			
+			int daysToShow = Integer.parseInt(days);
+		    if (daysToShow<=0){
+		    	daysToShow = Integer.parseInt(defaultDays);
+		    }
+		    long periodL = Long.parseLong(period);
+			return auditing.getConcurrentConnectionsReport(poolName, daysToShow, periodL);
+
 		}
 
 }

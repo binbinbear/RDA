@@ -12,9 +12,12 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.vmware.horizon.auditing.EventsAuditing;
+import com.vmware.horizon.auditing.EventsAuditingImpl;
+import com.vmware.horizon.auditing.db.EventDBUtil;
 import com.vmware.horizontoolset.check.VersionChecker;
 import com.vmware.horizontoolset.util.TaskModuleUtil;
-import com.vmware.horizontoolset.util.EventDBUtil;
 import com.vmware.horizontoolset.util.LDAP;
 import com.vmware.horizontoolset.util.SessionUtil;
 import com.vmware.horizontoolset.util.SimpleHttpClient;
@@ -122,7 +125,7 @@ public class LoginController{
     	
     	try{
     		if (_ldap !=null){
-    			EventDBUtil _db = new EventDBUtil(_ldap.getVDIContext(), _service);
+    			EventsAuditing _db = new EventsAuditingImpl(_ldap.getVDIContext());
     		SessionUtil.setSessionObj(session, _db);
     		}
     	}catch(Exception ex){

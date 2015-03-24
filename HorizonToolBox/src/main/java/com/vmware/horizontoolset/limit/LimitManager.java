@@ -14,9 +14,9 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 
-import com.vmware.horizontoolset.usage.Event;
+import com.vmware.horizon.auditing.db.EventDBUtil;
+import com.vmware.horizon.auditing.report.Event;
 import com.vmware.horizontoolset.util.EmailUtil;
-import com.vmware.horizontoolset.util.EventDBUtil;
 import com.vmware.horizontoolset.util.JsonUtil;
 import com.vmware.horizontoolset.util.SharedStorageAccess;
 import com.vmware.horizontoolset.util.TaskModuleUtil;
