@@ -75,7 +75,6 @@ public class EventImpl implements Event{
 	//create a dummy connect or disconnect event. 
 	public EventImpl(Event pairevent, Date time){
 		this.username = pairevent.getUserName();
-		this.farmName = pairevent.getFarmName();
 		this.machineName = pairevent.getMachineDNSName();
 		this.time = time;
 		if (pairevent.getType()==EventType.Connection){
@@ -181,9 +180,7 @@ public class EventImpl implements Event{
 		if( this.time.getTime() > o.getTime().getTime() ){
 			return -1;
 		}else if( this.time.getTime() == o.getTime().getTime() ){
-			if(this.type==EventType.Disconnection){
-				return -1;
-			}
+			return o.getType().compareTo(this.getType());
 		}
 		return 1;
 
@@ -194,16 +191,6 @@ public class EventImpl implements Event{
 		return this.sourceName;
 	}
 
-	private String farmName;
-	@Override
-	public void setFarmName(String farmName) {
-		this.farmName = farmName;
-	}
-
-	@Override
-	public String getFarmName() {
-		return this.farmName;
-	}
 
 	@Override
 	public String getShortMessage() {

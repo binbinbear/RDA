@@ -1,9 +1,10 @@
-package com.vmware.horizon.auditing;
+package com.vmware.horizon.auditing.impl;
 
 import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.vmware.horizon.auditing.EventsAuditing;
 import com.vmware.horizon.auditing.db.EventDBUtil;
 import com.vmware.horizon.auditing.report.AccumulatedUsageReport;
 import com.vmware.horizon.auditing.report.ConcurrentConnectionsReport;
@@ -19,7 +20,7 @@ public class EventsAuditingImpl implements EventsAuditing{
 		this.dbutil = new EventDBUtil(vdiContext);
 		
 	}
-	private static final int max_days=365;
+	private static final int max_days=32;
 	private Logger log = Logger.getLogger(EventsAuditingImpl.class);
 	public List<Connection> getAllConnections(int days){
 		return this.getConnections("",days, "");

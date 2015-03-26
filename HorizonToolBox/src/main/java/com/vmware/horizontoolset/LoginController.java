@@ -14,8 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.vmware.horizon.auditing.EventsAuditing;
-import com.vmware.horizon.auditing.EventsAuditingImpl;
-import com.vmware.horizon.auditing.db.EventDBUtil;
+import com.vmware.horizon.auditing.EventsAuditingFactory;
 import com.vmware.horizontoolset.check.VersionChecker;
 import com.vmware.horizontoolset.util.TaskModuleUtil;
 import com.vmware.horizontoolset.util.LDAP;
@@ -125,7 +124,7 @@ public class LoginController{
     	
     	try{
     		if (_ldap !=null){
-    			EventsAuditing _db = new EventsAuditingImpl(_ldap.getVDIContext());
+    			EventsAuditing _db = EventsAuditingFactory.getEventsAuditing(_ldap.getVDIContext());
     		SessionUtil.setSessionObj(session, _db);
     		}
     	}catch(Exception ex){

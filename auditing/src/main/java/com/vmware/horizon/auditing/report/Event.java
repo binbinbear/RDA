@@ -11,6 +11,4 @@ public interface Event extends Comparable<Event>{
 	public String getSourceName();
 	public String getShortMessage();
 	
-	public void setFarmName(String farmName);
-	public String getFarmName();
 }
