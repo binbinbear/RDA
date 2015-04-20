@@ -1,8 +1,13 @@
-<html>
+<html ng-app="localization">
 <head>
 <meta charset="utf-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 <title>View</title>
+	<script type="text/javascript" charset="utf-8" th:src="@{${translatedJsonURL}}"></script>
+    <script type="text/javascript" charset="utf-8" src="./js/jquery.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./js/angular.js"></script>
+	<script type="text/javascript" charset="utf-8" src="./js/web.js"></script>
+	<script type="text/javascript" charset="utf-8" src="./js/localize-service.js"></script>
 <link rel="shortcut icon" href="./resources/icons/favicon.ico"/>
 <link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css"/>
 <link rel="stylesheet" type="text/css" href="./css/style.css"/>
@@ -34,7 +39,7 @@
 						<li class="ng-hide"><a href="./" id="homeBtn" title="Home"><img
 								src="./resources/icons/home-icon.png"/></a></li>
 						<li><a href="http://www.vmware.com/info?id=1213"
-							target="_blank" id="helpBtn" title="Help"><img
+							target="_blank" id="helpBtn" title="{{'Help' | i18n}}"><img
 								src="./resources/icons/header_button_help.png"/></a></li>
 					</ul>
 				</div>
@@ -53,7 +58,7 @@
 				<div class="row ui-center-div-inner">
 					<div class="ui-center-panel">
 						<div class="ui-panel-header">
-							<h3 class="ng-binding">Login Horizon Toolbox</h3>
+							<h3 class="ng-binding">{{'Login Horizon Toolbox' | i18n }}</h3>
 						</div>
 						<div class="ui-strip"></div>
 						<div class="ui-pattern">
@@ -67,33 +72,33 @@
 								autocomplete="off">
 		
 								<div class="form-group ui-form-group">
-									<label for="username" class="col-sm-3 control-label ng-binding">UserName:</label>
+									<label for="username" class="col-sm-3 control-label ng-binding">{{'UserName' | i18n}}:</label>
 									<div class="input-group col-sm-8">
 										<span class="input-group-addon"> <span
 											class="glyphicon glyphicon-user"> </span>
 										</span> <input id="username" name="username" type="text"
 											class="form-control ng-pristine ng-invalid ng-invalid-required"
-											placeholder="Username"/>
+											placeholder="{{'UserName' | i18n}}"/>
 									</div>
 									<label for="username" class="error ng-binding ng-hide">Required</label>
 								</div>
 								<div class="form-group ui-form-group ui-form-group">
-									<label for="password" class="col-sm-3 control-label ng-binding">Password:</label>
+									<label for="password" class="col-sm-3 control-label ng-binding">{{'Password' | i18n}}:</label>
 									<div class="input-group col-sm-8">
 										<span class="input-group-addon"><span class="ui-lock"></span></span>
 										<input id="password" name="password" type="password"
 											class="form-control ng-pristine ng-valid"
-											placeholder="Password"/>
+											placeholder="{{'Password' | i18n}}"/>
 									</div>
 								</div>
 								<div class="form-group ui-form-group ui-form-group">
-									<label for="domain" class="col-sm-3 control-label ng-binding">Domain:</label>
+									<label for="domain" class="col-sm-3 control-label ng-binding">{{'Domain' | i18n}}:</label>
 									<div class="input-group col-sm-8">
 										<span class="input-group-addon"><span class="glyphicon glyphicon-globe"></span></span>
 										
 										<a th:if="${domains.isEmpty()}" style="text-decoration: none;">
 										<input id="domain" name="domain"  type="text" class="form-control "
-											placeholder="Domain"/>
+											placeholder="{{'Domain' | i18n}}"/>
 										</a>
 										
 									    <a th:if="!${domains.isEmpty()}" style="text-decoration: none;">
@@ -111,15 +116,13 @@
 							</form>
 						</div>
 						<div class="ui-panel-footer">
-							<button id="submitButton" type="submit" class="btn btn-primary ng-binding">Submit</button>
+							<button id="submitButton" type="submit" class="btn btn-primary ng-binding">{{'Submit'|i18n}}</button>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-    <script type="text/javascript" charset="utf-8" src="./js/jquery.min.js"></script>
-	<script type="text/javascript" charset="utf-8" src="./js/web.js"></script>
 
 </body>
 </html>

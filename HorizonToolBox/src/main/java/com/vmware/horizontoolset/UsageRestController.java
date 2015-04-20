@@ -37,6 +37,7 @@ public class UsageRestController {
 	    		@RequestParam(value="days", required=false, defaultValue=defaultDays) String days) {
 		 ViewAPIService service = SessionUtil.getViewAPIService(session);
 		 log.info("Start to query connections for "+userName+new Date());
+		 
 		 int daysToShow = Integer.parseInt(days);
 	    	if (daysToShow<=0){
 	    		daysToShow = Integer.parseInt(defaultDays);

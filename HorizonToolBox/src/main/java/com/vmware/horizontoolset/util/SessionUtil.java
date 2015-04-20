@@ -2,6 +2,7 @@ package com.vmware.horizontoolset.util;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Locale;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.servlet.http.HttpSession;
@@ -16,7 +17,7 @@ public class SessionUtil {
 
 	private static Logger log = Logger.getLogger(SessionUtil.class);
 	private static ConcurrentHashMap <String, ToolBoxSession> sessions = new ConcurrentHashMap<String,ToolBoxSession>();
-	
+	private static TranslateUtil translateUtil = new TranslateUtil(); 
 	//maximum sessions, default is 30
 	private static int maximumSessions = 30;
 	
@@ -124,5 +125,20 @@ public class SessionUtil {
 		}		
 		return vo;
 	}
-
+	
+	/**
+	 * @author ziqil
+	 */
+	public static void  setLocale(HttpSession session, Locale locale){
+		String language = translateUtil.getLocaleLanguage(locale);
+		String translatedJsonURL = "./locale/"+language+".json";
+		ToolBoxSession ts = getOrNewToolBoxSession(session);
+		if(ts!=null){
+			ts.setJsonURL(translatedJsonURL);
+		}
+	}
+	public static String getTranslatedJsonURL(HttpSession session){
+		ToolBoxSession ts = getOrNewToolBoxSession(session);
+		return (ts==null)? null:ts.getJsonURL();
+	}
 }

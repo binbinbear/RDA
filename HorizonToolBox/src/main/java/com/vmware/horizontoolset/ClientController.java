@@ -32,6 +32,7 @@ public class ClientController {
     	}
 
         log.debug("Receive get request for clients");
+        model.addAttribute("translatedJsonURL", SessionUtil.getTranslatedJsonURL(session));
         model.addAttribute("view", view);
         model.addAttribute("user", SessionUtil.getuser(session));
     	return Application.MAINPAGE;

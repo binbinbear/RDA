@@ -39,7 +39,6 @@
   <bean class="org.thymeleaf.spring4.view.ThymeleafViewResolver">
     <property name="templateEngine" ref="templateEngine" />
   </bean>   
-  
   <bean id="loginController" class="com.vmware.horizontoolset.LoginController">
    <property name="server"> 
             <value>localhost</value>
@@ -62,7 +61,7 @@
   <bean id="CommonRestController" class="com.vmware.horizontoolset.CommonRestController"/>
  
   <bean id="sessionController" class="com.vmware.horizontoolset.SessionController"/>
-  
+
   <bean id="sessionRestController" class="com.vmware.horizontoolset.SessionRestController"/>
   
 

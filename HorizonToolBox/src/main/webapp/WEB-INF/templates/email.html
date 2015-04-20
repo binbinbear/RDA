@@ -70,7 +70,7 @@ table, table td {
 							<div class="pageHeaderDiv">
 								<div id="message"></div>
 								<img src="img/window_information.png" alt="Dashboard" />&nbsp;&nbsp;
-								Email Notifications &nbsp;
+								{{'Email Notifications'|i18n}} &nbsp;
 							</div>
 						</td>
 						<td id="loadingAnim"></td>
@@ -89,21 +89,21 @@ table, table td {
 
 				<div class="field">
 					<table broder="0" cellpadding="3" cellspacing="3" class="lite-table">
-						<tr><td>SMTP Host: </td><td width="15px"></td><td><input type="text" id="mailHost" name="mailHost"	th:value="${server.mailHost}" /></td></tr>
-						<tr><td>SMTP Port: </td><td></td><td><input type="text" id="serverPort" name="serverPort" th:value="${server.serverPort}" /></td></tr>
-						<tr><td>User Name: </td><td></td><td><input type="text" id="mailUser" name="mailUser" th:value="${server.mailUser}" /></td></tr>
-						<tr><td>Password: </td><td></td><td><input type="password" id="mailPassword" name="mailPassword" th:value="${server.mailPassword}" /></td></tr>
+						<tr><td>{{'SMTP Host'|i18n}}: </td><td width="15px"></td><td><input type="text" id="mailHost" name="mailHost"	th:value="${server.mailHost}" /></td></tr>
+						<tr><td>{{'SMTP Port'|i18n}}: </td><td></td><td><input type="text" id="serverPort" name="serverPort" th:value="${server.serverPort}" /></td></tr>
+						<tr><td>{{'UserName'|i18n}}: </td><td></td><td><input type="text" id="mailUser" name="mailUser" th:value="${server.mailUser}" /></td></tr>
+						<tr><td>{{'Password'|i18n}}: </td><td></td><td><input type="password" id="mailPassword" name="mailPassword" th:value="${server.mailPassword}" /></td></tr>
 					</table>
 				</div>
 								
 				<div class="field">
-					To Address(separated by ","): <input type="text" style="width:100%" name="toAddress" id="toAddress"
+					{{'To Address(separated by ,)'|i18n}}: <input type="text" style="width:100%" name="toAddress" id="toAddress"
 						th:value="${server.toAddress}" />
 
 				</div>
 				
 				<div class="field">
-					Customized properties: <input type="text" style="width:100%" id="customizedProperty"
+					{{'Customized properties'|i18n}}: <input type="text" style="width:100%" id="customizedProperty"
 						name="customizedProperty" th:value="${server.customizedProperty}" />
 
 				</div>
@@ -113,7 +113,7 @@ table, table td {
 
 				<div>
 					<input type="submit" id="submitBtn" data-loading-text="Loading..."
-						class="btn btn-primary submitBtn" value="Submit Server Config" />
+						class="btn btn-primary submitBtn" value="{{'Submit Server Config'|i18n}}" />
 
 				</div>
 

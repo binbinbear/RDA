@@ -10,8 +10,7 @@
 					<tr>
 						<td>
 							<div class="pageHeaderDiv">
-								<img src="img/window_information.png" alt="Dashboard" />&nbsp;&nbsp;Session
-								Audit Report &nbsp;
+								<img src="img/window_information.png" alt="Dashboard" />&nbsp;&nbsp;{{'Session Audit Report'|i18n}} &nbsp;
 							</div>
 						</td>
 					</tr>
@@ -20,16 +19,16 @@
 		</h3>
 
 		<div id="historySessions" class="poolContainer">
-			<label for="viewType">Concurrent sessions, show report for: </label>
+			<label for="viewType">{{'Concurrent sessions, show report for'|i18n}}: </label>
 			<select name="viewType" id="viewType">
-				<option value="day">Last 2 day</option>
-				<option value="week" selected="selected">Last 7 days</option>
-				<option value="month">Last 1 month</option>
+				<option value="day">{{'Last 2 day'|i18n}}</option>
+				<option value="week" selected="selected">{{'Last 7 days'|i18n}}</option>
+				<option value="month">{{'Last 1 month'|i18n}}</option>
 			</select>
-			<label for="desktoppool">Select desktop pool or RDS farm: </label>
+			<label for="desktoppool">{{'Select desktop pool or RDS farm'|i18n}}: </label>
 			
 			<select id="desktoppool" name="desktoppool">
-				<option value="all" selected="selected">ALL</option>
+				<option value="all" selected="selected">{{'ALL'|i18n}}</option>
 			</select>
 			<div>
 				<svg>
@@ -46,10 +45,8 @@
 						<tr>
 							<td>
 								<div class="pageHeaderDiv">
-									<img src="img/window_information.png" alt="Dashboard" />&nbsp;&nbsp;Current
-									Sessions &nbsp; <span class="updateDate"> </span> <a
-										href="./refreshSession"> Click here to update this report
-										now</a>
+									<img src="img/window_information.png" alt="Dashboard" />&nbsp;&nbsp;{{'Current Sessions'|i18n}} &nbsp; <span class="updateDate"> </span> <a
+										href="./refreshSession"> {{'Click here to update this report now'|i18n}}</a>
 								</div>
 							</td>
 							<td id="loadingAnim"></td>
@@ -59,14 +56,14 @@
 			</h3>
 			
 			
-		<div class="poolContainer" ng-controller="sessionCtrl">
+		<div class="poolContainer"  ng-controller="sessionCtrl">
 			
-			<label>Desktop Sessions:</label>
+			<label>{{'Desktop Sessions'|i18n}}:</label>
 			<table ng-table="desktopParams" class="dataTable">
 				<tr ng-repeat="pool in $data">
-					<td data-title="'Pool Name'">{{pool.name}}</td>
-					<td data-title="'Pool Type'">{{pool.viewType}}</td>
-					<td data-title="'Session Number'">{{pool.sessionCount}}</td>
+					<td  data-title="messages['Pool Name']" >{{pool.name}}</td>
+					<td  data-title="messages['Pool Type']" >{{pool.viewType}}</td>
+					<td  data-title="messages['Session Number']">{{pool.sessionCount}}</td>
 				</tr>
 				<tr class="loadingrow">
 					<td class="desktopName "></td>
@@ -75,11 +72,11 @@
 				</tr>
 			</table>
 			<br></br> <br></br>
-			<label>Application Sessions:</label>
+			<label>{{'Application Sessions'|i18n}}:</label>
 			<table ng-table="appParams" class="dataTable">
 				<tr ng-repeat="farm in $data">
-					<td data-title="'Farm Name'">{{farm.name}}</td>
-					<td data-title="'Session Number'">{{farm.appSessionCount}}</td>
+					<td data-title="messages['Farm Name']">{{farm.name}}</td>
+					<td data-title="messages['Session Number']">{{farm.appSessionCount}}</td>
 				</tr>
 				<tr class="loadingrow">
 					<td class="desktopName "></td>

@@ -14,7 +14,7 @@ public class UsageController {
 	private static final String view = "usage";
 	 @RequestMapping(value="/usage", method=RequestMethod.GET)
 	    public synchronized String getUsage( Model model, HttpSession session) {
-		    
+		 	model.addAttribute("translatedJsonURL", SessionUtil.getTranslatedJsonURL(session));
 	        model.addAttribute("view", view);
 	        model.addAttribute("user", SessionUtil.getuser(session));
 	    	return Application.MAINPAGE;

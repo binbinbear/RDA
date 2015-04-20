@@ -16,6 +16,8 @@ public class ToolBoxSession implements Comparable<ToolBoxSession>{
 	
 	private String user;
 	
+	private String JsonURL;
+	
 	private HttpSession session;
 	
 	private long createdTime;
@@ -91,5 +93,15 @@ public class ToolBoxSession implements Comparable<ToolBoxSession>{
 			return 0;
 		}
 		return -1;
+	}
+	
+	
+	public void setJsonURL(String jsonURL){
+		this.JsonURL = jsonURL;
+	}
+	
+	
+	public String getJsonURL(){
+		return JsonURL;
 	}
 }

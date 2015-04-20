@@ -1,4 +1,4 @@
-<html>
+<html >
 <head>
 <title>Horizon Toolbox</title>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -6,8 +6,8 @@
 <link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css" />
 <link rel="stylesheet" type="text/css" href="./css/jquery-ui.min.css" />
 <link rel="stylesheet" type="text/css" href="./css/report.css" />
-<script type="text/javascript" charset="utf-8"
-	src="./js/jquery.min.js"></script>
+<script type="text/javascript" charset="utf-8" th:src="@{${translatedJsonURL}}"></script>
+<script type="text/javascript" charset="utf-8"	src="./js/jquery.min.js"></script>
 <script th:inline="javascript">
 /*<![CDATA[*/
     window.view = [[${view}]];
@@ -20,13 +20,14 @@
 <script type="text/javascript" charset="utf-8"
 	src="./js/jquery-ui.min.js"></script>
 <script type="text/javascript" charset="utf-8" src="./js/angular.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/angular.ng-modules.js"></script>
 <script type="text/javascript" charset="utf-8" src="./js/toolset.js"></script>
-
+<script type="text/javascript" charset="utf-8" src="./js/localize-service.js"></script>
 
 
 </head>
 
-<body ng-app="main">
+<body ng-modules="main,localization" >
 	<div id="container">
 		<div id="banner">
 			<div id="productName">VMware Horizon Toolbox</div>
@@ -35,28 +36,25 @@
 
 				<ul class="jd_menu">
 
-					<li id="L1_01" class="menuBtn"><a href="session">Auditing</a>
+					<li id="L1_01" class="menuBtn"><a href="session">{{'Auditing'|i18n}}</a>
 						<ul class="jdm_events"
 							style="left: 560.265625px; top: 47px; display: none;">
-							<li id="L1_01_01" class=""><a href="session">&nbsp;&nbsp;Sessions</a></li>
-							<li id="L1_01_02" class=""><a href="usage">&nbsp;&nbsp;Users
-									Usage</a></li>
-							<li id="L1_01_03" class=""><a href="snapshot">&nbsp;&nbsp;Snapshots</a></li>
-							<li id="L1_01_04" class=""><a href="client">&nbsp;&nbsp;Clients</a></li>
+							<li id="L1_01_01" class=""><a href="session">&nbsp;&nbsp;{{'Sessions'|i18n}}</a></li>
+							<li id="L1_01_02" class=""><a href="usage">&nbsp;&nbsp;{{'Users Usage'|i18n}}</a></li>
+							<li id="L1_01_03" class=""><a href="snapshot">&nbsp;&nbsp;{{'Snapshots'|i18n}}</a></li>
+							<li id="L1_01_04" class=""><a href="client">&nbsp;&nbsp;{{'Clients'|i18n}}</a></li>
 						</ul></li>
 
 					<li id="L1_02" class="menuBtn" onclick="location='remoteassist'"><a
-						href="remoteassist">Remote Assistance</a></li>
-					<li id="L1_03" class="menuBtn"><a href="policy">Policies</a>
+						href="remoteassist">{{'Remote Assistance'|i18n}}</a></li>
+					<li id="L1_03" class="menuBtn"><a href="policy">{{'Policies'|i18n}}</a>
 						<ul class="jdm_events"
 							style="left: 560.265625px; top: 47px; display: none;">
-							<li id="L1_03_01" class=""><a href="policy">&nbsp;&nbsp;Desktop
-									Agent Policies</a></li>
-							<li id="L1_03_02" class=""><a href="limit">&nbsp;&nbsp;Application
-									Pool Usage Monitor</a></li>
+							<li id="L1_03_01" class=""><a href="policy">&nbsp;&nbsp;{{'Desktop Agent Policies'|i18n}}</a></li>
+							<li id="L1_03_02" class=""><a href="limit">&nbsp;&nbsp;{{'Application Pool Usage Monitor'|i18n}}</a></li>
 						</ul></li>
 					<li id="L1_04" class="menuBtn" onclick="location='email'"><a
-						href="email">Email Notification</a></li>
+						href="email">{{'Email Notification'|i18n}}</a></li>
 				</ul>
 
 			</div>
@@ -64,8 +62,8 @@
 			<div class="loggedInUser">
 
 				<span class="user" th:text="${user}"></span> &nbsp;|&nbsp; <a
-					href="Logout">Logout</a>&nbsp;|&nbsp; 
-					<a href="#" id="about">About</a>
+					href="Logout">{{'Logout'|i18n}}</a>&nbsp;|&nbsp; 
+					<a href="#" id="about">{{'About'|i18n}}</a>
 			</div>
 
 		</div>

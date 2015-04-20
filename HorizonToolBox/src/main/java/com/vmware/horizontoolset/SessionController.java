@@ -21,7 +21,8 @@ public class SessionController {
     
     @RequestMapping(value="/session", method=RequestMethod.GET)
     public synchronized String getSessionsAuditing( Model model, HttpSession session) {
-        model.addAttribute("view", view);
+        model.addAttribute("translatedJsonURL", SessionUtil.getTranslatedJsonURL(session));
+    	model.addAttribute("view", view);
         model.addAttribute("user", SessionUtil.getuser(session));
     	return Application.MAINPAGE;
 

@@ -57,8 +57,9 @@ public class LoginController{
 
 	private static List<String> domains = new ArrayList<String>();
 	@RequestMapping(value = LoginURL, method = RequestMethod.GET)
-	public String index( Model model) {
+	public String index( Model model , HttpSession session) {
 		log.debug("Receive index request");
+		model.addAttribute("translatedJsonURL", SessionUtil.getTranslatedJsonURL(session));
 		return loginPageWithMessage(model, null);
 	}
 	private String loginPageWithMessage(Model model,String message){
@@ -83,7 +84,7 @@ public class LoginController{
     	if (bindingResult.hasErrors()) {
             return "redirect:/Login";
         }
-
+    	model.addAttribute("translatedJsonURL", SessionUtil.getTranslatedJsonURL(session));
     	log.debug("User login :" + credential.getUsername());
     	ViewAPIService _service;
     	try{

@@ -16,6 +16,7 @@ public class RemoteAssistController {
 
     @RequestMapping(value="/remoteassist", method=RequestMethod.GET)
     public String get( Model model, HttpSession session) {
+    	model.addAttribute("translatedJsonURL", SessionUtil.getTranslatedJsonURL(session));
         model.addAttribute("view", VIEW_ID);
         model.addAttribute("user", SessionUtil.getuser(session));
     	return Application.MAINPAGE;

@@ -13,6 +13,7 @@ if (!ToolBox.Usage || !ToolBox.Usage.init){
 		        $scope.reloadData();
 		        
 		  });
+		 $scope.useagetable=window.l10Ntable;
 		 $scope.data = [];
 		 $scope.reloadData = function(){
 			 if($("#loading2").length == 0){
@@ -88,6 +89,7 @@ if (!ToolBox.Usage || !ToolBox.Usage.init){
 				seconds = seconds >9 ? seconds: "0" + seconds;
 				return hours + ":" + minutes + ":" + seconds;						
 			},
+			
 			init: function(){
 				$("#usageDays").change(ToolBox.Usage.refreshUsageChart);
 				ToolBox.Usage.refreshUsageChart();

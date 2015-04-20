@@ -10,8 +10,7 @@
 					<tr>
 						<td>
 							<div class="pageHeaderDiv">
-								<img src="img/window_information.png" alt="Dashboard" />&nbsp;&nbsp;Accumulated
-								Using Time of Users &nbsp;
+								<img src="img/window_information.png" alt="Dashboard" />&nbsp;&nbsp;{{'Accumulated Using Time of Users'|i18n}} &nbsp;
 							</div>
 						</td>
 						<td id="loadingAnim"></td>
@@ -20,11 +19,10 @@
 			</table>
 		</h3>
 		<div id="accumulatedUsing" class="poolContainer">
-			<label for="usageDays">Accumulated Using Time. Show report
-				for: </label> <select name="usageDays" id="usageDays">
-				<option value="day">Last 2 day</option>
-				<option value="week" selected="selected">Last 7 days</option>
-				<option value="month">Last 1 month</option>
+			<label for="usageDays">{{'Accumulated Using Time. Show report for'|i18n}}: </label> <select name="usageDays" id="usageDays">
+				<option value="day">{{'Last 2 day'|i18n}}</option>
+				<option value="week" selected="selected">{{'Last 7 days'|i18n}}</option>
+				<option value="month">{{'Last 1 month'|i18n}}</option>
 			</select>
 			<div>
 				<svg>
@@ -40,7 +38,7 @@
 							<td>
 								<div class="pageHeaderDiv">
 									<img src="img/window_information.png" alt="Dashboard" />&nbsp;&nbsp;
-									Connections of Users &nbsp;<span class="updateDate"> </span> 
+									{{'Connections of Users'|i18n}} &nbsp;<span class="updateDate"> </span> 
 								</div>
 							</td>
 						</tr>
@@ -51,25 +49,25 @@
 		<div class="poolContainer" ng-controller="usageCtrl"
 			style="width: 100%; height: 90%; overflow: scroll; overflow-x: hidden;">
 
-			<label>Account Name: </label> <input type="text"
+			<label>{{'Account Name'|i18n}}: </label> <input type="text"
 				id="user" name="user" value="" /> 
-				<button ng-click="reloadData()" class="btn btn-default">Search</button>
-			&nbsp;&nbsp; <label>Show report for: </label>
+				<button ng-click="reloadData()" class="btn btn-default">{{'Search'|i18n}}</button>
+			&nbsp;&nbsp; <label>{{'Show report for'|i18n}}: </label>
 			<select ng-model="days">
-				<option value="2">Last 2 days</option>
-				<option value="7" selected="selected">Last 7 days</option>
-				<option value="30">Last 1 month</option>
+				<option value="2">{{'Last 2 days'|i18n}}</option>
+				<option value="7" selected="selected">{{'Last 7 days'|i18n}}</option>
+				<option value="30">{{'Last 1 month'|i18n}}</option>
 			</select>
-			  &nbsp;&nbsp; <a type="button" class="btn btn-default" id="exportBtn">Export as .csv file</a>
+			  &nbsp;&nbsp; <a type="button" class="btn btn-default" id="exportBtn">{{'Export as .csv file'|i18n}}</a>
 			<table id="connectionTable" ng-table="tableParams" class="dataTable">
 				<tr ng-repeat="user in $data">
-					<td data-title="'User Name'">{{user.userName}}</td>
-					<td data-title="'Connection Time'">{{user.connectionTimeStr}}</td>
-					<td  data-title="'Disconnection Time'">{{user.disConnectionTimeStr}}</td>
-					<td data-title="'Usage Time'">{{user.usageTime}}</td>
-					<td data-title="'Machine Name'">{{user.machineName}}</td>
-					<td data-title="'Pool/Farm Name'">{{user.sourceName}}</td>
-					<td data-title="'Login Delay Time'">{{connection.loginDelayTime}}</td>
+					<td data-title="useagetable['UserName']">{{user.userName}}</td>
+					<td data-title="useagetable['Connection Time']">{{user.connectionTimeStr}}</td>
+					<td  data-title="useagetable['Disconnection Time']">{{user.disConnectionTimeStr}}</td>
+					<td data-title="useagetable['Usage Time']">{{user.usageTime}}</td>
+					<td data-title="useagetable['Machine Name']">{{user.machineName}}</td>
+					<td data-title="useagetable['Pool/Farm Name']">{{user.sourceName}}</td>
+					<td data-title="useagetable['Login Delay Time']">{{connection.loginDelayTime}}</td>
 				</tr>
 				<tr id="loading2" class="loadingrow">
 						<td class="desktopName " ></td>

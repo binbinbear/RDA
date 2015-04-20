@@ -14,7 +14,7 @@ public class UserController {
 	private static final String view = "user";
 	 @RequestMapping(value="/user", method=RequestMethod.GET)
 	    public synchronized String getEvents( Model model, HttpSession session) {
-		    
+		 	model.addAttribute("translatedJsonURL", SessionUtil.getTranslatedJsonURL(session));
 	        model.addAttribute("view", view);
 	        model.addAttribute("user", SessionUtil.getuser(session));
 	    	return Application.MAINPAGE;

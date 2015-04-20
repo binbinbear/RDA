@@ -28,6 +28,8 @@ if (!ToolBox.Session || !ToolBox.Session.init){
 					$defer.resolve(ToolBox.Session.farms.slice((params.page() - 1) * params.count(), params.page() * params.count()));   
 	        }
 	    });
+	    
+	    $scope.messages=window.l10Ntable;
 	};
 	ToolBox.Session = {
 			pools: [],

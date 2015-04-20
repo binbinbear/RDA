@@ -11,9 +11,8 @@
 					<tr>
 						<td>
 							<div class="pageHeaderDiv">
-								<img src="img/window_information.png" alt="Dashboard" />&nbsp;&nbsp;Client
-								Audit Report &nbsp; <span class = "updateDate"> </span> <a href="./refreshClient">
-									Click here to update this report now</a>
+								<img src="img/window_information.png" alt="Dashboard" />&nbsp;&nbsp;{{'Client Audit Report'|i18n}} &nbsp; <span class = "updateDate"> </span> <a href="./refreshClient">
+									{{'Click here to update this report now'|i18n}}</a>
 
 							</div>
 						</td>
@@ -26,38 +25,38 @@
 <a th:class="${ceipEnabled}? 'disableButton' : 'enableButton' "
 			th:text="${ceipEnabled}? 'Disabled Local Auditing' : 'Enable Local Auditing'"> </a>
 				<div th:class="${ceipEnabled}? 'activeClients' : 'hiddenClients'">
-			<label for="viewType">Show report in: </label> <select
+			<label for="viewType">{{'Show report in'|i18n}}: </label> <select
 				name="viewType" id="viewType">
-				<option value="pie" selected="selected">Pie Chart View</option>
-				<option value="table">Table View</option>
+				<option value="pie" selected="selected">{{'Pie Chart View'|i18n}}</option>
+				<option value="table">{{'Table View'|i18n}}</option>
 			</select>
 			<div th:class="${ceipEnabled}? 'activesvg' : 'hiddensvg'">
-				<div>Clients Versions:</div>
+				<div>{{'Clients Versions'|i18n}}:</div>
 				<svg width="500" height="400">
 					<g id="versiondata"></g>
 				</svg>
-				<div>Clients Operation Systems:</div>
+				<div>{{'Clients Operation Systems'|i18n}}:</div>
 				<svg width="500" height="400">
 					<g id="osdata"></g>
 				</svg>
 			</div>
 
 			<div th:class="${ceipEnabled}? 'activetable' : 'hiddentable'">
-				<div>Clients Versions:</div>
+				<div>{{'Clients Versions'|i18n}}:</div>
 				<table border="0" cellpadding="3" cellspacing="0" class="dataTable"
 					id="clientversionTable">
 					<tbody>
 
 					</tbody>
 				</table>
-				<div>Clients Operation Systems:</div>
+				<div>{{'Clients Operation Systems'|i18n}}:</div>
 				<table border="0" cellpadding="3" cellspacing="0" class="dataTable"
 					id="clientostable">
 					<tbody>
 						<tr>
 
-							<th width="23%">Client OS</th>
-							<th width="23%">Number</th>
+							<th width="23%">${{'Client OS'|i18n}}</th>
+							<th width="23%">${{'Number'|i18n}}</th>
 						</tr>
 					</tbody>
 				</table>
@@ -65,8 +64,8 @@
 			</div>
 		</div>	
 		
-<div id="dialog-confirm" title="Enable Local Auditing?">
-  <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Enabling this feature requires turning on the User Experience Improvement feature of VMware Horizon View. This feature collects anonymous and untraceable usage statistics to help provide better support and more enhancements to the most popular features of Horizon View.  This data includes versions, features used, system architecture choices and deployment scale. This is a strictly Opt-In program and is not required in any way to use Horizon View, but is required to utilize this auditing feature. </p>
+<div id="dialog-confirm" title="{{'Enable Local Auditing?'|i18n}}">
+  <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>{{'Enabling this feature requires turning on the User Experience Improvement feature of VMware Horizon View. This feature collects anonymous and untraceable usage statistics to help provide better support and more enhancements to the most popular features of Horizon View.  This data includes versions, features used, system architecture choices and deployment scale. This is a strictly Opt-In program and is not required in any way to use Horizon View, but is required to utilize this auditing feature.'|i18n}} </p>
 </div>
 		
 </div>

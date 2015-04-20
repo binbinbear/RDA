@@ -20,6 +20,7 @@ public class EmailController {
     
     @RequestMapping(value="/email", method=RequestMethod.GET)
     public synchronized String getEmailHome( Model model, HttpSession session) {
+    	model.addAttribute("translatedJsonURL", SessionUtil.getTranslatedJsonURL(session));
         model.addAttribute("view", view);
         model.addAttribute("server", EmailUtil.loadServerProps());
         model.addAttribute("user", SessionUtil.getuser(session));

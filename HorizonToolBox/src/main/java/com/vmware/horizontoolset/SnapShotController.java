@@ -37,6 +37,7 @@ public class SnapShotController  {
         
     	if (service != null){
     		log.debug("this is a logged on user, getting report");
+    		model.addAttribute("translatedJsonURL", SessionUtil.getTranslatedJsonURL(session));
         	model.addAttribute("view", "snapshot");
         	model.addAttribute("user", SessionUtil.getuser(session));
         	return Application.MAINPAGE;
@@ -53,7 +54,7 @@ public class SnapShotController  {
      */
     @RequestMapping(value="/refreshSnapShot", method=RequestMethod.GET)
     public String refresh(Model model, HttpSession session) {
-    	
+    	model.addAttribute("translatedJsonURL", SessionUtil.getTranslatedJsonURL(session));
         log.debug("Receive refresh request for snapshot report");
         SnapShotRestController.cleanReport();
         return "redirect:/snapshot";

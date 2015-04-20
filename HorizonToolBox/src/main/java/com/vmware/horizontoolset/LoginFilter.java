@@ -8,6 +8,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
@@ -32,7 +33,7 @@ public class LoginFilter extends GenericFilterBean  {
 			FilterChain chain) throws IOException, ServletException {
 		
 		log.debug("LoginFilter do Filter:");
-
+		SessionUtil.setLocale(((HttpServletRequest)request).getSession(), request.getLocale());
         if (requiresAuthentication((HttpServletRequest) request)) {
         	String requestType =( (HttpServletRequest) request).getHeader("X-Requested-With");
             if (requestType!=null && !requestType.isEmpty() && requestType.equalsIgnoreCase("XMLHttpRequest")) {
@@ -43,7 +44,7 @@ public class LoginFilter extends GenericFilterBean  {
             
         	log.debug("Redirect to login");
         	String loginURL = LoginController.LoginURL;
-
+        	
         	((HttpServletResponse) response).sendRedirect(horizontoolset+loginURL);
         	return;
         }
