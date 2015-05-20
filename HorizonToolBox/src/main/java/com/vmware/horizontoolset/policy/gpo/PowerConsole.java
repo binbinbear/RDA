@@ -77,7 +77,7 @@ public class PowerConsole {
         pc.close();
          */
         //      PowerConsole pc = new PowerConsole(new String[]{"cmd.exe"});
-        PowerConsole pc = new PowerConsole(new String[]{"powershell.exe", "-NoExit", "-Command", "-"});
+/*        PowerConsole pc = new PowerConsole(new String[]{"powershell.exe", "-NoExit", "-Command", "-"});
         System.out.println("========== Executing dir");
         pc.execute("dir"); 
         System.out.println("========== Executing cd\\");
@@ -91,6 +91,6 @@ public class PowerConsole {
         System.out.println("========== Executing cd \\bubba");
         pc.execute("cd \\bubba"); Thread.sleep(2000);
         System.out.println("========== Exiting .... bye.");
-        pc.close();
+        pc.close();*/
     }
 }

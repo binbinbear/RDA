@@ -9,9 +9,13 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.log4j.Logger;
 
 import com.vmware.horizontoolset.policy.polfile.PolEntry.PolEntryType;
 
@@ -27,11 +31,13 @@ public class PolFile {
 		Key, ValueName, Start
 	}
 
+	private static Logger log = Logger.getLogger(PolFile.class);
+	
 	private static final int PolHeader = 0x50526567;
 	private static final int PolVersion = 0x01000000;
 
-	private Map<String, PolEntry> entries = new HashMap<>();
-
+	//private Map<String, PolEntry> entries = new HashMap<>();
+	private Map<String, PolEntry> entries = new LinkedHashMap<>();
 	public List<PolEntry> entries() {
 		List<PolEntry> pl = new ArrayList<>(entries.values());
 		Collections.sort(pl);
@@ -391,6 +397,24 @@ public class PolFile {
 
 		byte[] bytes;
 
+		//edit by lxy
+		/*	
+		log.debug("[DEBUG lxy] [pol sort] " + entries.toString());
+		List<Map.Entry<String, PolEntry>> infoIds = new ArrayList<Map.Entry<String, PolEntry>>(entries.entrySet());
+		Collections.sort(infoIds, new Comparator<Map.Entry<String, PolEntry>>() {   
+		    public int compare(Map.Entry<String, PolEntry> o1, Map.Entry<String, PolEntry> o2) {       
+		        return (o1.getKey()).toString().compareTo(o2.getKey());
+		    }
+		}); 
+		
+		
+		log.debug("[DEBUG lxy] [pol sort] " + entries.toString());
+		for(Map.Entry<String, PolEntry> mapEntry : entries.entrySet()){
+			PolEntry pe = mapEntry.getValue();
+			log.debug("[map entry] k=" + pe.keyName + ",v=" + pe.valueName);
+		}
+		*/
+		
 		for (PolEntry pe : this.entries.values()) {
 			out.write(openBracket); // 2
 			bytes = BitUtil.getUnicodeBytes(pe.keyName);
@@ -421,6 +445,8 @@ public class PolFile {
 	}
 
 	public void _dump() {
+		//TODO
+
 		for (PolEntry pe : entries()) {
 			System.out.println("Key=" + pe.keyName);
 			System.out.println("Value=" + pe.valueName);

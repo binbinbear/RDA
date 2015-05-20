@@ -12,6 +12,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.vmware.horizontoolset.common.jtable.JTableData;
+import com.vmware.horizontoolset.policy.model.ProfileItem;
+
 public class CSVReader {
 
    BufferedReader br;
@@ -38,21 +41,47 @@ public class CSVReader {
     *            if bad things happen during the read
     */
    public List<Map<String, String>> readAll() throws IOException {
-      List<Map<String, String>> allMapElements =
-            new ArrayList<Map<String, String>>();
+      List<Map<String, String>> allMapElements = new ArrayList<Map<String, String>>();
       Map<String, String> mapElement = new HashMap<String, String>();
       while (hasNext) {
          String[] key = readNext();
          String[] value = readNext();
          if (key != null) {
             for (int i = 0; i < key.length; i++) {
-               mapElement.put(key[i], value[i]);
+            	mapElement.put(key[i], value[i]);
             }
             allMapElements.add(mapElement);
          }
       }
       return allMapElements;
 
+   }
+   
+   //TODO TODO
+   public List<Map<String, String>> readAllGPO() throws IOException {
+	   List<Map<String, String>> allMapElements = new ArrayList<Map<String, String>>();   
+	   String[] key = readNext();
+	   System.out.println("key----------------------"+key.length);
+	   while (hasNext) {
+		   String[] value = readNext();
+		   if(value==null)
+			   break;
+		   System.out.println("value----------------------"+value.length);
+		   if (key!=null && value!=null) 
+		   {
+			   Map<String, String> mapElement = new HashMap<String, String>();
+			   for (int i = 0; i < key.length; i++) {
+				   if(value[i]==null){
+					   mapElement.put(key[i], "");
+					   continue;
+				   }
+				   System.out.println("{kv} "+key[i]+" , "+ value[i]);
+				   mapElement.put(key[i], value[i]);
+			   }
+			   allMapElements.add(mapElement);
+		   }
+	   } 
+	   return allMapElements;
    }
 
    /**
@@ -104,22 +133,52 @@ public class CSVReader {
       tokensOnThisLine.add(sb.toString());
       return tokensOnThisLine.toArray(new String[0]);
    }
+   
+	public JTableData returnNameListPs(List<Map<String, String>> psRes_para){
+		JTableData ret = new JTableData();
+		
+		List<ProfileItem> profiles = new ArrayList<ProfileItem>();
+		Map<String, String> proItems = new HashMap<String,String>();
+		List<Map<String, String>> psRes = psRes_para;
+		for(int i=0; i<psRes.size(); ++i){
+			Map<String,String> gpoItem = psRes.get(i);
+			proItems.put( gpoItem.get("DisplayName").toString(), gpoItem.get("Descrption")==null?"":gpoItem.get("Descrption").toString());
+		}
+		
+		if(proItems.size()==0){
+			ret.Records=profiles.toArray();
+			ret.TotalRecordCount=profiles.size();
+			return ret;
+		}
+
+		for(Map.Entry<String, String> mapEntry : proItems.entrySet()){
+			String name = mapEntry.getKey();
+			String desc = mapEntry.getValue();
+			System.out.println("name:"+name+", desc:"+desc);
+			profiles.add(new ProfileItem(name,desc));
+		}
+		ret.Records=profiles.toArray();
+		ret.TotalRecordCount=profiles.size();
+		return ret;
+	}
 
    public static void main(String[] args) throws IOException {
-      File file = new File("tiliuaQWJk.csv");
+      File file = new File("c:\\AIKiw.csv");
       BufferedReader bufRdr;
       try {
          bufRdr = new BufferedReader(new FileReader(file));
          CSVReader csvReader = new CSVReader(bufRdr);
          try {
-            List<Map<String, String>> list = csvReader.readAll();
+            List<Map<String, String>> list = csvReader.readAllGPO();
+            csvReader.returnNameListPs(list);
+            System.out.println("\n\n [list]\n\n"+list.toString());
             for (int i = 0; i < list.size(); i++) {
+            	System.out.println("GPO--------------------------------");
                list.get(i);
                Iterator<String> it = list.get(i).keySet().iterator();
                while (it.hasNext()) {
                   String name = it.next();
-                  System.out.println("key= " + name + ", value = "
-                        + list.get(i).get(name));
+                  //System.out.println("key= " + name + ", value = " + list.get(i).get(name));
                }
             }
          } catch (IOException e) {

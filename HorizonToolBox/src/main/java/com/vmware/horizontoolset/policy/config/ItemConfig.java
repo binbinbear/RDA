@@ -1,6 +1,5 @@
 package com.vmware.horizontoolset.policy.config;
 
-//配置文件中，item的数据模型
 public class ItemConfig {
 	public static enum PolEntryType {
 		REG_NONE(0), 
@@ -26,29 +25,47 @@ public class ItemConfig {
 			return null;
 		}
 	}
+	
+	public static enum ElementType{
+		ELE_CHECKBOX,	 //TODO default value 统一写入配置文件
+		ELE_CHECKBOX_V,  
+		ELE_INPUTBOX,
+		ELE_SELECTBOX,
+		ELE_GRID1,
+		ELE_GRID2,
+		ELE_ADDITION,	  //case disabled， value==0
+		ELE_ADDITION_0,   //case enabled，   value==defaultData
+		ELE_GRID_TITLE
+	}
 
-	byte[] bytes;
-
+	//byte[] bytes;
+	
 	public PolEntryType type;
 	public String keyName;
 	public String valueName;
-	public String data;
+	public String data;			// edit by user
+	public String defaultData;
 	
-	// add by lixiaoyi
-	public String itemType;  // checkbox， inputbox， selectbox 不同类型，disabled时候是不同形式（不考虑disabled的话，则不需要这项）
+	public ElementType elementType;  // checkbox， inputbox， selectbox 不同类型，disabled时候是不同形式
 	
-/*	public ItemEntry(String keyName, String valueName) {
-		bytes = new byte[0];
-		type = PolEntryType.REG_NONE;
-		this.keyName = keyName;
-		this.valueName = valueName;
-	}*/
-	
-	public ItemConfig(String keyName, String valueName, PolEntryType type) {
-		bytes = new byte[0];
+	public ItemConfig(String keyName, String valueName, PolEntryType type, ElementType elementType) {
 		this.type = type;
 		this.keyName = keyName;
 		this.valueName = valueName;
+		this.elementType = elementType;
+	}
+	
+	public ItemConfig(String keyName, String valueName, PolEntryType type, ElementType elementType, String defaultData) {
+		this.type = type;
+		this.keyName = keyName;
+		this.valueName = valueName;
+		this.elementType = elementType;
+		this.defaultData = defaultData;
+	}
+	
+	@Override
+	public String toString(){
+		return "keyName=" + keyName + ", valueName="+valueName + ", type=" + type.toString() + ", elementType=" + elementType;
 	}
 
 }

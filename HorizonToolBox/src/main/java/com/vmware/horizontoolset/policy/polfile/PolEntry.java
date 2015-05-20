@@ -280,6 +280,7 @@ public class PolEntry implements Comparable<PolEntry> {
 		if (secondSpecial == true && firstSpecial == false) {
 			return 1;
 		}
+		
 
 		return valueName.compareToIgnoreCase(other.valueName);
 	}

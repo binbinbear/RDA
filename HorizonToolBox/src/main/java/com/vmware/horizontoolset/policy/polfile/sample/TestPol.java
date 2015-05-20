@@ -31,16 +31,15 @@ public class TestPol {
 			//dumpPolFile("C:/testPol/registry_all.pol");
 			//dumpPolFile("registry_little_common.pol");
 			PolFile pf = new PolFile();
-			pf.load("c:/prof12win7.pol");
+			pf.load("c:/policy_samples/test/fromAd.pol");
 //			pf.deleteValue("Software\\Policies\\Teradici\\PCoIP\\pcoip_admin_defaults", "pcoip.server_clipboard_state");
 //			pf.setString("Software\\Policies\\Teradici\\PCoIP\\pcoip_admin_defaults", "**del.pcoip.server_clipboard_state", "");
-//		
+//			
 //			pf._dump();
 //			pf.setDWORD("Software\\Policies\\VMware, Inc.\\VMware VDM\\Log", "MaxDaysKept", 5);
 //			pf.setString("Software\\Policies\\Teradici\\PCoIP\\pcoip_admin_defaults", "pcoip.cert_store_name", "vmware");
 			System.out.println("[===========================]");
 			pf._dump();
-			
 			
 			
 		//	pf.save("c:/testPol/registry_to_disabled.pol");

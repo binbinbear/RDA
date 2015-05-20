@@ -1,0 +1,29 @@
+package com.vmware.horizontoolset.policy.gpo;
+
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+
+public class CsvFuncReadallgpo implements ReadCsvFunc{
+	private CSVReader csvr;
+	
+	public CsvFuncReadallgpo(){
+	}
+
+	@Override
+	public List<Map<String, String>> operate(String fileName) {
+		try {
+			csvr = new CSVReader(new FileReader(fileName));
+			List<Map<String, String>> psRes = null;
+			psRes = csvr.readAllGPO();
+			return psRes;
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+}

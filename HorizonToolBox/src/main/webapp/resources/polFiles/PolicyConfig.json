@@ -1,50 +1,2312 @@
 {
   "policies": {
-    "SSL": {
-      "policyId": "SSL",
-      "hasOptions": true,
+    "screenSize": {
+      "policyId": "screenSize",
+      "reverse": false,
+      "pType": "DEF",
       "items": {
-        "policy2-3-6": {
-          "bytes": [],
+        "screenSize-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "Software\\Policies\\VMware, Inc.\\VMware VDM\\Agent\\Configuration\\XMLAPI",
+          "valueName": "screenSize",
+          "defaultData": "",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "disclaimerText": {
+      "policyId": "disclaimerText",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "disclaimerText-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "Software\\Policies\\VMware, Inc.\\VMware VDM\\Agent\\Configuration\\XMLAPI",
+          "valueName": "disclaimerText",
+          "defaultData": "",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "cert_revoc_check_cache_only": {
+      "policyId": "cert_revoc_check_cache_only",
+      "policyKey": "Software\\Policies\\VMware, Inc.\\VMware VDM\\Security",
+      "policyValue": "CertificateRevocationCheckCacheOnly",
+      "reverse": false,
+      "pType": "COMMON"
+    },
+    "pcoip_server_clipboard_state": {
+      "policyId": "pcoip_server_clipboard_state",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "pcoip_server_clipboard_state-Sub-1": {
           "type": "REG_DWORD",
           "keyName": "Software\\Policies\\Teradici\\PCoIP\\pcoip_admin_defaults",
-          "valueName": "pcoip.ask_clients_to_use_vcs_sni"
+          "valueName": "pcoip.server_clipboard_state",
+          "defaultData": "2",
+          "elementType": "ELE_SELECTBOX"
+        }
+      }
+    },
+    "pcoip_event_days_to_keep_log": {
+      "policyId": "pcoip_event_days_to_keep_log",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "pcoip_event_days_to_keep_log-Sub-1": {
+          "type": "REG_DWORD",
+          "keyName": "Software\\Policies\\Teradici\\PCoIP\\pcoip_admin_defaults",
+          "valueName": "pcoip.event_days_to_keep_log",
+          "defaultData": "7",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "ImageQuality": {
+      "policyId": "ImageQuality",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "ImageQuality-Sub-3": {
+          "type": "REG_SZ",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware Blast\\Config",
+          "valueName": "JpegQualityMid",
+          "defaultData": "35",
+          "elementType": "ELE_INPUTBOX"
         },
-        "policy2-3-5": {
-          "bytes": [],
+        "ImageQuality-Sub-2": {
+          "type": "REG_SZ",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware Blast\\Config",
+          "valueName": "JpegChromaSamplingLow",
+          "defaultData": "421111",
+          "elementType": "ELE_INPUTBOX"
+        },
+        "ImageQuality-Sub-5": {
+          "type": "REG_SZ",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware Blast\\Config",
+          "valueName": "JpegChromaSamplingHigh",
+          "defaultData": "421111",
+          "elementType": "ELE_INPUTBOX"
+        },
+        "ImageQuality-Sub-4": {
+          "type": "REG_SZ",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware Blast\\Config",
+          "valueName": "JpegQualityHigh",
+          "defaultData": "90",
+          "elementType": "ELE_INPUTBOX"
+        },
+        "ImageQuality-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware Blast\\Config",
+          "valueName": "JpegQualityLow",
+          "defaultData": "25",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "pcoip_udpport": {
+      "policyId": "pcoip_udpport",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "pcoip_udpport-Sub-1": {
+          "type": "REG_DWORD",
+          "keyName": "Software\\Policies\\Teradici\\PCoIP\\pcoip_admin_defaults",
+          "valueName": "pcoip.udpport",
+          "defaultData": "4172",
+          "elementType": "ELE_INPUTBOX"
+        },
+        "pcoip_udpport-Sub-2": {
+          "type": "REG_DWORD",
+          "keyName": "Software\\Policies\\Teradici\\PCoIP\\pcoip_admin_defaults",
+          "valueName": "pcoip.udpport_range",
+          "defaultData": "10",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "pcoip_event_size_to_keep_log_mb": {
+      "policyId": "pcoip_event_size_to_keep_log_mb",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "pcoip_event_size_to_keep_log_mb-Sub-1": {
+          "type": "REG_DWORD",
+          "keyName": "Software\\Policies\\Teradici\\PCoIP\\pcoip_admin_defaults",
+          "valueName": "pcoip.event_size_to_keep_log_mb",
+          "defaultData": "100",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "CredentialFilterExceptions": {
+      "policyId": "CredentialFilterExceptions",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "CredentialFilterExceptions-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "Software\\Policies\\VMware, Inc.\\VMware VDM\\Agent\\Configuration",
+          "valueName": "CredentialFilterExceptions",
+          "defaultData": "",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "trace_enabled": {
+      "policyId": "trace_enabled",
+      "policyKey": "Software\\Policies\\VMware, Inc.\\VMware VDM",
+      "policyValue": "traceEnabled",
+      "reverse": false,
+      "pType": "COMMON"
+    },
+    "Downloads": {
+      "policyId": "Downloads",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "Downloads-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Service\\Redirected Folders",
+          "valueName": "{374DE290-123F-4565-9164-39C4925E467B}",
+          "defaultData": "",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "pcoip_enable_input_language_sync": {
+      "policyId": "pcoip_enable_input_language_sync",
+      "policyKey": "Software\\Policies\\Teradici\\PCoIP\\pcoip_admin_defaults",
+      "policyValue": "pcoip.enable_input_language_sync",
+      "reverse": true,
+      "pType": "DEF"
+    },
+    "disconnectedSessionTimeout": {
+      "policyId": "disconnectedSessionTimeout",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "disconnectedSessionTimeout-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "Software\\Policies\\VMware, Inc.\\VMware VDM\\Agent\\Configuration\\XMLAPI",
+          "valueName": "disconnectedSessionTimeout",
+          "defaultData": "",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "CommandsToRunOnReconnect": {
+      "policyId": "CommandsToRunOnReconnect",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "CommandsToRunOnReconnect-Title": {
+          "type": "REG_SZ",
+          "keyName": "Software\\Policies\\VMware, Inc.\\VMware VDM\\Agent\\Configuration\\CommandsToRunOnReconnect",
+          "valueName": "**delvals.",
+          "defaultData": "",
+          "elementType": "ELE_GRID_TITLE"
+        },
+        "CommandsToRunOnReconnect-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "Software\\Policies\\VMware, Inc.\\VMware VDM\\Agent\\Configuration\\CommandsToRunOnReconnect",
+          "valueName": "",
+          "defaultData": "",
+          "elementType": "ELE_GRID1"
+        }
+      }
+    },
+    "SessionGarbageCollection": {
+      "policyId": "SessionGarbageCollection",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "SessionGarbageCollection-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware Blast\\Config",
+          "valueName": "SessionGCInterval_ms",
+          "defaultData": "1000",
+          "elementType": "ELE_INPUTBOX"
+        },
+        "SessionGarbageCollection-Sub-2": {
+          "type": "REG_SZ",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware Blast\\Config",
+          "valueName": "SessionGCThreshold_s",
+          "defaultData": "10",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "externalBlastPort": {
+      "policyId": "externalBlastPort",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "externalBlastPort-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "Software\\Policies\\VMware, Inc.\\VMware VDM\\Agent\\Configuration\\XMLAPI",
+          "valueName": "externalBlastPort",
+          "defaultData": "",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "usbEnabled": {
+      "policyId": "usbEnabled",
+      "policyKey": "Software\\Policies\\VMware, Inc.\\VMware VDM\\Agent\\Configuration\\XMLAPI",
+      "policyValue": "usbEnabled",
+      "reverse": false,
+      "pType": "USB"
+    },
+    "pcoip_img_quality": {
+      "policyId": "pcoip_img_quality",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "pcoip_img_quality-Sub-2": {
+          "type": "REG_DWORD",
+          "keyName": "Software\\Policies\\Teradici\\PCoIP\\pcoip_admin_defaults",
+          "valueName": "pcoip.maximum_initial_image_quality",
+          "defaultData": "80",
+          "elementType": "ELE_INPUTBOX"
+        },
+        "pcoip_img_quality-Sub-1": {
+          "type": "REG_DWORD",
+          "keyName": "Software\\Policies\\Teradici\\PCoIP\\pcoip_admin_defaults",
+          "valueName": "pcoip.minimum_image_quality",
+          "defaultData": "40",
+          "elementType": "ELE_INPUTBOX"
+        },
+        "pcoip_img_quality-Sub-3": {
+          "type": "REG_DWORD",
+          "keyName": "Software\\Policies\\Teradici\\PCoIP\\pcoip_admin_defaults",
+          "valueName": "pcoip.maximum_frame_rate",
+          "defaultData": "30",
+          "elementType": "ELE_INPUTBOX"
+        },
+        "pcoip_img_quality-Sub-4": {
+          "type": "REG_DWORD",
+          "keyName": "Software\\Policies\\Teradici\\PCoIP\\pcoip_admin_defaults",
+          "valueName": "pcoip.use_client_img_settings",
+          "defaultData": "0",
+          "elementType": "ELE_CHECKBOX"
+        }
+      }
+    },
+    "ExcludedProcesses": {
+      "policyId": "ExcludedProcesses",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "ExcludedProcesses-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Driver\\ExcludedProcesses",
+          "valueName": "",
+          "defaultData": "",
+          "elementType": "ELE_GRID2"
+        },
+        "ExcludedProcesses-Title": {
+          "type": "REG_SZ",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Driver\\ExcludedProcesses",
+          "valueName": "**delvals.",
+          "defaultData": "",
+          "elementType": "ELE_GRID_TITLE"
+        }
+      }
+    },
+    "AllowAutoDeviceSplitting": {
+      "policyId": "AllowAutoDeviceSplitting",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "AllowAutoDeviceSplitting-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "Software\\Policies\\VMware, Inc.\\VMware VDM\\Agent\\USB",
+          "valueName": "AllowAutoDeviceSplitting",
+          "defaultData": "d:true",
+          "elementType": "ELE_SELECTBOX"
+        }
+      }
+    },
+    "AllowKeyboardMouse": {
+      "policyId": "AllowKeyboardMouse",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "AllowKeyboardMouse-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "Software\\Policies\\VMware, Inc.\\VMware VDM\\Agent\\USB",
+          "valueName": "AllowKeyboardMouse",
+          "defaultData": "d:true",
+          "elementType": "ELE_SELECTBOX"
+        }
+      }
+    },
+    "pcoip_tcpport": {
+      "policyId": "pcoip_tcpport",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "pcoip_tcpport-Sub-2": {
+          "type": "REG_DWORD",
+          "keyName": "Software\\Policies\\Teradici\\PCoIP\\pcoip_admin_defaults",
+          "valueName": "pcoip.tcpport_range",
+          "defaultData": "1",
+          "elementType": "ELE_INPUTBOX"
+        },
+        "pcoip_tcpport-Sub-1": {
+          "type": "REG_DWORD",
+          "keyName": "Software\\Policies\\Teradici\\PCoIP\\pcoip_admin_defaults",
+          "valueName": "pcoip.tcpport",
+          "defaultData": "4172",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "EnableMMR": {
+      "policyId": "EnableMMR",
+      "policyKey": "Software\\Policies\\VMware, Inc.\\VMware VDM\\Agent\\Configuration",
+      "policyValue": "EnableMMR",
+      "reverse": false,
+      "pType": "USB"
+    },
+    "LogHistoryDepth": {
+      "policyId": "LogHistoryDepth",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "LogHistoryDepth-Sub-1": {
+          "type": "REG_DWORD",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Service",
+          "valueName": "LogHistoryDepth",
+          "defaultData": "1",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "overall_cpu_percentage": {
+      "policyId": "overall_cpu_percentage",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "overall_cpu_percentage-Sub-1": {
+          "type": "REG_DWORD",
+          "keyName": "Software\\Policies\\VMware, Inc.\\VMware VDM\\Performance Alarms",
+          "valueName": "OverallCpuPercentage",
+          "defaultData": "90",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "AllowSingleSignon": {
+      "policyId": "AllowSingleSignon",
+      "policyKey": "Software\\Policies\\VMware, Inc.\\VMware VDM\\Agent\\Configuration",
+      "policyValue": "AllowSingleSignon",
+      "reverse": false,
+      "pType": "USB"
+    },
+    "AppData": {
+      "policyId": "AppData",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "AppData-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Service\\Redirected Folders",
+          "valueName": "AppData",
+          "defaultData": "",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "pcoip_alternate_key": {
+      "policyId": "pcoip_alternate_key",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "pcoip_alternate_key-Sub-1": {
+          "type": "REG_DWORD",
+          "keyName": "Software\\Policies\\Teradici\\PCoIP\\pcoip_admin_defaults",
+          "valueName": "pcoip.CAD_insert_substitution_scan_code",
+          "defaultData": "78",
+          "elementType": "ELE_SELECTBOX"
+        }
+      }
+    },
+    "process_memory_percentage": {
+      "policyId": "process_memory_percentage",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "process_memory_percentage-Sub-1": {
+          "type": "REG_DWORD",
+          "keyName": "Software\\Policies\\VMware, Inc.\\VMware VDM\\Performance Alarms",
+          "valueName": "ProcessMemoryPercentage",
+          "defaultData": "75",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "BackgroundFoldersExclusions": {
+      "policyId": "BackgroundFoldersExclusions",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "BackgroundFoldersExclusions-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Driver\\BackgroundFoldersExclusions",
+          "valueName": "",
+          "defaultData": "",
+          "elementType": "ELE_GRID2"
+        },
+        "BackgroundFoldersExclusions-Title": {
+          "type": "REG_SZ",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Driver\\BackgroundFoldersExclusions",
+          "valueName": "**delvals.",
+          "defaultData": "",
+          "elementType": "ELE_GRID_TITLE"
+        }
+      }
+    },
+    "MyVideo": {
+      "policyId": "MyVideo",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "MyVideo-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Service\\Redirected Folders",
+          "valueName": "My Video",
+          "defaultData": "",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "pcoip_enable_audio": {
+      "policyId": "pcoip_enable_audio",
+      "policyKey": "Software\\Policies\\Teradici\\PCoIP\\pcoip_admin_defaults",
+      "policyValue": "pcoip.enable_audio",
+      "reverse": true,
+      "pType": "DEF"
+    },
+    "pcoip_enable_aes": {
+      "policyId": "pcoip_enable_aes",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "pcoip_enable_aes-Sub-1": {
+          "type": "REG_DWORD",
+          "keyName": "Software\\Policies\\Teradici\\PCoIP\\pcoip_admin_defaults",
+          "valueName": "pcoip.enable_salsa20_256_round12",
+          "defaultData": "1",
+          "elementType": "ELE_CHECKBOX"
+        },
+        "pcoip_enable_aes-Sub-2": {
+          "type": "REG_DWORD",
+          "keyName": "Software\\Policies\\Teradici\\PCoIP\\pcoip_admin_defaults",
+          "valueName": "pcoip.enable_aes_128_gcm",
+          "defaultData": "1",
+          "elementType": "ELE_CHECKBOX"
+        },
+        "pcoip_enable_aes-Sub-3": {
+          "type": "REG_DWORD",
+          "keyName": "Software\\Policies\\Teradici\\PCoIP\\pcoip_admin_defaults",
+          "valueName": "pcoip.enable_aes_256_gcm",
+          "defaultData": "1",
+          "elementType": "ELE_CHECKBOX"
+        }
+      }
+    },
+    "ForceDNSName": {
+      "policyId": "ForceDNSName",
+      "policyKey": "Software\\Policies\\VMware, Inc.\\VMware VDM\\Agent\\Configuration",
+      "policyValue": "Force DNS Name",
+      "reverse": false,
+      "pType": "USB"
+    },
+    "process_namelist": {
+      "policyId": "process_namelist",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "process_namelist-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "Software\\Policies\\VMware, Inc.\\VMware VDM\\Performance Alarms",
+          "valueName": "ProcessNameList",
+          "defaultData": "",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "pcoip_disable_cad": {
+      "policyId": "pcoip_disable_cad",
+      "policyKey": "Software\\Policies\\Teradici\\PCoIP\\pcoip_admin_defaults",
+      "policyValue": "pcoip.disable_cad",
+      "reverse": true,
+      "pType": "DEF"
+    },
+    "DebugFlags": {
+      "policyId": "DebugFlags",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "DebugFlags-Sub-1": {
+          "type": "REG_DWORD",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Driver\\DebugFlags",
+          "valueName": "DebugError (0x00000001)",
+          "defaultData": "1",
+          "elementType": "ELE_CHECKBOX_V"
+        },
+        "DebugFlags-Sub-2": {
+          "type": "REG_DWORD",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Driver\\DebugFlags",
+          "valueName": "DebugInformation (0x00000200)",
+          "defaultData": "512",
+          "elementType": "ELE_CHECKBOX_V"
+        },
+        "DebugFlags-Sub-3": {
+          "type": "REG_DWORD",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Driver\\DebugFlags",
+          "valueName": "DebugPorts (0x00000004)",
+          "defaultData": "4",
+          "elementType": "ELE_CHECKBOX_V"
+        }
+      }
+    },
+    "AllowSmartcard": {
+      "policyId": "AllowSmartcard",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "AllowSmartcard-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "Software\\Policies\\VMware, Inc.\\VMware VDM\\Agent\\USB",
+          "valueName": "AllowSmartcard",
+          "defaultData": "d:true",
+          "elementType": "ELE_SELECTBOX"
+        }
+      }
+    },
+    "sys_log_send_spec": {
+      "policyId": "sys_log_send_spec",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "sys_log_send_spec-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "Software\\Policies\\VMware, Inc.\\VMware VDM\\Log",
+          "valueName": "SyslogSendSpec",
+          "defaultData": "",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "pcoip_enable_fips_mode": {
+      "policyId": "pcoip_enable_fips_mode",
+      "policyKey": "Software\\Policies\\Teradici\\PCoIP\\pcoip_admin_defaults",
+      "policyValue": "pcoip.enable_fips_mode",
+      "reverse": true,
+      "pType": "DEF"
+    },
+    "WebcamMaxResHeight": {
+      "policyId": "WebcamMaxResHeight",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "WebcamMaxResHeight-Sub-1": {
+          "type": "REG_DWORD",
+          "keyName": "Software\\Policies\\VMware, Inc.\\VMware VDM\\Agent\\RTAV",
+          "valueName": "WebcamMaxResHeight",
+          "defaultData": "0",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "Cookies": {
+      "policyId": "Cookies",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "Cookies-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Service\\Redirected Folders",
+          "valueName": "Cookies",
+          "defaultData": "",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "VdmConnectionTicketTimeout": {
+      "policyId": "VdmConnectionTicketTimeout",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "VdmConnectionTicketTimeout-Sub-1": {
+          "type": "REG_DWORD",
+          "keyName": "Software\\Policies\\VMware, Inc.\\VMware VDM\\Agent\\Configuration",
+          "valueName": "VdmConnectionTicketTimeout",
+          "defaultData": "120",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "CommandsToRunOnConnect": {
+      "policyId": "CommandsToRunOnConnect",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "CommandsToRunOnConnect-Title": {
+          "type": "REG_SZ",
+          "keyName": "Software\\Policies\\VMware, Inc.\\VMware VDM\\Agent\\Configuration\\CommandsToRunOnConnect",
+          "valueName": "**delvals.",
+          "defaultData": "",
+          "elementType": "ELE_GRID_TITLE"
+        },
+        "CommandsToRunOnConnect-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "Software\\Policies\\VMware, Inc.\\VMware VDM\\Agent\\Configuration\\CommandsToRunOnConnect",
+          "valueName": "",
+          "defaultData": "",
+          "elementType": "ELE_GRID1"
+        }
+      }
+    },
+    "RoamedFiles": {
+      "policyId": "RoamedFiles",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "RoamedFiles-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Driver\\RoamedFiles",
+          "valueName": "",
+          "defaultData": "",
+          "elementType": "ELE_GRID2"
+        },
+        "RoamedFiles-Title": {
+          "type": "REG_SZ",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Driver\\RoamedFiles",
+          "valueName": "**delvals.",
+          "defaultData": "",
+          "elementType": "ELE_GRID_TITLE"
+        }
+      }
+    },
+    "LogToDebugPort": {
+      "policyId": "LogToDebugPort",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "LogToDebugPort-Sub-1": {
+          "type": "REG_DWORD",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Driver\\DebugDestination",
+          "valueName": "LogToDebugPort (0x00000001)",
+          "defaultData": "1",
+          "elementType": "ELE_CHECKBOX_V"
+        },
+        "LogToDebugPort-Sub-2": {
+          "type": "REG_DWORD",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Driver\\DebugDestination",
+          "valueName": "LogToFile (0x00000002)",
+          "defaultData": "2",
+          "elementType": "ELE_CHECKBOX_V"
+        }
+      }
+    },
+    "Contacts": {
+      "policyId": "Contacts",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "Contacts-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Service\\Redirected Folders",
+          "valueName": "{56784854-C6CB-462B-8169-88E350ACB882}",
+          "defaultData": "",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "externalFrameworkChannelPort": {
+      "policyId": "externalFrameworkChannelPort",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "externalFrameworkChannelPort-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "Software\\Policies\\VMware, Inc.\\VMware VDM\\Agent\\Configuration\\XMLAPI",
+          "valueName": "externalFrameworkChannelPort",
+          "defaultData": "",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "externalIPAddress": {
+      "policyId": "externalIPAddress",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "externalIPAddress-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "Software\\Policies\\VMware, Inc.\\VMware VDM\\Agent\\Configuration\\XMLAPI",
+          "valueName": "externalIPAddress",
+          "defaultData": "",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "ExcludeAllDevices": {
+      "policyId": "ExcludeAllDevices",
+      "policyKey": "Software\\Policies\\VMware, Inc.\\VMware VDM\\Agent\\USB",
+      "policyValue": "ExcludeAllDevices",
+      "reverse": false,
+      "pType": "USB"
+    },
+    "SplitVidPid": {
+      "policyId": "SplitVidPid",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "SplitVidPid-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "Software\\Policies\\VMware, Inc.\\VMware VDM\\Agent\\USB",
+          "valueName": "SplitVidPid",
+          "defaultData": "",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "SavedGames": {
+      "policyId": "SavedGames",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "SavedGames-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Service\\Redirected Folders",
+          "valueName": "{4C5C32FF-BB9D-43B0-B5B4-2D72E54EAAA4}",
+          "defaultData": "",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "clientCredentialCacheTimeout": {
+      "policyId": "clientCredentialCacheTimeout",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "clientCredentialCacheTimeout-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "Software\\Policies\\VMware, Inc.\\VMware VDM\\Agent\\Configuration\\XMLAPI",
+          "valueName": "clientCredentialCacheTimeout",
+          "defaultData": "",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "event_override": {
+      "policyId": "event_override",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "event_override-Sub-1": {
+          "type": "REG_DWORD",
+          "keyName": "Software\\Policies\\VMware, Inc.\\VMware VDM",
+          "valueName": "eventOverride",
+          "defaultData": "0",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "StartMenu": {
+      "policyId": "StartMenu",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "StartMenu-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Service\\Redirected Folders",
+          "valueName": "Start Menu",
+          "defaultData": "",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "AddAdminGroup": {
+      "policyId": "AddAdminGroup",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "AddAdminGroup-Addition-1": {
+          "type": "REG_DWORD",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Service\\Operation Flags",
+          "valueName": "AddAdminGroup (0x40000000)",
+          "defaultData": "1073741824",
+          "elementType": "ELE_ADDITION"
+        }
+      }
+    },
+    "alwaysConnect": {
+      "policyId": "alwaysConnect",
+      "policyKey": "Software\\Policies\\VMware, Inc.\\VMware VDM\\Agent\\Configuration\\XMLAPI",
+      "policyValue": "alwaysConnect",
+      "reverse": false,
+      "pType": "USB"
+    },
+    "Favorites": {
+      "policyId": "Favorites",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "Favorites-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Service\\Redirected Folders",
+          "valueName": "Favorites",
+          "defaultData": "",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "CleanupCLFSFiles": {
+      "policyId": "CleanupCLFSFiles",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "CleanupCLFSFiles-Addition-1": {
+          "type": "REG_DWORD",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Service\\Operation Flags",
+          "valueName": "CleanupCLFSFiles (0x00020000)",
+          "defaultData": "131072",
+          "elementType": "ELE_ADDITION"
+        }
+      }
+    },
+    "sessionTimeout": {
+      "policyId": "sessionTimeout",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "sessionTimeout-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "Software\\Policies\\VMware, Inc.\\VMware VDM\\Agent\\Configuration\\XMLAPI",
+          "valueName": "sessionTimeout",
+          "defaultData": "",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "DeleteLocalProfile": {
+      "policyId": "DeleteLocalProfile",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "DeleteLocalProfile-Sub-1": {
+          "type": "REG_DWORD",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Service\\Operation Flags",
+          "valueName": "DeleteLocalSettings (0x00001000)",
+          "defaultData": "0",
+          "elementType": "ELE_CHECKBOX"
+        },
+        "DeleteLocalProfile-Sub-2": {
+          "type": "REG_DWORD",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Service\\Operation Flags",
+          "valueName": "DeleteLocalProfile (0x00000002)",
+          "defaultData": "2",
+          "elementType": "ELE_ADDITION"
+        }
+      }
+    },
+    "MyPictures": {
+      "policyId": "MyPictures",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "MyPictures-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Service\\Redirected Folders",
+          "valueName": "My Pictures",
+          "defaultData": "",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "AllowAudioIn": {
+      "policyId": "AllowAudioIn",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "AllowAudioIn-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "Software\\Policies\\VMware, Inc.\\VMware VDM\\Agent\\USB",
+          "valueName": "AllowAudioIn",
+          "defaultData": "d:true",
+          "elementType": "ELE_SELECTBOX"
+        }
+      }
+    },
+    "IncludeVidPid": {
+      "policyId": "IncludeVidPid",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "IncludeVidPid-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "Software\\Policies\\VMware, Inc.\\VMware VDM\\Agent\\USB",
+          "valueName": "IncludeVidPid",
+          "defaultData": "",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "AllowVideo": {
+      "policyId": "AllowVideo",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "AllowVideo-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "Software\\Policies\\VMware, Inc.\\VMware VDM\\Agent\\USB",
+          "valueName": "AllowVideo",
+          "defaultData": "d:true",
+          "elementType": "ELE_SELECTBOX"
+        }
+      }
+    },
+    "EnableBackgroundDownload": {
+      "policyId": "EnableBackgroundDownload",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "EnableBackgroundDownload-Addition-1": {
+          "type": "REG_DWORD",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Service\\Helper Flags",
+          "valueName": "EnableBackgroundDownload (0x4000)",
+          "defaultData": "16384",
+          "elementType": "ELE_ADDITION"
+        }
+      }
+    },
+    "Links": {
+      "policyId": "Links",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "Links-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Service\\Redirected Folders",
+          "valueName": "{BFB9D5E0-C6A9-404C-B2B2-AE6DB6AF4968}",
+          "defaultData": "",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "configure_Max_PCoIP_Bandwidth": {
+      "policyId": "configure_Max_PCoIP_Bandwidth",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "configure_Max_PCoIP_Bandwidth-Sub-1": {
+          "type": "REG_DWORD",
+          "keyName": "Software\\Policies\\Teradici\\PCoIP\\pcoip_admin_defaults",
+          "valueName": "pcoip.max_link_rate",
+          "defaultData": "900000",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "LoggingFlags": {
+      "policyId": "LoggingFlags",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "LoggingFlags-Sub-2": {
+          "type": "REG_DWORD",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Service\\Log Levels",
+          "valueName": "LogError (0x00000001)",
+          "defaultData": "1",
+          "elementType": "ELE_CHECKBOX_V"
+        },
+        "LoggingFlags-Sub-3": {
+          "type": "REG_DWORD",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Service\\Log Levels",
+          "valueName": "LogInformation (0x00000002)",
+          "defaultData": "2",
+          "elementType": "ELE_CHECKBOX_V"
+        },
+        "LoggingFlags-Sub-1": {
+          "type": "REG_DWORD",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Service\\Log Levels",
+          "valueName": "LogDebug (0x00000004)",
+          "defaultData": "4",
+          "elementType": "ELE_CHECKBOX_V"
+        }
+      }
+    },
+    "IncludeFamily": {
+      "policyId": "IncludeFamily",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "IncludeFamily-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "Software\\Policies\\VMware, Inc.\\VMware VDM\\Agent\\USB",
+          "valueName": "IncludeFamily",
+          "defaultData": "",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "BackgroundFolders": {
+      "policyId": "BackgroundFolders",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "BackgroundFolders-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Driver\\BackgroundFolders",
+          "valueName": "",
+          "defaultData": "",
+          "elementType": "ELE_GRID2"
+        },
+        "BackgroundFolders-Addition-1": {
+          "type": "REG_DWORD",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Driver\\OperationFlags",
+          "valueName": "BackgroundLoadFolders (0x04000000)",
+          "defaultData": "67108864",
+          "elementType": "ELE_ADDITION"
+        },
+        "BackgroundFolders-Addition-2": {
+          "type": "REG_DWORD",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Service\\Operation Flags",
+          "valueName": "BackgroundLoadFolders (0x04000000)",
+          "defaultData": "67108864",
+          "elementType": "ELE_ADDITION"
+        },
+        "BackgroundFolders-Title": {
+          "type": "REG_SZ",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Driver\\BackgroundFolders",
+          "valueName": "**delvals.",
+          "defaultData": "",
+          "elementType": "ELE_GRID_TITLE"
+        }
+      }
+    },
+    "log_file_directory": {
+      "policyId": "log_file_directory",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "log_file_directory-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "Software\\Policies\\VMware, Inc.\\VMware VDM\\Log",
+          "valueName": "LogFileDirectory",
+          "defaultData": "",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "EnableTrayIconErrorAlerts": {
+      "policyId": "EnableTrayIconErrorAlerts",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "EnableTrayIconErrorAlerts-Addition-1": {
+          "type": "REG_DWORD",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Service\\Helper Flags",
+          "valueName": "EnableTrayIconErrorAlerts (0x00000001)",
+          "defaultData": "1",
+          "elementType": "ELE_ADDITION"
+        }
+      }
+    },
+    "pcoip_event_filter_mode": {
+      "policyId": "pcoip_event_filter_mode",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "pcoip_event_filter_mode-Sub-1": {
+          "type": "REG_DWORD",
+          "keyName": "Software\\Policies\\Teradici\\PCoIP\\pcoip_admin_defaults",
+          "valueName": "pcoip.event_filter_mode",
+          "defaultData": "2",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "max_days_kept": {
+      "policyId": "max_days_kept",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "max_days_kept-Sub-1": {
+          "type": "REG_DWORD",
+          "keyName": "Software\\Policies\\VMware, Inc.\\VMware VDM\\Log",
+          "valueName": "MaxDaysKept",
+          "defaultData": "7",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "AllowDirectRDP": {
+      "policyId": "AllowDirectRDP",
+      "policyKey": "Software\\Policies\\VMware, Inc.\\VMware VDM\\Agent\\Configuration",
+      "policyValue": "AllowDirectRDP",
+      "reverse": false,
+      "pType": "USB"
+    },
+    "max_debug_logs": {
+      "policyId": "max_debug_logs",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "max_debug_logs-Sub-1": {
+          "type": "REG_DWORD",
+          "keyName": "Software\\Policies\\VMware, Inc.\\VMware VDM\\Log",
+          "valueName": "MaxDebugLogs",
+          "defaultData": "10",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "ForceMMRToUseSoftwareOverlay": {
+      "policyId": "ForceMMRToUseSoftwareOverlay",
+      "policyKey": "Software\\Policies\\VMware, Inc.\\VMware VDM\\Agent\\Configuration",
+      "policyValue": "ForceMMRToUseSoftwareOverlay",
+      "reverse": false,
+      "pType": "USB"
+    },
+    "mmrEnabled": {
+      "policyId": "mmrEnabled",
+      "policyKey": "Software\\Policies\\VMware, Inc.\\VMware VDM\\Agent\\Configuration\\XMLAPI",
+      "policyValue": "mmrEnabled",
+      "reverse": false,
+      "pType": "USB"
+    },
+    "Recent": {
+      "policyId": "Recent",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "Recent-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Service\\Redirected Folders",
+          "valueName": "Recent",
+          "defaultData": "",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "configure_SSL_to_Security_Tools": {
+      "policyId": "configure_SSL_to_Security_Tools",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "configure_SSL_to_Security_Tools-Sub-6": {
+          "type": "REG_DWORD",
+          "keyName": "Software\\Policies\\Teradici\\PCoIP\\pcoip_admin_defaults",
+          "valueName": "pcoip.ask_clients_to_use_vcs_sni",
+          "defaultData": "0",
+          "elementType": "ELE_CHECKBOX"
+        },
+        "configure_SSL_to_Security_Tools-Sub-7": {
+          "type": "REG_DWORD",
+          "keyName": "Software\\Policies\\Teradici\\PCoIP\\pcoip_admin_defaults",
+          "valueName": "pcoip.ssl_disable_aes_128",
+          "defaultData": "0",
+          "elementType": "ELE_CHECKBOX"
+        },
+        "configure_SSL_to_Security_Tools-Sub-1": {
+          "type": "REG_DWORD",
+          "keyName": "Software\\Policies\\Teradici\\PCoIP\\pcoip_admin_defaults",
+          "valueName": "pcoip.ssl_cert_deny_legacy_connections",
+          "defaultData": "0",
+          "elementType": "ELE_CHECKBOX"
+        },
+        "configure_SSL_to_Security_Tools-Sub-3": {
           "type": "REG_SZ",
           "keyName": "Software\\Policies\\Teradici\\PCoIP\\pcoip_admin_defaults",
-          "valueName": "pcoip.ca_cert_store_name"
+          "valueName": "pcoip.cert_store_name",
+          "defaultData": "MY",
+          "elementType": "ELE_INPUTBOX"
         },
-        "policy2-3-4": {
-          "bytes": [],
+        "configure_SSL_to_Security_Tools-Sub-2": {
           "type": "REG_DWORD",
           "keyName": "Software\\Policies\\Teradici\\PCoIP\\pcoip_admin_defaults",
-          "valueName": "pcoip.ssl_cert_min_key_length"
+          "valueName": "pcoip.ssl_cert_type",
+          "defaultData": "1",
+          "elementType": "ELE_SELECTBOX"
         },
-        "policy2-3-3": {
-          "bytes": [],
+        "configure_SSL_to_Security_Tools-Sub-5": {
           "type": "REG_SZ",
           "keyName": "Software\\Policies\\Teradici\\PCoIP\\pcoip_admin_defaults",
-          "valueName": "pcoip.cert_store_name"
+          "valueName": "pcoip.ca_cert_store_name",
+          "defaultData": "ROOT",
+          "elementType": "ELE_INPUTBOX"
         },
-        "policy2-3-2": {
-          "bytes": [],
+        "configure_SSL_to_Security_Tools-Sub-4": {
           "type": "REG_DWORD",
           "keyName": "Software\\Policies\\Teradici\\PCoIP\\pcoip_admin_defaults",
-          "valueName": "pcoip.ssl_cert_type"
+          "valueName": "pcoip.ssl_cert_min_key_length",
+          "defaultData": "1024",
+          "elementType": "ELE_SELECTBOX"
+        }
+      }
+    },
+    "ClipboardState": {
+      "policyId": "ClipboardState",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "ClipboardState-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware Blast\\Config",
+          "valueName": "ClipboardState",
+          "defaultData": "1",
+          "elementType": "ELE_SELECTBOX"
+        }
+      }
+    },
+    "cert_revoc_check_timeout": {
+      "policyId": "cert_revoc_check_timeout",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "cert_revoc_check_timeout-Sub-1": {
+          "type": "REG_DWORD",
+          "keyName": "Software\\Policies\\VMware, Inc.\\VMware VDM\\Security",
+          "valueName": "CertificateRevocationCheckTimeout",
+          "defaultData": "0",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "ShowDiskActivityIcon": {
+      "policyId": "ShowDiskActivityIcon",
+      "policyKey": "Software\\Policies\\VMware, Inc.\\VMware VDM\\Agent\\Configuration",
+      "policyValue": "ShowDiskActivityIcon",
+      "reverse": false,
+      "pType": "USB"
+    },
+    "FileCopyMinSize": {
+      "policyId": "FileCopyMinSize",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "FileCopyMinSize-Addition-1": {
+          "type": "REG_DWORD",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Service\\Helper Flags",
+          "valueName": "HideFileCopyProgress (0x00000008)",
+          "defaultData": "8",
+          "elementType": "ELE_ADDITION_0"
         },
-        "policy2-3-1": {
-          "bytes": [],
+        "FileCopyMinSize-Sub-1": {
+          "type": "REG_DWORD",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Service",
+          "valueName": "FileCopyMinSize",
+          "defaultData": "50",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "configure_PCoIP__MTU": {
+      "policyId": "configure_PCoIP__MTU",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "configure_PCoIP__MTU-Sub-1": {
           "type": "REG_DWORD",
           "keyName": "Software\\Policies\\Teradici\\PCoIP\\pcoip_admin_defaults",
-          "valueName": "pcoip.ssl_cert_deny_legacy_connections"
+          "valueName": "pcoip.mtu_size",
+          "defaultData": "1200",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "sampling_interval_seconds": {
+      "policyId": "sampling_interval_seconds",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "sampling_interval_seconds-Sub-1": {
+          "type": "REG_DWORD",
+          "keyName": "Software\\Policies\\VMware, Inc.\\VMware VDM\\Performance Alarms",
+          "valueName": "SamplingIntervalSeconds",
+          "defaultData": "60",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "EnableUnityTouch": {
+      "policyId": "EnableUnityTouch",
+      "policyKey": "Software\\Policies\\VMware, Inc.\\VMware VDM\\VMware Unity",
+      "policyValue": "EnableUnityTouch",
+      "reverse": false,
+      "pType": "USB"
+    },
+    "httpsPortNumber": {
+      "policyId": "httpsPortNumber",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "httpsPortNumber-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "Software\\Policies\\VMware, Inc.\\VMware VDM\\Agent\\Configuration\\XMLAPI",
+          "valueName": "httpsPortNumber",
+          "defaultData": "",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "ExcludeVidPid": {
+      "policyId": "ExcludeVidPid",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "ExcludeVidPid-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "Software\\Policies\\VMware, Inc.\\VMware VDM\\Agent\\USB",
+          "valueName": "ExcludeVidPid",
+          "defaultData": "",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "Desktop": {
+      "policyId": "Desktop",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "Desktop-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Service\\Redirected Folders",
+          "valueName": "Desktop",
+          "defaultData": "",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "AudioEnabled": {
+      "policyId": "AudioEnabled",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "AudioEnabled-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware Blast\\Config",
+          "valueName": "AudioEnabled",
+          "defaultData": "0",
+          "elementType": "ELE_CHECKBOX"
+        }
+      }
+    },
+    "ExcludedFilesExclusions": {
+      "policyId": "ExcludedFilesExclusions",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "ExcludedFilesExclusions-Title": {
+          "type": "REG_SZ",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Driver\\ExcludedFilesExclusions",
+          "valueName": "**delvals.",
+          "defaultData": "",
+          "elementType": "ELE_GRID_TITLE"
         },
-        "policy2-3-7": {
-          "bytes": [],
+        "ExcludedFilesExclusions-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Driver\\ExcludedFilesExclusions",
+          "valueName": "",
+          "defaultData": "",
+          "elementType": "ELE_GRID2"
+        }
+      }
+    },
+    "PrintHood": {
+      "policyId": "PrintHood",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "PrintHood-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Service\\Redirected Folders",
+          "valueName": "PrintHood",
+          "defaultData": "",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "CommandsToRunOnDisconnect": {
+      "policyId": "CommandsToRunOnDisconnect",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "CommandsToRunOnDisconnect-Title": {
+          "type": "REG_SZ",
+          "keyName": "Software\\Policies\\VMware, Inc.\\VMware VDM\\Agent\\Configuration\\CommandsToRunOnDisconnect",
+          "valueName": "**delvals.",
+          "defaultData": "",
+          "elementType": "ELE_GRID_TITLE"
+        },
+        "CommandsToRunOnDisconnect-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "Software\\Policies\\VMware, Inc.\\VMware VDM\\Agent\\Configuration\\CommandsToRunOnDisconnect",
+          "valueName": "",
+          "defaultData": "",
+          "elementType": "ELE_GRID1"
+        }
+      }
+    },
+    "Cache": {
+      "policyId": "Cache",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "Cache-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Service\\Redirected Folders",
+          "valueName": "Cache",
+          "defaultData": "",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "resetEnabled": {
+      "policyId": "resetEnabled",
+      "policyKey": "Software\\Policies\\VMware, Inc.\\VMware VDM\\Agent\\Configuration\\XMLAPI",
+      "policyValue": "resetEnabled",
+      "reverse": false,
+      "pType": "USB"
+    },
+    "DisableRTAV": {
+      "policyId": "DisableRTAV",
+      "policyKey": "Software\\Policies\\VMware, Inc.\\VMware VDM\\Agent\\RTAV",
+      "policyValue": "DisableRTAV",
+      "reverse": false,
+      "pType": "USB"
+    },
+    "UploadProfileInterval": {
+      "policyId": "UploadProfileInterval",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "UploadProfileInterval-Sub-1": {
+          "type": "REG_DWORD",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Service",
+          "valueName": "UploadProfileInterval",
+          "defaultData": "10",
+          "elementType": "ELE_INPUTBOX"
+        },
+        "UploadProfileInterval-Addition-1": {
+          "type": "REG_DWORD",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Service",
+          "valueName": "VPEnabled",
+          "defaultData": "1",
+          "elementType": "ELE_ADDITION"
+        }
+      }
+    },
+    "WebcamMaxResWidth": {
+      "policyId": "WebcamMaxResWidth",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "WebcamMaxResWidth-Sub-1": {
+          "type": "REG_DWORD",
+          "keyName": "Software\\Policies\\VMware, Inc.\\VMware VDM\\Agent\\RTAV",
+          "valueName": "WebcamMaxResWidth",
+          "defaultData": "0",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "externalPCoIPPort": {
+      "policyId": "externalPCoIPPort",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "externalPCoIPPort-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "Software\\Policies\\VMware, Inc.\\VMware VDM\\Agent\\Configuration\\XMLAPI",
+          "valueName": "externalPCoIPPort",
+          "defaultData": "",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "FRExclusionsExceptions": {
+      "policyId": "FRExclusionsExceptions",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "FRExclusionsExceptions-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Driver\\FRExclusionsExceptions",
+          "valueName": "",
+          "defaultData": "",
+          "elementType": "ELE_GRID2"
+        },
+        "FRExclusionsExceptions-Title": {
+          "type": "REG_SZ",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Driver\\FRExclusionsExceptions",
+          "valueName": "**delvals.",
+          "defaultData": "",
+          "elementType": "ELE_GRID_TITLE"
+        }
+      }
+    },
+    "BlankScreenEnabled": {
+      "policyId": "BlankScreenEnabled",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "BlankScreenEnabled-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware Blast\\Config",
+          "valueName": "BlankScreenEnabled",
+          "defaultData": "0",
+          "elementType": "ELE_CHECKBOX"
+        }
+      }
+    },
+    "LoggingFilename": {
+      "policyId": "LoggingFilename",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "LoggingFilename-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Service",
+          "valueName": "Log Path",
+          "defaultData": "",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "MyMusic": {
+      "policyId": "MyMusic",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "MyMusic-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Service\\Redirected Folders",
+          "valueName": "My Music",
+          "defaultData": "",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "background_folders": {
+      "policyId": "background_folders",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "background_folders-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Driver\\BackgroundFolders",
+          "valueName": "**delvals.",
+          "defaultData": "",
+          "elementType": "ELE_GRID2"
+        }
+      }
+    },
+    "autoConnect": {
+      "policyId": "autoConnect",
+      "policyKey": "Software\\Policies\\VMware, Inc.\\VMware VDM\\Agent\\Configuration\\XMLAPI",
+      "policyValue": "autoConnect",
+      "reverse": false,
+      "pType": "USB"
+    },
+    "disk_threshold_for_log_and_eventsMB": {
+      "policyId": "disk_threshold_for_log_and_eventsMB",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "disk_threshold_for_log_and_eventsMB-Sub-1": {
+          "type": "REG_DWORD",
+          "keyName": "Software\\Policies\\VMware, Inc.\\VMware VDM",
+          "valueName": "DiskThresholdForLogAndEventsMB",
+          "defaultData": "200",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "max_debug_log_sizemb": {
+      "policyId": "max_debug_log_sizemb",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "max_debug_log_sizemb-Sub-1": {
+          "type": "REG_DWORD",
+          "keyName": "Software\\Policies\\VMware, Inc.\\VMware VDM\\Log",
+          "valueName": "MaxDebugLogSizeMB",
+          "defaultData": "10",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "SplitExcludeVidPid": {
+      "policyId": "SplitExcludeVidPid",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "SplitExcludeVidPid-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "Software\\Policies\\VMware, Inc.\\VMware VDM\\Agent\\USB",
+          "valueName": "SplitExcludeVidPid",
+          "defaultData": "",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "ToggleDisplaySettingsControl": {
+      "policyId": "ToggleDisplaySettingsControl",
+      "policyKey": "Software\\Policies\\VMware, Inc.\\VMware VDM\\Agent\\Configuration",
+      "policyValue": "ToggleDisplaySettingsControl",
+      "reverse": false,
+      "pType": "USB"
+    },
+    "turn_off_Build_To_Lossless": {
+      "policyId": "turn_off_Build_To_Lossless",
+      "policyKey": "Software\\Policies\\Teradici\\PCoIP\\pcoip_admin_defaults",
+      "policyValue": "pcoip.enable_build_to_lossless",
+      "reverse": false,
+      "pType": "DEF"
+    },
+    "appsEnabled": {
+      "policyId": "appsEnabled",
+      "policyKey": "Software\\Policies\\VMware, Inc.\\VMware VDM\\Agent\\Configuration\\XMLAPI",
+      "policyValue": "appsEnabled",
+      "reverse": false,
+      "pType": "USB"
+    },
+    "FRExclusions": {
+      "policyId": "FRExclusions",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "FRExclusions-Title": {
+          "type": "REG_SZ",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Driver\\FRExclusions",
+          "valueName": "**delvals.",
+          "defaultData": "",
+          "elementType": "ELE_GRID_TITLE"
+        },
+        "FRExclusions-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Driver\\FRExclusions",
+          "valueName": "",
+          "defaultData": "",
+          "elementType": "ELE_GRID2"
+        }
+      }
+    },
+    "History": {
+      "policyId": "History",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "History-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Service\\Redirected Folders",
+          "valueName": "History",
+          "defaultData": "",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "WebcamDefaultResWidth": {
+      "policyId": "WebcamDefaultResWidth",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "WebcamDefaultResWidth-Sub-1": {
+          "type": "REG_DWORD",
+          "keyName": "Software\\Policies\\VMware, Inc.\\VMware VDM\\Agent\\RTAV",
+          "valueName": "WebcamDefaultResWidth",
+          "defaultData": "0",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "RemoteLogPath": {
+      "policyId": "RemoteLogPath",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "RemoteLogPath-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Service",
+          "valueName": "RemoteLogPath",
+          "defaultData": "",
+          "elementType": "ELE_INPUTBOX"
+        },
+        "RemoteLogPath-Addition-1": {
+          "type": "REG_DWORD",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Service\\Operation Flags",
+          "valueName": "EnableUploadLogToNetwork (0x80000000)",
+          "defaultData": "-2147483648",
+          "elementType": "ELE_ADDITION"
+        }
+      }
+    },
+    "Startup": {
+      "policyId": "Startup",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "Startup-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Service\\Redirected Folders",
+          "valueName": "Startup",
+          "defaultData": "",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "configure_PCoIP_bandwidth_floor": {
+      "policyId": "configure_PCoIP_bandwidth_floor",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "configure_PCoIP_bandwidth_floor-Sub-1": {
           "type": "REG_DWORD",
           "keyName": "Software\\Policies\\Teradici\\PCoIP\\pcoip_admin_defaults",
-          "valueName": "pcoip.ssl_disable_aes_128"
+          "valueName": "pcoip.device_bandwidth_floor",
+          "defaultData": "0",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "pcoip_transport_session_priority": {
+      "policyId": "pcoip_transport_session_priority",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "pcoip_transport_session_priority-Sub-1": {
+          "type": "REG_DWORD",
+          "keyName": "Software\\Policies\\Teradici\\PCoIP\\pcoip_admin_defaults",
+          "valueName": "pcoip.transport_session_priority",
+          "defaultData": "4",
+          "elementType": "ELE_SELECTBOX"
+        }
+      }
+    },
+    "externalRDPPort": {
+      "policyId": "externalRDPPort",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "externalRDPPort-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "Software\\Policies\\VMware, Inc.\\VMware VDM\\Agent\\Configuration\\XMLAPI",
+          "valueName": "externalRDPPort",
+          "defaultData": "",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "WebcamDefaultResHeight": {
+      "policyId": "WebcamDefaultResHeight",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "WebcamDefaultResHeight-Sub-1": {
+          "type": "REG_DWORD",
+          "keyName": "Software\\Policies\\VMware, Inc.\\VMware VDM\\Agent\\RTAV",
+          "valueName": "WebcamDefaultResHeight",
+          "defaultData": "0",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "process_cpu_percentage": {
+      "policyId": "process_cpu_percentage",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "process_cpu_percentage-Sub-1": {
+          "type": "REG_DWORD",
+          "keyName": "Software\\Policies\\VMware, Inc.\\VMware VDM\\Performance Alarms",
+          "valueName": "ProcessCpuPercentage",
+          "defaultData": "90",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "AcceptTicketSSLAuth": {
+      "policyId": "AcceptTicketSSLAuth",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "AcceptTicketSSLAuth-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "Software\\Policies\\VMware, Inc.\\VMware VDM\\Security",
+          "valueName": "AcceptTicketSSLAuth",
+          "defaultData": "0",
+          "elementType": "ELE_SELECTBOX"
+        }
+      }
+    },
+    "IgnoredDirs": {
+      "policyId": "IgnoredDirs",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "IgnoredDirs-Addition-2": {
+          "type": "REG_DWORD",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Driver\\OperationFlags",
+          "valueName": "BasicRoamingFiles (0x00040000)",
+          "defaultData": "262144",
+          "elementType": "ELE_ADDITION"
+        },
+        "IgnoredDirs-Addition-1": {
+          "type": "REG_DWORD",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Service\\Operation Flags",
+          "valueName": "BasicRoamingFiles (0x00040000)",
+          "defaultData": "262144",
+          "elementType": "ELE_ADDITION"
+        },
+        "IgnoredDirs-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Driver\\IgnoredDirs",
+          "valueName": "",
+          "defaultData": "",
+          "elementType": "ELE_GRID2"
+        },
+        "IgnoredDirs-Title": {
+          "type": "REG_SZ",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Driver\\IgnoredDirs",
+          "valueName": "**delvals.",
+          "defaultData": "",
+          "elementType": "ELE_GRID_TITLE"
+        }
+      }
+    },
+    "AllowAudioOut": {
+      "policyId": "AllowAudioOut",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "AllowAudioOut-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "Software\\Policies\\VMware, Inc.\\VMware VDM\\Agent\\USB",
+          "valueName": "AllowAudioOut",
+          "defaultData": "d:true",
+          "elementType": "ELE_SELECTBOX"
+        }
+      }
+    },
+    "pcoip_enable_micin_noise_filter": {
+      "policyId": "pcoip_enable_micin_noise_filter",
+      "policyKey": "Software\\Policies\\Teradici\\PCoIP\\pcoip_admin_defaults",
+      "policyValue": "pcoip.enable_micin_noise_filter",
+      "reverse": true,
+      "pType": "DEF"
+    },
+    "SendTo": {
+      "policyId": "SendTo",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "SendTo-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Service\\Redirected Folders",
+          "valueName": "SendTo",
+          "defaultData": "",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "overall_memory_percentage": {
+      "policyId": "overall_memory_percentage",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "overall_memory_percentage-Sub-1": {
+          "type": "REG_DWORD",
+          "keyName": "Software\\Policies\\VMware, Inc.\\VMware VDM\\Performance Alarms",
+          "valueName": "OverallMemoryPercentage",
+          "defaultData": "75",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "pcoip_audio_bandwidth_limit": {
+      "policyId": "pcoip_audio_bandwidth_limit",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "pcoip_audio_bandwidth_limit-Sub-1": {
+          "type": "REG_DWORD",
+          "keyName": "Software\\Policies\\Teradici\\PCoIP\\pcoip_admin_defaults",
+          "valueName": "pcoip.audio_bandwidth_limit",
+          "defaultData": "500",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "AllowHID": {
+      "policyId": "AllowHID",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "AllowHID-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "Software\\Policies\\VMware, Inc.\\VMware VDM\\Agent\\USB",
+          "valueName": "AllowHID",
+          "defaultData": "d:true",
+          "elementType": "ELE_SELECTBOX"
+        }
+      }
+    },
+    "DontRoamFiles": {
+      "policyId": "DontRoamFiles",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "DontRoamFiles-Addition-1": {
+          "type": "REG_DWORD",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Driver\\OperationFlags",
+          "valueName": "DontRoamFiles (0x00200000)",
+          "defaultData": "2097152",
+          "elementType": "ELE_ADDITION"
+        },
+        "DontRoamFiles-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Driver\\DontRoamFiles",
+          "valueName": "",
+          "defaultData": "",
+          "elementType": "ELE_GRID2"
+        },
+        "DontRoamFiles-Addition-2": {
+          "type": "REG_DWORD",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Service\\Operation Flags",
+          "valueName": "DontRoamFiles (0x00200000)",
+          "defaultData": "2097152",
+          "elementType": "ELE_ADDITION"
+        },
+        "DontRoamFiles-Title": {
+          "type": "REG_SZ",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Driver\\DontRoamFiles",
+          "valueName": "**delvals.",
+          "defaultData": "",
+          "elementType": "ELE_GRID_TITLE"
+        }
+      }
+    },
+    "NetHood": {
+      "policyId": "NetHood",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "NetHood-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Service\\Redirected Folders",
+          "valueName": "NetHood",
+          "defaultData": "",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "AllowHIDBootable": {
+      "policyId": "AllowHIDBootable",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "AllowHIDBootable-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "Software\\Policies\\VMware, Inc.\\VMware VDM\\Agent\\USB",
+          "valueName": "AllowHIDBootable",
+          "defaultData": "d:true",
+          "elementType": "ELE_SELECTBOX"
+        }
+      }
+    },
+    "Templates": {
+      "policyId": "Templates",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "Templates-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Service\\Redirected Folders",
+          "valueName": "Templates",
+          "defaultData": "",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "ExcludeFamily": {
+      "policyId": "ExcludeFamily",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "ExcludeFamily-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "Software\\Policies\\VMware, Inc.\\VMware VDM\\Agent\\USB",
+          "valueName": "ExcludeFamily",
+          "defaultData": "",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "usbAutoConnect": {
+      "policyId": "usbAutoConnect",
+      "policyKey": "Software\\Policies\\VMware, Inc.\\VMware VDM\\Agent\\Configuration\\XMLAPI",
+      "policyValue": "usbAutoConnect",
+      "reverse": false,
+      "pType": "USB"
+    },
+    "Personal": {
+      "policyId": "Personal",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "Personal-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Service\\Redirected Folders",
+          "valueName": "Personal",
+          "defaultData": "",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "ExcludedFiles": {
+      "policyId": "ExcludedFiles",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "ExcludedFiles-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Driver\\ExcludedFiles",
+          "valueName": "",
+          "defaultData": "",
+          "elementType": "ELE_GRID2"
+        },
+        "ExcludedFiles-Addition-2": {
+          "type": "REG_DWORD",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Service\\Operation Flags",
+          "valueName": "DynamicRoamingFiles (0x00080000)",
+          "defaultData": "524288",
+          "elementType": "ELE_ADDITION"
+        },
+        "ExcludedFiles-Addition-1": {
+          "type": "REG_DWORD",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Driver\\OperationFlags",
+          "valueName": "DynamicRoamingFiles (0x00080000)",
+          "defaultData": "524288",
+          "elementType": "ELE_ADDITION"
+        },
+        "ExcludedFiles-Title": {
+          "type": "REG_SZ",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Driver\\ExcludedFiles",
+          "valueName": "**delvals.",
+          "defaultData": "",
+          "elementType": "ELE_GRID_TITLE"
+        }
+      }
+    },
+    "HTTPService": {
+      "policyId": "HTTPService",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "HTTPService-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware Blast\\Config",
+          "valueName": "PortSecure",
+          "defaultData": "22443",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "Searches": {
+      "policyId": "Searches",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "Searches-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Service\\Redirected Folders",
+          "valueName": "{7D1D3A04-DEBB-4115-95CF-2F29DA2920DA}",
+          "defaultData": "",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "pcoip_usb_device_rules": {
+      "policyId": "pcoip_usb_device_rules",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "pcoip_usb_device_rules-Sub-2": {
+          "type": "REG_SZ",
+          "keyName": "Software\\Policies\\Teradici\\PCoIP\\pcoip_admin_defaults",
+          "valueName": "pcoip.usb_unauth_table",
+          "defaultData": "",
+          "elementType": "ELE_SELECTBOX"
+        },
+        "pcoip_usb_device_rules-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "Software\\Policies\\Teradici\\PCoIP\\pcoip_admin_defaults",
+          "valueName": "pcoip.usb_auth_table",
+          "defaultData": "23XXXXXX",
+          "elementType": "ELE_SELECTBOX"
+        }
+      }
+    },
+    "pcoip_enable_console_access": {
+      "policyId": "pcoip_enable_console_access",
+      "policyKey": "Software\\Policies\\Teradici\\PCoIP\\pcoip_admin_defaults",
+      "policyValue": "pcoip.enable_console_access",
+      "reverse": true,
+      "pType": "DEF"
+    },
+    "disclaimerEnabled": {
+      "policyId": "disclaimerEnabled",
+      "policyKey": "Software\\Policies\\VMware, Inc.\\VMware VDM\\Agent\\Configuration\\XMLAPI",
+      "policyValue": "disclaimerEnabled",
+      "reverse": false,
+      "pType": "USB"
+    },
+    "HideOfflineIcon": {
+      "policyId": "HideOfflineIcon",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "HideOfflineIcon-Addition-1": {
+          "type": "REG_DWORD",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Driver\\OperationFlags",
+          "valueName": "HideOfflineIcon (0x00000001)",
+          "defaultData": "1",
+          "elementType": "ELE_ADDITION"
+        }
+      }
+    },
+    "CentralProfileOverride": {
+      "policyId": "CentralProfileOverride",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "CentralProfileOverride-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Service",
+          "valueName": "CentralProfileStore",
+          "defaultData": "",
+          "elementType": "ELE_INPUTBOX"
+        },
+        "CentralProfileOverride-Sub-2": {
+          "type": "REG_DWORD",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Service",
+          "valueName": "CentralProfileOverride",
+          "defaultData": "0",
+          "elementType": "ELE_CHECKBOX"
+        }
+      }
+    },
+    "pcoip_vchan": {
+      "policyId": "pcoip_vchan",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "pcoip_vchan-Sub-2": {
+          "type": "REG_SZ",
+          "keyName": "Software\\Policies\\Teradici\\PCoIP\\pcoip_admin_defaults",
+          "valueName": "pcoip.vchan_auth_list",
+          "defaultData": "",
+          "elementType": "ELE_INPUTBOX"
+        },
+        "pcoip_vchan-Sub-3": {
+          "type": "REG_SZ",
+          "keyName": "Software\\Policies\\Teradici\\PCoIP\\pcoip_admin_defaults",
+          "valueName": "pcoip.vchan_unauth_list",
+          "defaultData": "",
+          "elementType": "ELE_INPUTBOX"
+        },
+        "pcoip_vchan-Sub-1": {
+          "type": "REG_DWORD",
+          "keyName": "Software\\Policies\\Teradici\\PCoIP\\pcoip_admin_defaults",
+          "valueName": "pcoip.enable_vchan",
+          "defaultData": "0",
+          "elementType": "ELE_SELECTBOX"
+        }
+      }
+    },
+    "RoamLocalSettings": {
+      "policyId": "RoamLocalSettings",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "RoamLocalSettings-Addition-1": {
+          "type": "REG_DWORD",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Driver\\OperationFlags",
+          "valueName": "RoamLocalSettings (0x00004000)",
+          "defaultData": "16384",
+          "elementType": "ELE_ADDITION"
+        },
+        "RoamLocalSettings-Addition-2": {
+          "type": "REG_DWORD",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Service\\Operation Flags",
+          "valueName": "RoamLocalSettings (0x00004000)",
+          "defaultData": "16384",
+          "elementType": "ELE_ADDITION"
+        }
+      }
+    },
+    "IgnoredDirsExclusions": {
+      "policyId": "IgnoredDirsExclusions",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "IgnoredDirsExclusions-Title": {
+          "type": "REG_SZ",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Driver\\IgnoredDirsExclusions",
+          "valueName": "**delvals.",
+          "defaultData": "",
+          "elementType": "ELE_GRID_TITLE"
+        },
+        "IgnoredDirsExclusions-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "SOFTWARE\\Policies\\VMware, Inc.\\VMware VDM\\Persona Management\\Driver\\IgnoredDirsExclusions",
+          "valueName": "",
+          "defaultData": "",
+          "elementType": "ELE_GRID2"
+        }
+      }
+    },
+    "DisableTimeZoneSynchronization": {
+      "policyId": "DisableTimeZoneSynchronization",
+      "policyKey": "Software\\Policies\\VMware, Inc.\\VMware VDM\\Agent\\Configuration",
+      "policyValue": "DisableTimeZoneSynchronization",
+      "reverse": false,
+      "pType": "USB"
+    },
+    "WebcamMaxFrameRate": {
+      "policyId": "WebcamMaxFrameRate",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "WebcamMaxFrameRate-Sub-1": {
+          "type": "REG_DWORD",
+          "keyName": "Software\\Policies\\VMware, Inc.\\VMware VDM\\Agent\\RTAV",
+          "valueName": "WebcamMaxFrameRate",
+          "defaultData": "15",
+          "elementType": "ELE_INPUTBOX"
+        }
+      }
+    },
+    "cert_revoc_check_type": {
+      "policyId": "cert_revoc_check_type",
+      "reverse": false,
+      "pType": "DEF",
+      "items": {
+        "cert_revoc_check_type-Sub-1": {
+          "type": "REG_SZ",
+          "keyName": "Software\\Policies\\VMware, Inc.\\VMware VDM\\Security",
+          "valueName": "CertificateRevocationCheckType",
+          "defaultData": "1",
+          "elementType": "ELE_SELECTBOX"
         }
       }
     }
