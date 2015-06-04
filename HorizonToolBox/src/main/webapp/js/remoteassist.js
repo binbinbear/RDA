@@ -6,5 +6,10 @@ $(document).ready(function () {
 		$("#ra_table").html(result);
 		
 	}, "text");
+	
+	$.get("/toolbox/remoteassist/sessions", null, function(result) {
+		$("#session_table").html(result);
+	}, "text");
+
 });
 

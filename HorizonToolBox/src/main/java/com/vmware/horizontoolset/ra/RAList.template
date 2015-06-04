@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>List of Remote Assistance Requests</title>
-<link href="jquery/jquery-ui.css" rel="stylesheet">
+<link href="jquery/jquery-ui.min.css" rel="stylesheet">
 <style>
 body {
 	font: 75% "Trebuchet MS", sans-serif;
@@ -40,7 +40,7 @@ a {
 <p><b>List of Remote Assistance Requests</b></p>
 
 <table border=1>
-<thead><tr><th>Request Time</th><th>User</th><th>Machine Name</th><th>OS Version</th><th>Action</th></tr></thead>
+<thead><tr><th>Request Time</th><th>User</th><th>Machine Name</th><th>OS Version</th><th>Status</th><th>Action</th></tr></thead>
 <tbody>
 ${TABLE_ROWS}
 </tbody>
@@ -48,15 +48,13 @@ ${TABLE_ROWS}
 </table>
 <br><br>
 <ul>
-	<li><i>Normally remote assistance request is timeout in 6 minutes.</i></li>
-	<li><i>Remote assistance request history will be kept for one day and deleted automatically.</i></li>
+	<li><i>By Windows default remote assistance request is timeout in a few minutes to hours.</i></li>
+	<li><i>Remote assistance request history will be kept for some time and deleted automatically.</i></li>
 </ul>
 
 <br>
-<i>Horizon Remote Assistance, V 0.1</i>
+<i>Horizon Remote Assistance, V 0.3</i>
 
-<script src="jquery/external/jquery/jquery.js"></script>
-<script src="jquery/jquery-ui.js"></script>
 <script>
 $( "#button" ).button();
 
@@ -93,7 +91,7 @@ function test(value) {
 
 setTimeout(function(){
    self.location.reload();
-}, 60000);
+}, 120000);
 </script>
 
 </body>

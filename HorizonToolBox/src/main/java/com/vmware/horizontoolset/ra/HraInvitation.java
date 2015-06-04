@@ -30,7 +30,10 @@ public class HraInvitation {
 	public transient boolean started;
 	public transient int id;
 	private static AtomicInteger counter = new AtomicInteger();
-
+	
+	private static int agentPort = 18443;		//for admin initiated RA only.
+	private static boolean enableSSL = false;	//for admin initiated RA only.
+	
 	void init() {
 		if (time != 0)
 			throw new IllegalStateException();
@@ -59,13 +62,13 @@ public class HraInvitation {
 				String txt = inv.substring(j, k);
 				timeoutSeconds = Integer.parseInt(txt) * 60;
 				
-				if (timeoutSeconds < 360)
-					timeoutSeconds = 360;
-			} while (false);
+				} while (false);
 		} catch (Exception e) {
-			timeoutSeconds = 360;
 			e.printStackTrace();
 		}
+		
+		if (timeoutSeconds < 600)
+			timeoutSeconds = 600;	//safe time here. We lack of the time unit information here.
 	}
 	
 	public void launch() throws Exception {
@@ -96,7 +99,10 @@ public class HraInvitation {
 	}
 	
 	public static void fetchInvitationAndLaunch(String host) throws Exception {
-		String url = "http://" + host + ":32121/hra?v=1";
+		String code = "asdf";
+		String nonce = String.valueOf(System.currentTimeMillis());
+		String protocol = enableSSL ? "https" : "http";
+		String url = protocol + "://" + host + ":" + agentPort + "/hra?v=" + code + "&nonce=" + nonce;
 		String json = HttpUtil.getHTML(url);
 		if (json == null)
 			throw new IOException("Fail retrieving invitation.");
@@ -146,4 +152,21 @@ public class HraInvitation {
 			msg += inv.length();
 		return msg;
 	 }
+
+	public static void configAgentPort(int n) {
+		agentPort = n;
+	}
+
+	public static void configSSL(boolean b) {
+		enableSSL = b;
+	}
+	
+	public static void main(String[] args) {
+		try {
+			fetchInvitationAndLaunch("10.117.162.22");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 }
