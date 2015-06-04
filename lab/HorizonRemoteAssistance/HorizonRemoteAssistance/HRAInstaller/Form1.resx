@@ -118,13 +118,13 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="textBox2.Text" xml:space="preserve">
-    <value>Install Horizon Remote Assistance for end user (virtual desktop user). This system must be a system with View Agent installed. This operation installs a file named [Horizon Remote Assistance.exe] to all user's desktop. User initiates remote assistance request by executing that file.</value>
+    <value>Install Horizon Remote Assistance for end user (virtual desktop user). This system must be a system with View Agent installed. This operation installs a shortcut to application named [Horizon Remote Assistance] to all users' desktops. User initiates remote assistance request by launching the application.</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="pictureBox1.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADr0AAA69AUf7kK0AAEzMSURBVHhe7Z0FWFVZ3PWZUWccu7tz7G5QQkElLbB17O7u
+        YQUAAAAJcEhZcwAADrwAAA68AZW8ckkAAEzMSURBVHhe7Z0FWFVZ3PWZUWccu7tz7G5QQkElLbB17O7u
         7sDA7hYspLu7u8TuVhQsWN/ahwvDXC/CNd6Z9/3keX7PuXHu4d691u7/3kdF5effzxT4mQI/U+BnCvxM
         gZ8p8DMFfqbAzxSQT4Hg4OBCT58+rfr48eMGDx48aPKT/z1pIDQT2gkNlXa2+ND169d17t692+rJkyf4
         9OkTMjIyfvK/KA2EZkI7oaHQMt9GYC6vkJycrPfhw4efgv8vEvxLGVRoee3atT4vXrwo9cXSgOIXjY+P

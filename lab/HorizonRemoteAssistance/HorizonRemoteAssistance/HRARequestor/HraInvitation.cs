@@ -7,6 +7,7 @@ using System.Threading;
 using System.Windows.Forms;
 using Newtonsoft.Json;
 using ETEUtils;
+using CreateRAString;
 
 namespace HRARequestor
 {
@@ -44,7 +45,8 @@ namespace HRARequestor
             HraInvitation inst = new HraInvitation();
 
             if (_DebugPostFile == null)
-                inst.start();
+                //inst.start();
+                inst.start_v2();
             else
                 inst.inv = _DebugPostFile;
 
@@ -79,6 +81,15 @@ namespace HRARequestor
             }
         }
 
+        private void start_v2()
+        {
+            killAllRemoteAssistProcesses();
+
+            code = "";  //empty password
+            this.inv = RATicketGenerator.RequestRATicket("127.0.0.1");
+
+        }
+
         private void start()
         {
             killAllRemoteAssistProcesses();
@@ -96,7 +107,7 @@ namespace HRARequestor
             proc.StartInfo.WorkingDirectory = path;
             string code = GenerateCode();
             proc.StartInfo.Arguments = "/saveasfile hra.msrcIncident " + code;
-            proc.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            //proc.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
 
             try
             {
@@ -110,12 +121,11 @@ namespace HRARequestor
                     loadInvitationFile();
                 }
 
-                File.Delete(fileName);
-
                 //proc.WaitForExit();
             }
             finally
             {
+                File.Delete(fileName);
                 //close();
             }
         }
@@ -127,9 +137,10 @@ namespace HRARequestor
                 inv = File.ReadAllText(fileName);
                 return true;
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return false;
+                Log.Error("Error loading invitation from file. File name: " + fileName);
+                throw e;
             }
         }
 

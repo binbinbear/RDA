@@ -33,9 +33,7 @@
             this.btn_uninstall = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
-            this.btn_installAdmin = new System.Windows.Forms.Button();
             this.textBox2 = new System.Windows.Forms.TextBox();
-            this.textBox3 = new System.Windows.Forms.TextBox();
             this.textBox4 = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
@@ -56,7 +54,7 @@
             // 
             // btn_uninstall
             // 
-            this.btn_uninstall.Location = new System.Drawing.Point(18, 306);
+            this.btn_uninstall.Location = new System.Drawing.Point(18, 220);
             this.btn_uninstall.Name = "btn_uninstall";
             this.btn_uninstall.Size = new System.Drawing.Size(112, 68);
             this.btn_uninstall.TabIndex = 1;
@@ -89,16 +87,6 @@
                 "environment. Administrators can help virtual desktop users with Horizon Remote A" +
                 "ssistance easily.";
             // 
-            // btn_installAdmin
-            // 
-            this.btn_installAdmin.Location = new System.Drawing.Point(18, 220);
-            this.btn_installAdmin.Name = "btn_installAdmin";
-            this.btn_installAdmin.Size = new System.Drawing.Size(112, 68);
-            this.btn_installAdmin.TabIndex = 4;
-            this.btn_installAdmin.Text = "Install for Helpdesk";
-            this.btn_installAdmin.UseVisualStyleBackColor = true;
-            this.btn_installAdmin.Click += new System.EventHandler(this.btn_installAdmin_Click);
-            // 
             // textBox2
             // 
             this.textBox2.BackColor = System.Drawing.SystemColors.Control;
@@ -111,38 +99,24 @@
             this.textBox2.TabIndex = 5;
             this.textBox2.TabStop = false;
             this.textBox2.Text = resources.GetString("textBox2.Text");
-            // 
-            // textBox3
-            // 
-            this.textBox3.BackColor = System.Drawing.SystemColors.Control;
-            this.textBox3.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBox3.Location = new System.Drawing.Point(145, 220);
-            this.textBox3.Multiline = true;
-            this.textBox3.Name = "textBox3";
-            this.textBox3.ReadOnly = true;
-            this.textBox3.Size = new System.Drawing.Size(319, 68);
-            this.textBox3.TabIndex = 6;
-            this.textBox3.TabStop = false;
-            this.textBox3.Text = "Install the helpdesk component on this computer. Admin or IT help launches remote" +
-                " assistance from this computer.";
+            this.textBox2.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
             // 
             // textBox4
             // 
             this.textBox4.BackColor = System.Drawing.SystemColors.Control;
             this.textBox4.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBox4.Location = new System.Drawing.Point(145, 306);
+            this.textBox4.Location = new System.Drawing.Point(145, 220);
             this.textBox4.Multiline = true;
             this.textBox4.Name = "textBox4";
             this.textBox4.ReadOnly = true;
             this.textBox4.Size = new System.Drawing.Size(319, 68);
             this.textBox4.TabIndex = 7;
             this.textBox4.TabStop = false;
-            this.textBox4.Text = "Remove Horizon Remote Assistance. Applies to either end user deployment or admini" +
-                "strator deployment.";
+            this.textBox4.Text = "Remove Horizon Remote Assistance component for end user desktop.";
             // 
             // groupBox1
             // 
-            this.groupBox1.Location = new System.Drawing.Point(18, 399);
+            this.groupBox1.Location = new System.Drawing.Point(18, 313);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(464, 3);
             this.groupBox1.TabIndex = 10;
@@ -151,18 +125,18 @@
             // linkLabel1
             // 
             this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(15, 422);
+            this.linkLabel1.Location = new System.Drawing.Point(15, 336);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(189, 13);
             this.linkLabel1.TabIndex = 11;
             this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = "Version: 0.3 Beta, For Horizon Toolbox";
+            this.linkLabel1.Text = "Version: 0.4 Beta, For Horizon Toolbox";
             this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
             // linkLabel2
             // 
             this.linkLabel2.AutoSize = true;
-            this.linkLabel2.Location = new System.Drawing.Point(285, 422);
+            this.linkLabel2.Location = new System.Drawing.Point(285, 336);
             this.linkLabel2.Name = "linkLabel2";
             this.linkLabel2.Size = new System.Drawing.Size(197, 13);
             this.linkLabel2.TabIndex = 12;
@@ -184,15 +158,13 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(494, 455);
+            this.ClientSize = new System.Drawing.Size(494, 371);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.linkLabel2);
             this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.textBox4);
-            this.Controls.Add(this.textBox3);
             this.Controls.Add(this.textBox2);
-            this.Controls.Add(this.btn_installAdmin);
             this.Controls.Add(this.btn_install);
             this.Controls.Add(this.btn_uninstall);
             this.Controls.Add(this.textBox1);
@@ -216,9 +188,7 @@
         private System.Windows.Forms.Button btn_uninstall;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Button btn_installAdmin;
         private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.TextBox textBox3;
         private System.Windows.Forms.TextBox textBox4;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.LinkLabel linkLabel1;

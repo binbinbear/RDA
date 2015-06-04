@@ -11,6 +11,8 @@ namespace HRARequestor
         private static readonly string REG_KEY = @"HKEY_LOCAL_MACHINE\SOFTWARE\VMware, Inc.\VMware Toolbox\HorizonRemoteAssistance";
         private static readonly string ATTR_SERVER_KEY = "serverKey";
         private static readonly string ATTR_PORT = "port";
+        private static readonly string ATTR_USE_SSL = "useSSL";
+        
         private static readonly string DefaultKey = "*";
         private static readonly int DefaultPort = 18443;
 
@@ -18,11 +20,26 @@ namespace HRARequestor
 
         public string ServerKey { get; private set; }
 
+        public string DebugURL { get; private set; }
+
         public bool IsServerMode
         {
             get 
             {
                 return ServerKey != null;
+            }
+        }
+
+        private bool? _UseSSL = null;
+        public bool UseSSL { 
+            get 
+            {
+                if (!_UseSSL.HasValue)
+                {
+                    _UseSSL = RegUtil.ReadBool(REG_KEY, ATTR_USE_SSL, false);
+                }
+
+                return _UseSSL.Value;
             }
         }
 
@@ -39,8 +56,16 @@ namespace HRARequestor
                     if ("-SERVER".Equals(arg))
                     {
                         //expect server key
-                        string k = ExpectString(args, ++i);
-                        conf.ServerKey = k == null ? "" : k;
+                        string k = ExpectString(args, i + 1);
+                        if (k != null)
+                        {
+                            conf.ServerKey = k;
+                            i++;
+                        }
+                        else
+                        {
+                            conf.ServerKey = "";
+                        }
                     }
                     else if ("-PORT".Equals(arg))
                     {
@@ -48,6 +73,14 @@ namespace HRARequestor
                         int? n = ExpectNumber(args, ++i);
                         if (n.HasValue)
                             conf.Port = n.Value;
+                    }
+                    else if ("-USESSL".Equals(arg))
+                    {
+                        conf._UseSSL = true;
+                    }
+                    else if ("-DEBUGURL".Equals(arg))
+                    {
+                        conf.DebugURL = ExpectString(args, ++i);
                     }
                 }
 

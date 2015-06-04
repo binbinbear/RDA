@@ -49,7 +49,11 @@ namespace DeviceFilter
 
         private static string Load(string name)
         {
-            return (string)Registry.GetValue("HKEY_CURRENT_USER\\Volatile Environment", name, null);
+            String val = (string)Registry.GetValue("HKEY_CURRENT_USER\\Volatile Environment", name, null);
+
+            if (val == null)
+                val = Environment.GetEnvironmentVariable(name);
+            return val;
         }
     }
 }

@@ -13,6 +13,9 @@ namespace HRARequestor
 {
     static class Program
     {
+        private static readonly string SERVER_CONTEXT_PATH = "/toolbox/remoteassist/upload";
+        private static readonly string HOT_FIX = "(mv2)";
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -33,26 +36,35 @@ namespace HRARequestor
                 }
 
                 Log.Info("Conf.port=" + conf.Port);
+                Log.Info("Conf.ssl=" + conf.UseSSL);
+                Log.Info("Conf.keyLen=" + (conf.ServerKey == null ? "null" : ("" + conf.ServerKey.Length)));
 
                 if (conf.IsServerMode)
                 {
                     Log.Info("Start server mode");
-                    Server.Start(conf.Port, conf.ServerKey);
+                    Server.Start(conf);
                 }
                 else
                 {
                     Log.Info("Start requestor mode");
-                    DialogResult ret = MessageBox.Show("Do you want to invite your administrator to assist you? The request may take several seconds or minutes to be sent.", "Horizon Remote Assistance", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+                    string title = "Horizon Remote Assistance - v" + GetVersion() + " " + HOT_FIX;
+                    DialogResult ret = MessageBox.Show("Do you want to invite your administrator to assist you? The request may take several seconds or minutes to be sent.", title, MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
                     if (ret.Equals(DialogResult.OK))
-                        SendInvitationToBroker(conf.Port);
+                        SendInvitationToBroker(conf);
                 }
             }
             catch (Exception e)
             {
+                MessageBox.Show("Error occurred during sending invitation: " + e, "Horizon Remote Assistance", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Log.Error(e);
             }
             Log.Info("Exit");
             Application.Exit();
+        }
+
+        private static string GetVersion()
+        {
+            return Assembly.GetExecutingAssembly().GetName().Version.ToString();
         }
 
         private static void LogEnvironment()
@@ -68,7 +80,7 @@ namespace HRARequestor
             Log.Info("System Directory: " + Environment.SystemDirectory);
         }
 
-        private static void SendInvitationToBroker(int port)
+        private static void SendInvitationToBroker(Config conf)
         {
             //
             //  Read brokers from registry
@@ -95,7 +107,7 @@ namespace HRARequestor
             }
             catch (Exception e)
             {
-                MessageBox.Show("An error occured starting Remote Assistance. Details:\n" + e.ToString());
+                MessageBox.Show("An error occured starting Remote Assistance. Make sure Windows Remote Assistance feature is enabled and firewall rule is configured.\nDetails:\n" + e.ToString());
                 Log.Info(e);
                 return;
             }
@@ -105,20 +117,29 @@ namespace HRARequestor
             Log.Info(text);
             Log.Info("-----------------------------------------------");
 
+            if (conf.DebugURL != null)
+            {
+                bool ok = HttpUtil.Get(conf.DebugURL, "inv", text, "OK");
+                MessageBox.Show("Success: " + ok);
+                return;
+            }
+
             //
             //  Post remote assistance request (including invitation file) to AdminEx on all brokers
             //
             string[] urls = new string[brokerAddrs.Length];
             for (int i = 0; i < brokerAddrs.Length; i++)
-                urls[i] = "https://" + brokerAddrs[i] + ":" + port + "/toolbox/remoteassist/upload";
+                urls[i] = "https://" + brokerAddrs[i] + ":" + conf.Port + SERVER_CONTEXT_PATH;
 
-            HttpUtil._IgnoreSSL();
+            if (!conf.UseSSL)
+                HttpUtil._IgnoreSSL();
+
             HttpUtil.UriHackFix();
             HttpUtil.SetDefaultConnectionLimit(20);
             HttpUtil.SetNoProxy();  //no proxy between View Agent and View Broker. Set no proxy will boost performance for his app.
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             parameters.Add("inv", text);
-            int success = HttpUtil.BatchGet(urls, parameters);
+            int success = HttpUtil.BatchGet(urls, parameters, "OK", false);
 
             //
             //  Show result

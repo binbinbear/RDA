@@ -65,7 +65,7 @@ namespace HRAInstaller
             };
 
             installLauncher = new Step[] {
-                new Step {message="Installing launcher only, for administrator..."},
+                new Step {message="Install component for Helpdesk..."},
                 new Step {f=EnableWindowsRAFeature, message="Enable Windows Feature: Remote Assistance..."},
                 new Step {f=CopyHRALauncher, message="Copy HRA launcher..."},
                 new Step {f=RegisterHRAFileType, message="Associate HRA file type..."},

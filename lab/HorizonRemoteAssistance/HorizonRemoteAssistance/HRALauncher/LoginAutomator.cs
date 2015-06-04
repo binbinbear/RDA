@@ -11,7 +11,13 @@ namespace HRALauncher
 
         internal static bool FillPasswordAndProceed(Process proc, string code)
         {
-            Logger.Log("Locating login...");
+            if (code.Length == 0)
+            {
+                Log.Info("No code. Skip automation.");
+                return true;
+            }
+
+            Log.Info("Locating login...");
 
 
             IntPtr loginDlgHandle = IntPtr.Zero;
@@ -32,7 +38,7 @@ namespace HRALauncher
             if (loginDlgHandle == IntPtr.Zero)
                 return false;
 
-            Logger.Log("Hide login. Code=" + code);
+            Log.Info("Hide login. Code=" + code);
             WindowUtil.HideWindow(loginDlgHandle);
 
             HandlesInfo windowInfo = WindowUtil.GetChildWindows(loginDlgHandle, false, "", String.Empty);
@@ -44,7 +50,7 @@ namespace HRALauncher
                 IntPtr h = windowInfo.FindWindow("Edit");
                 if (h == IntPtr.Zero)
                 {
-                    Logger.Log("Edit - exit");
+                    Log.Info("Edit - exit");
                     return false;
                 }
 
@@ -59,17 +65,17 @@ namespace HRALauncher
 
                 if (h == IntPtr.Zero)
                 {
-                    Logger.Log("Button - exit");
+                    Log.Info("Button - exit");
                     return false;
                 }
 
-                Logger.Log("Confirming");
+                Log.Info("Confirming");
                 WindowUtil.Click(h);
 
                 Thread.Sleep(100);
             }
 
-            Logger.Log("Force show");
+            Log.Info("Force show");
             WindowUtil.ForceShowWindow(loginDlgHandle);
             return true;
         }

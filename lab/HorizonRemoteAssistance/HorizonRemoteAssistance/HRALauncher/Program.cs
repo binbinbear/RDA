@@ -15,17 +15,19 @@ namespace HRALauncher
         {
             string[] args = Environment.GetCommandLineArgs();
 
+            Log.InitInLocalAppData("VMware\\Horizon Remote Assistance", "launcher", "log", true);
+
             if (args.Length != 2)
             {
-                Logger.Log("Incorrect argument count.");
+                Log.Error("Incorrect argument count.");
                 return;
             }
 
             LogEnvironment();
 
             string invitationFileName = args[1];
-            Logger.Log(invitationFileName);
-            Logger.Log("");
+            Log.Info(invitationFileName);
+            Log.Info("");
 
             try
             {
@@ -37,24 +39,24 @@ namespace HRALauncher
             }
             catch (Exception e)
             {
-                Logger.Log(e);
+                Log.Error(e);
             }
 
-            Logger.Log("Exit");
+            Log.Info("Exit");
             Application.Exit();
         }
 
         static void LogEnvironment()
         {
-            Logger.Log(Assembly.GetExecutingAssembly().GetName().ToString());
-            Logger.Log("Time: " + DateTime.Now);
-            Logger.Log("Current Directory: " + Environment.CurrentDirectory);
-            Logger.Log("Machine Name: " + Environment.MachineName);
-            Logger.Log("OS Version: " + Environment.OSVersion);
-            Logger.Log("User Domain Name: " + Environment.UserDomainName);
-            Logger.Log("User Name: " + Environment.UserName);
-            Logger.Log("Version: " + Environment.Version);
-            Logger.Log("System Directory: " + Environment.SystemDirectory);
+            Log.Info(Assembly.GetExecutingAssembly().GetName().ToString());
+            Log.Info("Time: " + DateTime.Now);
+            Log.Info("Current Directory: " + Environment.CurrentDirectory);
+            Log.Info("Machine Name: " + Environment.MachineName);
+            Log.Info("OS Version: " + Environment.OSVersion);
+            Log.Info("User Domain Name: " + Environment.UserDomainName);
+            Log.Info("User Name: " + Environment.UserName);
+            Log.Info("Version: " + Environment.Version);
+            Log.Info("System Directory: " + Environment.SystemDirectory);
         }
     }
 }

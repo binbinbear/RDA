@@ -83,5 +83,10 @@ namespace HRAInstaller
         {
             Process.Start("https://wiki.eng.vmware.com/EUC_Technical_Enablement/Development/RemoteAssist");
         }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -23,19 +23,28 @@ namespace HRALauncher
 
         internal static HraInvitationLauncher Load(string invitationFileName)
         {
-            
-            string json = File.ReadAllText(invitationFileName, Encoding.UTF8);
-            HraInvitationLauncher inv = JsonConvert.DeserializeObject<HraInvitationLauncher>(json);
+            string json = null;
+            try
+            {
+                json = File.ReadAllText(invitationFileName, Encoding.UTF8);
+                HraInvitationLauncher inv = JsonConvert.DeserializeObject<HraInvitationLauncher>(json);
 
-            inv.invFileName = invitationFileName;
+                inv.invFileName = invitationFileName;
 
-            return inv;
+                return inv;
+            }
+            catch (Exception e)
+            {
+                if (json != null)
+                    Log.Error("Error parsing inv: " + json);
+                throw e;
+            }
         }
 
         internal string SaveIncidentFile()
         {
             msraIncidentFileName = invFileName + ".msrcIncident";
-            Logger.Log("Writing ticket: " + msraIncidentFileName);
+            Log.Info("Writing ticket: " + msraIncidentFileName);
             File.WriteAllText(msraIncidentFileName, inv);
             return msraIncidentFileName;
         }
@@ -55,14 +64,14 @@ namespace HRALauncher
 
         internal void DeleteTempFiles()
         {
-            Logger.Log("Clean up...");
+            Log.Info("Clean up...");
             try
             {
                 File.Delete(msraIncidentFileName);
             }
             catch (Exception e)
             {
-                Logger.Log(e);
+                Log.Error(e);
             }
             try
             {
@@ -70,7 +79,7 @@ namespace HRALauncher
             }
             catch (Exception e)
             {
-                Logger.Log(e);
+                Log.Error(e);
             }
         }
 
@@ -81,7 +90,7 @@ namespace HRALauncher
 
             try
             {
-                Logger.Log("Starting MSRA...");
+                Log.Info("Starting MSRA...");
                 Process proc = new Process();
                 proc.StartInfo.FileName = "msra.exe";
                 proc.StartInfo.Arguments = "/openfile \"" + msraIncidentFileName + "\"";
@@ -91,12 +100,12 @@ namespace HRALauncher
 
                 LoginAutomator.FillPasswordAndProceed(proc, GetCodeUnmasked());
 
-                Logger.Log("Waiting for MSRA complete...");
+                Log.Info("Waiting for MSRA complete...");
                 proc.WaitForExit();
             }
             catch (Exception e)
             {
-                Logger.Log(e);
+                Log.Error(e);
             }
 
         }

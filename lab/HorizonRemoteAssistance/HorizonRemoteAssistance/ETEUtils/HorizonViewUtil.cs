@@ -9,10 +9,21 @@ namespace ETEUtils
     {
         public static string[] GetBrokerAddresses()
         {
-            string brokerAddrs = Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\VMware, Inc.\VMware VDM\Agent\Configuration", "Broker", String.Empty).ToString();
+            string key = @"HKEY_LOCAL_MACHINE\SOFTWARE\VMware, Inc.\VMware VDM\Agent\Configuration";
+            Log.Info("Reading broker address from registry: " + key);
+
+            object val = Registry.GetValue(key, "Broker", null);
+            if (val == null)
+            {
+                Log.Info("Broker addr from registry is null.");
+                return null;
+            }
+            Log.Info("Broker addr: " + val);
+
+            string brokerAddrs = val.ToString().Trim();
             Log.Info("Brokers from registry: " + brokerAddrs);
 
-            if (brokerAddrs == null || brokerAddrs.Equals(String.Empty))
+            if (brokerAddrs.Equals(String.Empty))
                 return null;
 
             string[] addrs = brokerAddrs.Split(' ');

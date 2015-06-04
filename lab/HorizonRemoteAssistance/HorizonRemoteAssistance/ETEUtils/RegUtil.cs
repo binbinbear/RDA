@@ -22,5 +22,20 @@ namespace ETEUtils
             object ret = Registry.GetValue(key, attr, null);
             return ret == null ? defaultValue : ret.ToString();
         }
+
+        public static bool ReadBool(string key, string attr, bool defaultValue)
+        {
+            object ret = Registry.GetValue(key, attr, null);
+            if (ret == null)
+                return defaultValue;
+
+            string val = ret.ToString();
+            return "true".Equals(val, StringComparison.OrdinalIgnoreCase)
+                || "t".Equals(val, StringComparison.OrdinalIgnoreCase)
+                || "yes".Equals(val)
+                || "y".Equals(val)
+                || "1".Equals(val)
+                ;
+        }
     }
 }

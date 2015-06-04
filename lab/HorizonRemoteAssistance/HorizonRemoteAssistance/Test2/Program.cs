@@ -16,11 +16,13 @@ namespace Test2
     {
         static void Main(string[] args)
         {
-            object o = Registry.GetValue(@"HKEY_LOCAL_MACHINE\Software\VMware, Inc.\VMware Toolbox\HorizonRemoteAssistance", "port2", String.Empty);
-            Console.WriteLine(o);
-            o = Registry.GetValue(@"HKEY_LOCAL_MACHINE\Software\VMware, Inc.\VMware Toolbox\HorizonRemoteAssistance", "serverKey2", null);
-            Console.WriteLine(o);
+            bool? b = null;
+            if (b.HasValue)
+                Console.WriteLine("aa");
 
+            //Server.Start(18443, "asdf");
+
+            Console.WriteLine("OK.");
             Console.ReadKey();
             //PolFile pol = new PolFile();
 

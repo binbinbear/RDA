@@ -13,9 +13,9 @@ namespace ETEUtils
         {
         }
 
-        public static void InitInLocalAppData(string relativePath, string logFileName)
+        public static void InitInLocalAppData(string productName, string logFileName)
         {
-            InitInLocalAppData(relativePath, logFileName, null, false);
+            InitInLocalAppData(productName, logFileName, null, false);
         }
 
         public static void InitInLocalAppData(string productName, string logFileName, string ext, bool addTimeStamp)

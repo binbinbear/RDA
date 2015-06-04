@@ -46,7 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="HraInvitationLauncher.cs" />
-    <Compile Include="Logger.cs" />
+    <Compile Include="Log.cs" />
     <Compile Include="LoginAutomator.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

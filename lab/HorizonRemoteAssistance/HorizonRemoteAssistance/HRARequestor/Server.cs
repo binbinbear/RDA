@@ -14,7 +14,7 @@ namespace HRARequestor
         private static volatile bool quit = false;
         private static string serverKey;
 
-        public static void Start(int port, string serverKey)
+        public static void Start(Config conf)
         {
             if (!HttpListener.IsSupported)
             {
@@ -22,13 +22,14 @@ namespace HRARequestor
                 return;
             }
 
-            Server.serverKey = serverKey;
+            Server.serverKey = conf.ServerKey;
 
             // Create a listener.
             using (HttpListener listener = new HttpListener())
             {
                 // Add the prefixes. 
-                listener.Prefixes.Add("http://*:" + port + "/hra/");
+                string protocol = conf.UseSSL ? "https" : "http";
+                listener.Prefixes.Add(protocol + "://*:" + conf.Port + "/hra/");
                 listener.Start();
 
                 Console.WriteLine("Listening...");

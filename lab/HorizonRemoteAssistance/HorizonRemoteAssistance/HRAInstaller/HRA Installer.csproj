@@ -104,7 +104,6 @@
     <Compile Include="ViewUtil.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="files\Horizon Remote Assistance Launcher.exe" />
     <EmbeddedResource Include="files\Horizon Remote Assistance.exe" />
   </ItemGroup>
   <ItemGroup>
@@ -146,7 +145,7 @@
   </Target>
   -->
   <PropertyGroup>
-    <PostBuildEvent>copy /Y "$(TargetPath)" Z:\EnablementPrjs\HorizonRemoteAssistance\.</PostBuildEvent>
+    <PostBuildEvent>copy /Y "$(TargetPath)" Z:\temp\.</PostBuildEvent>
     <PreBuildEvent>del /Q "Z:\EnablementPrjs\HorizonRemoteAssistance\$(TargetFileName)"</PreBuildEvent>
   </PropertyGroup>
 </Project>
