@@ -14,8 +14,8 @@ namespace HRARequestor
     static class Program
     {
         private static readonly string SERVER_CONTEXT_PATH = "/toolbox/remoteassist/upload";
-        private static readonly string HOT_FIX = "(mv2)";
-
+        private static readonly string HOT_FIX = "";
+        public static readonly string TITLE = "Horizon Remote Assistance";
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -47,19 +47,24 @@ namespace HRARequestor
                 else
                 {
                     Log.Info("Start requestor mode");
-                    string title = "Horizon Remote Assistance - v" + GetVersion() + " " + HOT_FIX;
-                    DialogResult ret = MessageBox.Show("Do you want to invite your administrator to assist you? The request may take several seconds or minutes to be sent.", title, MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+
+                    DialogResult ret = MessageBox.Show("Do you want to invite your administrator to assist you? The request may take several seconds or minutes to be sent.", GetTitle(), MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
                     if (ret.Equals(DialogResult.OK))
                         SendInvitationToBroker(conf);
                 }
             }
             catch (Exception e)
             {
-                MessageBox.Show("Error occurred during sending invitation: " + e, "Horizon Remote Assistance", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error occurred during sending invitation: " + e, GetTitle(), MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Log.Error(e);
             }
             Log.Info("Exit");
             Application.Exit();
+        }
+
+        private static string GetTitle()
+        {
+            return TITLE + " - v" + GetVersion() + " " + HOT_FIX;
         }
 
         private static string GetVersion()
@@ -88,7 +93,7 @@ namespace HRARequestor
             string[] brokerAddrs = HorizonViewUtil.GetBrokerAddresses();
             if (brokerAddrs == null || brokerAddrs.Length == 0)
             {
-                MessageBox.Show("Broker address not found in registry. Contact your administrator");
+                MessageBox.Show("Broker address not found in registry. Contact your administrator", GetTitle());
                 return;
             }
 
@@ -107,7 +112,7 @@ namespace HRARequestor
             }
             catch (Exception e)
             {
-                MessageBox.Show("An error occured starting Remote Assistance. Make sure Windows Remote Assistance feature is enabled and firewall rule is configured.\nDetails:\n" + e.ToString());
+                MessageBox.Show("An error occured starting Remote Assistance. Make sure Windows Remote Assistance feature is enabled and firewall rule is configured.\nDetails:\n" + e.ToString(), GetTitle());
                 Log.Info(e);
                 return;
             }
@@ -120,7 +125,7 @@ namespace HRARequestor
             if (conf.DebugURL != null)
             {
                 bool ok = HttpUtil.Get(conf.DebugURL, "inv", text, "OK");
-                MessageBox.Show("Success: " + ok);
+                MessageBox.Show("Success: " + ok, GetTitle());
                 return;
             }
 
@@ -157,7 +162,7 @@ namespace HRARequestor
                 icon = MessageBoxIcon.Error;
             }
             msg += " \r\n(Success " + success + " of " + brokerAddrs.Length + ")";
-            MessageBox.Show(msg, "Horizon Remote Assistance", MessageBoxButtons.OK, icon);
+            MessageBox.Show(msg, GetTitle(), MessageBoxButtons.OK, icon);
         }
 
         private static void CheckEnvironment()
