@@ -21,7 +21,7 @@ public class AssignmentServiceImpl implements AssignmentService{
 	
 	private static Logger log = Logger.getLogger(AssignmentServiceImpl.class);
 	public AssignmentServiceImpl(){
-		log.debug("[DEBUG lxy] init AssignmentServiceImpl");
+		log.debug("[DEBUG ] init AssignmentServiceImpl");
 	}
 	
 	
@@ -29,10 +29,10 @@ public class AssignmentServiceImpl implements AssignmentService{
 		
 		Map<String, List<String>> ppMap;
 		String ppMapStr = SharedStorageAccess.get(poolProfileMappingName);
-		log.debug("[DEBUG lxy] ppMapStr::\n" + ppMapStr);
+		log.debug("[DEBUG ] ppMapStr::\n" + ppMapStr);
 		
 		if( null==ppMapStr ){
-			log.debug("[DEBUG lxy] null==ppMapStr");
+			log.debug("[DEBUG ] null==ppMapStr");
 			ppMap = new HashMap<String,List<String>>();
 			setPPMap(ppMap);
 			return ppMap;	// return new Map<String,List<String>>();
@@ -91,7 +91,7 @@ public class AssignmentServiceImpl implements AssignmentService{
 	}
 	
 	public void deleteAssignedProfiles(String profileName){
-		log.debug("[DEBUG lxy] delete " + profileName);
+		log.debug("[DEBUG ] delete " + profileName);
 		Map<String, List<String>> ppMap = getPPMap();
 		
 		for(Map.Entry<String, List<String>> entry : ppMap.entrySet()){
@@ -100,7 +100,7 @@ public class AssignmentServiceImpl implements AssignmentService{
 				String poolName = entry.getKey();
 				deleteFromPPMap(poolName, profileName);
 			}else{
-				log.debug("[DEBUG lxy] int " + entry.getKey() + "can't find " + profileName);
+				log.debug("[DEBUG ] int " + entry.getKey() + "can't find " + profileName);
 			}
 		}
 	}
@@ -109,7 +109,7 @@ public class AssignmentServiceImpl implements AssignmentService{
 		JTableData ret = new JTableData();
 		ArrayList<ProfileItem> profileItems = new ArrayList<ProfileItem>();
 		Map<String, List<String>> ppMap = getPPMap();
-		//log.debug( "[DEBUG lxy] [getPorfilesOfPool] ppMap::\n" + ppMap.toString() );
+		//log.debug( "[DEBUG ] [getPorfilesOfPool] ppMap::\n" + ppMap.toString() );
 		
 		ArrayList<String> profileArray = (ArrayList<String>) ppMap.get(poolName);
 		if( null==profileArray ){
@@ -117,7 +117,7 @@ public class AssignmentServiceImpl implements AssignmentService{
 			return ret;
 		}
 		
-		//log.debug("[DEBUG lxy] [getPorfilesOfPool] " + profileArray.toString());
+		//log.debug("[DEBUG ] [getPorfilesOfPool] " + profileArray.toString());
 		for(String proName : profileArray){
 			profileItems.add(new ProfileItem(proName));
 		}

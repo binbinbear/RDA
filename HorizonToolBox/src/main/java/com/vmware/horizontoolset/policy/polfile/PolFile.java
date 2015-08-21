@@ -397,9 +397,9 @@ public class PolFile {
 
 		byte[] bytes;
 
-		//edit by lxy
+		//edit by 
 		/*	
-		log.debug("[DEBUG lxy] [pol sort] " + entries.toString());
+		log.debug("[DEBUG ] [pol sort] " + entries.toString());
 		List<Map.Entry<String, PolEntry>> infoIds = new ArrayList<Map.Entry<String, PolEntry>>(entries.entrySet());
 		Collections.sort(infoIds, new Comparator<Map.Entry<String, PolEntry>>() {   
 		    public int compare(Map.Entry<String, PolEntry> o1, Map.Entry<String, PolEntry> o2) {       
@@ -408,7 +408,7 @@ public class PolFile {
 		}); 
 		
 		
-		log.debug("[DEBUG lxy] [pol sort] " + entries.toString());
+		log.debug("[DEBUG ] [pol sort] " + entries.toString());
 		for(Map.Entry<String, PolEntry> mapEntry : entries.entrySet()){
 			PolEntry pe = mapEntry.getValue();
 			log.debug("[map entry] k=" + pe.keyName + ",v=" + pe.valueName);

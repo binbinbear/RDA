@@ -44,11 +44,11 @@ public class Grouppolicycmdlets {
 		File file =new File("c:\\\\temp");    
 		if  (!file .exists()  && !file .isDirectory())      
 		{         
-			log.debug("[DEBUG lxy] create c:\\temp");
+			log.debug("[DEBUG ] create c:\\temp");
 		    file .mkdir();    
 		} else   
 		{  
-		    log.debug("[DEBUG lxy] c:\\temp already exists");
+		    log.debug("[DEBUG ] c:\\temp already exists");
 		}  
 	}
 	
@@ -157,7 +157,7 @@ public class Grouppolicycmdlets {
 	private List<Map<String, String>> getPSOutput_(String psGetCmd,  ReadCsvFunc func) {
 		String cmd =
 	            psGetCmd + " | Export-CSV " + psCsvFile + " -NoTypeInformation;$?";
-		//log.debug("[DEBUG lxy] [cmd] " + cmd);
+		//log.debug("[DEBUG ] [cmd] " + cmd);
 		Output o = PowerConsole2.execute(cmd);
 	    String ret = o.toString();
 	    log.debug("[ret] " + ret);

@@ -25,7 +25,7 @@ public class GPOServiceImpl implements GPOService{
 													"VMware123");
 		*/
 		grouppolicycmdlets = new Grouppolicycmdlets(ad_computerName,ad_user,ad_pass);
-		log.debug("[DEBUG lxy] init GPOServiceImpl over");
+		log.debug("[DEBUG ] init GPOServiceImpl over");
 	}
 	
 	public void checkDir(){
@@ -145,10 +145,10 @@ public class GPOServiceImpl implements GPOService{
 		//testPathParam.put("Path", "'\\\\eucsolutionad.eucsolution.com\\c$\\temp'");	
 		testPathParam.put("Path", "'\\\\"+ grouppolicycmdlets.getAd() +"\\c$\\temp'");	
 		List<Map<String, String>> res = grouppolicycmdlets.testPath(testPathParam);
-		log.debug("[DEBUG lxy] [testPath]"+res.toString());
+		log.debug("[DEBUG ] [testPath]"+res.toString());
 		for(Map<String, String> item : res){
 			for(Map.Entry<String, String> mapEntry : item.entrySet()){
-				log.debug("[DEBUG lxy] [res] " + mapEntry.getKey() + ", " + mapEntry.getValue());
+				log.debug("[DEBUG ] [res] " + mapEntry.getKey() + ", " + mapEntry.getValue());
 			}
 		}
 		return res;
@@ -159,7 +159,7 @@ public class GPOServiceImpl implements GPOService{
 		makeDirParam.put("Path", "'\\\\"+ grouppolicycmdlets.getAd() +"\\c$\\temp'");
 		makeDirParam.put("type", "directory");
 		List<Map<String, String>> res = grouppolicycmdlets.makeDir(makeDirParam);
-		log.debug("[DEBUG lxy] [makeDir]"+res.toString());
+		log.debug("[DEBUG ] [makeDir]"+res.toString());
 		return res;
 	}
 	

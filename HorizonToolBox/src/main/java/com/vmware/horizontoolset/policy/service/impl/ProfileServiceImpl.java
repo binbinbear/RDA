@@ -22,32 +22,32 @@ public class ProfileServiceImpl implements ProfileService{
 	
 	private static Logger log = Logger.getLogger(ProfileServiceImpl.class);
 	public ProfileServiceImpl(){
-		log.debug("[DEBUG lxy] init ProfileServiceImpl");
+		log.debug("[DEBUG ] init ProfileServiceImpl");
 	}
 	
 	public Map<String, String> getNameList(){
 		Map<String, String> proItems;
 		String nameListStr = SharedStorageAccess.get(indexTableName);
 		if(null==nameListStr){
-			log.debug("[DEBUG lxy] nameList not exist !!!");
+			log.debug("[DEBUG ] nameList not exist !!!");
 			Map<String, String> proNames = new HashMap<String, String>();
 			setNameList(proNames);
 			//SharedStorageAccess.set(indexTableName,"");
 			//return null;
 		}
 		proItems = JsonUtil.jsonToJava(nameListStr, Map.class);
-		log.debug("[DEBUG lxy] [proItems]" + proItems.toString());
+		log.debug("[DEBUG ] [proItems]" + proItems.toString());
 		return proItems;
 	}
 	
 	public boolean profileNameExist(String profileName){
 		Map<String, String> proNames = getNameList();
 		if( null==proNames ){
-			log.debug("[DEBUG lxy] proName==null");
+			log.debug("[DEBUG ] proName==null");
 			return false;	// nameList doesn't exist
 		}
 		if( proNames.containsKey(profileName) ){
-			log.debug("[DEBUG lxy] containsKey");
+			log.debug("[DEBUG ] containsKey");
 			return true;	// nameList exist
 		} 
 		return false;	// nameList exist
@@ -55,10 +55,10 @@ public class ProfileServiceImpl implements ProfileService{
 	
 	private void setNameList(Map<String, String> nMap){
 		//写入完全重复的value，会 throw exception
-		log.debug("[DEBUG lxy] [previous:] " + SharedStorageAccess.get(indexTableName));
+		log.debug("[DEBUG ] [previous:] " + SharedStorageAccess.get(indexTableName));
 		String nMapStr = JsonUtil.javaToJson(nMap);
 		SharedStorageAccess.set(indexTableName, nMapStr);
-		log.debug("[DEBUG lxy] [present:] " + SharedStorageAccess.get(indexTableName));
+		log.debug("[DEBUG ] [present:] " + SharedStorageAccess.get(indexTableName));
 	}
 	
 	//新添加一个profileName到索引中，如果已经存在返回false
@@ -115,7 +115,7 @@ public class ProfileServiceImpl implements ProfileService{
 		//String proStr = loadSubList(profileName);
 		String proStr = SharedStorageAccess.get(profileName);
 		
-		//log.debug("[DEBUG lxy] [ProfileServiceImpl] [getProfileFromLdap] "+proStr);
+		//log.debug("[DEBUG ] [ProfileServiceImpl] [getProfileFromLdap] "+proStr);
 		return proStr;
 	}
 }

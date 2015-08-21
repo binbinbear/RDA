@@ -25,8 +25,8 @@ public class PolFileServiceImpl implements PolFileService{
 	private ProfileServiceImpl profileServiceImpl;
 	
 	public PolFileServiceImpl(){
-		log.debug("[DEBUG lxy] polPath = " + polPath);
-		log.debug("[DEBUG lxy] configFilePath = " + configFilePath);
+		log.debug("[DEBUG ] polPath = " + polPath);
+		log.debug("[DEBUG ] configFilePath = " + configFilePath);
 		loadPolicyConfigFile();
 		profileServiceImpl = new ProfileServiceImpl();
 	}
@@ -40,9 +40,9 @@ public class PolFileServiceImpl implements PolFileService{
 			ProfileModel prof = JsonUtil.jsonToJava(profileStr, ProfileModel.class);
 			setPolPolicy(prof, pf);
 			pf.save( polPath+profileName+".pol" );
-			log.debug("[DEBUG lxy] create pol success. file:"+profileName+".pol");
+			log.debug("[DEBUG ] create pol success. file:"+profileName+".pol");
 		}else{
-			log.debug("[DEBUG lxy] profileStr==null ");
+			log.debug("[DEBUG ] profileStr==null ");
 			return false;
 		}
 		return true;
@@ -50,9 +50,9 @@ public class PolFileServiceImpl implements PolFileService{
 	
 	public void deletePolFile(String profileName){	
 		File polFile = new File(polPath + profileName + ".pol");
-		log.debug("[DEBUG lxy] [remove] " + polPath + profileName + ".pol");
+		log.debug("[DEBUG ] [remove] " + polPath + profileName + ".pol");
 		if(polFile.isFile()){
-			log.debug("[DEBUG lxy] delete polFile " + profileName + ".pol");
+			log.debug("[DEBUG ] delete polFile " + profileName + ".pol");
 			polFile.delete();
 		}
 	}
@@ -67,13 +67,13 @@ public class PolFileServiceImpl implements PolFileService{
 		// 根据policiId 从配置文件中得到对应的policy配置项
 		// 检查是 enabled 还是  disabled， disabled当做not configured处理
 		// 对map中的每个item， 从policy配置项里取得数据
-		log.debug("[DEBUG lxy] [policyHandler] policyModel=" + policyModel.toString());
+		log.debug("[DEBUG ] [policyHandler] policyModel=" + policyModel.toString());
 		if( policyModel.enabled == 2 ){       //not configured
-			log.debug("[DEBUG lxy] enabled == 2");
+			log.debug("[DEBUG ] enabled == 2");
 			return;
 		}
 		else if( policyModel.enabled == 1 ){	 //disabled
-			log.debug("[DEBUG lxy] enabled == 1");
+			log.debug("[DEBUG ] enabled == 1");
 			policyDisabledHandler(policyModel, pf);
 			return;
 		}
@@ -85,10 +85,10 @@ public class PolFileServiceImpl implements PolFileService{
 	private void policyEnabledHandler(PolicyModel policyModel, PolFile pf) {
 		PolicyConfig pConf = polConfig.getPolicy(policyModel.policyId);	//get Policy Configure Information
 		if( null!=pConf ){
-			log.debug("[DEBUG lxy] pConf=" + pConf.toString());
+			log.debug("[DEBUG ] pConf=" + pConf.toString());
 		}			
 		else{
-			log.debug("[DEBUG lxy] [pConf==null] !!!  policyId="+policyModel.policyId);
+			log.debug("[DEBUG ] [pConf==null] !!!  policyId="+policyModel.policyId);
 			return;
 		}
 		
@@ -97,7 +97,7 @@ public class PolFileServiceImpl implements PolFileService{
 			for( Map.Entry<String, String> mapEntry : itemMap.entrySet() ){
 				String itemId = mapEntry.getKey();
 				String itemVal = mapEntry.getValue();
-				log.debug("[DEBUG lxy] itemId="+itemId+", itemVal="+itemVal);
+				log.debug("[DEBUG ] itemId="+itemId+", itemVal="+itemVal);
 				ItemConfig itemEntry = pConf.getItemEntry(itemId);
 				if(itemEntry != null){
 					itemEntry.data = itemVal; 
@@ -114,9 +114,9 @@ public class PolFileServiceImpl implements PolFileService{
 						pf.setString(itemConfig.keyName, itemConfig.valueName, "");
 						break;
 					case ELE_ADDITION:
-						log.debug("[DEBUG lxy] [case ELE_ADDITION] " + itemConfig.valueName + ", " + itemConfig.data);
+						log.debug("[DEBUG ] [case ELE_ADDITION] " + itemConfig.valueName + ", " + itemConfig.data);
 						pf.setDWORD(itemConfig.keyName, itemConfig.valueName, Integer.parseInt(itemConfig.defaultData));	//TODO defaultData/data
-						log.debug("[DEBUG lxy] [case ELE_ADDITION] over");
+						log.debug("[DEBUG ] [case ELE_ADDITION] over");
 						break;
 					case ELE_ADDITION_0:
 						pf.setDWORD(itemConfig.keyName, itemConfig.valueName, 0);
@@ -126,7 +126,7 @@ public class PolFileServiceImpl implements PolFileService{
 			}
 			
 		}else{	// no sunItems
-			log.debug("[DEBUG lxy] [policyHandler] hasOptions=false");
+			log.debug("[DEBUG ] [policyHandler] hasOptions=false");
 			switch(pConf.pType){
 				case USB:
 					pf.setString(pConf.policyKey, pConf.policyValue, "true");
@@ -158,7 +158,7 @@ public class PolFileServiceImpl implements PolFileService{
 				itemDisabledHandler(itemconf, pf);
 			}
 		}else{
-			log.debug("[DEBUG lxy] k=" + pConf.policyKey + ", v=" + pConf.policyValue);
+			log.debug("[DEBUG ] k=" + pConf.policyKey + ", v=" + pConf.policyValue);
 			switch(pConf.pType){
 				case USB:
 					pf.setString(pConf.policyKey, pConf.policyValue, "false");
@@ -178,10 +178,10 @@ public class PolFileServiceImpl implements PolFileService{
 	}
 
 	private void itemHandler(ItemConfig itemEntry, PolFile pf){
-		//log.debug("[DEBUG lxy] [ItemConfig] "+itemEntry.toString());
+		//log.debug("[DEBUG ] [ItemConfig] "+itemEntry.toString());
 		switch(itemEntry.elementType){
 			case ELE_GRID1:	//GRID1		没有Attention项， Value和Data不一致
-				log.debug("[DEBUG lxy] [GRID1]");
+				log.debug("[DEBUG ] [GRID1]");
 				String girdArrayStr = itemEntry.data;
 				String[] gridValArray = girdArrayStr.split(";");
 				log.debug("[grid] str=" + gridValArray.toString());
@@ -205,7 +205,7 @@ public class PolFileServiceImpl implements PolFileService{
 				}else if((itemEntry.data.equals("1"))){ //uncheck
 					pf.setDWORD(itemEntry.keyName, itemEntry.valueName, 0);
 				}else{
-					log.debug("[DEBUG lxy] ELE_CHECKBOX_V");
+					log.debug("[DEBUG ] ELE_CHECKBOX_V");
 				}
 				return;
 			default:
@@ -213,7 +213,7 @@ public class PolFileServiceImpl implements PolFileService{
 		
 		//对每项单独处理，直接写入 polFile
 		//根据不同的type
-		//log.debug("[DEBUG lxy] [itemHandler]"+itemEntry.toString());
+		//log.debug("[DEBUG ] [itemHandler]"+itemEntry.toString());
 		switch(itemEntry.type){
 			case REG_DWORD:
 				pf.setDWORD(itemEntry.keyName, itemEntry.valueName, Integer.parseInt(itemEntry.data));
@@ -247,9 +247,9 @@ public class PolFileServiceImpl implements PolFileService{
 				pf.setDWORD(itemEntry.keyName, itemEntry.valueName, 0);
 				break;
 			case ELE_ADDITION_0:
-				log.debug("[DEBUG lxy] itemEntry.defaultData="+itemEntry.defaultData);
+				log.debug("[DEBUG ] itemEntry.defaultData="+itemEntry.defaultData);
 				pf.setDWORD(itemEntry.keyName, itemEntry.valueName, Integer.parseInt(itemEntry.defaultData));
-				log.debug("[DEBUG lxy] getDWORD="+pf.getDWORD(itemEntry.keyName, itemEntry.valueName));;
+				log.debug("[DEBUG ] getDWORD="+pf.getDWORD(itemEntry.keyName, itemEntry.valueName));;
 				break;
 			case ELE_GRID_TITLE:
 				pf.setString(itemEntry.keyName, itemEntry.valueName, "");
@@ -265,7 +265,7 @@ public class PolFileServiceImpl implements PolFileService{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		log.debug("[DEBUG lxy] [loadPolicyConfigFile] load success! :: " /* + polConfig.toString() */ );
+		log.debug("[DEBUG ] [loadPolicyConfigFile] load success! :: " /* + polConfig.toString() */ );
 	}
 	
 	private static String getRootPath(){

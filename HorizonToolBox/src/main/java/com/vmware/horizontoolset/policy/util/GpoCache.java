@@ -32,11 +32,11 @@ public class GpoCache implements ProfileService{
 	//private GPOService gpoService;
 	
 	private GpoCache(){
-		log.debug("[DEBUG lxy] init GpoCache");
+		log.debug("[DEBUG ] init GpoCache");
 		updatedDate =new Date();
 		cached_gpo = new HashMap<String,String>();
 		pServiceImpl = new ProfileServiceImpl();	//ldap service
-		log.debug("[DEBUG lxy] update GpoCache over");
+		log.debug("[DEBUG ] update GpoCache over");
 	}
 	
 	public static GpoCache getInstance(){
@@ -46,7 +46,7 @@ public class GpoCache implements ProfileService{
 	public void updateCache(GPOService gpoService){
 		Map<String, String> proItems = gpoService.getNameList();
 		if(null==proItems){
-			log.debug("[DEBUG lxy] proItems==null");
+			log.debug("[DEBUG ] proItems==null");
 			return;
 		}
 		
@@ -59,7 +59,7 @@ public class GpoCache implements ProfileService{
 		
 		//从ldap中读取数据，将description整合到cache中
 		Map<String,String> ldapList = pServiceImpl.getNameList();
-		log.debug("[DEBUG lxy] ldapList: " + ldapList.toString());
+		log.debug("[DEBUG ] ldapList: " + ldapList.toString());
 		for(Map.Entry<String, String> ldapEntry : ldapList.entrySet()){
 			String k = ldapEntry.getKey();
 			String v = ldapEntry.getValue();
@@ -68,7 +68,7 @@ public class GpoCache implements ProfileService{
 			}else{
 				//TODO pServiceImpl.deleteFromNameList(k);
 				//ldap上存在，AD中没有值,development阶段遗留的垃圾数据
-				log.debug("[ERROR lxy] k="+k+", v="+v);
+				log.debug("[ERROR ] k="+k+", v="+v);
 			}
 		}
 		updatedDate = new Date();
@@ -106,7 +106,7 @@ public class GpoCache implements ProfileService{
 	public Map<String, String> getNameList() {
 		// 直接返回cache数据
 		if(null==cached_gpo){
-			log.debug("[DEBUG lxy] [getNameList()] cache_gpo==null");
+			log.debug("[DEBUG ] [getNameList()] cache_gpo==null");
 			//updateCache();
 		}
 		
@@ -128,15 +128,15 @@ public class GpoCache implements ProfileService{
 			
 			//if在ldap
 			if(pServiceImpl.profileNameExist(profileName)){
-				log.debug("[DEBUG lxy] " + profileName + "'s type = IN_LDAP");
+				log.debug("[DEBUG ] " + profileName + "'s type = IN_LDAP");
 				return GpoType.IN_LDAP;
 			}	
 			else{
-				log.debug("[DEBUG lxy] " + profileName + "'s type = IN_AD");
+				log.debug("[DEBUG ] " + profileName + "'s type = IN_AD");
 				return GpoType.IN_AD;
 			}
 		}else{
-			log.debug("[DEBUG lxy] " + profileName + "'s type = NOT_EXIT");
+			log.debug("[DEBUG ] " + profileName + "'s type = NOT_EXIT");
 			return GpoType.NOT_EXIT;
 		}
 	}
@@ -188,7 +188,7 @@ public class GpoCache implements ProfileService{
 			return null;
 		}
 		String proStr = pServiceImpl.getProfileFromLdap(profileName);
-		log.debug("[DEBUG lxy] [getProfileFromLdap] "+proStr);
+		log.debug("[DEBUG ] [getProfileFromLdap] "+proStr);
 		return proStr;
 	}
 	 
