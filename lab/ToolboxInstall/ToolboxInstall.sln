@@ -1,0 +1,24 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToolboxInstall", "ToolboxInstall\ToolboxInstall.csproj", "{160296D8-95A6-4929-BAF2-DAA46003DBCD}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "ToolBoxSetup", "ToolBoxSetup\ToolBoxSetup.vdproj", "{327DDF87-CACD-467A-B8CB-B33FCB4398A3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{160296D8-95A6-4929-BAF2-DAA46003DBCD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{160296D8-95A6-4929-BAF2-DAA46003DBCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{160296D8-95A6-4929-BAF2-DAA46003DBCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{160296D8-95A6-4929-BAF2-DAA46003DBCD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{327DDF87-CACD-467A-B8CB-B33FCB4398A3}.Debug|Any CPU.ActiveCfg = Debug
+		{327DDF87-CACD-467A-B8CB-B33FCB4398A3}.Release|Any CPU.ActiveCfg = Release
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
