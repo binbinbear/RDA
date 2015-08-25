@@ -33,6 +33,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_379C46F577864A4CB51716D2679DECBC"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_6890A304E73084B77D5EB5901320B6EF"
         "OwnerKey" = "8:_2733D322EDA04135AA2F7BC69E3BFFD7"
         "MsmSig" = "8:_UNDEFINED"
@@ -45,8 +51,20 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_B857841BF3E94ACE90AEC30F8E353A97"
-        "OwnerKey" = "8:_UNDEFINED"
+        "MsmKey" = "8:_798B275DB1CA036E155C68205F299421"
+        "OwnerKey" = "8:_2733D322EDA04135AA2F7BC69E3BFFD7"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_798B275DB1CA036E155C68205F299421"
+        "OwnerKey" = "8:_300EFFBFAF464740BBE645E5D0537725"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_7F1FF0011B5D3AB72ECC572B54601008"
+        "OwnerKey" = "8:_798B275DB1CA036E155C68205F299421"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -65,6 +83,12 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_2733D322EDA04135AA2F7BC69E3BFFD7"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_798B275DB1CA036E155C68205F299421"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -249,6 +273,26 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_379C46F577864A4CB51716D2679DECBC"
+            {
+            "SourcePath" = "8:..\\..\\..\\HorizonToolBox\\target\\HorizonToolbox2.0.0.zip"
+            "TargetName" = "8:HorizonToolbox2.0.0.zip"
+            "Tag" = "8:"
+            "Folder" = "8:_E9E6E9D056D6454280F9D0605AAA1644"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_6890A304E73084B77D5EB5901320B6EF"
             {
             "AssemblyRegister" = "3:1"
@@ -280,10 +324,21 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B857841BF3E94ACE90AEC30F8E353A97"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_798B275DB1CA036E155C68205F299421"
             {
-            "SourcePath" = "8:..\\..\\..\\HorizonToolBox\\target\\HorizonToolbox2.0.0.zip"
-            "TargetName" = "8:HorizonToolbox2.0.0.zip"
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Interop.IWshRuntimeLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_798B275DB1CA036E155C68205F299421"
+                    {
+                    "Name" = "8:Interop.IWshRuntimeLibrary.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Interop.IWshRuntimeLibrary.dll"
+            "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_E9E6E9D056D6454280F9D0605AAA1644"
             "Condition" = "8:"
@@ -297,7 +352,27 @@
             "PackageAs" = "3:1"
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7F1FF0011B5D3AB72ECC572B54601008"
+            {
+            "SourcePath" = "8:wshom.ocx"
+            "TargetName" = "8:wshom.ocx"
+            "Tag" = "8:"
+            "Folder" = "8:_E9E6E9D056D6454280F9D0605AAA1644"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D0ED91FE05C34622988B516272DEB611"
@@ -408,7 +483,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:HorizonToolbox"
         "ProductCode" = "8:{B29831EC-0F3F-4FF6-B3BE-6553C8F88741}"
-        "PackageCode" = "8:{E7D3C0DB-8260-49C9-A8D2-AFE4AB636378}"
+        "PackageCode" = "8:{74A88FA9-6A88-4DA3-8062-3849745A9397}"
         "UpgradeCode" = "8:{DF0A7AD2-8D9D-475B-A045-FCD16798B34D}"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
@@ -605,20 +680,6 @@
         }
         "Shortcut"
         {
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_32153EEBF9224D35A7216F134A730B54"
-            {
-            "Name" = "8:Horizon Toolbox Launcher"
-            "Arguments" = "8:"
-            "Description" = "8:"
-            "ShowCmd" = "3:1"
-            "IconIndex" = "3:0"
-            "Transitive" = "11:FALSE"
-            "Target" = "8:_300EFFBFAF464740BBE645E5D0537725"
-            "Folder" = "8:_E8231E52621B487CB5A5EBDF86474DEC"
-            "WorkingFolder" = "8:_E9E6E9D056D6454280F9D0605AAA1644"
-            "Icon" = "8:_DB748643326B471DAE9C8720779B8F90"
-            "Feature" = "8:"
-            }
         }
         "UserInterface"
         {

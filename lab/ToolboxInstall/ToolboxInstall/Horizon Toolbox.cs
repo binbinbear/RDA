@@ -321,6 +321,8 @@ namespace ToolboxInstall
                     //Console.ReadLine();
                     return;
                 }
+
+
                 
             }
             UpdaterichTextBox1("Succeed getting files.");
@@ -368,6 +370,21 @@ namespace ToolboxInstall
             UpdateprogressBar1(progressBar1.Maximum);
             UpdaterichTextBox1(@"Congratulations! Your Horizon Toolbox has been installed correctly!" );
             UpdaterichTextBox1("You can close this program now.");
+
+
+            //Create Shortcut to tomcat8w.exe
+            if (SvrStatus(ServiceName) != None)
+            {
+                string tomcatPath = GetToolBoxPath(path, true);
+                tomcatPath = tomcatPath.Substring(0, tomcatPath.LastIndexOf(".zip"));
+                IWshRuntimeLibrary.WshShell shell = new IWshRuntimeLibrary.WshShellClass();
+                string dir = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+                IWshRuntimeLibrary.IWshShortcut shortcut = (IWshRuntimeLibrary.IWshShortcut)shell.CreateShortcut(dir + @"\HorzionToolbox.lnk");
+                shortcut.TargetPath = tomcatPath + @"\bin\tomcat8w.exe";
+                shortcut.IconLocation = tomcatPath.Substring(0, tomcatPath.LastIndexOf("HorizonToolbox")) + @"Images\toolbox.ico";
+                shortcut.Save();
+            }
+            
 
         }
 
