@@ -364,6 +364,7 @@ namespace ToolboxInstall
                 StartService(ServiceName);
             }
             UpdaterichTextBox1("Completed...");
+            Updatelabel1("100%");
             UpdateprogressBar1(progressBar1.Maximum);
             UpdaterichTextBox1(@"Congratulations! Your Horizon Toolbox has been installed correctly!" );
             UpdaterichTextBox1("You can close this program now.");
@@ -649,6 +650,11 @@ namespace ToolboxInstall
         }
 
         private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label2_Click(object sender, EventArgs e)
         {
 
         }

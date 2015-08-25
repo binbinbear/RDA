@@ -77,6 +77,7 @@
             this.label2.Size = new System.Drawing.Size(342, 13);
             this.label2.TabIndex = 6;
             this.label2.Text = "Your HorizonToolbox is being installed,  please wait for sereval minutes.";
+            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // Form1
             // 

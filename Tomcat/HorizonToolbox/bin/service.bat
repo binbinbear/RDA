@@ -167,6 +167,7 @@ echo Failed installing '%SERVICE_NAME%' service
 goto end
 :installed
 echo The service '%SERVICE_NAME%' has been installed.
+sc config %SERVICE_NAME% start= auto
 
 :end
 cd "%CURRENT_DIR%"
