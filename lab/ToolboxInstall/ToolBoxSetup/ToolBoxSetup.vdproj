@@ -27,13 +27,25 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_B857841BF3E94ACE90AEC30F8E353A97"
+        "MsmKey" = "8:_300EFFBFAF464740BBE645E5D0537725"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_CC3F14A2E738442BACCF9024114E5F0A"
+        "MsmKey" = "8:_421512522DA98E01D655BC30FD7D5093"
+        "OwnerKey" = "8:_2733D322EDA04135AA2F7BC69E3BFFD7"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_421512522DA98E01D655BC30FD7D5093"
+        "OwnerKey" = "8:_300EFFBFAF464740BBE645E5D0537725"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B857841BF3E94ACE90AEC30F8E353A97"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -53,6 +65,18 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_2733D322EDA04135AA2F7BC69E3BFFD7"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_300EFFBFAF464740BBE645E5D0537725"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_421512522DA98E01D655BC30FD7D5093"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -194,10 +218,21 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B857841BF3E94ACE90AEC30F8E353A97"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_300EFFBFAF464740BBE645E5D0537725"
             {
-            "SourcePath" = "8:..\\..\\..\\HorizonToolBox\\target\\HorizonToolbox2.0.0.zip"
-            "TargetName" = "8:HorizonToolbox2.0.0.zip"
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:ToolboxInstall, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_300EFFBFAF464740BBE645E5D0537725"
+                    {
+                    "Name" = "8:ToolboxInstall.exe"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:..\\ToolboxInstall\\bin\\Release\\ToolboxInstall.exe"
+            "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_E9E6E9D056D6454280F9D0605AAA1644"
             "Condition" = "8:"
@@ -214,16 +249,41 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_CC3F14A2E738442BACCF9024114E5F0A"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_421512522DA98E01D655BC30FD7D5093"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:ToolboxInstall, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73"
                 "ScatterAssemblies"
                 {
+                    "_421512522DA98E01D655BC30FD7D5093"
+                    {
+                    "Name" = "8:ICSharpCode.SharpZipLib.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
-            "SourcePath" = "8:..\\ToolboxInstall\\bin\\Debug\\ToolboxInstall.exe"
+            "SourcePath" = "8:ICSharpCode.SharpZipLib.dll"
             "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_E9E6E9D056D6454280F9D0605AAA1644"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B857841BF3E94ACE90AEC30F8E353A97"
+            {
+            "SourcePath" = "8:..\\..\\..\\HorizonToolBox\\target\\HorizonToolbox2.0.0.zip"
+            "TargetName" = "8:HorizonToolbox2.0.0.zip"
             "Tag" = "8:"
             "Folder" = "8:_E9E6E9D056D6454280F9D0605AAA1644"
             "Condition" = "8:"
@@ -347,20 +407,20 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:HorizonToolbox"
-        "ProductCode" = "8:{ACF2EE95-AE9A-4DF8-AFC2-908E07C1DCDF}"
-        "PackageCode" = "8:{6899DEF3-4686-4536-AE26-12F5C225CE27}"
+        "ProductCode" = "8:{B29831EC-0F3F-4FF6-B3BE-6553C8F88741}"
+        "PackageCode" = "8:{769BF8EB-376D-4240-9DC4-C183B6D628F7}"
         "UpgradeCode" = "8:{DF0A7AD2-8D9D-475B-A045-FCD16798B34D}"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.0"
-        "Manufacturer" = "8:VMwareHorizonToolBox"
+        "ProductVersion" = "8:2.0.0"
+        "Manufacturer" = "8:VMware"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
         "Title" = "8:HorizonToolbox"
         "Subject" = "8:"
-        "ARPCONTACT" = "8:VMwareHorizonToolBox"
+        "ARPCONTACT" = "8:VMware"
         "Keywords" = "8:"
         "ARPCOMMENTS" = "8:"
         "ARPURLINFOABOUT" = "8:"
@@ -545,15 +605,15 @@
         }
         "Shortcut"
         {
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_D9A5560ECCC547938483CAF224ABC287"
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_32153EEBF9224D35A7216F134A730B54"
             {
-            "Name" = "8:ToolboxInstall.exe"
+            "Name" = "8:Horizon Toolbox Launcher"
             "Arguments" = "8:"
             "Description" = "8:"
             "ShowCmd" = "3:1"
             "IconIndex" = "3:0"
             "Transitive" = "11:FALSE"
-            "Target" = "8:_CC3F14A2E738442BACCF9024114E5F0A"
+            "Target" = "8:_300EFFBFAF464740BBE645E5D0537725"
             "Folder" = "8:_E8231E52621B487CB5A5EBDF86474DEC"
             "WorkingFolder" = "8:_E9E6E9D056D6454280F9D0605AAA1644"
             "Icon" = "8:_DB748643326B471DAE9C8720779B8F90"
@@ -960,7 +1020,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_2733D322EDA04135AA2F7BC69E3BFFD7"
             {
-            "SourcePath" = "8:..\\ToolboxInstall\\obj\\Debug\\ToolboxInstall.exe"
+            "SourcePath" = "8:..\\ToolboxInstall\\obj\\Release\\ToolboxInstall.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_E9E6E9D056D6454280F9D0605AAA1644"

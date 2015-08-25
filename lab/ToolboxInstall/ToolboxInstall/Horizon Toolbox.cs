@@ -168,7 +168,7 @@ namespace ToolboxInstall
             if (string.Compare(jre_path, string.Empty) == 0 || jre_path.IndexOf("Server") == -1)
             {
                 ExceptionOccur();
-                MessageBox.Show(@"Please install Horizon Toolbox on a Horizon Connection Server!");
+                MessageBox.Show(@"Error: Please install Horizon Toolbox on a Horizon Connection Server!");
                 return;
             }
             UpdaterichTextBox1("Connection server is found on this computer.");
@@ -232,9 +232,9 @@ namespace ToolboxInstall
             catch
             {
                 ExceptionOccur();
-                Console.WriteLine(@"Fail to install the HorizonToolBox, please reinstall it!");
-                Console.Write("Please press 'Enter' key to continue ... ");
-                Console.ReadLine();
+               // Console.WriteLine(@"Fail installing the HorizonToolBox, please reinstall it!");
+              //  Console.Write("Please press 'Enter' key to continue ... ");
+               // Console.ReadLine();
                 return;
             }
 
@@ -248,7 +248,7 @@ namespace ToolboxInstall
                     string svrPath = GetSvrPath(ServiceName);
                     if (svrPath.CompareTo(string.Empty) != 0)
                     {
-                        UpdaterichTextBox1("Find the service , Tomcat...");
+                        UpdaterichTextBox1("Looking for Tomcat...");
                         p1.StartInfo.FileName = "cmd.exe";
                         p1.StartInfo.UseShellExecute = false;
                         p1.StartInfo.RedirectStandardInput = true;
@@ -276,7 +276,7 @@ namespace ToolboxInstall
                 //Console.ReadLine();
                 return;
             }
-            UpdaterichTextBox1("The files have been removed.");
+            UpdaterichTextBox1("The old files have been removed.");
             UpdaterichTextBox1("Get the latest files...");
 
             //unzip the latest HorizonToolbox
@@ -294,7 +294,7 @@ namespace ToolboxInstall
                     }
                     catch (Exception e)
                     {
-                        Console.WriteLine(e.ToString());
+                       // Console.WriteLine(e.ToString());
                         isDelete = false;
                     }
                 }
@@ -302,9 +302,9 @@ namespace ToolboxInstall
                 if (!isDelete)
                 {
                     ExceptionOccur();
-                    MessageBox.Show(@"The file or files of HorizonToolBox is occupied by some process, please release it and run this program again!");
-                    Console.WriteLine(@"The file or files of HorizonToolBox is occupied by some process, please release it and run this program again!");
-                    Console.Write("Please press 'Enter' key to continue ... ");
+                    MessageBox.Show(@"The files of HorizonToolBox are being used by some process, please stop Toolbox and run this program again!");
+                   // Console.WriteLine(@"The file or files of HorizonToolBox is occupied by some process, please release it and run this program again!");
+                  //  Console.Write("Please press 'Enter' key to continue ... ");
                     //Console.ReadLine();
                     return;
                 }
@@ -315,15 +315,15 @@ namespace ToolboxInstall
                 if (sucUnZip == false)
                 {
                     ExceptionOccur();
-                    MessageBox.Show(@"Fail to unzip the file, please unzip the file : " + pathOfZip + @"  by manual and run this program again!");
-                    Console.WriteLine(@"Fail to unzip the file, please unzip the file : " + pathOfZip + @"  by manual and run this program again!");
-                    Console.Write("Please press 'Enter' key to continue ... ");
+                    MessageBox.Show(@"Fail unzipping the file, please unzip the file : " + pathOfZip + @"  manually and run this program again!");
+                    //Console.WriteLine(@"Fail to unzip the file, please unzip the file : " + pathOfZip + @"  by manual and run this program again!");
+                    //Console.Write("Please press 'Enter' key to continue ... ");
                     //Console.ReadLine();
                     return;
                 }
                 
             }
-            UpdaterichTextBox1("Succeed to get files.");
+            UpdaterichTextBox1("Succeed getting files.");
 
             //cmd,  install tomcat
             //path = Registry.GetValue("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\App Paths\\HorizonToolbox.exe", "path", null).ToString();
@@ -349,18 +349,18 @@ namespace ToolboxInstall
                 p.StandardInput.WriteLine(@"exit");
                 p.WaitForExit(waitTime);
             }
-            UpdaterichTextBox1("Succeed to set the environment.");
+            UpdaterichTextBox1("Succeed setting the environment.");
 
             if (SvrStatus(ServiceName) == None)
             {
                 ExceptionOccur();
-                MessageBox.Show("Fail to install the tomcat, the time is out. Please restart this program again or install the tomcat by manual.");
+                MessageBox.Show("Fail installing Tomcat. Please restart this program again or install the tomcat manually.");
                 return;
             }
 
             if (SvrStatus(ServiceName) != Running)
             {
-                UpdaterichTextBox1("Start service...");
+                UpdaterichTextBox1("Starting service...");
                 StartService(ServiceName);
             }
             UpdaterichTextBox1("Completed...");
@@ -574,9 +574,9 @@ namespace ToolboxInstall
                 }
                 catch
                 {
-                    MessageBox.Show("Failed to start the service, please start the tomcat by manual.");
-                    Console.WriteLine("Failed to start the service!");
-                    Console.Write("Please press 'Enter' key to continue ... ");
+                    MessageBox.Show("Failed starting the service, please start Tomcat manually.");
+                    //Console.WriteLine("Failed to start the service!");
+                    //Console.Write("Please press 'Enter' key to continue ... ");
                     //Console.ReadLine();
                 }
                 if (service.Status == ServiceControllerStatus.Running)
@@ -590,9 +590,9 @@ namespace ToolboxInstall
                     catch (Exception e)
                     {
                         ExceptionOccur();
-                        MessageBox.Show("Something wrong about the browser, please log on to it by manual.");
-                        Console.WriteLine(e.ToString());
-                        Console.Write("Please press 'Enter' key to continue ... ");
+                        MessageBox.Show("Failed opening your browser, please access toolbox manually.");
+                        //Console.WriteLine(e.ToString());
+                       // Console.Write("Please press 'Enter' key to continue ... ");
                         //Console.ReadLine();
                     }
                 }
@@ -627,7 +627,7 @@ namespace ToolboxInstall
             timer1.Enabled = false;
             UpdateprogressBar1(0);
             Updatelabel1("0%");
-            UpdaterichTextBox1(@"Sorry! Something wrong happened!");
+            UpdaterichTextBox1(@"Some error happened!");
         }
 
         private void label1_Click(object sender, EventArgs e)
