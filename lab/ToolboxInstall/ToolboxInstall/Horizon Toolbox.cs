@@ -365,6 +365,13 @@ namespace ToolboxInstall
                 UpdaterichTextBox1("Starting service...");
                 StartService(ServiceName);
             }
+
+            //Create uninstall.bat to remove Tomcat when uninstall HorizonToolbox
+            string tomcatPath = GetToolBoxPath(path, true);
+            tomcatPath = tomcatPath.Substring(0, tomcatPath.LastIndexOf(".zip"));
+            string[] content = { "cd " + tomcatPath + @"\bin", "service.bat remove" };
+            File.WriteAllLines(path + "uninstall.bat", content);
+
             UpdaterichTextBox1("Completed...");
             Updatelabel1("100%");
             UpdateprogressBar1(progressBar1.Maximum);
@@ -375,8 +382,6 @@ namespace ToolboxInstall
             //Create Shortcut to tomcat8w.exe
             if (SvrStatus(ServiceName) != None)
             {
-                string tomcatPath = GetToolBoxPath(path, true);
-                tomcatPath = tomcatPath.Substring(0, tomcatPath.LastIndexOf(".zip"));
                 IWshRuntimeLibrary.WshShell shell = new IWshRuntimeLibrary.WshShellClass();
                 string dir = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
                 IWshRuntimeLibrary.IWshShortcut shortcut = (IWshRuntimeLibrary.IWshShortcut)shell.CreateShortcut(dir + @"\HorzionToolbox.lnk");

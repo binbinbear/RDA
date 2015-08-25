@@ -75,6 +75,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_D891413B2C024CEBA47CCB26F0F12CD0"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_DB748643326B471DAE9C8720779B8F90"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -88,13 +94,13 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_798B275DB1CA036E155C68205F299421"
+        "OwnerKey" = "8:_300EFFBFAF464740BBE645E5D0537725"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_300EFFBFAF464740BBE645E5D0537725"
+        "OwnerKey" = "8:_798B275DB1CA036E155C68205F299421"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -185,6 +191,20 @@
     {
         "CustomAction"
         {
+            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_409FE1B1480C427CA3E75EC189CCCC0A"
+            {
+            "Name" = "8:uninstall.vbs"
+            "Condition" = "8:"
+            "Object" = "8:_D891413B2C024CEBA47CCB26F0F12CD0"
+            "FileType" = "3:4"
+            "InstallAction" = "3:4"
+            "Arguments" = "8:"
+            "EntryPoint" = "8:"
+            "Sequence" = "3:1"
+            "Identifier" = "8:_DB947D95_73A6_44E7_B370_EF6DDAC6235E"
+            "InstallerClass" = "11:FALSE"
+            "CustomActionData" = "8:[TARGETDIR]uninstall.bat"
+            }
             "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_F335612DA873434E8D2FC9A5B800DC04"
             {
             "Name" = "8:tb.vbs"
@@ -395,6 +415,26 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D891413B2C024CEBA47CCB26F0F12CD0"
+            {
+            "SourcePath" = "8:uninstall.vbs"
+            "TargetName" = "8:uninstall.vbs"
+            "Tag" = "8:"
+            "Folder" = "8:_E9E6E9D056D6454280F9D0605AAA1644"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_DB748643326B471DAE9C8720779B8F90"
             {
             "SourcePath" = "8:toolbox.ico"
@@ -483,7 +523,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:HorizonToolbox"
         "ProductCode" = "8:{B29831EC-0F3F-4FF6-B3BE-6553C8F88741}"
-        "PackageCode" = "8:{74A88FA9-6A88-4DA3-8062-3849745A9397}"
+        "PackageCode" = "8:{3610CFCF-BDB2-470A-A67A-3F7C2B464B79}"
         "UpgradeCode" = "8:{DF0A7AD2-8D9D-475B-A045-FCD16798B34D}"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
