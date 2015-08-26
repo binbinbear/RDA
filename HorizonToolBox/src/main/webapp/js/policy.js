@@ -675,7 +675,7 @@ $(function() {
 		    	   $.ajax({
 		    		   url: './policy/login',
 		    		   type: "POST",
-		    		   data: {user: $('#ad_username').val(), pass: $('#ad_password').val(), computerName: $('#ad_computerName').val()},
+		    		   data: {user: $('#ad_username').val(), pass: $('#ad_password').val(), computerName: $('#ad_computerName').val(), domainfullName: $("#ad_domainFullName").val()},
 		    		   success: function (data) {
 		    			   document.getElementById("over").style.display = "none";
 		    			   document.getElementById("layout").style.display = "none";;

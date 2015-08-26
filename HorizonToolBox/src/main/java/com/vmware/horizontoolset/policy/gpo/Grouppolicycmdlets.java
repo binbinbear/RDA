@@ -9,6 +9,8 @@ import java.util.Random;
 
 import org.apache.log4j.Logger;
 
+import com.vmware.horizontoolset.util.FileUtil;
+
 
 public class Grouppolicycmdlets {
 	private static Logger log = Logger.getLogger(Grouppolicycmdlets.class);
@@ -35,20 +37,22 @@ public class Grouppolicycmdlets {
 			csvName.append((char) (choice + random.nextInt(26)));
 		}
 		csvFile = csvName.toString() + ".csv";
-		psCsvFile = "c:\\\\temp\\\\" + csvFile;
+		String temppath = FileUtil.getTempFolder();
+		psCsvFile = temppath + csvFile;
 		readAll = new CsvFuncReadall();
 		readAllGpo = new CsvFuncReadallgpo();
 	}
 	
 	private void mkdirTemp(){
-		File file =new File("c:\\\\temp");    
+		String temppath = FileUtil.getTempFolder();
+		File file =new File(temppath);    
 		if  (!file .exists()  && !file .isDirectory())      
 		{         
-			log.debug("[DEBUG ] create c:\\temp");
+			 log.debug("[DEBUG ] Create temp folder:"+ temppath);
 		    file .mkdir();    
 		} else   
 		{  
-		    log.debug("[DEBUG ] c:\\temp already exists");
+		    log.debug("[DEBUG ]" + temppath + "already exists");
 		}  
 	}
 	
@@ -156,8 +160,8 @@ public class Grouppolicycmdlets {
 	
 	private List<Map<String, String>> getPSOutput_(String psGetCmd,  ReadCsvFunc func) {
 		String cmd =
-	            psGetCmd + " | Export-CSV " + psCsvFile + " -NoTypeInformation;$?";
-		//log.debug("[DEBUG ] [cmd] " + cmd);
+	            psGetCmd + " | Export-CSV '" + psCsvFile + "' -NoTypeInformation;$?";
+		log.debug("[DEBUG ] [cmd] " + cmd);
 		Output o = PowerConsole2.execute(cmd);
 	    String ret = o.toString();
 	    log.debug("[ret] " + ret);

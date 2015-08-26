@@ -14,9 +14,9 @@ public class GPOServiceImpl implements GPOService{
 	
 	private static Logger log = Logger.getLogger(GPOServiceImpl.class);
 	private String domain;
-	public GPOServiceImpl(String ad_user, String ad_pass, String ad_computerName, String domain){
+	private String domainFullName;
+	public GPOServiceImpl(String ad_user, String ad_pass, String ad_computerName, String domain, String domainfullname){
 		ad_user = domain+"\\"+ad_user;
-		ad_computerName = ad_computerName + "." + domain + ".com";
 		this.domain = domain;
 		
 		/*		
@@ -24,6 +24,7 @@ public class GPOServiceImpl implements GPOService{
 													"eucsolution\\administrator",
 													"VMware123");
 		*/
+		this.domainFullName = domainfullname;
 		grouppolicycmdlets = new Grouppolicycmdlets(ad_computerName,ad_user,ad_pass);
 		log.debug("[DEBUG ] init GPOServiceImpl over");
 	}
@@ -44,7 +45,8 @@ public class GPOServiceImpl implements GPOService{
 		getAllGpoParam.put("All", "");
 		
 		//getAllGpoParam.put("Domain", "eucsolution.com");	//get domain
-		getAllGpoParam.put("Domain", this.domain+".com");
+		//TODO FIXME: domainFullName should not require user to input
+		getAllGpoParam.put("Domain", this.domainFullName);
 		
 		return grouppolicycmdlets.getAllGPO(getAllGpoParam);
 	}
@@ -158,9 +160,18 @@ public class GPOServiceImpl implements GPOService{
 		Map<String, String> makeDirParam = new HashMap<String, String>();	
 		makeDirParam.put("Path", "'\\\\"+ grouppolicycmdlets.getAd() +"\\c$\\temp'");
 		makeDirParam.put("type", "directory");
-		List<Map<String, String>> res = grouppolicycmdlets.makeDir(makeDirParam);
-		log.debug("[DEBUG ] [makeDir]"+res.toString());
-		return res;
+		//TODO: FIXME  DO NOT USE absolute path C:\TEMP  
+		//TODO: FIXME: THE FOLDER MAY BE ALREAD there
+		try{
+			List<Map<String, String>> res = grouppolicycmdlets.makeDir(makeDirParam);
+			log.debug("[DEBUG ] [makeDir]"+res.toString());
+			return res;
+		}catch(Exception ex){
+			log.error(ex.getMessage(), ex);
+			return null;
+		}
+
+
 	}
 	
 	private List<Map<String, String>> importGPO(String gpoName){
@@ -182,7 +193,7 @@ public class GPOServiceImpl implements GPOService{
 	public List<Map<String, String>> setLinkGPO(String profileName, String ouName, String order){
 		Map<String, String> setLinkGpoParam = new HashMap<String, String>();
 		setLinkGpoParam.put("Name", "'" + profileName + "'");
-		String domainStr = this.domain + ".com";
+		String domainStr = this.domainFullName;
 		setLinkGpoParam.put("Domain", "'" + domainStr + "'");
 		setLinkGpoParam.put("Target", "'" + ouName + "'");
 		setLinkGpoParam.put("Order", order);

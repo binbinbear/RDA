@@ -79,11 +79,12 @@ public class PolicyRestController {
 	public boolean policyLogin(@RequestParam(value="user", required=true)String user, 
 			   @RequestParam(value="pass", required=true)String pass, 
 			   @RequestParam(value="computerName", required=true)String computerName, 
+			   @RequestParam(value="domainfullName", required=true)String domainfullName,
 			   HttpSession session){
 		
 		ViewAPIServiceImpl service = (ViewAPIServiceImpl) SessionUtil.getViewAPIService(session);
 		String currentDomain = service.get_domain();
-		GPOService gpoService = new GPOServiceImpl(user,pass,computerName,currentDomain);
+		GPOService gpoService = new GPOServiceImpl(user,pass,computerName,currentDomain,domainfullName );
 		List<Map<String, String>> psRes = gpoService.getGPO(DefaultDomainPolicy);
 		log.debug("[DEBUG ] [policyLogin] " + psRes.toString());
 		if(0==psRes.size()){
