@@ -5,6 +5,7 @@ import org.apache.log4j.Logger;
 
 import com.vmware.horizontoolset.util.LDAP;
 import com.vmware.horizontoolset.util.SessionUtil;
+import com.vmware.horizon.auditing.report.ReportUtil;
 
 
 public class Application {
@@ -19,11 +20,17 @@ public class Application {
     public void setViewServerPath(String viewServerPath){
     	LDAP.setViewServerPath(viewServerPath);
     }
-
+    
 	
 	public void setMaximumSessions(String maximumSessions){
 		int maxSession = Integer.parseInt(maximumSessions);
 		log.info("maximumSessions is set to be:"+maxSession);
 		SessionUtil.setMaximumSessions(maxSession);
+	}
+	
+	
+	public void setConnTimeout(int connTimeout){
+		log.info("connectionTimeout is set to be:"+connTimeout);
+		ReportUtil.setConnectionTimeout(connTimeout);
 	}
 }

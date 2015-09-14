@@ -12,6 +12,11 @@
             <property name="maximumSessions"> 
             <value>10</value> 
             </property>
+			
+			<property name="connTimeout"> 
+            <value>86400</value> 
+            </property>
+			
 
 
            <property name="viewServerPath"> 

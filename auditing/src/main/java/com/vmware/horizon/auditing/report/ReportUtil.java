@@ -17,7 +17,11 @@ import com.vmware.horizon.auditing.db.EventImpl;
 
 public class ReportUtil {
 	private static Logger log = Logger.getLogger(ReportUtil.class);
+	private static int timeout = 86400;
 	
+	public static void setConnectionTimeout(int connectionTimeout) {
+		timeout = connectionTimeout;
+	}
 	
 	
 	/**
@@ -35,9 +39,8 @@ public class ReportUtil {
 		Set<String> usedConnectionEvents = new HashSet<String>();
 		
 		Map<String,Event> connectionEvents = new HashMap<String, Event>();
-		
 		Map<String,Event> loggedInEvents = new HashMap<String, Event>();
-		
+
 		if (events.size()==0){
 			return result;
 		}
@@ -46,6 +49,9 @@ public class ReportUtil {
 		Date earliestDate = events.get(eventsSize -1 ).getTime();
 		
 		 log.debug("before tranverse events: "+new Date());
+		  
+		 
+		 
 		for (int i = eventsSize -1; i>=0; i--) {
 			Event event = events.get(i);
 			String eventUserName = event.getUserName();
@@ -62,7 +68,6 @@ public class ReportUtil {
 					if (connectionEvent!=null){
 						ConnectionImpl connection = new ConnectionImpl(connectionEvent, loggedInEvents.get(key), event);
 						result.add(connection);
-						
 						connectionEvents.remove(key);
 						loggedInEvents.remove(key);
 						usedConnectionEvents.add(key);
@@ -71,7 +76,9 @@ public class ReportUtil {
 						connectionEvent = new EventImpl(event, earliestDate);
 						//if a disconnect event happens without a connect event, this should be a long time event.
 						ConnectionImpl connection = new ConnectionImpl(connectionEvent, loggedInEvents.get(key), event);
-						result.add(connection );
+						if (connection.getUsageTime() < timeout){
+							result.add(connection );
+						}
 					}
 				}
 
@@ -81,7 +88,10 @@ public class ReportUtil {
 		//for the connectionEvents without disconnection events, they should be connecting events
 		for (Event event: connectionEvents.values()){
 			ConnectionImpl connection = new ConnectionImpl(event, new EventImpl(event, unknownDate));
-			result.add(connection );
+			if (connection.getUsageTime() < timeout){
+				result.add(connection );
+			}
+			//result.add(connection );
 		}
 		 log.debug("after tranverse events: "+new Date());
 		

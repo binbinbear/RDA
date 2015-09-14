@@ -44,7 +44,6 @@ public class UsageRestController {
 	    	}
 		 log.debug("Get Events: "+new Date());
 		EventsAuditing auditing = SessionUtil.getSessionObj(session, EventsAuditing.class);
-		
 		 return auditing.getConnections(userName,daysToShow, "") ;
 		  
 		}

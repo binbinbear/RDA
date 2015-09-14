@@ -349,7 +349,8 @@ public class PolicyRestController {
 		
 		ViewAPIServiceImpl service = (ViewAPIServiceImpl) SessionUtil.getViewAPIService(session);
 		String currentDomain = service.get_domain();
-		currentDomain = ",dc=" + currentDomain + ",dc=com";
+		//currentDomain = ",dc=" + currentDomain + ",dc=com";
+		currentDomain = ",dc=" + currentDomain + ",dc=fvt";
 		log.debug("[DEBUG ] currentDomain: "+currentDomain);
 		
 		String[] profiles = JsonUtil.jsonToJava(profilesStr, String[].class);

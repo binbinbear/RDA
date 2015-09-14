@@ -155,6 +155,14 @@ public class Grouppolicycmdlets {
 	    		  + this.adpass
 	    		  + "\';$pass = ConvertTo-SecureString -AsPlainText $Password -Force;"
 	    		  + "$Cred = New-Object System.Management.Automation.PSCredential -ArgumentList $Username,$pass;";
+				  
+		
+		//add by wx, test
+		log.debug("[DEBUG ] [add by wx1] " + cmd);
+		if (cmd == "New-GPLink") {
+			log.debug("[DEBUG ] [add by wx2] " + pSCredential);
+		}
+		
 	    return getPSOutput_(pSCredential + "Invoke-Command -Credential $Cred -scriptblock {import-module grouppolicy;" + cmd + "} -computerName " + this.ad, func);
 	}
 	

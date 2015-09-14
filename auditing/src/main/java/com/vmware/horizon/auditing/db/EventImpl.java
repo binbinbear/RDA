@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 
 import com.vmware.horizon.auditing.report.Event;
 import com.vmware.horizon.auditing.report.EventType;
+import com.vmware.horizon.auditing.report.ReportUtil;
 import com.vmware.vdi.admin.be.events.AdminEvent;
 import com.vmware.vdi.admin.be.events.AdminEventSource;
 import com.vmware.vdi.events.enums.EventModule;
@@ -16,6 +17,7 @@ import com.vmware.vdi.events.enums.EventModule;
  *
  */
 public class EventImpl implements Event{
+	private static Logger log = Logger.getLogger(EventImpl.class);
 
 	@Override
 	public int hashCode() {
@@ -105,8 +107,9 @@ public class EventImpl implements Event{
 		this.username = this.username.toLowerCase();
 		this.shortMessage = event.getShortMessage();
 		this.time = event.getTime();
-
-		if(EventModule.Agent.equals(event.getModule()) && event.isInfo() ){
+		
+		//if(EventModule.Agent.equals(event.getModule()) && event.isInfo() ){
+		if(EventModule.Agent.equals(event.getModule())){
 			if (shortMessage.contains(ACCEPT)){
 				this.type = EventType.Connection;
 				this.machineName = getValue(shortMessage, ON_MACHINE);
@@ -135,8 +138,7 @@ public class EventImpl implements Event{
 				}
 			}
 
-		} else if (EventModule.Broker.equals(event.getModule())
-				&& (event.isInfo() || event.isAuditSuccess())) {
+		} else if (EventModule.Broker.equals(event.getModule())) {
 			if (shortMessage.contains(LOGOUT)) {
 				this.type = EventType.Logout;
 			} else if (shortMessage.contains(REQUEST_APP)) {

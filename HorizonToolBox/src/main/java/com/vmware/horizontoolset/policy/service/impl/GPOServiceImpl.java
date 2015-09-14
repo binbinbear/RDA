@@ -185,7 +185,8 @@ public class GPOServiceImpl implements GPOService{
 	public List<Map<String, String>> linkGPO(String profileName, String ouName){
 		Map<String, String> linkGpoParam = new HashMap<String, String>();
 		linkGpoParam.put("Name", "'" + profileName + "'");
-		ouName = "'" + ouName + ",dc=" + this.domain + ",dc=com'";
+		//ouName = "'" + ouName + ",dc=" + this.domain + ",dc=com'";
+		ouName = "'" + ouName + ",dc=" + this.domain + ",dc=fvt'";
 		linkGpoParam.put("Target", ouName);
 		return grouppolicycmdlets.newGPLink(linkGpoParam);
 	}
@@ -203,7 +204,8 @@ public class GPOServiceImpl implements GPOService{
 	public List<Map<String, String>> removeLinkGPO(String profileName, String ouName){
 		Map<String, String> removeLinkGpoParam = new HashMap<String, String>();
 		removeLinkGpoParam.put("Name", "'" + profileName + "'");
-		ouName = "'" + ouName + ",dc=" + this.domain + ",dc=com'";
+		//ouName = "'" + ouName + ",dc=" + this.domain + ",dc=com'";
+		ouName = "'" + ouName + ",dc=" + this.domain + ",dc=fvt'";
 		removeLinkGpoParam.put("Target", ouName);
 		return grouppolicycmdlets.removeGPLink(removeLinkGpoParam);
 	}
