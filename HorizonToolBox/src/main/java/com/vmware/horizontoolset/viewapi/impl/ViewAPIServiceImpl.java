@@ -14,10 +14,14 @@ import com.vmware.horizontoolset.viewapi.SessionPool;
 import com.vmware.horizontoolset.viewapi.SnapShotViewPool;
 import com.vmware.horizontoolset.viewapi.ViewAPIService;
 import com.vmware.horizontoolset.viewapi.ViewPool;
+import com.vmware.vdi.vlsi.binding.vdi.entity.MachineId;
+import com.vmware.vdi.vlsi.binding.vdi.entity.VirtualCenterId;
 import com.vmware.vdi.vlsi.binding.vdi.infrastructure.VirtualCenter;
 import com.vmware.vdi.vlsi.binding.vdi.infrastructure.VirtualCenter.VirtualCenterInfo;
 import com.vmware.vdi.vlsi.binding.vdi.resources.Application.ApplicationInfo;
 import com.vmware.vdi.vlsi.binding.vdi.resources.Desktop.DesktopSummaryView;
+import com.vmware.vdi.vlsi.binding.vdi.resources.Machine;
+import com.vmware.vdi.vlsi.binding.vdi.resources.Machine.MachineInfo;
 import com.vmware.vdi.vlsi.binding.vdi.users.Session.SessionLocalSummaryView;
 import com.vmware.vdi.vlsi.client.Connection;
 import com.vmware.vdi.vlsi.client.Query;
@@ -27,7 +31,7 @@ public class ViewAPIServiceImpl implements ViewAPIService{
 	private static Logger log = Logger.getLogger(ViewAPIServiceImpl.class);
 	private ViewAPIConnect _connection;
 	private ViewQueryService _queryService;
-
+	private Machine _machine;
 	private VirtualCenter _virtualCenterService;
 	private String _host;
 	private String _user;
@@ -44,6 +48,7 @@ public class ViewAPIServiceImpl implements ViewAPIService{
 		this._connection = new ViewAPIConnect(host);
 		this._connection.login(username, password, domain);
 		this._queryService = new ViewQueryService(this._connection);
+		this._machine =  this._connection.get(Machine.class);
 		this._virtualCenterService = this._connection.get(VirtualCenter.class);
 	}
 	
@@ -136,6 +141,10 @@ public class ViewAPIServiceImpl implements ViewAPIService{
 		}
 		return ret;
 	}
+	
+	public VirtualCenterInfo getVCInfo(String vcid){
+		return this._virtualCenterService.get(new VirtualCenterId(vcid));
+	}
 
 	
 	@Override
@@ -209,6 +218,11 @@ public class ViewAPIServiceImpl implements ViewAPIService{
 	@Override
 	public Connection getConn() {
 		return this._connection;
+	}
+
+	@Override
+	public MachineInfo getMachineInfo(String machineid) {
+		return this._machine.get(new MachineId(machineid));
 	}
 
 }

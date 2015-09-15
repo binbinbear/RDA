@@ -20,6 +20,7 @@ window.l10Ntable={
     "Desktop Agent Policies":"Desktop Agent Policies",
     "Application Pool Usage Monitor":"Application Pool Usage Monitor",
     "Email Notification":"Email Notification",
+    "Console Access":"Console Access",
     "About":"About",
     "Logout":"Logout",
     "Session Audit Report":"Session Audit Report",

@@ -548,7 +548,7 @@ ToolBox.init =  function(){
 						"href" : $("#L1_03_01")},
 						
 						
-					email:{"btn": $("#L1_04")}
+					console:{"btn": $("#L1_04")}
 								
 					};
 

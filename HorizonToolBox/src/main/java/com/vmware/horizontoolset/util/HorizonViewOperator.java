@@ -166,19 +166,19 @@ public class HorizonViewOperator implements AutoCloseable {
         return ret;
     }
         
-    public FarmId createFarm(String farmName, List<RDSServerId> rDSServerIds) {
-    	
-        final Farm.FarmData farmData = new Farm.FarmData();
-        farmData.setName(farmName);
-        farmData.setAccessGroup(getRootAccessGroup().getId());
-        
-        final Farm.FarmSpec spec = new Farm.FarmSpec();
-        spec.data = farmData;
-        spec.rdsServers = rDSServerIds.toArray(new RDSServerId[]{});
-        final Farm farm = conn.get(Farm.class);
-        
-        return farm.create(spec);
-    }
+//    public FarmId createFarm(String farmName, List<RDSServerId> rDSServerIds) {
+//    	
+//        final Farm.FarmData farmData = new Farm.FarmData();
+//        farmData.setName(farmName);
+//        farmData.setAccessGroup(getRootAccessGroup().getId());
+//        
+//        final Farm.FarmSpec spec = new Farm.FarmSpec();
+//        spec.data = farmData;
+//        spec.rdsServers = rDSServerIds.toArray(new RDSServerId[]{});
+//        final Farm farm = conn.get(Farm.class);
+//        
+//        return farm.create(spec);
+//    }
 
     public AccessGroup.AccessGroupInfo getRootAccessGroup() {
         List<AccessGroup.AccessGroupInfo> accessGroupInfos = listAccessGroupInfos();

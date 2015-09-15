@@ -33,7 +33,7 @@ public class DesktopPool {
 			QueryFilter filter = QueryFilter.equals(MachineSummaryViewCName.MACHINE_SUMMARY_VIEW_CNAME.base.desktop, id); 
 	        try (Query<MachineSummaryView> query = new Query<>(conn, MachineSummaryView.class, filter)) {
 	            for (MachineSummaryView v : query) {
-	            	objects.add(new Machine(conn, v));
+	            	objects.add(new Machine(conn, v, summary.name));
 	            }
 	        }
 		}

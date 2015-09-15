@@ -2,6 +2,7 @@ package com.vmware.horizontoolset.util;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -11,6 +12,7 @@ import org.apache.log4j.Logger;
 
 import com.vmware.horizon.auditing.db.EventDBUtil;
 import com.vmware.horizontoolset.viewapi.ViewAPIService;
+import com.vmware.horizontoolset.viewapi.operator.Machine;
 import com.vmware.horizontoolset.viewapi.operator.ViewOperator;
 
 public class SessionUtil {
@@ -140,5 +142,36 @@ public class SessionUtil {
 	public static String getTranslatedJsonURL(HttpSession session){
 		ToolBoxSession ts = getOrNewToolBoxSession(session);
 		return (ts==null)? null:ts.getJsonURL();
+	}
+
+
+	public static List<String> getAllDesktopPools(HttpSession session) {
+		return getViewOperator(session).getDesktopPoolNames();
+	}
+	
+	public static List<Machine> getVMs(HttpSession session, String poolname) {
+		return getViewOperator(session).getDesktopPool(poolname).machines.get();
+	}
+	
+	public static List<Machine> getAllVMs(HttpSession session) {
+		List<Machine> allvms = new ArrayList<Machine>();
+		List<String> allpools = getAllDesktopPools(session);
+		for (String pool: allpools ){
+			allvms.addAll(getVMs(session, pool));
+		}
+		return allvms;
+	}
+	
+	public static Machine getMachine(HttpSession session, String vmid) {
+		if (StringUtil.isEmpty(vmid)){
+			return null;
+		}
+		 List<Machine> allvms = getAllVMs(session);
+		 for (Machine vm: allvms){
+			 if (vmid.equalsIgnoreCase(vm.getVmid())){
+				 return vm;
+			 }
+		 }
+		 return null;
 	}
 }

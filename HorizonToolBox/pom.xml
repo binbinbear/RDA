@@ -34,11 +34,13 @@
 
 		<dependency>
 			<groupId>com.vmware</groupId>
-			<artifactId>view-api-client</artifactId>
+			<artifactId>view-api</artifactId>
 			<version>1.0</version>
 			<scope>system</scope>
-			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/view-api-client.jar</systemPath>
+			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/view-api.jar</systemPath>
 		</dependency>
+		
+
 		
 		<dependency>
 			<groupId>com.vmware</groupId>

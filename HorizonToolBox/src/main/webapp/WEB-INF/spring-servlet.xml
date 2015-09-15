@@ -54,6 +54,7 @@
             		<value>6.0.1</value>
             		<value>6.0.2</value>
             		<value>6.1</value>
+            		<value>6.2</value>
             	</array>
             </property>
   </bean>
@@ -92,11 +93,16 @@
    
    <bean id="PolicyRestNewController" class="com.vmware.horizontoolset.policy.PolicyRestController"/>
    
+      <bean id="ConsoleController" class="com.vmware.horizontoolset.console.ConsoleController"/>
+   
+      <bean id="ConsoleRestController" class="com.vmware.horizontoolset.console.ConsoleRestController"/>
+    <bean id="WebMKSController" class="com.vmware.horizontoolset.console.WebMKSController"/>
+   
    
   <!-- Execute once a day on 1:00 am , Seconds Minutes Hours DayofMonth Month DayofWeek -->
    <task:scheduled-tasks>   
         <task:scheduled ref="clientrestController" method="updateCachedReport" cron="0 0 1 * * ?"/>   
-        <task:scheduled ref="limitRestController" method="refresh" cron="0 30 * * * ?"/>
+       <!--   <task:scheduled ref="limitRestController" method="refresh" cron="0 30 * * * ?"/> -->
    </task:scheduled-tasks>  
    
 </beans>

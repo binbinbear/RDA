@@ -102,6 +102,7 @@ public class LDAP implements AutoCloseable {
         env.put(Context.SECURITY_CREDENTIALS, password);
 		 try {
 			 dirContext = new InitialDirContext(env);
+			
 			} catch (NamingException e) {
 				log.warn("Can't connect to server", e);
 				e.printStackTrace();
