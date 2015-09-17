@@ -3,9 +3,9 @@ package com.vmware.horizontoolset;
 
 import org.apache.log4j.Logger;
 
+import com.vmware.horizon.auditing.report.ReportUtil;
 import com.vmware.horizontoolset.util.LDAP;
 import com.vmware.horizontoolset.util.SessionUtil;
-import com.vmware.horizon.auditing.report.ReportUtil;
 
 
 public class Application {

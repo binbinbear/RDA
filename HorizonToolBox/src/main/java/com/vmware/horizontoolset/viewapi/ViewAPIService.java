@@ -2,8 +2,6 @@ package com.vmware.horizontoolset.viewapi;
 
 import java.util.List;
 
-import com.vmware.vdi.vlsi.binding.vdi.entity.MachineId;
-import com.vmware.vdi.vlsi.binding.vdi.entity.VirtualCenterId;
 import com.vmware.vdi.vlsi.binding.vdi.infrastructure.VirtualCenter.VirtualCenterInfo;
 import com.vmware.vdi.vlsi.binding.vdi.resources.Application.ApplicationInfo;
 import com.vmware.vdi.vlsi.binding.vdi.resources.Machine.MachineInfo;

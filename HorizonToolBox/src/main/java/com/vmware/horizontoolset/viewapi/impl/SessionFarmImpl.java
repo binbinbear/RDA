@@ -1,7 +1,7 @@
 package com.vmware.horizontoolset.viewapi.impl;
 
-import com.vmware.vdi.vlsi.binding.vdi.resources.Farm.FarmInfo;
 import com.vmware.horizontoolset.viewapi.SessionFarm;
+import com.vmware.vdi.vlsi.binding.vdi.resources.Farm.FarmInfo;
 
 public class SessionFarmImpl implements SessionFarm{
 

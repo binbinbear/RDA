@@ -6,11 +6,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
-
-
 import org.apache.log4j.Logger;
-
-
 
 import com.vmware.horizon.auditing.report.ReportUtil;
 import com.vmware.horizontoolset.viewapi.Session;

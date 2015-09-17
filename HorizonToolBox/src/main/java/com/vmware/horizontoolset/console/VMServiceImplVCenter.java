@@ -113,10 +113,10 @@ public class VMServiceImplVCenter implements VMService {
 			boolean isWssSupported = isWssSupported(aboutInfo);
 			
 			if (isWssSupported) {
-				ret.setProtocol("WSS");
+				ret.setProtocol("wss");
 				ret.setPort(7343);
 			} else {
-				ret.setProtocol("WS");
+				ret.setProtocol("ws");
 				ret.setPort(7331);
 			}
 			ret.setHost(vc.getHost());

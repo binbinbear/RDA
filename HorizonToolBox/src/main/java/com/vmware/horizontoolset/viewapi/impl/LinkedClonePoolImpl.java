@@ -3,17 +3,17 @@ package com.vmware.horizontoolset.viewapi.impl;
 import org.apache.log4j.Logger;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.vmware.vdi.vlsi.binding.vdi.entity.BaseImageSnapshotId;
-import com.vmware.vdi.vlsi.binding.vdi.entity.BaseImageVmId;
-import com.vmware.vdi.vlsi.binding.vdi.resources.Desktop.DesktopInfo;
-import com.vmware.vdi.vlsi.binding.vdi.utils.ADContainer.ADContainerInfo;
-import com.vmware.vdi.vlsi.binding.vdi.utils.virtualcenter.BaseImageSnapshot.BaseImageSnapshotInfo;
 import com.vmware.horizontoolset.report.SnapShotReport;
 import com.vmware.horizontoolset.viewapi.Container;
 import com.vmware.horizontoolset.viewapi.LinkedClonePool;
 import com.vmware.horizontoolset.viewapi.SnapShot;
 import com.vmware.horizontoolset.viewapi.VM;
 import com.vmware.horizontoolset.viewapi.ViewType;
+import com.vmware.vdi.vlsi.binding.vdi.entity.BaseImageSnapshotId;
+import com.vmware.vdi.vlsi.binding.vdi.entity.BaseImageVmId;
+import com.vmware.vdi.vlsi.binding.vdi.resources.Desktop.DesktopInfo;
+import com.vmware.vdi.vlsi.binding.vdi.utils.ADContainer.ADContainerInfo;
+import com.vmware.vdi.vlsi.binding.vdi.utils.virtualcenter.BaseImageSnapshot.BaseImageSnapshotInfo;
 
 
 @JsonIgnoreProperties(value={"snapShot","adcontainer"})

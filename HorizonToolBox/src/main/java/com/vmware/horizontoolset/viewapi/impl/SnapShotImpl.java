@@ -7,10 +7,10 @@ import java.util.HashMap;
 import org.apache.log4j.Logger;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.vmware.vdi.vlsi.binding.vdi.utils.virtualcenter.BaseImageSnapshot.BaseImageSnapshotInfo;
 import com.vmware.horizontoolset.viewapi.LinkedClonePool;
 import com.vmware.horizontoolset.viewapi.SnapShot;
 import com.vmware.horizontoolset.viewapi.VM;
+import com.vmware.vdi.vlsi.binding.vdi.utils.virtualcenter.BaseImageSnapshot.BaseImageSnapshotInfo;
 
 @JsonIgnoreProperties(value={"parentVM", "parentSnapShot", "allDescendantSnapShots"})
 public class SnapShotImpl implements SnapShot{

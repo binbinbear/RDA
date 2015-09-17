@@ -3,6 +3,7 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
        xmlns:mvc="http://www.springframework.org/schema/mvc"
        xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:websocket="http://www.springframework.org/schema/websocket"
        xmlns:task="http://www.springframework.org/schema/task" 
        xsi:schemaLocation="http://www.springframework.org/schema/mvc
                            http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
@@ -10,6 +11,8 @@
                            http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
                            http://www.springframework.org/schema/context
                            http://www.springframework.org/schema/context/spring-context-3.0.xsd
+                           http://www.springframework.org/schema/websocket
+                           http://www.springframework.org/schema/websocket/spring-websocket.xsd
                            http://www.springframework.org/schema/task  
 						   http://www.springframework.org/schema/task/spring-task-3.1.xsd">
  	
@@ -96,7 +99,7 @@
       <bean id="ConsoleController" class="com.vmware.horizontoolset.console.ConsoleController"/>
    
       <bean id="ConsoleRestController" class="com.vmware.horizontoolset.console.ConsoleRestController"/>
-    <bean id="WebMKSController" class="com.vmware.horizontoolset.console.WebMKSController"/>
+    <bean id="WebMKSController" class="com.vmware.horizontoolset.console.WebMKSController" />
    
    
   <!-- Execute once a day on 1:00 am , Seconds Minutes Hours DayofMonth Month DayofWeek -->
@@ -104,5 +107,21 @@
         <task:scheduled ref="clientrestController" method="updateCachedReport" cron="0 0 1 * * ?"/>   
        <!--   <task:scheduled ref="limitRestController" method="refresh" cron="0 30 * * * ?"/> -->
    </task:scheduled-tasks>  
+   
+   <websocket:handlers>
+        <websocket:mapping path="/wsproxy" handler="proxyHandler"/>
+          <websocket:handshake-interceptors>
+            <bean class="com.vmware.horizontoolset.wsproxy.Interceptor"/>
+        </websocket:handshake-interceptors>
+    </websocket:handlers>
+
+	<bean id="rewriter" class="com.vmware.horizontoolset.wsproxy.SimpleRewriter"/>
+
+    <bean id="proxyHandler" class="com.vmware.horizontoolset.wsproxy.ClientProxyHandler">
+      <property name="config" ref="rewriter"/>
+    </bean>
+    
+    
+   
    
 </beans>

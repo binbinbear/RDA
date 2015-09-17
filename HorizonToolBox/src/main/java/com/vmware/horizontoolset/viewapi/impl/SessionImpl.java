@@ -1,8 +1,8 @@
 package com.vmware.horizontoolset.viewapi.impl;
 
-import com.vmware.vdi.vlsi.binding.vdi.users.Session.SessionLocalSummaryView;
 import com.vmware.horizontoolset.viewapi.Session;
 import com.vmware.horizontoolset.viewapi.ViewType;
+import com.vmware.vdi.vlsi.binding.vdi.users.Session.SessionLocalSummaryView;
 
 public class SessionImpl implements Session{
 

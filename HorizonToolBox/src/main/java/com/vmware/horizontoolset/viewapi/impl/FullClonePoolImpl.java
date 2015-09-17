@@ -3,12 +3,12 @@ package com.vmware.horizontoolset.viewapi.impl;
 import org.apache.log4j.Logger;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.vmware.vdi.vlsi.binding.vdi.entity.VmTemplateId;
-import com.vmware.vdi.vlsi.binding.vdi.resources.Desktop.DesktopInfo;
 import com.vmware.horizontoolset.report.SnapShotReport;
 import com.vmware.horizontoolset.viewapi.FullClonePool;
 import com.vmware.horizontoolset.viewapi.Template;
 import com.vmware.horizontoolset.viewapi.ViewType;
+import com.vmware.vdi.vlsi.binding.vdi.entity.VmTemplateId;
+import com.vmware.vdi.vlsi.binding.vdi.resources.Desktop.DesktopInfo;
 @JsonIgnoreProperties(value={"template"})
 public class FullClonePoolImpl  extends ViewPoolImpl implements FullClonePool{
 

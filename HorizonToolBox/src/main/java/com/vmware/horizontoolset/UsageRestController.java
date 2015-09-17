@@ -1,9 +1,7 @@
 package com.vmware.horizontoolset;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.Writer;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -19,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.vmware.horizon.auditing.EventsAuditing;
 import com.vmware.horizon.auditing.report.AccumulatedUsageReport;
 import com.vmware.horizon.auditing.report.Connection;
-import com.vmware.horizontoolset.report.ReportUtilExtension;
 import com.vmware.horizontoolset.util.ExportFileUtil;
 import com.vmware.horizontoolset.util.SessionUtil;
 import com.vmware.horizontoolset.viewapi.ViewAPIService;

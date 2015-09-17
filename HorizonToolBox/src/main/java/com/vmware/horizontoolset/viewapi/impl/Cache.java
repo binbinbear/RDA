@@ -1,9 +1,7 @@
 package com.vmware.horizontoolset.viewapi.impl;
 
 import java.util.HashMap;
-import java.util.List;
 
-import com.vmware.horizontoolset.viewapi.RDS;
 import com.vmware.horizontoolset.viewapi.SnapShot;
 import com.vmware.horizontoolset.viewapi.VM;
 

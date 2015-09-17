@@ -146,8 +146,11 @@ $(document)
 					// if params are provided, no need to show chrome
 					if (location.search) {
 						$("#bar").hide();
-						
-						var vmurl = $(".vmurl").text();
+						if (window.location.protocol == "https:")
+							protocol = "wss:";
+						else
+							protocol = "ws:";
+						var vmurl = protocol + window.location.host + $(".vmurl").text();
 						_wmks.wmks("connect", vmurl);
 						$("#spinner").addClass("spinner");
 					}

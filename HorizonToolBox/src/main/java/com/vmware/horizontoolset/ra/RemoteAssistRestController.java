@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.Gson;
-import com.vmware.horizontoolset.util.JsonUtil;
 import com.vmware.horizontoolset.util.SessionUtil;
 import com.vmware.horizontoolset.viewapi.operator.Session;
 import com.vmware.horizontoolset.viewapi.operator.ViewOperator;

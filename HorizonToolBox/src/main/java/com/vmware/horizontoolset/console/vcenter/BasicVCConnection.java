@@ -20,12 +20,12 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.vmware.vim25.UserSession;
-import com.vmware.vim25.mo.ServiceInstance;
 import com.vmware.vdi.adamwrapper.adam.AdamVCManager;
 import com.vmware.vdi.adamwrapper.exceptions.ADAMServerException;
 import com.vmware.vdi.adamwrapper.ldap.VDIContext;
 import com.vmware.vdi.adamwrapper.objects.VC;
+import com.vmware.vim25.UserSession;
+import com.vmware.vim25.mo.ServiceInstance;
 
 /**
  * This simple object shows how to set up a vSphere connection as it was done in vSphere 4.x and is provided

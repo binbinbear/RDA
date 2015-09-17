@@ -1,7 +1,7 @@
 package com.vmware.horizontoolset.console;
 
 
-import java.util.List;
+import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
 
@@ -13,21 +13,31 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.vmware.horizontoolset.console.vcenter.BasicVCConnection;
+import com.vmware.horizontoolset.util.LRUCache;
 import com.vmware.horizontoolset.util.SessionUtil;
 import com.vmware.horizontoolset.viewapi.operator.Machine;
 import com.vmware.vdi.vlsi.binding.vdi.infrastructure.VirtualCenter.VirtualCenterInfo;
 import com.vmware.vdi.vlsi.binding.vdi.resources.Machine.MachineInfo;
 
-
+/**
+ * scope=session
+ * 
+ *
+ */
 
 @Controller
 public class WebMKSController {
 	
-
-	
 	private static final String view = "webmks";
 	private static Logger log = Logger.getLogger(WebMKSController.class);
+
+	//TODO: setup this value 1000 in xml
+	private static LRUCache<String, ConsoleAccessInfo> _infoCache = new LRUCache<String, ConsoleAccessInfo>(1000);
+	
+
+	public static ConsoleAccessInfo getAccessInfo(String uuid){
+		return _infoCache.get(uuid);
+	}
 
 
 	//vcenter:
@@ -52,12 +62,14 @@ public class WebMKSController {
     		VMServiceImplVCenter vmservice = new VMServiceImplVCenter(SessionUtil.getLDAP(session).getVDIContext(),vcinfo.serverSpec.serverName,minfo.managedMachineData.getVirtualCenterData().path);
         	
     		ConsoleAccessInfo info = vmservice.requestConsoleAccessInfo();
-    		String vmurl = info.getProtocol()+"://"+info.getHost() + ":" + info.getPort() + info.getUri();
-    			model.addAttribute("vmurl", vmurl);
+    			
+    		String key = UUID.randomUUID().toString();
+    		_infoCache.put(key, info);
+    		model.addAttribute("vmurl", "/toolbox/wsproxy?uuid="+key);
     			model.addAttribute("vmname", m.getDnsname());
     			
 
-    			log.debug("Start connection for vmurl:"+vmurl);
+    			log.debug("Start connection for vmurl:"+info.getUri());
     		
     		
 

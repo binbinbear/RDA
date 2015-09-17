@@ -2,12 +2,12 @@ package com.vmware.horizontoolset.viewapi.impl;
 
 import org.apache.log4j.Logger;
 
-import com.vmware.vdi.vlsi.binding.vdi.resources.Application.ApplicationInfo;
-import com.vmware.vdi.vlsi.binding.vdi.resources.Desktop.DesktopInfo;
-import com.vmware.vdi.vlsi.binding.vdi.resources.Desktop.DesktopSummaryView;
 import com.vmware.horizontoolset.viewapi.SessionPool;
 import com.vmware.horizontoolset.viewapi.SnapShotViewPool;
 import com.vmware.horizontoolset.viewapi.ViewType;
+import com.vmware.vdi.vlsi.binding.vdi.resources.Application.ApplicationInfo;
+import com.vmware.vdi.vlsi.binding.vdi.resources.Desktop.DesktopInfo;
+import com.vmware.vdi.vlsi.binding.vdi.resources.Desktop.DesktopSummaryView;
 
 public class PoolFactory {
 

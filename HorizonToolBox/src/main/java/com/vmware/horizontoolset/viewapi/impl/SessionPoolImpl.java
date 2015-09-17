@@ -1,8 +1,8 @@
 package com.vmware.horizontoolset.viewapi.impl;
 
-import com.vmware.vdi.vlsi.binding.vdi.resources.Desktop.DesktopSummaryView;
 import com.vmware.horizontoolset.viewapi.SessionPool;
 import com.vmware.horizontoolset.viewapi.ViewType;
+import com.vmware.vdi.vlsi.binding.vdi.resources.Desktop.DesktopSummaryView;
 
 public class SessionPoolImpl implements SessionPool{
 
