@@ -44,12 +44,12 @@
   </bean>   
   <bean id="loginController" class="com.vmware.horizontoolset.LoginController">
    <property name="server"> 
-            <value>localhost</value>
+            <value>10.112.118.27</value>
             </property> 
             
             <!-- please make sure this is false when publishing -->
             <property name="remoteDebug">
-            	<value>false</value>
+            	<value>true</value>
             </property>
             <property name="matchedVersions">
             	<array>

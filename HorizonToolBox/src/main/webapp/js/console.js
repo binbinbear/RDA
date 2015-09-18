@@ -21,7 +21,7 @@ if (!ToolBox.Console) {
 			if (!key){
 				key="";
 			}
-			 $http.get('./console/list?pool='+pool+"&power="+power+"&key="+key).success(function(data){
+			 $http.get('./console/list?pool='+pool+"&key="+key).success(function(data){
 						$(".loadingrow").attr("style","display:none");
 						if(data){	
 							for(var i = 0; i < data.length; i++){

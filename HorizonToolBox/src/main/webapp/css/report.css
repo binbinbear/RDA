@@ -251,6 +251,9 @@ span.not-in-use {
 	background: #94a0b4
 }
 
+table.noborder,table.noborder td {
+	border: 0 none
+}
 table,table td {
 	border: 1px solid #cdcdcd
 }

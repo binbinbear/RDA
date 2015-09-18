@@ -22,7 +22,7 @@
 		</h3>
 		<div ng-controller="consoleCtrl">
 			<div class="userSearchCriteria">
-				<table border="0" style="width: 850px;">
+				<table  style="width: 850px;" class="noborder">
 					<tbody>
 						<tr>
 							<td>Filter by VM</td>
@@ -34,14 +34,7 @@
 								style="color: rgb(175, 175, 175);" />
 							</td>
 							<td nowrap="nowrap">
-							<select name="filterPowerState" ng-model="power"
-								id="filterPowerState" style="display: inline-block;">
-									<option selected="selected" value="">Agent Status</option>
-									<option value="off">Available</option>
-									<option value="on">Error</option>
-									<option value="susp">In Use</option>
-
-							</select> 
+							
 							<select name="filterPool" id="filterPool" ng-model="pool"
 								style="display: inline-block;">
 									<option selected="selected" value="">Select Pool or Type</option>
@@ -49,7 +42,8 @@
 										<span th:text="${pool}"></span>
 									</option>
 
-							</select></td>
+							</select>
+							</td>
 						</tr>
 					</tbody>
 				</table>
@@ -124,14 +118,18 @@
 							<th class="sorted order1">Name</th>
 							<th>Agent State</th>
 							<th>Pool</th>
+							<th>DNS Name</th>
+							
 						</tr>
 					</thead>
 					<tbody id="vmsTbody">
 						<tr id="loading" class="loadingrow">
+						    <td></td>
 							<td class="colUserIcon"></td>
 							<td class="vmNameColumn"></td>
 							<td class="powerStateColumn"></td>
-							<td><span></span></td>
+							<td class="dnsnameColumn"><span></span></td>
+							
 						</tr>
 						<tr class="odd" ng-repeat="vm in vms">
 
@@ -150,6 +148,13 @@
 									style="margin-right: 15px;">{{vm.state}}</div>
 							</td>
 							<td><span>{{vm.pool}}</span></td>
+							
+							<td>
+								<div
+									class="iconLoading " 
+									style="margin-right: 15px;">{{vm.dnsname}}</div>
+							</td>
+							
 						</tr>
 
 
