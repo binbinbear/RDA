@@ -20,7 +20,7 @@ IF "%2" == "" (
 	exit
 )
 
-set WORK_DIR="C:\BatchDCT\%1"
+set WORK_DIR="%SystemDrive%\BatchDCT\%1"
 
 ECHO WORK_DIR=%WORK_DIR%
 cd %WORK_DIR%
@@ -32,7 +32,7 @@ IF "%2"=="full" GOTO log_mode_full
 ::------------------------------------------------------------------------
 :log_mode_quick
 
-SET log_dir=C:\ProgramData\VMware\VDM\logs
+SET log_dir=%SystemDrive%\ProgramData\VMware\VDM\logs
 SET sub_dir=.\quick\.
 md %sub_dir%
 
@@ -68,7 +68,7 @@ FOR /F %%i IN ('DIR /A-D /B /O:-D "%log_dir%\Blast Secure Gateway\*"') DO (
 	GOTO st_7
 )
 :st_7
-SET log_dir=C:\Program Files\VMware\VMware View\Server\broker\logs
+SET log_dir=%SystemDrive%\Program Files\VMware\VMware View\Server\broker\logs
 FOR /F %%i IN ('DIR /A-D /B /O:-D "%log_dir%\catalina.*.log"') DO (
 	copy /Y "%log_dir%\%%i" %sub_dir%
 	GOTO st_10
@@ -98,9 +98,9 @@ GOTO log_mode_common
 ::------------------------------------------------------------------------
 
 set DCT_OUT=%USERPROFILE%\Desktop\vdm-sdct
-set DCT_BIN="C:\Program Files\VMware\VMware View\Server\DCT\vdm-support.vbs"
+set DCT_BIN="%SystemDrive%\Program Files\VMware\VMware View\Server\DCT\vdm-support.vbs"
 IF EXIST %DCT_BIN% GOTO START_DCT
-set DCT_BIN="C:\Program Files\VMware\VMware View\Agent\DCT\vdm-support.vbs"
+set DCT_BIN="%SystemDrive%\Program Files\VMware\VMware View\Agent\DCT\vdm-support.vbs"
 IF EXIST %DCT_BIN% GOTO START_DCT
 
 ECHO No DCT installation found (vdm-support.vbs). Skip collecting DCT log.
@@ -109,7 +109,7 @@ GOTO END_DCT
 :START_DCT
 IF EXIST %DCT_OUT% (rd /S /Q %DCT_OUT%)
 
-(ECHO N& ECHO N& ECHO N) | C:\Windows\System32\cscript.exe //nologo %DCT_BIN%
+(ECHO N& ECHO N& ECHO N) | %SystemDrive%\Windows\System32\cscript.exe //nologo %DCT_BIN%
 MOVE /Y %DCT_OUT%\*.zip %WORK_DIR%\.
 
 IF EXIST %DCT_OUT% rd /S /Q %DCT_OUT%
@@ -123,9 +123,9 @@ IF EXIST %DCT_OUT% rd /S /Q %DCT_OUT%
 ::------------------------------------------------------------------------
 
 set SVI_OUT=%USERPROFILE%\Desktop
-set SVI_BIN="C:\Program Files (x86)\VMware\VMware View Composer\svi-support.wsf"
+set SVI_BIN="%SystemDrive%\Program Files (x86)\VMware\VMware View Composer\svi-support.wsf"
 IF EXIST %SVI_BIN% GOTO START_SVI
-set SVI_BIN="C:\Program Files\VMware\VMware View Composer\svi-support.wsf"
+set SVI_BIN="%SystemDrive%\Program Files\VMware\VMware View Composer\svi-support.wsf"
 IF EXIST %SVI_BIN% GOTO START_SVI
 
 echo No SVI installation found (svi-support.wsf). Skip collecting SVI log.
@@ -143,11 +143,11 @@ REN %WORK_DIR%\viewcomposer-svi-support-*.zip %computername%-viewcomposer-svi-su
 ::------------------------------------------------------------------------
 
 ::xp
-set TARGET_FILE="C:\All Users\Application Data\VMware\VDM\logs\VMWVvp.txt"
+set TARGET_FILE="%SystemDrive%\All Users\Application Data\VMware\VDM\logs\VMWVvp.txt"
 IF EXIST %TARGET_FILE% COPY /Y %TARGET_FILE% %WORK_DIR%\%computername%-VMWVvp_xp.txt
 
 ::Windows 7
-set TARGET_FILE="C:\Program Data\VMware\VDM\logs\VMWVvp.txt"
+set TARGET_FILE="%SystemDrive%\Program Data\VMware\VDM\logs\VMWVvp.txt"
 IF EXIST %TARGET_FILE% copy /Y %TARGET_FILE% %WORK_DIR%\%computername%-VMWVvp.txt
 
 echo Complete.

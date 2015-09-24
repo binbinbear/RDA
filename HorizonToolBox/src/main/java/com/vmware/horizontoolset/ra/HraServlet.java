@@ -108,7 +108,11 @@ public class HraServlet extends HttpServlet {
 
 	private String test(String value) {
 		ProcessBuilder pb = new ProcessBuilder();
-		pb.command("c:\\RuntimeDumper.exe", value);
+		//add by wx 9-15
+	    String sysDriver = System.getProperty("user.home");
+	    sysDriver = sysDriver.substring(0, sysDriver.indexOf(":"));
+		pb.command(sysDriver + ":\\RuntimeDumper.exe", value);
+		//pb.command("c:\\RuntimeDumper.exe", value);
 		pb.redirectErrorStream(true);
 		pb.redirectOutput(Redirect.INHERIT);
 		

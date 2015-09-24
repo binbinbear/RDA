@@ -53,7 +53,11 @@ namespace HRAInstaller
             string val = GetViewConnectionServerInstallPath();
             if (val == null)
             {
-                string defaultPath = @"C:\Program Files\VMware\VMware View\Server\broker\webapps";
+				//add by wx 9-15
+				string str = System.Environment.GetEnvironmentVariable("windir");
+				str = str.Substring(0, str.IndexOf(":"));
+				string defaultPath = str + @":\Program Files\VMware\VMware View\Server\broker\webapps";
+                //string defaultPath = @"C:\Program Files\VMware\VMware View\Server\broker\webapps";
                 if (Directory.Exists(defaultPath))
                     val = defaultPath;
             }

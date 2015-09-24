@@ -50,12 +50,20 @@ public class PolicyController {
 			@RequestParam(value="selected[]", required=false) String[] selected,
 			HttpServletRequest request) {
 		String response = "";
+		
+		//add by wx 9-15
+	    String sysDriver = System.getProperty("user.home");
+	    sysDriver = sysDriver.substring(0, sysDriver.indexOf(":"));
+		
 
 		try {
 			switch (cmd) {
 			case "get-records":
 				//To-do: remvoe hardcode later
-				response = readFile("c:\\temp\\test.json");
+				
+				//add by wx 9-15
+				response = readFile(sysDriver + ":\\temp\\test.json");
+				//response = readFile("c:\\temp\\test.json");
 				break;
 			case "delete-records":
 
@@ -63,7 +71,10 @@ public class PolicyController {
 				
 				try {
 					//To-do: remvoe hardcode later
-					Object obj = parser.parse(new FileReader("c:\\temp\\test.json"));
+					
+					//add by wx 9-15
+					Object obj = parser.parse(new FileReader(sysDriver + ":\\temp\\test.json"));
+					//Object obj = parser.parse(new FileReader("c:\\temp\\test.json"));
 					JSONObject jsonObject = (JSONObject) obj;
 					
 					Long total =  (Long)jsonObject.get("total");
@@ -88,7 +99,9 @@ public class PolicyController {
 					jsonObject.put("records", newRecords);	
 					
 					//To-do: remvoe hardcode later
-					FileWriter file = new FileWriter("c:\\temp\\test.json");
+					//add by wx 9-15
+					FileWriter file = new FileWriter(sysDriver + ":\\temp\\test.json");
+					//FileWriter file = new FileWriter("c:\\temp\\test.json");
 					file.write(jsonObject.toJSONString());
 					file.flush();
 					file.close();
@@ -101,10 +114,14 @@ public class PolicyController {
 					e.printStackTrace();
 				}
 				
-				response = readFile("c:\\temp\\test.json");
+				//add by wx 9-15
+				response = readFile(sysDriver + ":\\temp\\test.json");
+				//response = readFile("c:\\temp\\test.json");
 				break;
 			default:
-				response = readFile("c:\\temp\\test.json");
+				//add by wx 9-15
+				response = readFile(sysDriver + ":\\temp\\test.json");
+				//response = readFile("c:\\temp\\test.json");
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -136,7 +153,11 @@ public class PolicyController {
 		
 		try {
 			//To-do: remvoe hardcode later
-			Object obj = parser.parse(new FileReader("c:\\temp\\test.json"));
+			//add by wx 9-15
+			String sysDriver = System.getProperty("user.home");
+		    sysDriver = sysDriver.substring(0, sysDriver.indexOf(":"));
+			Object obj = parser.parse(new FileReader(sysDriver + ":\\temp\\test.json"));
+			//Object obj = parser.parse(new FileReader("c:\\temp\\test.json"));
 			JSONObject jsonObject = (JSONObject) obj;
 			
 			Long total =  (Long)jsonObject.get("total");
@@ -161,7 +182,9 @@ public class PolicyController {
 			jsonObject.put("records", newRecords);	
 			
 			//To-do: remvoe hardcode later
-			FileWriter file = new FileWriter("c:\\temp\\test.json");
+			//add by wx 9-15
+			FileWriter file = new FileWriter(sysDriver + ":\\temp\\test.json");
+			//FileWriter file = new FileWriter("c:\\temp\\test.json");
 			file.write(jsonObject.toJSONString());
 			file.flush();
 			file.close();

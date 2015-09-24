@@ -18,7 +18,11 @@ public class Application {
     	log.info("Horizon Tool Set Application is being loaded!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
     }
     public void setViewServerPath(String viewServerPath){
-    	LDAP.setViewServerPath(viewServerPath);
+    	//add by wx 9-15
+    	String sysDriver = System.getProperty("user.home");
+		sysDriver = sysDriver.substring(0, sysDriver.indexOf(":"));
+		LDAP.setViewServerPath(sysDriver + viewServerPath.substring(viewServerPath.indexOf(":")-1));
+    	//LDAP.setViewServerPath(viewServerPath);
     }
     
 	
@@ -33,4 +37,6 @@ public class Application {
 		log.info("connectionTimeout is set to be:"+connTimeout);
 		ReportUtil.setConnectionTimeout(connTimeout);
 	}
+	
+	
 }

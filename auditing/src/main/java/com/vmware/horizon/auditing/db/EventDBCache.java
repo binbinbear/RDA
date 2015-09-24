@@ -51,19 +51,33 @@ public class EventDBCache {
 				cachedDays = recentdays;
 			}else{
 				cachedDays = cachedDays + days-1;
-				if (cachedDays>30){
-					cachedDays = 30;
+//				if (cachedDays>30){
+//					cachedDays = 30;
+//				}
+				//add by wx 9-23
+				if (cachedDays>180){
+					cachedDays = 180;
 				}
 			}
 		}else{
 			cachedDays = recentdays;
 		}
 		
-		//remove event older than 1 month
+//		//remove event older than 1 month
+//		Iterator<Event> iterator = cachedEvents.iterator();
+//		while (iterator.hasNext()) {
+//			Event event = iterator.next();
+//			if (currentTime -event.getTime().getTime()  > millisecondsMonth) {
+//				iterator.remove();
+//			}
+//		}
+		
+		//add by wx 9-23
+		//remove event older than 6 month
 		Iterator<Event> iterator = cachedEvents.iterator();
 		while (iterator.hasNext()) {
 			Event event = iterator.next();
-			if (currentTime -event.getTime().getTime()  > millisecondsMonth) {
+			if (currentTime -event.getTime().getTime()  > 6*millisecondsMonth) {
 				iterator.remove();
 			}
 		}

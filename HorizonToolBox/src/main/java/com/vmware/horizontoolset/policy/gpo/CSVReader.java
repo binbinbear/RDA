@@ -61,7 +61,8 @@ public class CSVReader {
    public List<Map<String, String>> readAllGPO() throws IOException {
 	   List<Map<String, String>> allMapElements = new ArrayList<Map<String, String>>();   
 	   String[] key = readNext();
-	   System.out.println("key----------------------"+key.length);
+	   //note by wx
+	   //System.out.println("key----------------------"+key.length);
 	   while (hasNext) {
 		   String[] value = readNext();
 		   if(value==null)
@@ -163,7 +164,13 @@ public class CSVReader {
 	}
 
    public static void main(String[] args) throws IOException {
-      File file = new File("c:\\AIKiw.csv");
+		
+	  //add by wx 9-15
+	  String sysDriver = System.getProperty("user.home");
+	  sysDriver = sysDriver.substring(0, sysDriver.indexOf(":"));
+	  File file = new File(sysDriver + ":\\AIKiw.csv");
+	  
+      //File file = new File("c:\\AIKiw.csv");
       BufferedReader bufRdr;
       try {
          bufRdr = new BufferedReader(new FileReader(file));

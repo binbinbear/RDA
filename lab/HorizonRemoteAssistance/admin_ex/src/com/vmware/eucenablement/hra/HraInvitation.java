@@ -83,7 +83,11 @@ public class HraInvitation {
 	}
 	
 	private static String getHraLauncherPath() {
-		String hraInstallDir = "C:\\Program Files\\Horizon Remote Assistance";
+		//add by wx 9-15
+		String sysDriver = System.getProperty("user.home");
+		sysDriver = sysDriver.substring(0, sysDriver.indexOf(":"));
+		String hraInstallDir = sysDriver + ":\\Program Files\\Horizon Remote Assistance";
+		//String hraInstallDir = "C:\\Program Files\\Horizon Remote Assistance";
 		return hraInstallDir + "\\Horizon Remote Assistance Launcher.exe";
 	}
 	

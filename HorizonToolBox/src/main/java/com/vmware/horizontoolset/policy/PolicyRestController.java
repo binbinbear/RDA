@@ -137,7 +137,11 @@ public class PolicyRestController {
 		ret.Records=profiles.toArray();
 		ret.TotalRecordCount=profiles.size();
 		log.debug("[DEBUG ] ret: " + ret.toString());
-		log.debug("[ret] " + ret.Records[0].toString());
+		//add by wx
+		if(ret.Records.length > 0) {
+			log.debug("[ret] " + ret.Records[0].toString());
+		}
+		//log.debug("[ret] " + ret.Records[0].toString());
 		return ret;
 	}
 	
@@ -319,6 +323,9 @@ public class PolicyRestController {
 	
 	@RequestMapping("/pool/viewpools/getviewpools")	
     public synchronized JTableData getViewPools(HttpSession session) {
+		//add by wx 9-21
+		//session.setMaxInactiveInterval(30);
+		
 		updateCache(session);
 		if(vpCache!=null){
 			log.debug("[DEBUG ] [getViewPools()] "+vpCache.getCached_ou().toString());

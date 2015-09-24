@@ -21,6 +21,7 @@ window.l10Ntable={
     "Last 2 day": "最近两天",
     "Last 7 days": "最近七天",
     "Last 1 month": "最近一个月",
+	"Last 6 months": "最近六个月",
     "Select desktop pool or RDS farm": "选择桌面池或者RDS场",
     "ALL": "全部",
     "Loading": "下载中",

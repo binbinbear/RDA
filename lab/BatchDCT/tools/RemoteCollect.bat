@@ -30,7 +30,7 @@ ECHO This may take several minutes or even longer. Please wait...
 ECHO ------------------------------------------------------------
 ECHO.
 
-.\tools\psexec.exe \\%1 -h -accepteula -w "C:\BatchDCT\%3" cmd.exe /C "C:\BatchDCT\%3\CollectLog.bat %3 %5 > RemoteLog_%1.txt"
+.\tools\psexec.exe \\%1 -h -accepteula -w "%SystemDrive%\BatchDCT\%3" cmd.exe /C "%SystemDrive%\BatchDCT\%3\CollectLog.bat %3 %5 > RemoteLog_%1.txt"
 
 copy %REMOTE_WORK_DIR%\*.zip %2\%3.
 copy %REMOTE_WORK_DIR%\*.txt %2\%3.

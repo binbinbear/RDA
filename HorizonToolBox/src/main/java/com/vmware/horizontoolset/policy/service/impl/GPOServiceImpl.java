@@ -100,7 +100,13 @@ public class GPOServiceImpl implements GPOService{
 	private List<Map<String, String>> backupGPO(String gpoName){
 		Map<String,String>  backupGpoParam = new HashMap<String, String>();
 		backupGpoParam.put("Name", "'" + gpoName + "'");
-		backupGpoParam.put("Path", "c:\\temp\\");
+		
+		//add by wx 9-15
+	    String sysDriver = System.getProperty("user.home");
+	    sysDriver = sysDriver.substring(0, sysDriver.indexOf(":"));
+		backupGpoParam.put("Path", sysDriver + ":\\temp\\");
+		
+		//backupGpoParam.put("Path", "c:\\temp\\");
 		return grouppolicycmdlets.backupGPO(backupGpoParam);
 	}
 	
@@ -178,7 +184,12 @@ public class GPOServiceImpl implements GPOService{
 		Map<String, String> importGpoParam = new HashMap<String, String>();
 		importGpoParam.put("BackupGpoName", "'" + gpoName + "'");
 		importGpoParam.put("TargetName", "'" + gpoName + "'");
-		importGpoParam.put("Path", "c:\\temp\\");
+		//add by wx 9-15
+	    String sysDriver = System.getProperty("user.home");
+	    sysDriver = sysDriver.substring(0, sysDriver.indexOf(":"));
+		importGpoParam.put("Path", sysDriver + ":\\temp\\");
+		
+		//importGpoParam.put("Path", "c:\\temp\\");
 		return grouppolicycmdlets.importGPO(importGpoParam);
 	}
 	

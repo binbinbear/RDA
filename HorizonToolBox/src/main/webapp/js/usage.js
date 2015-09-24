@@ -203,6 +203,10 @@ if (!ToolBox.Usage || !ToolBox.Usage.init){
 			      }else if (type=="day"){
 			    	  days="2";
 			      }
+				  //add by wx 9-23
+				  else if (type=="halfyear"){
+					  days="180"
+				  }
 			     if($(".loadingdiv").length == 0){
 			    	 $(".messagediv").remove();
 			    	 $('#accumulatedUsing').append("<div class=\"loadingdiv\">Loading</div>"); 

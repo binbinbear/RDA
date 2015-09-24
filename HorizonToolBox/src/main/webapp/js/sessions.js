@@ -80,7 +80,13 @@ if (!ToolBox.Session || !ToolBox.Session.init){
 			      }else if (type=="month"){
 			    	  days = "30";
 			    	  period="7200";
-			      }
+			      }else if (type=="halfyear"){
+					  //add by wx 9-23
+					  // days = "180";
+					  // period = "21600";
+					  days = "20";
+					  period = "7200";
+				  }
 			      
 			      var type = $("#desktoppool").val();
 					var poolname = "all";

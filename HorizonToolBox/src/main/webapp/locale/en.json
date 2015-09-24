@@ -28,6 +28,7 @@ window.l10Ntable={
     "Last 2 day":"Last 2 day",
     "Last 7 days":"Last 7 days",
     "Last 1 month":"Last 1 month",
+	"Last 6 months":"Last 6 months",
     "Select desktop pool or RDS farm":"Select desktop pool or RDS farm",
     "ALL":"ALL",
     "Loading":"Loading",

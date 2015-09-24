@@ -62,7 +62,12 @@ namespace CreateRAString
                     UserAppLauncher.CreateProcessInConsoleSession(commandLine, false);
                     string ticket = pipe.Read(15000);
                     Console.WriteLine("Pipe Output: " + ticket);
-                    File.WriteAllText("c:\\2.msrcincident", ticket);
+					
+					//add by wx 9-15
+					string str = System.Environment.GetEnvironmentVariable("windir");
+					str = str.Substring(0, str.IndexOf(":"));
+                    File.WriteAllText(str + ":\\2.msrcincident", ticket);
+					//File.WriteAllText("c:\\2.msrcincident", ticket);
                 }
                 else
                 {
