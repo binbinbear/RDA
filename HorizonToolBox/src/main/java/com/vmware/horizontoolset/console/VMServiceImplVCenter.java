@@ -1,5 +1,6 @@
 package com.vmware.horizontoolset.console;
 
+import java.net.URLEncoder;
 import java.rmi.RemoteException;
 
 import org.apache.log4j.Logger;
@@ -26,6 +27,8 @@ public class VMServiceImplVCenter implements VMService {
 	private VDIContext vdictx;
 	
 	private String vcName;
+	
+	private static final String encoding = "utf-8";
 	
 	public VMServiceImplVCenter(VDIContext ctx,
             String vcName, String path) {
@@ -98,7 +101,7 @@ public class VMServiceImplVCenter implements VMService {
 					+ "&port=" + ticket.port
 					+ "&mksTicket=" + ticket.ticket
 					+ "&thumbprint=" + ticket.sslThumbprint
-					+ "&cfgFile=" + ticket.cfgFile;
+					+ "&cfgFile=" + URLEncoder.encode(ticket.cfgFile,encoding);
 						
 			
 			ConsoleAccessInfoImpl ret = new ConsoleAccessInfoImpl("VCENTER");
