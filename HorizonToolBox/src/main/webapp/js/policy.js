@@ -1071,7 +1071,7 @@ $(function() {
                     	}
                     });   
                     return $img;
-                }
+                } 
             },
 			name: {
 				title: 'Pool',

@@ -15,9 +15,26 @@ html, body {
    background: url('../img/buttonbar-bg.png') repeat-x top left;
 #   text-align: center;
    border-top: 1px solid #565656;
-   border-bottom: 1px solid #000000;
+   /*border-bottom: 1px solid #000000;*/
+   border-bottom: 0px;
    overflow: hidden;
-   padding: 6px;
+   padding: 0px;
+}
+
+#touchy {
+	position:absolute; 
+	margin: 0 auto;
+	float: left;
+	width:22px;
+	height:12px; 
+	display: none;
+	background: #4A90C1 url("../img/touchie.png") no-repeat center center; 
+	border-bottom-right-radius: 6px;
+	border-bottom-left-radius: 6px;
+	border: 1px solid #3377c1;
+	box-shadow: 0 0 1px #aaa;
+	cursor: pointer;
+	z-index: 2147483647;
 }
 
 #params {

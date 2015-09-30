@@ -20,9 +20,8 @@ public class EventsAuditingImpl implements EventsAuditing{
 		this.dbutil = new EventDBUtil(vdiContext);
 		
 	}
-	//private static final int max_days=32;
 	//add by wx 9-23
-	private static final int max_days=181;
+	private static final int max_days=182;
 	private Logger log = Logger.getLogger(EventsAuditingImpl.class);
 	public List<Connection> getAllConnections(int days){
 		return this.getConnections("",days, "");

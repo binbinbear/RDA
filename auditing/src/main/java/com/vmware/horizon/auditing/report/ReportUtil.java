@@ -118,7 +118,7 @@ public class ReportUtil {
 				usage = new  AccumulatedUsage(username, time);
 				map.put(username, usage);
 			}else{
-				usage.addTime(time);
+				usage.addTime(time); 
 			}
 		}
 		

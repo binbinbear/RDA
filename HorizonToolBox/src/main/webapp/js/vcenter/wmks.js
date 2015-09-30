@@ -1165,6 +1165,8 @@ WMKS.VNCDecoder.prototype._releaseImage = function (image) {
    image.src = "data:image/jpeg;base64,";
 
    if (this._imageCache.length < 32) {
+	   // add by wx
+//	 if (this._imageCache.length < 182) {
       this._imageCache.push(image);
    } else {
       delete image;

@@ -114,11 +114,14 @@
 	margin-top: 6px;
 }
 .nav-pills>li>a {
-	color: #000;
+	color: #999;
+	background-image: url("./img/gradient.gif");
+	background-position: right;
+	background-repeat: repeat-y;
 }
 .nav-pills>li.active>a, .nav-pills>li.active>a:hover, .nav-pills>li.active>a:focus {
-	color: #fff;
-	background-color: #428bca;
+	color: #000;
+	background: #f8f8f8 none repeat scroll 0% 0%;
 }
 .control-label .required {
 	color: #e02222;
@@ -186,7 +189,7 @@ div.jtable-main-container div.jtable-title div.jtable-toolbar span.jtable-toolba
    margin-left: 1px;
 }
 
-#main-nav.nav-tabs.nav-stacked > li > a {
+#main-nav.nav-tabs {
    padding: 10px 8px;
    font-size: 12px;
    font-weight: 600;
@@ -203,6 +206,25 @@ div.jtable-main-container div.jtable-title div.jtable-toolbar span.jtable-toolba
    border: 1px solid #D5D5D5;
    border-radius: 4px;
 }
+
+#main-nav-stacked > li > a {
+   padding: 0px 8px;
+   font-size: 12px;
+   font-weight: 600;
+   color: #4A515B;
+   background: #E9E9E9;
+   background: -moz-linear-gradient(top, #FAFAFA 0%, #E9E9E9 100%);
+   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#FAFAFA), color-stop(100%,#E9E9E9));
+   background: -webkit-linear-gradient(top, #FAFAFA 0%,#E9E9E9 100%);
+   background: -o-linear-gradient(top, #FAFAFA 0%,#E9E9E9 100%);
+   background: -ms-linear-gradient(top, #FAFAFA 0%,#E9E9E9 100%);
+   background: linear-gradient(top, #FAFAFA 0%,#E9E9E9 100%);
+   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FAFAFA', endColorstr='#E9E9E9');
+   -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#FAFAFA', endColorstr='#E9E9E9')";
+   border: 0px solid #D5D5D5;
+   border-radius: 0px;
+}
+
 
 #main-nav.nav-tabs.nav-stacked > li > a > span {
     color: #4A515B; }
@@ -226,6 +248,16 @@ div.jtable-main-container div.jtable-title div.jtable-toolbar span.jtable-toolba
 
 #main-nav.nav-tabs.nav-stacked > li {
     margin-bottom: 4px;
+}
+
+.nav-stacked li {
+	margin-top: 0px !important;
+}
+
+.nav-stacked li a{
+	border-top: 1px solid #CACACA;
+	border-bottom: 1px solid #CACACA;
+	border-radius: 0px;
 }
 
 

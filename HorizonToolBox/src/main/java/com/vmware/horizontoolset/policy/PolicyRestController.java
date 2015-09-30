@@ -323,8 +323,7 @@ public class PolicyRestController {
 	
 	@RequestMapping("/pool/viewpools/getviewpools")	
     public synchronized JTableData getViewPools(HttpSession session) {
-		//add by wx 9-21
-		//session.setMaxInactiveInterval(30);
+		
 		
 		updateCache(session);
 		if(vpCache!=null){

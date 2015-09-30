@@ -246,5 +246,105 @@ $(document)
 			
 			setInterval(heartbeat,30000);
 			
+			
+//////////////////////////////////////////////////////////////////////
+			//	handle fullscreen & touchie (hide banner)
+			//////////////////////////////////////////////////////////////////////
+			
+			var Fullscreen = {
+				isFullscreen: function() {
+					return document.fullscreenElement
+							|| document.mozFullScreen
+							|| document.mozFullScreenElement
+							|| document.webkitFullscreenElement
+							|| document.MSFullscreenElement
+				},
+				enter: function(target) {
+					if (!target)
+						target = document.documentElement;
+					if (target.requestFullscreen) {
+						target.requestFullscreen();
+					} else if (target.webkitRequestFullscreen) {
+						target.webkitRequestFullscreen();
+					} else if (target.mozRequestFullScreen) {
+						target.mozRequestFullScreen();
+					} else if (target.msRequestFullscreen) {
+						target.msRequestFullscreen();
+					}
+				},
+				exit: function() {
+					if (document.exitFullscreen)
+						document.exitFullscreen();
+					else if (document.msExitFullscreen)
+						document.msExitFullscreen();
+					else if (document.mozCancelFullScreen)
+						document.mozCancelFullScreen();
+					else if (document.webkitCancelFullScreen)
+						document.webkitCancelFullScreen();
+				},
+				isSupported: function() {
+					return document.fullscreenEnabled || 
+						document.webkitFullscreenEnabled || 
+						document.mozFullScreenEnabled ||
+						document.msFullscreenEnabled;
+				}
+			};
+			/*
+			function onFullscreen() {
+			}
+
+			document.addEventListener("fullscreenchange", onFullscreen);
+			document.addEventListener("fullscreenchange", onFullscreen);
+			document.addEventListener("webkitfullscreenchange", onFullscreen);
+			document.addEventListener("mozfullscreenchange", onFullscreen);
+			document.addEventListener("MSFullscreenChange", onFullscreen);
+			*/
+			
+			$('#fullscreen').click(function() {
+				
+				if (!Fullscreen.isSupported()) {
+					alert("Fullscreen is not supported by the current browser.");
+					return;
+				}
+				
+				//var target = document.getElementById("console");
+					
+				if (Fullscreen.isFullscreen()) {
+					Fullscreen.exit();
+					toggleBar(true);
+				} else {
+					// go full-screen
+					Fullscreen.enter();
+					toggleBar(false);
+				}
+			});
+			
+			function toggleBar(show) {
+				var bar = $('#bar');
+				var consoleDiv = $('#console');
+				
+				var shouldShow = bar.css('display') == 'none';
+				if (!(show === true || show === false))
+					show = shouldShow;
+				else if (show != shouldShow)
+					return;
+				
+				if (show) {
+					bar.css('display', 'block');
+					consoleDiv.height(consoleDiv.height() - bar.height());
+				} else {
+					bar.css('display', 'none');
+					consoleDiv.height(consoleDiv.height() + bar.height());
+				}
+			}
+			$('#touchy').click(toggleBar);
+			function repositionTouchy() {
+				var touchy = $('#touchy');
+				touchy.css('left', ($('#bar').width() - touchy.width()) / 2);
+			}
+			$(window).resize(repositionTouchy);
+			repositionTouchy();
+			$('#touchy').css('display', 'inline');
+			
 
 		});

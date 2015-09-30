@@ -82,10 +82,8 @@ if (!ToolBox.Session || !ToolBox.Session.init){
 			    	  period="7200";
 			      }else if (type=="halfyear"){
 					  //add by wx 9-23
-					  // days = "180";
-					  // period = "21600";
-					  days = "20";
-					  period = "7200";
+					  days = "180";
+					  period = "21600";
 				  }
 			      
 			      var type = $("#desktoppool").val();
