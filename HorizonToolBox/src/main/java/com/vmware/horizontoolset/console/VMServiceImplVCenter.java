@@ -38,37 +38,6 @@ public class VMServiceImplVCenter implements VMService {
 	}
 	
 
-	private boolean isWssSupported(AboutInfo aboutInfo) {
-		
-		try {
-			long build = Long.parseLong(aboutInfo.getBuild());
-			
-			
-			//return build >=  2001466;	//v5.5 update 2
-			//return build >= 2183111;	//v5.5 update 2b
-			
-			//Wss is supported from v5.5 update 2.
-			//So any build prior to this version will not have WSS supported.
-			if (build < 2001466)
-				return false;
-			
-			//also, patch build for earlier versions could have a higher build
-			//number. So check version, too.
-					//Also check version. 
-			String versionString = aboutInfo.version;
-			String[] tmp = versionString.split("\\.");
-			
-			int major = Integer.valueOf(tmp[0]);
-			int minor = Integer.valueOf(tmp[1]);
-	
-			return major == 5 && minor >= 5 || major > 5;
-		} catch (NumberFormatException e) {
-			log.warn("Error parsing version info. New version string? version=" + aboutInfo.version 
-					+ ", build=" + aboutInfo.build
-					+ ", osType=" + aboutInfo.osType, e);
-			return true;	//fail safe. Try using WSS by default.
-		}
-	}
 
 	private int getMajorVersion(ServiceContent serviceContent) {
 		AboutInfo about = serviceContent.getAbout();
@@ -96,7 +65,17 @@ public class VMServiceImplVCenter implements VMService {
 			
 			VirtualMachineTicket ticket = vm.acquireTicket(VirtualMachineTicketType.mks.toString());
 				
-			String uri = "/console/authd?vmId=" + vmMor.getVal() 
+			VCVersion vcversion =new VCVersion( vc.getServiceInstance().getAboutInfo());
+			log.debug("Connected to vCenter: version=" + vcversion.versionString 
+					+ ", build=" + vcversion.build
+					+ ", osType=" + vcversion.osType);
+			String uri;
+			if (vcversion.isNewerThanVC600()){
+				uri = "/vsphere-client/webconsole/authd";
+			}else{
+				uri = "/console/authd";
+			}
+			uri = uri + "?vmId=" + vmMor.getVal() 
 					+ "&host=" + ticket.host
 					+ "&port=" + ticket.port
 					+ "&mksTicket=" + ticket.ticket
@@ -108,16 +87,14 @@ public class VMServiceImplVCenter implements VMService {
 			
 			ret.setUri(uri);
 			
-			AboutInfo aboutInfo = vc.getServiceInstance().getAboutInfo();
-			log.debug("Connected to vCenter: version=" + aboutInfo.version 
-					+ ", build=" + aboutInfo.build
-					+ ", osType=" + aboutInfo.osType);
 			
-			boolean isWssSupported = isWssSupported(aboutInfo);
-			
-			if (isWssSupported) {
+			if (vcversion.isWssSupported()) {
 				ret.setProtocol("wss");
-				ret.setPort(7343);
+				if (vcversion.isNewerThanVC600()){
+					ret.setPort(9443);
+				}else{
+					ret.setPort(7343);
+				}				
 			} else {
 				ret.setProtocol("ws");
 				ret.setPort(7331);
@@ -127,6 +104,7 @@ public class VMServiceImplVCenter implements VMService {
 
 		} catch(Exception ex){
 			ex.printStackTrace();
+			log.error("Exception when calling vcenter",ex);
 		}finally {
 			if (vc != null) {
 				vc.close();
@@ -163,6 +141,56 @@ public class VMServiceImplVCenter implements VMService {
 
 
 
+}
+
+class VCVersion{
+	private static Logger log = Logger.getLogger(VCVersion.class);
+	
+	int major;
+	int minor;
+	long build;
+	String versionString;
+	String osType;
+	VCVersion(AboutInfo aboutInfo){
+		try {
+			versionString = aboutInfo.version;
+			osType = aboutInfo.osType;
+			build = Long.parseLong(aboutInfo.getBuild());
+			
+			String[] tmp = versionString.split("\\.");
+			
+			major = Integer.valueOf(tmp[0]);
+			minor = Integer.valueOf(tmp[1]);
+			
+		} catch (NumberFormatException e) {
+			log.error("Error parsing version info. New version string? version=" + aboutInfo.version 
+					+ ", build=" + aboutInfo.build
+					+ ", osType=" + aboutInfo.osType, e);
+			major = 0;
+			minor = 0;
+			build = 0;
+		
+		}
+	}
+	
+	boolean isWssSupported() {
+		//return build >=  2001466;	//v5.5 update 2
+		//return build >= 2183111;	//v5.5 update 2b
+		
+		//Wss is supported from v5.5 update 2.
+		//So any build prior to this version will not have WSS supported.
+		if (build < 2001466)
+			return false;
+		
+		//also, patch build for earlier versions could have a higher build
+		//number. So check version, too.
+				//Also check version. 		
+		return major == 5 && minor >= 5 || major > 5;
+	}
+	
+	boolean isNewerThanVC600() {
+		return major >= 6;
+	}
 }
 
 
