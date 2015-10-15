@@ -874,15 +874,21 @@ THE SOFTWARE.
                 async: false,
                 success: function (data) {
                     if (data.Result != 'OK') {
-                        self._showError(data.Message);
+                    	//add by wx 10-12
+    					window.alert("Your session is timeout!");
+    					window.location.href="../Login";
+                        //self._showError(data.Message);
                         return;
                     }
 
                     options = data.Options;
                 },
                 error: function () {
-                    var errMessage = self._formatString(self.options.messages.cannotLoadOptionsFor, fieldName);
-                    self._showError(errMessage);
+                	//add by wx 10-12
+					window.alert("Your session is timeout!");
+					window.location.href="../Login";
+                    //var errMessage = self._formatString(self.options.messages.cannotLoadOptionsFor, fieldName);
+                    //self._showError(errMessage);
                 }
             });
 

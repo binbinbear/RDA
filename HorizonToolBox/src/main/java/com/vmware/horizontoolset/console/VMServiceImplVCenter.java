@@ -30,6 +30,8 @@ public class VMServiceImplVCenter implements VMService {
 	
 	private static final String encoding = "utf-8";
 	
+	private VCVersion vcversion;
+	
 	public VMServiceImplVCenter(VDIContext ctx,
             String vcName, String path) {
 		this.path = path;
@@ -65,12 +67,14 @@ public class VMServiceImplVCenter implements VMService {
 			
 			VirtualMachineTicket ticket = vm.acquireTicket(VirtualMachineTicketType.mks.toString());
 				
-			VCVersion vcversion =new VCVersion( vc.getServiceInstance().getAboutInfo());
-			log.debug("Connected to vCenter: version=" + vcversion.versionString 
-					+ ", build=" + vcversion.build
-					+ ", osType=" + vcversion.osType);
+			setVcversion(new VCVersion( vc.getServiceInstance().getAboutInfo()));
+			
+			
+			log.debug("Connected to vCenter: version=" + getVcversion().versionString 
+					+ ", build=" + getVcversion().build
+					+ ", osType=" + getVcversion().osType);
 			String uri;
-			if (vcversion.isNewerThanVC600()){
+			if (getVcversion().isNewerThanVC600()){
 				uri = "/vsphere-client/webconsole/authd";
 			}else{
 				uri = "/console/authd";
@@ -88,9 +92,9 @@ public class VMServiceImplVCenter implements VMService {
 			ret.setUri(uri);
 			
 			
-			if (vcversion.isWssSupported()) {
+			if (getVcversion().isWssSupported()) {
 				ret.setProtocol("wss");
-				if (vcversion.isNewerThanVC600()){
+				if (getVcversion().isNewerThanVC600()){
 					ret.setPort(9443);
 				}else{
 					ret.setPort(7343);
@@ -137,60 +141,23 @@ public class VMServiceImplVCenter implements VMService {
 
 
 
-	
+	public VCVersion getVcversion() {
+		return vcversion;
+	}
+
+
+
+	public void setVcversion(VCVersion vcversion) {
+		this.vcversion = vcversion;
+	}
+
+
+
 
 
 
 }
 
-class VCVersion{
-	private static Logger log = Logger.getLogger(VCVersion.class);
-	
-	int major;
-	int minor;
-	long build;
-	String versionString;
-	String osType;
-	VCVersion(AboutInfo aboutInfo){
-		try {
-			versionString = aboutInfo.version;
-			osType = aboutInfo.osType;
-			build = Long.parseLong(aboutInfo.getBuild());
-			
-			String[] tmp = versionString.split("\\.");
-			
-			major = Integer.valueOf(tmp[0]);
-			minor = Integer.valueOf(tmp[1]);
-			
-		} catch (NumberFormatException e) {
-			log.error("Error parsing version info. New version string? version=" + aboutInfo.version 
-					+ ", build=" + aboutInfo.build
-					+ ", osType=" + aboutInfo.osType, e);
-			major = 0;
-			minor = 0;
-			build = 0;
-		
-		}
-	}
-	
-	boolean isWssSupported() {
-		//return build >=  2001466;	//v5.5 update 2
-		//return build >= 2183111;	//v5.5 update 2b
-		
-		//Wss is supported from v5.5 update 2.
-		//So any build prior to this version will not have WSS supported.
-		if (build < 2001466)
-			return false;
-		
-		//also, patch build for earlier versions could have a higher build
-		//number. So check version, too.
-				//Also check version. 		
-		return major == 5 && minor >= 5 || major > 5;
-	}
-	
-	boolean isNewerThanVC600() {
-		return major >= 6;
-	}
-}
+
 
 

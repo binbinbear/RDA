@@ -121,9 +121,17 @@ Modernizr enables HTML5 elements & feature detects; Respond is a polyfill for mi
 	<!-- end scripts-->
 
 
-
-	<script  src="../js/vcenter/wmks_vc6.js"
+	<script th:if="!${vcVersion.isNewerThanVC600()}" src="../js/vcenter/wmks_vc55.js"
 		type="text/javascript"></script>
+	<script th:if="${vcVersion.isNewerThanVC600()}" src="../js/vcenter/wmks_vc6.js"
+		type="text/javascript"></script>
+	
+	
+	<!-- <script  src="../js/vcenter/wmks_vc55.js"
+		type="text/javascript"></script> -->
+	
+	
+	
 	<script src="../js/vcenter/webmks.js"
 		type="text/javascript"></script>
 

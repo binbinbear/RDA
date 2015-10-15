@@ -47,6 +47,8 @@ public class WebMKSController {
     		@RequestParam(value="vmid", required=true ) String vmid 
     		) {
     	
+    	VCVersion vCVersion =null;
+    	
     	log.debug("Requesting console for: " + vmid);
     	Machine m = SessionUtil.getMachine(session, vmid);
     	if (m==null){
@@ -61,9 +63,10 @@ public class WebMKSController {
     	
     		VirtualCenterInfo vcinfo =  SessionUtil.getViewAPIService(session).getVCInfo(m.getVcenterId());
     		VMServiceImplVCenter vmservice = new VMServiceImplVCenter(SessionUtil.getLDAP(session).getVDIContext(),vcinfo.serverSpec.serverName,minfo.managedMachineData.getVirtualCenterData().path);
-        	
+    		
     		ConsoleAccessInfo info = vmservice.requestConsoleAccessInfo();
-    			
+    		vCVersion = vmservice.getVcversion();
+    		
     		String key = UUID.randomUUID().toString();
     		_infoCache.put(key, info);
     		model.addAttribute("vmurl", "/toolbox/wsproxy?uuid="+key);
@@ -78,8 +81,13 @@ public class WebMKSController {
     		log.warn("Fail opening console", e);
     		model.addAttribute("vmname", "Internal Error");
 		} 
+    	if (vCVersion!=null){
+    		//model.addAttribute("isNewerThanVC600", vCVersion.isNewerThanVC600());
+    		model.addAttribute("vcVersion", vCVersion);
+            
+            log.debug("Show the version of vCenter:"+vCVersion.versionString);
+    	}
         model.addAttribute("user", SessionUtil.getuser(session));
-       
         
     	return view;
     }
