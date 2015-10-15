@@ -22,7 +22,7 @@ namespace HRARequestor
         [STAThread]
         static void Main()
         {
-            Log.InitInLocalAppData("VMware\\Horizon Remote Assistance\\", "requestor.log");
+            InitLog();
 
             try
             {
@@ -60,6 +60,15 @@ namespace HRARequestor
             }
             Log.Info("Exit");
             Application.Exit();
+        }
+
+        private static void InitLog()
+        {
+            //string path = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            string userName = Environment.UserName;
+            string fileName = "requestor_" + userName;
+            string path = @"C:\ProgramData\VMware\Horizon Remote Assistance\";
+            Log.Init(path, fileName, "log", false);
         }
 
         private static string GetTitle()

@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Threading;
 using System.IO;
 using System.Windows.Forms;
+using System.Reflection;
 
 namespace HRAInstaller
 {
@@ -42,7 +43,10 @@ namespace HRAInstaller
         {
             Installer.msgHandler = msgHandler;
 
+            string version = "Horizon Remote Assistance v" + Assembly.GetExecutingAssembly().GetName().Version;
+
             installForEndUser = new Step[] {
+                new Step {message=version},
                 new Step {message="Installing for virtual desktop..."},
                 new Step {f=TerminateProcess_HRARequestor, message="Check existing HRA Requestor..."},
                 new Step {f=CopyHRARequestorToAllUserDesktop, message="Install Horizon Remote Assistance to desktop (all user)..."},
@@ -53,6 +57,7 @@ namespace HRAInstaller
             };
 
             installForAdmin = new Step[] {
+                new Step {message=version},
                 new Step {message="Installing for helpdesk..."},
                 //new Step {f=InstallAdminEx, message="Install AdminEx web model into View Connection Server..."},
                 new Step {f=TerminateProcess_HRALauncher, message="Check existing HRA Launcher..."},
@@ -65,6 +70,7 @@ namespace HRAInstaller
             };
 
             installLauncher = new Step[] {
+                new Step {message=version},
                 new Step {message="Install component for Helpdesk..."},
                 new Step {f=EnableWindowsRAFeature, message="Enable Windows Feature: Remote Assistance..."},
                 new Step {f=CopyHRALauncher, message="Copy HRA launcher..."},
@@ -73,6 +79,7 @@ namespace HRAInstaller
             };
 
             uninstall = new Step[] {
+                new Step {message=version},
                 new Step {message="Uninstalling..."},
                 new Step {f=TerminateProcess_HRARequestor, message="Check existing HRA Requestor..."},
                 new Step {f=TerminateProcess_HRALauncher, message="Check existing HRA Launcher..."},

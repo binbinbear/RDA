@@ -7,7 +7,6 @@ using System.Globalization;
 using System.IO;
 using System.Xml;
 using System.Diagnostics;
-using ETEUtils;
 
 namespace CreateRAString
 {
@@ -128,13 +127,13 @@ namespace CreateRAString
                 {
                     if (p.MainModule.FileVersionInfo.CompanyName.Equals("Microsoft Corporation"))
                     {
-                        Log.Info("Kill existing MSRA processes: " + p.Id);
+                        //Log.Info("Kill existing MSRA processes: " + p.Id);
                         p.Kill();
                     }
                 }
                 catch (Exception e)
                 {
-                    Log.Error(e);
+                    //Log.Error(e);
                 }
             }
         }

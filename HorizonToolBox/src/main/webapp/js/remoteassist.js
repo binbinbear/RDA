@@ -7,9 +7,9 @@ $(document).ready(function () {
 		
 	}, "text");
 	
-	$.get("/toolbox/remoteassist/sessions", null, function(result) {
-		$("#session_table").html(result);
-	}, "text");
+//	$.get("/toolbox/remoteassist/sessions", null, function(result) {
+//		$("#session_table").html(result);
+//	}, "text");
 
 });
 
