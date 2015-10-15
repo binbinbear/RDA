@@ -46,7 +46,7 @@ public class WebMKSController {
     public synchronized String getWebMKS(Model model, HttpSession session,
     		@RequestParam(value="vmid", required=true ) String vmid 
     		) {
-
+    	
     	log.debug("Requesting console for: " + vmid);
     	Machine m = SessionUtil.getMachine(session, vmid);
     	if (m==null){
@@ -58,6 +58,7 @@ public class WebMKSController {
     		return view;
     	}
     	try {
+    	
     		VirtualCenterInfo vcinfo =  SessionUtil.getViewAPIService(session).getVCInfo(m.getVcenterId());
     		VMServiceImplVCenter vmservice = new VMServiceImplVCenter(SessionUtil.getLDAP(session).getVDIContext(),vcinfo.serverSpec.serverName,minfo.managedMachineData.getVirtualCenterData().path);
         	

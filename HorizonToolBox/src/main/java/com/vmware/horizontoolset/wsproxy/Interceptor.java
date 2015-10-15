@@ -1,6 +1,7 @@
 package com.vmware.horizontoolset.wsproxy;
 
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.server.ServerHttpRequest;
@@ -25,10 +26,24 @@ public class Interceptor extends HttpSessionHandshakeInterceptor{
     	//TODO
     	//As a proxy, this should be negotiated during handshake.
     	//Response what server responses. Currently use only binary
-    	
     	String key = "sec-websocket-protocol";
-    	if (!response.getHeaders().containsKey(key))
-    		response.getHeaders().add(key, "binary");
+    	if(!response.getHeaders().containsKey(key)){
+        	List<String> protocols = request.getHeaders().get(key);
+        	
+        	if (protocols!=null && protocols.size()>0){
+        		String targetProtocol = protocols.get(0);
+        		//the default one is binary
+        		for (String p: protocols){
+        			if (p.equalsIgnoreCase("binary")){
+        				targetProtocol = p;
+        				break;
+        			}
+        		}
+        		response.getHeaders().add(key, targetProtocol);
+        	}
+    	}
+
+
         super.afterHandshake(request, response, wsHandler, ex);
     }
 }
