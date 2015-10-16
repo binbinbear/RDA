@@ -37,7 +37,7 @@ public abstract class AdminEventDbQuery {
         this.eventHistoryTableName = tablePrefixName
                 + EventDBConnection.EVENT_META_HISTORICAL_TABLE;
         this.argumentTableName = tablePrefixName
-                + EventDBConnection.EVENT_DATA_TABLE;
+               + EventDBConnection.EVENT_DATA_TABLE;
 
         this.eventColumnList = this.getEventList();
         this.argumentColumnList = this.getArgumentList();
@@ -114,37 +114,10 @@ public abstract class AdminEventDbQuery {
     public abstract String getEventQuery(AdminEventFilter filter, int index,
             int count);
 
-    /**
-     * It returns the query to retrieve the event arguments.
-     *
-     * It asks 'count' of input parameters.
-     *
-     * @param count
-     *                The number of input parameters
-     * @return The database query
-     */
-    public String getArgumentQuery(int count) {
-        // SELET *
-        StringBuilder buffer = new StringBuilder();
-        buffer.append("SELECT ");
-        buffer.append(this.argumentColumnList);
 
-        // FROM argument
-        buffer.append(" FROM ");
-        buffer.append(this.argumentTableName);
+    public abstract String getArgumentsQuery();
 
-        // WHERE eventid IN (?,...,?)
-        buffer.append(" WHERE ");
-        buffer.append(EventDBConnection.EVENTID);
-        buffer.append(" IN (?");
-        for (int index = 1; index < count; index++) {
-            buffer.append(",?");
-        }
-        buffer.append(")");
-
-        String query = buffer.toString();
-        return query;
-    }
+    
 
     /**
      * It builds the event source filtering string.
@@ -233,40 +206,15 @@ public abstract class AdminEventDbQuery {
         buffer.append(EventDBConnection.EVENTID);
         buffer.append("," + EventAttribute.PROP_TIME);
         buffer.append("," + EventAttribute.PROP_TYPE.name);
-        buffer.append("," + EventAttribute.PROP_SEVERITY.name);
         buffer.append("," + EventAttribute.PROP_MODULE.name);
-        buffer.append("," + EventAttribute.PROP_SOURCE.name);
-        buffer.append("," + EventAttribute.PROP_ACK.name);
         buffer.append("," + EventAttribute.PROP_NODE.name);
         buffer.append("," + EventAttribute.PROP_EVENT_TEXT.name);
-        buffer.append("," + EventAttribute.PROP_GROUP_ID.name);
-
+        
         String mandatoryAttributes = buffer.toString();
         return mandatoryAttributes;
     }
 
-    /**
-     * Returns a comma-separated list of optional "columns" (attributes).
-     *
-     * @return The comma-separated list of optional attributes
-     */
-    protected String getOptionalEventAttributes() {
-        StringBuilder buffer = new StringBuilder();
-        buffer.append(EventAttribute.PROP_USER_SID.name);
-        buffer.append("," + EventAttribute.PROP_FOLDER_PATH.name);
-        buffer.append("," + EventAttribute.PROP_DESKTOP_ID.name);
-        buffer.append("," + EventAttribute.PROP_POOL_ID.name);
-        buffer.append("," + EventAttribute.PROP_USERDISKPATH_ID.name);
-        buffer.append("," + EventAttribute.PROP_ENDPOINT_ID.name);
-        buffer.append("," + EventAttribute.PROP_THINAPP_ID.name);
-        buffer.append("," + EventAttribute.PROP_USER_DISPLAY.name);
-        buffer.append("," + EventAttribute.PROP_APPLICATION_ID.name);
-        buffer.append("," + EventAttribute.PROP_FARM_ID.name);
-        buffer.append("," + EventAttribute.PROP_RDSSERVER_ID.name);
 
-        String optionalAttributes = buffer.toString();
-        return optionalAttributes;
-    }
 
     /**
      * It returns the event columns to return from event query.
@@ -274,8 +222,7 @@ public abstract class AdminEventDbQuery {
      * @return The list of event columns
      */
     private String getEventList() {
-        return getMandatoryEventAttributes() + ","
-                + getOptionalEventAttributes();
+        return getMandatoryEventAttributes() ;
     }
 
     /**
@@ -287,12 +234,7 @@ public abstract class AdminEventDbQuery {
         StringBuilder buffer = new StringBuilder();
         buffer.append(EventDBConnection.EVENTID);
         buffer.append(", Name");
-        buffer.append(", Type");
-
-        buffer.append(", IntValue");
         buffer.append(", StrValue");
-        buffer.append(", TimeValue");
-        buffer.append(", BooleanValue");
 
         String query = buffer.toString();
         return query;
@@ -305,49 +247,20 @@ public abstract class AdminEventDbQuery {
      */
     protected String getColumnListFrom() {
         StringBuilder sb = new StringBuilder();
-        String[] optionalEventAttributes = getOptionalEventAttributes().split(
-                ",");
+
 
         // mandatory columns
         sb.append(" ");
         // prepend table name to EventId column to disambiguate it
         sb.append(this.eventTableName).append(".")
                 .append(getMandatoryEventAttributes());
-        // optional columns
-        for (String attr : optionalEventAttributes) {
-            sb.append(",").append(attr).append(".StrValue AS ").append(attr);
-        }
+      
         sb.append(" FROM ");
 
         return sb.toString();
     }
 
-    /**
-     * Return a LEFT JOIN clause built around the optional attributes.
-     *
-     * @return The LEFT JOIN clause
-     */
-    protected String getLeftJoinClause() {
-        StringBuilder sb = new StringBuilder();
-        String[] optionalEventAttributes = getOptionalEventAttributes().split(
-                ",");
 
-        for (String attr : optionalEventAttributes) {
-            sb.append(" LEFT OUTER JOIN (SELECT EventID, StrValue FROM ");
-            sb.append(this.argumentTableName);
-            sb.append(" WHERE(Name = '");
-            sb.append(attr);
-            sb.append("')) ");
-            sb.append(attr);
-            sb.append(" ON ");
-            sb.append(this.eventTableName);
-            sb.append(".EventID = ");
-            sb.append(attr);
-            sb.append(".EventID");
-        }
-
-        return sb.toString();
-    }
 }
 
 /**
@@ -379,7 +292,7 @@ class AdminEventSqlServerQuery extends AdminEventDbQuery {
         buffer.append(count);
         buffer.append(getColumnListFrom());
         buffer.append(this.eventTableName);
-        buffer.append(getLeftJoinClause());
+      
         buffer.append(" WHERE ");
         buffer.append(EventAttribute.PROP_TIME);
         buffer.append(">=?");
@@ -389,13 +302,42 @@ class AdminEventSqlServerQuery extends AdminEventDbQuery {
         buffer.append("=?");
 
         buffer.append(" ORDER BY ");
-        buffer.append(EventAttribute.PROP_TIME);
+        buffer.append(EventDBConnection.EVENTID);
         buffer.append(" DESC");
         
         String query = buffer.toString();
         
         return query;
     }
+
+	@Override
+	public String getArgumentsQuery() {
+		// TODO Auto-generated method stub
+		 // SELEC TOP count * FROM
+        StringBuilder buffer = new StringBuilder();
+
+        buffer.append("SELECT  ");
+        buffer.append(this.argumentColumnList);
+        buffer.append(" FROM  ");
+        buffer.append(this.argumentTableName);
+      
+        buffer.append(" WHERE ");
+        buffer.append(EventDBConnection.EVENTID);
+        buffer.append(">=?");
+        
+        buffer.append(" AND ");
+        buffer.append(EventDBConnection.EVENTID);
+        buffer.append("<=?");
+        
+        buffer.append(" ORDER BY ");
+        buffer.append(EventDBConnection.EVENTID);
+        buffer.append(" DESC");
+        
+        String query = buffer.toString();
+        
+        return query;
+    
+	}
 }
 
 class AdminEventOracleQuery extends AdminEventDbQuery {
@@ -417,15 +359,8 @@ class AdminEventOracleQuery extends AdminEventDbQuery {
         buffer.append(this.eventColumnList);
         buffer.append(" FROM ");
 
-        // (SELECT v.*, ROMNUM AS rn FROM (...))
-        buffer.append("(SELECT v.*, ROWNUM AS rn FROM ");
-
-        // (SELECT ROWNUM, * FROM event WHERE time=? ORDER BY time DESC,
-        // eventid DESC) AS v
-        buffer.append("(SELECT");
-        buffer.append(getColumnListFrom());
         buffer.append(this.eventTableName);
-        buffer.append(getLeftJoinClause());
+        
         buffer.append(" WHERE ");
         buffer.append(EventAttribute.PROP_TIME);
         buffer.append(">=?");
@@ -434,19 +369,34 @@ class AdminEventOracleQuery extends AdminEventDbQuery {
         buffer.append("=?");
         
         buffer.append(" ORDER BY ");
-        buffer.append(EventAttribute.PROP_TIME);
+        buffer.append(EventDBConnection.EVENTID);
         buffer.append(" DESC");
-      
-        buffer.append(") v");
 
-        buffer.append(")");
 
-        // WHERE (ROWNUM>=index) AND (ROWNUM<index+count)
-        buffer.append(" WHERE (rn>");
-        buffer.append(index);
-        buffer.append(") AND (rn<=");
-        buffer.append(index + count);
-        buffer.append(")");
+        String query = buffer.toString();
+        return query;
+    }
+
+	@Override
+	public String getArgumentsQuery() { // SELEC * FROM
+        StringBuilder buffer = new StringBuilder();
+        buffer.append("SELECT ");
+        buffer.append(this.argumentColumnList);
+        buffer.append(" FROM ");
+
+        buffer.append(this.argumentTableName);
+        
+        buffer.append(" WHERE ");
+        buffer.append(EventDBConnection.EVENTID);
+        buffer.append(">=?");
+        buffer.append(" AND ");
+        buffer.append(EventDBConnection.EVENTID);
+        buffer.append("<=?");
+        
+        buffer.append(" ORDER BY ");
+        buffer.append(EventDBConnection.EVENTID);
+        buffer.append(" DESC");
+
 
         String query = buffer.toString();
         return query;

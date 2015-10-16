@@ -19,12 +19,12 @@
 			
 
 			<property name="eventCachedDays"> 
-            <value>90</value> 
+            <value>180</value> 
             </property>
             
             
 			<property name="eventPagingSize"> 
-            <value>50000</value> 
+            <value>100000</value> 
             </property>
 
            <property name="viewServerPath"> 

@@ -204,33 +204,7 @@ public class Util {
     }
 
 
-    /**
-     * It returns the localized string representation for event type.
-     *
-     * @param event
-     *            The event object
-     * @return The localized even type
-     */
-    public static String getLocalizedEventSeverity(AdminEvent event) {
-        if (event == null) {
-            return "";
-        }
-        switch (event.getSeverity()) {
-        case ERROR:
-            return getString("ErrorEventSeverity");
-        case WARNING:
-            return getString("WarnEventSeverity");
-        case INFO:
-            return getString("InfoEventSeverity");
-        case AUDIT_SUCCESS:
-            return getString("AuditSuccessEventSeverity");
-        case AUDIT_FAIL:
-            return getString("AuditFailEventSeverity");
-        default:
-            return "Unknown";
-        }
-    }
-    
+   
     
     /**
      * The method to get a String in English from msg bundle.

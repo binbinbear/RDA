@@ -1,15 +1,14 @@
 package com.vmware.horizon.auditing.db;
 
 import java.util.Date;
-import java.util.List;
 
 import org.apache.log4j.Logger;
 
 import com.vmware.horizon.auditing.report.Event;
 import com.vmware.horizon.auditing.report.EventType;
-import com.vmware.horizon.auditing.report.ReportUtil;
+
 import com.vmware.vdi.admin.be.events.AdminEvent;
-import com.vmware.vdi.admin.be.events.AdminEventSource;
+
 import com.vmware.vdi.events.enums.EventModule;
 
 /**
@@ -37,8 +36,10 @@ public class EventImpl implements Event{
 	}
 
 	private static final String ACCEPT = "has accepted an allocated session";
+	
 	private static final String LOGGEDIN = "has logged in to a new session";
-	private static final String ON_MACHINE = "running on machine ";
+	private static final String USER = "user ";
+	
 	private static final String DISCONNECT = "has disconnected from machine ";
 	private static final String LOG_OFF = "has logged off machine ";
 	private static final String LOGOUT = " has logged out";
@@ -90,25 +91,15 @@ public class EventImpl implements Event{
 		this.clientIp = pairevent.getClientIP();
 
 	}
-	private String getSourceByKey(AdminEvent event,String key){
-		//get pool name from the message
-		List sourcesList = event.getSources();
-		for( Object eventSource : sourcesList){
-			AdminEventSource source = (AdminEventSource)eventSource;
-			if(source.getType().toString().equalsIgnoreCase(key)){
-				return source.getName();
-			}
-		}
-		return null;
-	}
+	
 	public EventImpl(AdminEvent event){
 		this.eventId = event.getEventId();
 		this.username = event.getUsername();
 		if (this.username==null){
 			this.username="";
 		}
-		this.username = this.username.toLowerCase();
-		this.shortMessage = event.getShortMessage();
+		
+		this.shortMessage = event.getMessage().toLowerCase();
 		this.time = event.getTime();
 		this.clientIp = event.getClientIP();
 		//if(EventModule.Agent.equals(event.getModule()) && event.isInfo() ){
@@ -128,6 +119,7 @@ public class EventImpl implements Event{
 			} else {
 				this.type = EventType.Others;
 			}
+			this.username = getValue(shortMessage, USER);
 			this.machineName = event.getMachineName();
 			if( null == this.machineName ){
 				this.machineName = "";
@@ -144,6 +136,8 @@ public class EventImpl implements Event{
 			} else if (shortMessage.contains(REQUEST_APP)) {
 				this.type = EventType.RequestApp;
 			}
+			
+		
 		}
 	}
 
