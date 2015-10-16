@@ -310,8 +310,6 @@ namespace ToolboxInstall
                 }
 
                 bool sucUnZip = UnZip(pathOfZip, path);
-                //delete zipFile
-                //File.Delete(pathOfZip);
                 if (sucUnZip == false)
                 {
                     ExceptionOccur();
@@ -321,6 +319,8 @@ namespace ToolboxInstall
                     //Console.ReadLine();
                     return;
                 }
+                //delete zipFile
+                //File.Delete(pathOfZip);
 
 
                 
@@ -368,9 +368,11 @@ namespace ToolboxInstall
 
             //Create uninstall.bat to remove Tomcat when uninstall HorizonToolbox
             string tomcatPath = GetToolBoxPath(path, true);
+            string tmp = tomcatPath;
             tomcatPath = tomcatPath.Substring(0, tomcatPath.LastIndexOf(".zip"));
-            string[] content = { "cd " + tomcatPath + @"\bin", "service.bat remove" };
+            string[] content = { "cd " + tomcatPath + @"\bin", "call service.bat remove", "cd ..", "cd ..", @"rd/s/q .\" + tomcatPath.Substring(tomcatPath.LastIndexOf(@"\")+1)};
             File.WriteAllLines(path + "uninstall.bat", content);
+            File.Delete(tmp);
 
             UpdaterichTextBox1("Completed...");
             Updatelabel1("100%");
@@ -389,7 +391,6 @@ namespace ToolboxInstall
                 shortcut.IconLocation = tomcatPath.Substring(0, tomcatPath.LastIndexOf("HorizonToolbox")) + @"Images\toolbox.ico";
                 shortcut.Save();
             }
-            
 
         }
 
