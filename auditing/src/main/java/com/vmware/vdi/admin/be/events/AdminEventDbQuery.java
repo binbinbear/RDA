@@ -255,11 +255,11 @@ public abstract class AdminEventDbQuery {
         buffer.append(EventAttribute.PROP_USER_SID.name);
         buffer.append("," + EventAttribute.PROP_FOLDER_PATH.name);
         buffer.append("," + EventAttribute.PROP_DESKTOP_ID.name);
-        buffer.append("," + EventAttribute.PROP_MACHINE_ID.name);
+        buffer.append("," + EventAttribute.PROP_POOL_ID.name);
         buffer.append("," + EventAttribute.PROP_USERDISKPATH_ID.name);
         buffer.append("," + EventAttribute.PROP_ENDPOINT_ID.name);
         buffer.append("," + EventAttribute.PROP_THINAPP_ID.name);
-        buffer.append("," + EventAttribute.PROP_LUN_ID.name);
+        buffer.append("," + EventAttribute.PROP_USER_DISPLAY.name);
         buffer.append("," + EventAttribute.PROP_APPLICATION_ID.name);
         buffer.append("," + EventAttribute.PROP_FARM_ID.name);
         buffer.append("," + EventAttribute.PROP_RDSSERVER_ID.name);

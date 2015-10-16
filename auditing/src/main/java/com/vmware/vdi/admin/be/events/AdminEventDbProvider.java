@@ -249,12 +249,17 @@ public class AdminEventDbProvider implements AdminEventProvider {
         String sid = (String) event.get(EventAttribute.PROP_USER_SID);
         String username = (String) event.get(EventAttribute.PROP_USER_DISPLAY);
 
+        String desktopId = (String) event.get(EventAttribute.PROP_DESKTOP_ID);
+        String poolId = (String) event.get(EventAttribute.PROP_POOL_ID);
+        
+        
         String ip = (String) event.get(EventAttribute.PROP_CLIENT_IP_ADDRESS);
         
         String template = AdminEventManager.getInstance().getLocaleTemplate(
                 type, defTemplate);
         String message = event.renderLocalizedMessage(template, RENDERER);
 
+        String machinename = (String) event.get(EventAttribute.PROP_NODE);
         AdminEvent adminevent = new AdminEvent();
         adminevent.setEventId(eventId);
         adminevent.setTime(time);
@@ -263,9 +268,12 @@ public class AdminEventDbProvider implements AdminEventProvider {
         adminevent.setSeverity(EventSeverity.valueOf(severity));
         adminevent.setThread(thread);
         adminevent.setUserSID(sid);
+        adminevent.setDesktopId(desktopId);
+        adminevent.setPoolId(poolId);
         adminevent.setUsername(username);
         adminevent.setMessage(message);
-
+        
+        adminevent.setMachineName(machinename);
         // builds the event sources
         this.buildEventSource(adminevent, event,
                 EventAttribute.PROP_DESKTOP_ID,

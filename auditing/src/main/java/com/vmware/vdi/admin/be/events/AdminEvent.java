@@ -38,6 +38,13 @@ public class AdminEvent {
     private String username;
 
     private String userDomainName;
+    
+    private String machineName;
+    
+    private String poolId;
+    
+    private String desktopId;
+    
 
     private List<AdminEventSource> sources = new ArrayList<AdminEventSource>();
 
@@ -327,5 +334,29 @@ public class AdminEvent {
 
 	public void setClientIP(String clientIP) {
 		this.clientIP = clientIP;
+	}
+
+	public String getMachineName() {
+		return machineName;
+	}
+
+	public void setMachineName(String machineName) {
+		this.machineName = machineName;
+	}
+
+	public String getPoolId() {
+		return poolId;
+	}
+
+	public void setPoolId(String poolId) {
+		this.poolId = poolId;
+	}
+
+	public String getDesktopId() {
+		return desktopId;
+	}
+
+	public void setDesktopId(String desktopId) {
+		this.desktopId = desktopId;
 	}
 }

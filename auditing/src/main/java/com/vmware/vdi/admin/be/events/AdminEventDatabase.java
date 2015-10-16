@@ -384,12 +384,12 @@ public class AdminEventDatabase extends DBConnection {
 
         String sid = resultset.getString(columnIndex++);
         String folder = resultset.getString(columnIndex++);
-        String poolId = resultset.getString(columnIndex++);
         String desktopId = resultset.getString(columnIndex++);
+        String poolId = resultset.getString(columnIndex++);
         String uddId = resultset.getString(columnIndex++);
         String cvpId = resultset.getString(columnIndex++);
         String thinappId = resultset.getString(columnIndex++);
-        String lunId = resultset.getString(columnIndex++);
+        String username = resultset.getString(columnIndex++);
         String applicationId = resultset.getString(columnIndex++);
         String farmId = resultset.getString(columnIndex++);
         String rdsServerId = resultset.getString(columnIndex++);
@@ -408,12 +408,12 @@ public class AdminEventDatabase extends DBConnection {
 
         event.put(EventAttribute.PROP_USER_SID, sid);
         event.put(EventAttribute.PROP_FOLDER_PATH, folder);
-        event.put(EventAttribute.PROP_DESKTOP_ID, poolId);
-        event.put(EventAttribute.PROP_MACHINE_ID, desktopId);
+        event.put(EventAttribute.PROP_DESKTOP_ID, desktopId);
+        event.put(EventAttribute.PROP_POOL_ID, poolId);
         event.put(EventAttribute.PROP_USERDISKPATH_ID, uddId);
         event.put(EventAttribute.PROP_ENDPOINT_ID, cvpId);
         event.put(EventAttribute.PROP_THINAPP_ID, thinappId);
-        event.put(EventAttribute.PROP_LUN_ID, lunId);
+        event.put(EventAttribute.PROP_USER_DISPLAY, username);
         event.put(EventAttribute.PROP_APPLICATION_ID, applicationId);
         event.put(EventAttribute.PROP_FARM_ID, farmId);
         event.put(EventAttribute.PROP_RDSSERVER_ID, rdsServerId);

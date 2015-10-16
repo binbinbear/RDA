@@ -115,30 +115,27 @@ public class EventImpl implements Event{
 		if(EventModule.Agent.equals(event.getModule())){
 			if (shortMessage.contains(ACCEPT)){
 				this.type = EventType.Connection;
-				this.machineName = getValue(shortMessage, ON_MACHINE);
+				
 			}else if (shortMessage.contains(DISCONNECT)  ){
 				this.type = EventType.Disconnection;
-				this.machineName = getValue(shortMessage, DISCONNECT);
+				
 			}else if (shortMessage.contains(LOG_OFF)){
 				this.type = EventType.Disconnection;
-				this.machineName = getValue(shortMessage, LOG_OFF);
+				
 			} else if (shortMessage.contains(HAS_EXPIRED)){
 				this.type = EventType.Disconnection;
-				this.machineName = getValue(shortMessage, HAS_EXPIRED_PREFIX);
+				
 			} else {
 				this.type = EventType.Others;
 			}
-
+			this.machineName = event.getMachineName();
 			if( null == this.machineName ){
 				this.machineName = "";
 			}
 			this.machineName = this.machineName.toLowerCase();
-			String[] sources= {"POOL","FARM", "APPLICATION", "DESKTOP", "RDSSERVER"};
-			for (int i=0;i<sources.length;i++){
-				this.sourceName = this.getSourceByKey(event, sources[i]);
-				if (this.sourceName!=null){
-					break;
-				}
+			this.sourceName = event.getDesktopId();
+			if (this.sourceName == null || this.sourceName.length() == 0){
+				this.sourceName = event.getPoolId();
 			}
 
 		} else if (EventModule.Broker.equals(event.getModule())) {

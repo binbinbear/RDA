@@ -101,12 +101,14 @@
       <bean id="ConsoleRestController" class="com.vmware.horizontoolset.console.ConsoleRestController"/>
     <bean id="WebMKSController" class="com.vmware.horizontoolset.console.WebMKSController" />
    
+    <bean id="EventCache" class="com.vmware.horizon.auditing.db.EventDBCache" />
+   
    
   <!-- Execute once a day on 1:00 am , Seconds Minutes Hours DayofMonth Month DayofWeek -->
    <task:scheduled-tasks>   
    		<task:scheduled ref="clientrestController" method="updateCachedReport" cron="0 0 1 * * ?"/>  
    
-        <task:scheduled ref="Application" method="updateEventCache" cron="0 0 * * * ?"/>   
+        <task:scheduled ref="EventCache" method="updateCache" cron="0 0 * * * ?"/>   
         
          <task:scheduled ref="clientrestController" method="updateCachedReport" cron="0 0 1 * * ?"/>  
        <!--   <task:scheduled ref="limitRestController" method="refresh" cron="0 30 * * * ?"/> -->
