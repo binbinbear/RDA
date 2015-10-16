@@ -82,7 +82,7 @@ public class EventDBCache {
 		log.info("Previous events size:" + cachedEvents.size());
 		lastCachedTime = currentTime;
 
-		log.info("Start to query event within days:" + days);
+		log.info("Start to query event within days:" + days + " Paging size:"+getPagingSize() );
 		AdminEventFilter eventFilter = new AdminEventFilter();
 		eventFilter.setFilterDays(days);
 		eventFilter.setFilterText(filterText);

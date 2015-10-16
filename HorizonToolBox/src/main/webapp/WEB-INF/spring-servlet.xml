@@ -87,11 +87,12 @@
    <bean id="policyController" class="com.vmware.horizontoolset.PolicyController"/>
 
    <bean id="SessionMsgRestController" class="com.vmware.horizontoolset.SessionMsgRestController"/>
-   
+   <!--  
    <bean id="EmailController" class="com.vmware.horizontoolset.email.EmailController"/>
+   
    <bean id="limitController" class="com.vmware.horizontoolset.limit.LimitController"/>
    <bean id="limitRestController" class="com.vmware.horizontoolset.limit.LimitRestController"/>
-   
+    -->
    <bean id="infoRestController" class="com.vmware.horizontoolset.ProductInfoRestController"/>
    
    <bean id="PolicyRestNewController" class="com.vmware.horizontoolset.policy.PolicyRestController"/>
