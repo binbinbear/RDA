@@ -221,6 +221,7 @@ public class AdminEventDatabase extends DBConnection {
      */
     public Map<Integer, Event> readEvents(VDIContext ctx,
             AdminEventFilter filter) {
+    	logger.info("Start query events from DB ");
         // calculate the page size and starting index
         int index = filter.getPageIndex() * filter.getPageSize();
         int count = filter.getPageSize();
@@ -258,11 +259,11 @@ public class AdminEventDatabase extends DBConnection {
         } finally {
             this.closeStatement(stmt);
         }
-
+        logger.info("DB query finished successfully with events:"+events.size());
         // load the event arguments for event objects
-        if (!this.readEventArguments(events, time)) {
-            return null;
-        }
+       // if (!this.readEventArguments(events, time)) {
+        //    return null;
+      //  }
         return events;
     }
 

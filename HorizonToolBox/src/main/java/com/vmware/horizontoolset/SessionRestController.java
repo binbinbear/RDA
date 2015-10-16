@@ -31,6 +31,8 @@ public class SessionRestController {
 		log.debug("Create Session Rest Controller");
 	}
 	
+	
+	
 	@RequestMapping("/session/report")
     public synchronized SessionReport getSessionsReport(HttpSession session) {
     	long currenttime = new Date().getTime();

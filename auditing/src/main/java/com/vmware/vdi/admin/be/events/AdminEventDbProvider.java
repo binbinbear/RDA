@@ -249,6 +249,8 @@ public class AdminEventDbProvider implements AdminEventProvider {
         String sid = (String) event.get(EventAttribute.PROP_USER_SID);
         String username = (String) event.get(EventAttribute.PROP_USER_DISPLAY);
 
+        String ip = (String) event.get(EventAttribute.PROP_CLIENT_IP_ADDRESS);
+        
         String template = AdminEventManager.getInstance().getLocaleTemplate(
                 type, defTemplate);
         String message = event.renderLocalizedMessage(template, RENDERER);
@@ -256,6 +258,7 @@ public class AdminEventDbProvider implements AdminEventProvider {
         AdminEvent adminevent = new AdminEvent();
         adminevent.setEventId(eventId);
         adminevent.setTime(time);
+        adminevent.setClientIP(ip);
         adminevent.setModule(EventModule.valueOf(module));
         adminevent.setSeverity(EventSeverity.valueOf(severity));
         adminevent.setThread(thread);

@@ -132,6 +132,13 @@ public class ConnectionImpl implements Connection{
 		return time.toString();
 	}
 
+	@Override
+	public String getClientIP() {
+		
+		return this.connectEvent.getClientIP();
+	}
 
+
+	
 
 }

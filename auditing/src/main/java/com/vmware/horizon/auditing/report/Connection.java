@@ -42,5 +42,6 @@ public interface Connection extends Comparable<Connection>{
 	public Event getConnectionEvent();
 	public Event getDisconnectionEvent();
 
+	public String getClientIP();
 
 }

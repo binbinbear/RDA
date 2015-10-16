@@ -11,4 +11,6 @@ public interface Event extends Comparable<Event>{
 	public String getSourceName();
 	public String getShortMessage();
 	
+	public String getClientIP();
+	
 }

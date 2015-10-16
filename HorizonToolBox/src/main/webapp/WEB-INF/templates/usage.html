@@ -66,16 +66,17 @@
 			<table id="connectionTable" ng-table="tableParams" class="dataTable">
 				<tr ng-repeat="user in $data">
 					<td data-title="useagetable['UserName']">{{user.userName}}</td>
+					<td data-title="useagetable['Pool/Farm Name']">{{user.sourceName}}</td>
+					
+					
 					<td data-title="useagetable['Connection Time']">{{user.connectionTimeStr}}</td>
 					<td  data-title="useagetable['Disconnection Time']">{{user.disConnectionTimeStr}}</td>
-					<td data-title="useagetable['Usage Time']">{{user.usageTime}}</td>
+					
 					<td data-title="useagetable['Machine Name']">{{user.machineName}}</td>
-					<td data-title="useagetable['Pool/Farm Name']">{{user.sourceName}}</td>
-					<td data-title="useagetable['Login Delay Time']">{{connection.loginDelayTime}}</td>
+					
 				</tr>
 				<tr id="loading2" class="loadingrow">
-						<td class="desktopName " ></td>
-						<td class="desktopName " ></td>
+						
 						<td class="desktopName " ></td>
 						<td class="desktopName " ></td>
 						<td class="desktopName " ></td>

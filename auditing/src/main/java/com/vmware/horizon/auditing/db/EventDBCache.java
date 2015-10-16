@@ -11,7 +11,9 @@ import org.apache.log4j.Logger;
 
 import com.vmware.horizon.auditing.report.Event;
 import com.vmware.horizon.auditing.report.EventType;
+import com.vmware.vdi.adamwrapper.exceptions.ADAMConnectionFailedException;
 import com.vmware.vdi.adamwrapper.ldap.VDIContext;
+import com.vmware.vdi.adamwrapper.ldap.VDIContextFactory;
 import com.vmware.vdi.admin.be.events.AdminEvent;
 import com.vmware.vdi.admin.be.events.AdminEventFilter;
 import com.vmware.vdi.admin.be.events.AdminEventManager;
@@ -21,76 +23,70 @@ public class EventDBCache {
 	
 	
 	private static long lastCachedTime = -1;
-	private static int cachedDays = 7;
+	
+	//maximum days is 90 (3 months)
+	private static int cachedDays = 90;
+	
 	private static Set<Event> cachedEvents =new HashSet<Event>();
 	private static final String filterText = "Agent";
-	private static final int pagingSize = 20000;
+	private static int pagingSize = 50000;
 	private static final long millisecondsHour = 1000L * 3600L;
 	private static final long millisecondsDay = millisecondsHour * 24L;
-	private static final long millisecondsMonth = millisecondsDay *30L;
+	private static final long millisecondsAll = millisecondsDay *getCachedDays();
+	
 	
 	public synchronized static void expire() {
 		lastCachedTime = -1;
 	}
+
 	
-	private static void updateCache(VDIContext vdiContext, int recentdays){
-		int days = recentdays;
+	public static void updateCache(){
+		try {
+			updateCache(VDIContextFactory.defaultVDIContext());
+		} catch (ADAMConnectionFailedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			log.error("Can't update cache with default context", e);
+		}
+	}
+	
+	private synchronized static void updateCache(VDIContext vdiContext){
+		//by default, query events within cachedDays
+		int days = getCachedDays();
 		long currentTime = new Date().getTime();
 		if ( cachedEvents.size()>0){
 			
 			long hours = (currentTime - lastCachedTime)/(millisecondsHour);
-			if (lastCachedTime != -1 && hours<=0 && recentdays<=cachedDays){
-				log.debug("Cache hit, No need to query again in an hour");
+			if (lastCachedTime != -1 && hours<=1 ){
+				log.info("Cache hit, No need to query again in two hours");
 				return;
 			}
 			days = (int)hours/24 + 1;
-			if (days>recentdays || days + cachedDays < recentdays){
-				log.debug("Clean cached events since days is "+ days + " while recent days is "+ recentdays+",cached days is " + cachedDays);
+			if (days>getCachedDays() ){
+				log.info("Clean cached events since days is "+ days + ",cached days is " + getCachedDays());
 				cachedEvents.clear();
-				days = recentdays;
-				cachedDays = recentdays;
-			}else{
-				cachedDays = cachedDays + days-1;
-//				if (cachedDays>30){
-//					cachedDays = 30;
-//				}
-				//add by wx 9-23
-				if (cachedDays>180){
-					cachedDays = 180;
-				}
+				days = getCachedDays();
 			}
-		}else{
-			cachedDays = recentdays;
 		}
 		
-//		//remove event older than 1 month
-//		Iterator<Event> iterator = cachedEvents.iterator();
-//		while (iterator.hasNext()) {
-//			Event event = iterator.next();
-//			if (currentTime -event.getTime().getTime()  > millisecondsMonth) {
-//				iterator.remove();
-//			}
-//		}
-		
-		//add by wx 9-23
-		//remove event older than 6 month
+		//remove event older than cachedDays
 		Iterator<Event> iterator = cachedEvents.iterator();
 		while (iterator.hasNext()) {
 			Event event = iterator.next();
-			if (currentTime -event.getTime().getTime()  > 6*millisecondsMonth) {
+			if (currentTime -event.getTime().getTime()  > millisecondsAll) {
 				iterator.remove();
 			}
 		}
 	
 		
-		log.debug("Previous events size:" + cachedEvents.size());
+		log.info("Previous events size:" + cachedEvents.size());
 		lastCachedTime = currentTime;
 
-		log.debug("Start to query event within days:" + days);
+		log.info("Start to query event within days:" + days);
 		AdminEventFilter eventFilter = new AdminEventFilter();
 		eventFilter.setFilterDays(days);
 		eventFilter.setFilterText(filterText);
-		eventFilter.setPageSize(pagingSize);
+		eventFilter.setPageSize(getPagingSize());
 		List<AdminEvent> adminEvent = new ArrayList<AdminEvent>();
 		try {
 			adminEvent = AdminEventManager.getInstance().getEventList(
@@ -98,7 +94,7 @@ public class EventDBCache {
 		} catch (Exception e) {
 			log.error("error getting events", e);
 		}
-		log.debug("New Events:" + adminEvent.size());
+		log.info("New Events:" + adminEvent.size());
 
 		for (AdminEvent adminevent: adminEvent){
 			
@@ -111,10 +107,13 @@ public class EventDBCache {
 			}
 			
 		}
-		log.debug("Events after updating:"+ cachedEvents.size());
+		log.info("Events after updating:"+ cachedEvents.size());
 	}
-	static synchronized List<Event> getEvents(VDIContext vdiContext, int recentdays){
-		EventDBCache.updateCache(vdiContext,recentdays);
+	
+	static List<Event> getEvents(VDIContext vdiContext, int recentdays){
+		if (lastCachedTime == -1){
+			updateCache(vdiContext);
+		}
 		
 		long currentTime = new Date().getTime();
 		
@@ -130,6 +129,26 @@ public class EventDBCache {
 		log.debug("All events size:" + result.size());
 		
 		return result;
+	}
+
+
+	public static int getCachedDays() {
+		return cachedDays;
+	}
+
+
+	public static void setCachedDays(int cachedDays) {
+		EventDBCache.cachedDays = cachedDays;
+	}
+
+
+	public static int getPagingSize() {
+		return pagingSize;
+	}
+
+
+	public static void setPagingSize(int pagingSize) {
+		EventDBCache.pagingSize = pagingSize;
 	}
 	
 }

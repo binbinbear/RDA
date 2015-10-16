@@ -51,6 +51,7 @@ window.l10Ntable={
     "Disconnection Time":"Disconnection Time",
     "Usage Time":"Usage Time",
     "Pool/Farm Name":"Pool/Farm Name",
+    "Client IP": "Client IP",
     "Login Delay Time":"Login Delay Time",
     "Snapshot Audit Report":"Snapshot Audit Report",
     "SnapShots for Linked Clone Pools":"SnapShots for Linked Clone Pools",

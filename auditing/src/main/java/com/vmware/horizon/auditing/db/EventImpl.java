@@ -53,6 +53,8 @@ public class EventImpl implements Event{
 	private String sourceName = "";
 	private int eventId = 0;
 	private String shortMessage;
+	
+	private String clientIp;
 
 	private String getValue(String all, String key){
 		//get pool name from the message
@@ -85,6 +87,7 @@ public class EventImpl implements Event{
 			this.type = EventType.Connection;
 		}
 		this.sourceName = pairevent.getSourceName();
+		this.clientIp = pairevent.getClientIP();
 
 	}
 	private String getSourceByKey(AdminEvent event,String key){
@@ -107,7 +110,7 @@ public class EventImpl implements Event{
 		this.username = this.username.toLowerCase();
 		this.shortMessage = event.getShortMessage();
 		this.time = event.getTime();
-		
+		this.clientIp = event.getClientIP();
 		//if(EventModule.Agent.equals(event.getModule()) && event.isInfo() ){
 		if(EventModule.Agent.equals(event.getModule())){
 			if (shortMessage.contains(ACCEPT)){
@@ -197,6 +200,12 @@ public class EventImpl implements Event{
 	@Override
 	public String getShortMessage() {
 		return shortMessage;
+	}
+
+	@Override
+	public String getClientIP() {
+		
+		return this.clientIp;
 	}
 
 }

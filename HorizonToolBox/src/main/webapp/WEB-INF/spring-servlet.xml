@@ -104,7 +104,11 @@
    
   <!-- Execute once a day on 1:00 am , Seconds Minutes Hours DayofMonth Month DayofWeek -->
    <task:scheduled-tasks>   
-        <task:scheduled ref="clientrestController" method="updateCachedReport" cron="0 0 1 * * ?"/>   
+   		<task:scheduled ref="clientrestController" method="updateCachedReport" cron="0 0 1 * * ?"/>  
+   
+        <task:scheduled ref="Application" method="updateEventCache" cron="0 0 * * * ?"/>   
+        
+         <task:scheduled ref="clientrestController" method="updateCachedReport" cron="0 0 1 * * ?"/>  
        <!--   <task:scheduled ref="limitRestController" method="refresh" cron="0 30 * * * ?"/> -->
    </task:scheduled-tasks>  
    

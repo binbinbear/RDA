@@ -22,6 +22,8 @@ public class AdminEvent {
     private String fullMessage;
 
     private Date time;
+    
+    private String clientIP;
 
     private EventModule module;
 
@@ -318,4 +320,12 @@ public class AdminEvent {
     public void setUserDomainName(String userDomainName) {
         this.userDomainName = userDomainName;
     }
+
+	public String getClientIP() {
+		return clientIP;
+	}
+
+	public void setClientIP(String clientIP) {
+		this.clientIP = clientIP;
+	}
 }
