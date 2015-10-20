@@ -92,6 +92,8 @@
    <bean id="limitController" class="com.vmware.horizontoolset.limit.LimitController"/>
    <bean id="limitRestController" class="com.vmware.horizontoolset.limit.LimitRestController"/>
    
+   <bean id="powerController" class="com.vmware.horizontoolset.power.PowerController"/>
+   
    <bean id="infoRestController" class="com.vmware.horizontoolset.ProductInfoRestController"/>
    
    <bean id="PolicyRestNewController" class="com.vmware.horizontoolset.policy.PolicyRestController"/>

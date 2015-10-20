@@ -12,6 +12,7 @@ window.l10Ntable={
     "Clients": "客户",
     "Remote Assistance": "远程协助",
     "Desktop Agent Policies": "桌面端策略",
+    "Power Policies":"电源策略",
     "Application Pool Usage Monitor": "应用池用户监视器",
     "Email Notification": "邮件通知",
     "About": "关于",

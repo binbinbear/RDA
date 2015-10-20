@@ -38,6 +38,7 @@
     			<value>/remoteassist/upload</value>
     			<value>/deviceFilter/check</value>
     			<value>/limit/refresh</value>
+    			<value>/power</value>
     			<value>/about</value>
     		</array>
     	</property>
