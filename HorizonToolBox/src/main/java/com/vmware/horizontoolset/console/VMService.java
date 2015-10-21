@@ -17,4 +17,14 @@ public interface VMService {
 	 */
 	ConsoleAccessInfo requestConsoleAccessInfo();
 	
+	
+	public boolean poweron();
+
+	public boolean poweroff();
+	
+	public boolean suspend();
+	
+	public boolean reset();
+	
+	public String getPowerState();
 }

@@ -56,6 +56,7 @@ public class WebMKSController {
     		return view;
     	}
     	MachineInfo minfo = SessionUtil.getViewAPIService(session).getMachineInfo(m.getVmid());
+    	
     	if (minfo == null){
     		return view;
     	}
@@ -71,7 +72,7 @@ public class WebMKSController {
     		_infoCache.put(key, info);
     		model.addAttribute("vmurl", "/toolbox/wsproxy?uuid="+key);
     			model.addAttribute("vmname", m.getDnsname());
-    			
+    			model.addAttribute("powerstate", vmservice.getPowerState());
 
     			log.debug("Start connection for vmurl:"+info.getUri());
     		
@@ -79,11 +80,12 @@ public class WebMKSController {
 
     	} catch (Exception e) {
     		log.warn("Fail opening console", e);
-    		model.addAttribute("vmname", "Internal Error");
+    		model.addAttribute("vmname", e.getMessage());
+    		return view;
 		} 
     	if (vCVersion!=null){
     		//model.addAttribute("isNewerThanVC600", vCVersion.isNewerThanVC600());
-    		model.addAttribute("vcVersion", vCVersion);
+    		model.addAttribute("isNewerThanVC6", vCVersion.isNewerThanVC600());
             
             log.debug("Show the version of vCenter:"+vCVersion.versionString);
     	}

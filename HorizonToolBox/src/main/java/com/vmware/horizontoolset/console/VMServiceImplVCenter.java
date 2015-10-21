@@ -8,7 +8,6 @@ import org.apache.log4j.Logger;
 import com.vmware.horizontoolset.console.vcenter.BasicVCConnection;
 import com.vmware.horizontoolset.console.vcenter.ConsoleAccessInfoImpl;
 import com.vmware.vdi.adamwrapper.ldap.VDIContext;
-import com.vmware.vim25.AboutInfo;
 import com.vmware.vim25.ManagedObjectReference;
 import com.vmware.vim25.RuntimeFault;
 import com.vmware.vim25.ServiceContent;
@@ -32,6 +31,7 @@ public class VMServiceImplVCenter implements VMService {
 	
 	private VCVersion vcversion;
 	
+
 	public VMServiceImplVCenter(VDIContext ctx,
             String vcName, String path) {
 		this.path = path;
@@ -40,12 +40,6 @@ public class VMServiceImplVCenter implements VMService {
 	}
 	
 
-
-	private int getMajorVersion(ServiceContent serviceContent) {
-		AboutInfo about = serviceContent.getAbout();
-		String version = about.getVersion();
-		return Integer.valueOf(version.substring(0, 1)).intValue();
-	}
 	
 	public ConsoleAccessInfo requestConsoleAccessInfo()  {
 		
@@ -62,8 +56,11 @@ public class VMServiceImplVCenter implements VMService {
 			log.info("Connection is ready");
 			ServiceInstance service = vc.getServiceInstance();
 			
+			
+			
 			ManagedObjectReference vmMor = findVM(service, path);
 			VirtualMachine vm = new VirtualMachine(service.getServerConnection(), vmMor);
+		
 			
 			VirtualMachineTicket ticket = vm.acquireTicket(VirtualMachineTicketType.mks.toString());
 				
@@ -117,16 +114,10 @@ public class VMServiceImplVCenter implements VMService {
 		return null;
 	}
 	
-	private ManagedObjectReference findVM(ServiceInstance service, String path) throws RuntimeFault, RemoteException {
+	private static ManagedObjectReference findVM(ServiceInstance service, String path) throws RuntimeFault, RemoteException {
 		
 		ServerConnection conn = service.getServerConnection();
 		ServiceContent svcContent = service.getServiceContent();
-		Boolean instanceUuid = null;
-		
-		if (getMajorVersion(svcContent) == 4) {
-			// we look up VMs by BIOS UUID
-			instanceUuid = Boolean.FALSE;
-		}
 		
 		VimPortType vim = conn.getVimService();
 //		
@@ -150,6 +141,120 @@ public class VMServiceImplVCenter implements VMService {
 	public void setVcversion(VCVersion vcversion) {
 		this.vcversion = vcversion;
 	}
+
+
+
+	private static final String on = "poweron";
+	private static final String off = "poweroff";
+	private static final String suspend = "suspend";
+	private static final String reset = "reset";
+	
+	private boolean powerAction(String action){
+
+		
+		BasicVCConnection vc = null;
+		log.info("Start to create a connection to vcenter");
+		try {
+			vc = new BasicVCConnection(this.vdictx, this.vcName);
+			
+			//vc = new BasicVCConnection("10.117.160.99","root","vmware");
+			vc.connect();
+			log.info("Connection is ready");
+			ServiceInstance service = vc.getServiceInstance();
+			
+			
+			
+			ManagedObjectReference vmMor = findVM(service, path);
+			VirtualMachine vm = new VirtualMachine(service.getServerConnection(), vmMor);
+			if (action.equals(on)){
+				vm.powerOnVM_Task(null);
+			}else if (action.equals(off)){
+				vm.powerOffVM_Task();
+			}else if (action.equals(suspend)){
+				vm.suspendVM_Task();
+			}else if (action.equals(reset)){
+				vm.resetVM_Task();
+			}
+			
+			
+			return true;
+
+		} catch(Exception ex){
+			ex.printStackTrace();
+			log.error("Exception when calling vcenter",ex);
+		}finally {
+			if (vc != null) {
+				vc.close();
+			}
+		}
+		return false;
+	
+	}
+	
+	@Override
+	public boolean poweron() {
+		return powerAction(on);
+	}
+	
+
+
+	@Override
+	public boolean poweroff() {
+	
+		return powerAction(off);
+	}
+
+
+
+	@Override
+	public boolean suspend() {
+
+		return powerAction(suspend);
+	}
+
+
+
+	@Override
+	public boolean reset() {
+		
+		return powerAction(reset);
+	}
+
+	@Override
+	public String getPowerState() {
+
+
+		
+		BasicVCConnection vc = null;
+		log.info("Start to create a connection to vcenter");
+		try {
+			vc = new BasicVCConnection(this.vdictx, this.vcName);
+			
+			//vc = new BasicVCConnection("10.117.160.99","root","vmware");
+			vc.connect();
+			log.info("Connection is ready");
+			ServiceInstance service = vc.getServiceInstance();
+			
+			
+			
+			ManagedObjectReference vmMor = findVM(service, path);
+			VirtualMachine vm = new VirtualMachine(service.getServerConnection(), vmMor);
+			return vm.getRuntime().getPowerState().toString().toLowerCase();
+
+
+		} catch(Exception ex){
+			ex.printStackTrace();
+			log.error("Exception when calling vcenter",ex);
+		}finally {
+			if (vc != null) {
+				vc.close();
+			}
+		}
+		return "Error";
+	
+	
+	}
+
 
 
 

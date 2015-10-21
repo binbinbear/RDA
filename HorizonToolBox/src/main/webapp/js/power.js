@@ -34,16 +34,14 @@ $(document)
 				return $("#"+buttonid).hasClass(disableClass);
 			};
 			
-			function getctoken(){
-				return  $(".csrftoken").text();
-			}
+
 			
 			function disableAll(){
 				disable("poweron");
 				disable("poweroff");
 				disable("reset");
 				disable("suspend");
-			//	disable("sendCAD");
+				disable("sendCAD");
 			}
 			
 			function setState(){
@@ -84,7 +82,7 @@ $(document)
 				}
 				for (var i=0;i<search.length;i++){
 					var pair = search[i].split("=");
-					if (pair && pair[0] && pair[0]=="vmPatternId"){
+					if (pair && pair[0] && pair[0]=="vmid"){
 						return pair[1];
 					}
 				}
@@ -135,14 +133,14 @@ $(document)
 				$.ajax({
 					type: "POST",
 					url: url,
-					data: {action: action, vmid: vmId, csrftoken: getctoken()},
+					data: {action: action, vmid: vmId},
 					success: function(msg){
 						$( "#power-process" ).dialog( "close" );
 						
 						console
 						.log("Power action successful:"+action+" msg:"+msg);
 						// reload this console page
-						if (action=="poweron" || action == "reset"){
+						if (action=="poweron" || action == "reset"){						
 							window.location.reload();
 						}
 						setState();
