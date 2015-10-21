@@ -45,6 +45,7 @@ window.l10Ntable={
     "Disconnection Time":"断开时间",
     "Usage Time":"使用时间",
     "Pool/Farm Name":"池/场名称",
+     "Client IP": "客户端IP",
     "Login Delay Time":"登录延迟时间",
     "Snapshot Audit Report": "快照审计报告",
     "SnapShots for Linked Clone Pools": "链接克隆池快照",

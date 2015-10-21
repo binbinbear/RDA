@@ -3,6 +3,7 @@ package com.vmware.horizontoolset;
 
 import org.apache.log4j.Logger;
 
+import com.vmware.horizon.auditing.db.EventDBCache;
 import com.vmware.horizon.auditing.report.ReportUtil;
 import com.vmware.horizontoolset.util.LDAP;
 import com.vmware.horizontoolset.util.SessionUtil;
@@ -25,6 +26,25 @@ public class Application {
     	//LDAP.setViewServerPath(viewServerPath);
     }
     
+	public void setEventCachedDays(int days){
+		EventDBCache.setCachedDays(days);
+	}
+	
+	public void setEventPagingSize(int size){
+		EventDBCache.setPagingSize(size);
+	}
+	
+    
+	public void init(){
+		Thread t = new Thread(new Runnable(){
+		    public void run(){
+				log.info("UPdating event db cache!");
+				EventDBCache.updateCache();
+				log.info("Updated event db cache!");
+			}
+		});
+		t.start();
+	}
 	
 	public void setMaximumSessions(String maximumSessions){
 		int maxSession = Integer.parseInt(maximumSessions);

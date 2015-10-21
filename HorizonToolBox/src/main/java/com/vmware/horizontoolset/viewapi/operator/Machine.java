@@ -61,6 +61,7 @@ public class Machine {
 		this.summaryView = v;
 		this.name = v.base.name;
 		this.state = v.base.basicState;
+		
 		this.setDnsname(v.base.dnsName);
 		this.setVcenterId(v.summaryData.virtualCenter.id);
 		this.setVmid(v.id.id);

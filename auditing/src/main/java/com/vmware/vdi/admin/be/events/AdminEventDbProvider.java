@@ -170,10 +170,10 @@ public class AdminEventDbProvider implements AdminEventProvider {
                 }
             }
         } catch (ADAMServerException e) {
-            logger.debug("Failed to load events from database:", e);
+            logger.error("Failed to load events from database:", e);
             throw e;
         } catch (Throwable e) {
-            logger.debug("Fatal to load events from database:", e);
+            logger.error("Fatal to load events from database:", e);
             throw new ADAMServerException(
                     ADAMServerException.ERROR_EVENT_DATABASE_CONNECT);
         } finally {
@@ -240,123 +240,40 @@ public class AdminEventDbProvider implements AdminEventProvider {
      */
     private AdminEvent buildAdminEvent(Event event) {
         int eventId = (Integer) event.get(EventDBConnection.EVENTID);
-        String defTemplate = (String) event.get(EventAttribute.PROP_EVENT_TEXT);
-        String type = (String) event.get(EventAttribute.PROP_TYPE);
+        String message = (String) event.get(EventAttribute.PROP_EVENT_TEXT);
+   
         Date time = (Date) event.get(EventAttribute.PROP_TIME);
         String module = (String) event.get(EventAttribute.PROP_MODULE);
-        String severity = (String) event.get(EventAttribute.PROP_SEVERITY);
-        String thread = (String) event.get(EventAttribute.PROP_SOURCE);
+       
         String sid = (String) event.get(EventAttribute.PROP_USER_SID);
         String username = (String) event.get(EventAttribute.PROP_USER_DISPLAY);
 
-        String template = AdminEventManager.getInstance().getLocaleTemplate(
-                type, defTemplate);
-        String message = event.renderLocalizedMessage(template, RENDERER);
+        String desktopId = (String) event.get(EventAttribute.PROP_DESKTOP_ID);
+        String poolId = (String) event.get(EventAttribute.PROP_POOL_ID);
+        
+        
+       // String ip = (String) event.get(EventAttribute.PROP_CLIENT_IP_ADDRESS);
 
+
+        String machinename = (String) event.get(EventAttribute.PROP_NODE);
+        
+        
         AdminEvent adminevent = new AdminEvent();
         adminevent.setEventId(eventId);
         adminevent.setTime(time);
+       // adminevent.setClientIP(ip);
         adminevent.setModule(EventModule.valueOf(module));
-        adminevent.setSeverity(EventSeverity.valueOf(severity));
-        adminevent.setThread(thread);
+
         adminevent.setUserSID(sid);
+        adminevent.setDesktopId(desktopId);
+        adminevent.setPoolId(poolId);
         adminevent.setUsername(username);
         adminevent.setMessage(message);
-
-        // builds the event sources
-        this.buildEventSource(adminevent, event,
-                EventAttribute.PROP_DESKTOP_ID,
-                EventAttribute.PROP_DESKTOP_DISPLAY, AdminEventSource.Type.POOL);
-
-        this.buildEventSource(adminevent, event,
-                EventAttribute.PROP_MACHINE_ID,
-                EventAttribute.PROP_MACHINE_NAME, AdminEventSource.Type.DESKTOP);
-
-        this.buildEventSource(adminevent, event,
-                EventAttribute.PROP_USERDISKPATH_ID,
-                EventAttribute.PROP_USERDISKPATH_NAME,
-                AdminEventSource.Type.UDD);
-
-        this.buildEventSource(adminevent, event,
-                EventAttribute.PROP_ENDPOINT_ID,
-                EventAttribute.PROP_ENDPOINT_DISPLAY, AdminEventSource.Type.CVP);
-
-        this.buildEventSource(adminevent, event,
-                EventAttribute.PROP_THINAPP_ID,
-                EventAttribute.PROP_THINAPP_DISPLAY,
-                AdminEventSource.Type.THINAPP);
-
-        this.buildUnaryEventSource(adminevent, event,
-                EventAttribute.PROP_AGENT_ERROR,
-                AdminEventSource.Type.ERROR_CODE);
-
-        this.buildEventSource(adminevent, event,
-                EventAttribute.PROP_APPLICATION_ID,
-                EventAttribute.PROP_APPLICATION_DISPLAY_NAME,
-                AdminEventSource.Type.APPLICATION);
-
-        this.buildEventSource(adminevent, event, EventAttribute.PROP_FARM_ID,
-                EventAttribute.PROP_FARM_DISPLAY_NAME,
-                AdminEventSource.Type.FARM);
-
-        this.buildEventSource(adminevent, event,
-                EventAttribute.PROP_RDSSERVER_ID,
-                EventAttribute.PROP_RDSSERVER_DISPLAY_NAME,
-                AdminEventSource.Type.RDSSERVER);
-
-        this.buildUnaryEventSource(adminevent, event,
-                EventAttribute.PROP_PROTOCOL_ERROR,
-                AdminEventSource.Type.ERROR_CODE);
-
+        
+        adminevent.setMachineName(machinename);
+     
         return adminevent;
     }
 
-    /**
-     * Create an Event source representing a scalar attribute of an Event.
-     *
-     * @param adminevent
-     *            The admin event object
-     * @param event
-     *            The event object
-     * @param sourcevalue
-     *            The attribute containing the scalar value
-     * @param type
-     *            The source type
-     */
-    private void buildUnaryEventSource(AdminEvent adminevent, Event event,
-            EventAttribute sourcevalue, AdminEventSource.Type type) {
-        String value = (String) event.get(sourcevalue);
-        if (value != null) {
-            AdminEventSource source = new AdminEventSource(value, value, type);
-            adminevent.addSource(source);
-        }
-    }
 
-    /**
-     * It builds the event source for an admin event.
-     *
-     * @param adminevent
-     *                The admin event object
-     * @param event
-     *                The event object
-     * @param sourceid
-     *                The source ID
-     * @param sourcename
-     *                The source name
-     * @param type
-     *                The source type
-     */
-    private void buildEventSource(AdminEvent adminevent, Event event,
-            EventAttribute sourceid, EventAttribute sourcename,
-            AdminEventSource.Type type) {
-        String id = (String) event.get(sourceid);
-        if (id != null) {
-            String name = (String) event.get(sourcename);
-            if (name == null) {
-                name = id;
-            }
-            AdminEventSource source = new AdminEventSource(id, name, type);
-            adminevent.addSource(source);
-        }
-    }
 }

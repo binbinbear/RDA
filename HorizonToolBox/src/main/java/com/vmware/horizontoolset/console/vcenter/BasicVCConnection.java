@@ -114,7 +114,7 @@ public class BasicVCConnection implements VCConnection {
 		
 		this.serviceInstance = new ServiceInstance( new URL(this.url), this.username,this.password, true);
         userSession = serviceInstance.getSessionManager().getCurrentSession();
-
+        
     }
 
 

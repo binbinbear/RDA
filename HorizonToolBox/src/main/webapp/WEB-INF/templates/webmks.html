@@ -24,6 +24,8 @@ More info: h5bp.com/b/378 -->
 
 <!-- CSS: implied media=all -->
 <!-- CSS concatenated and minified via ant build script-->
+
+<link href="../css/jquery-ui.min.css" rel="stylesheet" />
 <link rel="stylesheet" href="../css/webmks.css" />
 <!-- end CSS-->
 
@@ -84,7 +86,7 @@ Modernizr enables HTML5 elements & feature detects; Respond is a polyfill for mi
 	<span style="display: none;" id="vmurl" class="vmurl" th:text="${vmurl}"></span>
 	<span style="display: none;" id="vmx" class="vmx" th:text="${vmx}"></span>
 	<span style="display: none;" id="powerstate" class="powerstate" th:text="${powerstate}"></span>
-	<span style="display: none;" id="csrftoken" class="csrftoken" th:text="${csrftoken}"></span>
+	
 	<div id="confirm-off" title="Power off?">
 		<p>
 			<span class="ui-icon ui-icon-alert"
@@ -121,14 +123,11 @@ Modernizr enables HTML5 elements & feature detects; Respond is a polyfill for mi
 	<!-- end scripts-->
 
 
-	<script th:if="!${vcVersion.isNewerThanVC600()}" src="../js/vcenter/wmks_vc55.js"
+	<script th:if="!${isNewerThanVC6}" src="../js/vcenter/wmks_vc55.js"
 		type="text/javascript"></script>
-	<script th:if="${vcVersion.isNewerThanVC600()}" src="../js/vcenter/wmks_vc6.js"
+	<script th:if="${isNewerThanVC6}" src="../js/vcenter/wmks_vc6.js"
 		type="text/javascript"></script>
 	
-	
-	<!-- <script  src="../js/vcenter/wmks_vc55.js"
-		type="text/javascript"></script> -->
 	
 	
 	

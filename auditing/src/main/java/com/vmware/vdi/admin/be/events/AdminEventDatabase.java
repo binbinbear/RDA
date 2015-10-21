@@ -221,6 +221,7 @@ public class AdminEventDatabase extends DBConnection {
      */
     public Map<Integer, Event> readEvents(VDIContext ctx,
             AdminEventFilter filter) {
+    	logger.info("Start query events from DB ");
         // calculate the page size and starting index
         int index = filter.getPageIndex() * filter.getPageSize();
         int count = filter.getPageSize();
@@ -239,6 +240,7 @@ public class AdminEventDatabase extends DBConnection {
         Map<Integer, Event> events = new HashMap<Integer, Event>();
         PreparedStatement stmt = null;
         try {
+        	logger.info("Start prepaire statement");
             // prepare the event query statement
             stmt = conn.prepareStatement(query);
 
@@ -246,23 +248,25 @@ public class AdminEventDatabase extends DBConnection {
             int param = 1;
             stmt.setTimestamp(param++, new java.sql.Timestamp(time.getTime()));
             stmt.setString(param++, "Agent");
-
+            logger.info("Start Execute statement");
             // execute the event query statement
             stmt.execute();
-
+            logger.info("Start reading events");
             // load event objects from database
             this.readEvents(events, stmt, index, count);
         } catch (SQLException e) {
-            logger.debug("Failed to load events from database:", e);
+            logger.error("Failed to load events from database:", e);
             return null;
         } finally {
             this.closeStatement(stmt);
         }
-
+        
+        
+        logger.info("DB query finished successfully with events:"+events.size());
         // load the event arguments for event objects
-        if (!this.readEventArguments(events, time)) {
-            return null;
-        }
+       // if (!this.readEventArguments(events, time)) {
+        //    return null;
+      //  }
         return events;
     }
 
@@ -344,9 +348,17 @@ public class AdminEventDatabase extends DBConnection {
     private void readEvents(Map<Integer, Event> events, PreparedStatement stmt,
             int index, int count) throws SQLException {
         ResultSet resultset = stmt.getResultSet();
+        int biggestEventID = -1;
+        int smallestEventID = Integer.MAX_VALUE;
         while ((resultset != null) && (events.size() < count)) {
             while (resultset.next() && (events.size() < count)) {
                 int eventId = resultset.getInt(1);
+                if (eventId > biggestEventID){
+                	biggestEventID = eventId;
+                }
+                if (eventId < smallestEventID){
+                	smallestEventID = eventId;
+                }
                 Event event = this.readEvent(resultset);
                 if (event != null) {
                     events.put(eventId, event);
@@ -358,6 +370,51 @@ public class AdminEventDatabase extends DBConnection {
                 resultset = null;
             }
         }
+        
+
+        String argquery = this.dbquery.getArgumentsQuery();
+
+        PreparedStatement argstmt = null;
+        try {
+        	logger.info("Start prepaire argument statement");
+            // prepare the event query statement
+        	argstmt = conn.prepareStatement(argquery);
+
+            // prepare the event query parameters
+        	argstmt.setInt(1, smallestEventID);
+        	argstmt.setInt(2, biggestEventID);
+            logger.info("Start Execute Argument statement");
+            // execute the event query statement
+            argstmt.execute();
+            logger.info("Start reading arguments");
+            // load event objects from database
+            
+            ResultSet argresultset = argstmt.getResultSet();
+
+            while ((argresultset != null)) {
+                while (argresultset.next() ) {
+                    int eventId = argresultset.getInt(1);
+                   
+                    Event event = events.get(eventId);
+                    if (event != null) {
+                        //get argument here
+                    	this.readArgument(argresultset, event);
+                    }
+                }
+                if (argstmt.getMoreResults()) {
+                	argresultset = argstmt.getResultSet();
+                } else {
+                	argresultset = null;
+                }
+            }
+            
+        } catch (SQLException e) {
+            logger.error("Failed to load events from arugment table:", e);
+           
+        } finally {
+            this.closeStatement(argstmt);
+        }
+        
     }
 
     /**
@@ -373,158 +430,51 @@ public class AdminEventDatabase extends DBConnection {
         int eventId = resultset.getInt(columnIndex++);
         Date time = resultset.getTimestamp(columnIndex++);
         String type = resultset.getString(columnIndex++);
-        String severity = resultset.getString(columnIndex++);
+       
         String module = resultset.getString(columnIndex++);
-        String source = resultset.getString(columnIndex++);
-        boolean ack = resultset.getBoolean(columnIndex++);
+       
         String node = resultset.getString(columnIndex++);
         String text = resultset.getString(columnIndex++);
-        String groupId = resultset.getString(columnIndex++);
 
-        String sid = resultset.getString(columnIndex++);
-        String folder = resultset.getString(columnIndex++);
-        String poolId = resultset.getString(columnIndex++);
-        String desktopId = resultset.getString(columnIndex++);
-        String uddId = resultset.getString(columnIndex++);
-        String cvpId = resultset.getString(columnIndex++);
-        String thinappId = resultset.getString(columnIndex++);
-        String lunId = resultset.getString(columnIndex++);
-        String applicationId = resultset.getString(columnIndex++);
-        String farmId = resultset.getString(columnIndex++);
-        String rdsServerId = resultset.getString(columnIndex++);
-
+       
         Event event = new Event();
         event.put(EventDBConnection.EVENTID, new Integer(eventId));
         event.put(EventAttribute.PROP_TIME, time);
         event.put(EventAttribute.PROP_TYPE, type);
-        event.put(EventAttribute.PROP_SEVERITY, severity);
+
         event.put(EventAttribute.PROP_MODULE, module);
-        event.put(EventAttribute.PROP_SOURCE, source);
-        event.put(EventAttribute.PROP_ACK, new Boolean(ack));
+     
+        
         event.put(EventAttribute.PROP_NODE, node);
         event.put(EventAttribute.PROP_EVENT_TEXT, text);
-        event.put(EventAttribute.PROP_GROUP_ID, groupId);
+        
 
-        event.put(EventAttribute.PROP_USER_SID, sid);
-        event.put(EventAttribute.PROP_FOLDER_PATH, folder);
-        event.put(EventAttribute.PROP_DESKTOP_ID, poolId);
-        event.put(EventAttribute.PROP_MACHINE_ID, desktopId);
-        event.put(EventAttribute.PROP_USERDISKPATH_ID, uddId);
-        event.put(EventAttribute.PROP_ENDPOINT_ID, cvpId);
-        event.put(EventAttribute.PROP_THINAPP_ID, thinappId);
-        event.put(EventAttribute.PROP_LUN_ID, lunId);
-        event.put(EventAttribute.PROP_APPLICATION_ID, applicationId);
-        event.put(EventAttribute.PROP_FARM_ID, farmId);
-        event.put(EventAttribute.PROP_RDSSERVER_ID, rdsServerId);
+        
         return event;
     }
 
-    /**
-     * It loads event argument objects for their event objects.
-     *
-     * Event arguments are loaded by 500 events a page.
-     *
-     * @param events
-     *                The list of event IDs and their event objects
-     * @param time
-     *                The starting time
-     * @return True on success, false on error
-     */
-    private boolean readEventArguments(Map<Integer, Event> events, Date time) {
-        List<Integer> eventIds = new ArrayList<Integer>(events.size());
-        eventIds.addAll(events.keySet());
-
-        int count = ARGUMENT_PAGE_SIZE;
-        for (int index = 0; index < eventIds.size(); index += count) {
-            if (index + count > eventIds.size()) {
-                count = eventIds.size() - index;
-            }
-            String query = this.dbquery.getArgumentQuery(count);
-
-            PreparedStatement stmt = null;
-            try {
-                stmt = conn.prepareStatement(query);
-                for (int i = 0; i < count; i++) {
-                    int eventId = eventIds.get(index + i);
-                    stmt.setInt(i + 1, eventId);
-                }
-                stmt.execute();
-
-                this.readEventArguments(events, stmt);
-            } catch (SQLException e) {
-                logger.debug("Failed to load event arguments:", e);
-                return false;
-            } finally {
-                this.closeStatement(stmt);
-            }
-        }
-        return true;
-    }
-
-    /**
-     * It reads event argument objects from result set.
-     *
-     * @param events
-     *                The list of event IDs and their event objects
-     * @param stmt
-     *                The database statement to retrieve event arguments
-     * @throws SQLException
-     */
-    private void readEventArguments(Map<Integer, Event> events,
-            PreparedStatement stmt) throws SQLException {
-        ResultSet resultset = stmt.getResultSet();
-        while (resultset != null) {
-            while (resultset.next()) {
-                this.readEventArgument(events, resultset);
-            }
-            if (stmt.getMoreResults()) {
-                resultset = stmt.getResultSet();
-            } else {
-                resultset = null;
-            }
-        }
-    }
-
-    /**
-     * It reads an event argument objects from result set.
-     *
-     * @param events
-     *                The list of event IDs and their event objects
-     * @param resultset
-     *                The result set
-     * @throws SQLException
-     */
-    private void readEventArgument(Map<Integer, Event> events,
-            ResultSet resultset) throws SQLException {
+  
+    private void readArgument(ResultSet resultset, Event event) throws SQLException {
+//    	buffer.append(EventDBConnection.EVENTID);
+//        buffer.append(", Name");
+//        buffer.append(", StrValue");
         int columnIndex = 1;
         int eventId = resultset.getInt(columnIndex++);
+        
         String name = resultset.getString(columnIndex++);
-        int type = resultset.getInt(columnIndex++);
-        int intvalue = resultset.getInt(columnIndex++);
         String strvalue = resultset.getString(columnIndex++);
-        Date timevalue = resultset.getTimestamp(columnIndex++);
-        boolean boolvalue = resultset.getBoolean(columnIndex++);
-
-        Event event = events.get(eventId);
-        if (event == null) {
-            logger.debug("Can't find event object for ID: " + eventId);
-            return;
+        if (EventAttribute.PROP_DESKTOP_ID.name.equalsIgnoreCase(name)){
+        	event.put(EventAttribute.PROP_DESKTOP_ID, strvalue);
+        }else if (EventAttribute.PROP_POOL_ID.name.equalsIgnoreCase(name)){
+        	event.put(EventAttribute.PROP_POOL_ID, strvalue);
+        }else {
+        	event.put(name, strvalue);
         }
+        
 
-        if (type == DataTypeRefs.INT.ordinal()) {
-            event.put(name, new Integer(intvalue));
-        } else if (type == DataTypeRefs.STRING.ordinal()) {
-            event.put(name, strvalue);
-        } else if (type == DataTypeRefs.TIMESTAMP.ordinal()) {
-            event.put(name, timevalue);
-        } else if (type == DataTypeRefs.BOOLEAN.ordinal()) {
-            event.put(name, new Boolean(boolvalue));
-        } else if (type == DataTypeRefs.BINARY_BLOB.ordinal()) {
-            event.put(name, strvalue);
-        } else {
-            logger.debug("Unknown event data type: " + type);
-        }
     }
+
+
 
     /**
      * It closes a database statement.
