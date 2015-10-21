@@ -44,12 +44,12 @@
   </bean>   
   <bean id="loginController" class="com.vmware.horizontoolset.LoginController">
    <property name="server"> 
-            <value>localhost</value>
+            <value>10.112.118.30</value>
             </property> 
             
             <!-- please make sure this is false when publishing -->
             <property name="remoteDebug">
-            	<value>false</value>
+            	<value>true</value>
             </property>
             <property name="matchedVersions">
             	<array>
@@ -92,11 +92,11 @@
    <bean id="limitController" class="com.vmware.horizontoolset.limit.LimitController"/>
    <bean id="limitRestController" class="com.vmware.horizontoolset.limit.LimitRestController"/>
    
-   <bean id="powerController" class="com.vmware.horizontoolset.power.PowerController"/>
+   <bean id="PowerController" class="com.vmware.horizontoolset.power.PowerController"/>
    
    <bean id="infoRestController" class="com.vmware.horizontoolset.ProductInfoRestController"/>
    
-   <bean id="PolicyRestNewController" class="com.vmware.horizontoolset.policy.PolicyRestController"/>
+  <!--  <bean id="PolicyRestNewController" class="com.vmware.horizontoolset.policy.PolicyRestController"/>  -->
    
       <bean id="ConsoleController" class="com.vmware.horizontoolset.console.ConsoleController"/>
    

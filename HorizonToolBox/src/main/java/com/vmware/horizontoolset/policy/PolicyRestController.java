@@ -53,6 +53,7 @@ public class PolicyRestController {
 	
 	public PolicyRestController(){
 		log.debug("Create Policy Rest Controller");
+		
 		gpoCache = GpoCache.getInstance();
 		ldapAssignmentService = new AssignmentServiceImpl();
 		polFileService = new PolFileServiceImpl();

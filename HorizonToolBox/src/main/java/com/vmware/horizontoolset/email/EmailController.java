@@ -28,6 +28,7 @@ public class EmailController {
     	return Application.MAINPAGE;
 
     }
+
     
     @RequestMapping(value="/email/server", method=RequestMethod.GET)
     public synchronized String setEmailServer(EmailServerProps props, Model model, HttpSession session) {

@@ -1,9 +1,139 @@
 <html>
+<head>
+<meta charset="ISO-8859-1"/>
+<title>Power</title>
+</head>
 <body>
+<div id="power" th:fragment="fragment"> 
 
-<h1>My First Heading</h1>
+	<h3 class="pageHeader">
+			<table border="0" cellpadding="0" cellspacing="0" width="100%">
+				<tbody>
+					<tr>
+						<td>
+							<div class="pageHeaderDiv">
+								<img src="./img/window_information.png" alt="Dashboard" />
+								&nbsp;&nbsp; {{'Power Policies'|i18n}}&nbsp; 
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</h3>
+		
+		<div ng-controller="consoleCtrl">
+		
+			<div class="scrollarea list" style="width: 100%; height:auto!important; height:350px; min-height:350px">
 
-<p>My first paragraph.</p>
 
+
+
+
+<style type="text/css">
+.dataTable td.vmNameColumn {
+	width: 25%;
+}
+
+.dataTable td.ipAddressColumn {
+	width: 85px;
+}
+
+.dataTable td.powerStateColumn {
+	width: 170px;
+}
+
+.searchBoxWebkit {
+	margin-left: 15px;
+	margin-right: 10px;
+	margin-bottom: 14px;
+}
+
+
+
+
+#refreshData {
+	display: none;
+	float: right;
+	margin-right: 10px;
+}
+
+#bulkMenu {
+	float: left;
+	width: 200px;
+	min-height: 20px;
+	padding-left: 8px;
+}
+
+.Nav {
+	float: left;
+}
+
+.colUserIcon {
+	width: 50px !important;
+	padding: 0px !important;
+	margin: 0px !important;
+	text-align: center;
+}
+</style>
+
+				<table id="forQaVmsTable" class="dataTable searchResultsTable"
+					cellspacing="0">
+					<thead>
+						<tr>
+							<th class="sorted order1">Pool</th>
+							<th>PowerOn Policy</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+						    <td>pool1</td>
+						    <td>
+						    <div>
+						    policy1
+						    <button name="delate" value="delate">delate</button>
+						    </div>
+						    </td>
+						</tr>
+						
+						<tr>
+						    <td>pool2</td>
+						    <td>policy2</td>
+						</tr>
+						
+					</tbody>
+				</table>
+
+			</div>
+		</div>
+		
+		
+		
+		
+	<div class="overlay">
+	    <div id="alarm-dialog">
+	        <h2>Set alarm after</h2>
+	        <label class="hours">
+	            Hours
+	            <input type="number" value="0" min="0" />
+	        </label>
+	        <label class="minutes">
+	            Minutes
+	            <input type="number" value="0" min="0" />
+	        </label>
+	        <label class="seconds">
+	            Seconds
+	            <input type="number" value="0" min="0" />
+	        </label>
+	        <div class="button-holder">
+	            <a id="alarm-set" class="button blue">Set</a>
+	            <a id="alarm-clear" class="button red">Clear</a>
+	        </div>
+	        <a class="close"></a>
+    </div>
+ 
+</div>
+
+
+</div>
 </body>
 </html>
