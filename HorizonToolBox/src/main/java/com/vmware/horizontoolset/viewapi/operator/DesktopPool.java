@@ -2,6 +2,8 @@ package com.vmware.horizontoolset.viewapi.operator;
 
 import java.util.List;
 
+import com.vmware.horizontoolset.console.VMServiceImplVCenter;
+import com.vmware.horizontoolset.util.SessionUtil;
 import com.vmware.vdi.vlsi.binding.vdi.entity.DesktopId;
 import com.vmware.vdi.vlsi.binding.vdi.entity.SessionId;
 import com.vmware.vdi.vlsi.binding.vdi.resources.Desktop;
@@ -26,7 +28,7 @@ public class DesktopPool {
 	public final DesktopId id;
 	private DesktopInfo info;
 	
-	public final CachedObjs<Machine> machines = new CachedObjs<Machine>() {
+	public final CachedObjs<Machine> machines = new CachedObjs<Machine>(ViewConfig.SAFE_API_TIMEOUT) {
 				
 		@Override
 		protected void populateCache(List<Machine> objects) {
@@ -152,4 +154,5 @@ public class DesktopPool {
 		
 		return ret;
 	}
+	
 }
