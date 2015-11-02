@@ -142,6 +142,12 @@
       <property name="config" ref="rewriter"/>
     </bean>
     
+
+    
+    
+   <!-- Execute once a day on 1:00 am , Seconds Minutes Hours DayofMonth Month DayofWeek -->
+	<!-- Power Cron Trigger, 0 0 8 ? * MON-FRI  default is 8:00 every working days -->
+
     
    
    

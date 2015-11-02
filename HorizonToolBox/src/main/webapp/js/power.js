@@ -135,13 +135,17 @@ $(document)
 					url: url,
 					data: {action: action, vmid: vmId},
 					success: function(msg){
-						$( "#power-process" ).dialog( "close" );
+						
 						
 						console
 						.log("Power action successful:"+action+" msg:"+msg);
 						// reload this console page
-						if (action=="poweron" || action == "reset"){						
-							window.location.reload();
+						if (action=="poweron" || action == "reset"){	
+							setTimeout(function(){
+								$( "#power-process" ).dialog( "close" );
+								window.location.reload();
+							},1000);
+							
 						}
 						setState();
 						
