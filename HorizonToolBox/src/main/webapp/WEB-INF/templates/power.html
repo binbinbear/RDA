@@ -1,6 +1,9 @@
-<html>
+<html ng-app="helloApp">
 <head>
 <meta charset="ISO-8859-1"/>
+<link href="css/report.css" rel="stylesheet" />
+<link href="css/powerpolicy.css" rel="stylesheet" />
+<link href="css/cupertino/jquery-ui.custom.min.css" rel="stylesheet" />
 <title>Power</title>
 </head>
 <body>
@@ -21,7 +24,7 @@
 			</table>
 		</h3>
 		
-		<div ng-controller="consoleCtrl">
+		<div ng-controller="powerCtrl">
 		
 			<div class="scrollarea list" style="width: 100%; height:auto!important; height:350px; min-height:350px">
 
@@ -76,63 +79,128 @@
 }
 </style>
 
+				
 				<table id="forQaVmsTable" class="dataTable searchResultsTable"
 					cellspacing="0">
 					<thead>
 						<tr>
-							<th class="sorted order1">Pool</th>
-							<th>PowerOn Policy</th>
+							<th class="sorted order1" id="poolname"  style="width:30%;">PoolName</th>
+							<th style="width:70%;">PowerOn Policy</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-						    <td>pool1</td>
+						<tr id="loading" class="loadingrow">
+						    <td></td>
+							<td class="alarm"></td>
+							
+						</tr>
+						<tr ng-repeat="p in powerpolicys">
+						    <td><div>{{p}}</div></td>
 						    <td>
-						    <div>
-						    policy1
-						    <button name="delate" value="delate">delate</button>
+						    <div class="alarm" id="{{p}}" onClick="setWindow(this.id)">
+						    There is no policy now. Click to add.
 						    </div>
 						    </td>
 						</tr>
 						
-						<tr>
-						    <td>pool2</td>
-						    <td>policy2</td>
-						</tr>
-						
 					</tbody>
 				</table>
+				
 
 			</div>
+			
+			
 		</div>
 		
-		
-		
-		
-	<div class="overlay" style=>
-	    <div id="alarm-dialog">
-	        <h2>Set alarm after</h2>
-	        <label class="hours">
-	            Hours
-	            <input type="number" value="0" min="0" />
-	        </label>
-	        <label class="minutes">
-	            Minutes
-	            <input type="number" value="0" min="0" />
-	        </label>
-	        <label class="seconds">
-	            Seconds
-	            <input type="number" value="0" min="0" />
-	        </label>
-	        <div class="button-holder">
-	            <a id="alarm-set" class="button blue">Set</a>
-	            <a id="alarm-clear" class="button red">Clear</a>
-	        </div>
-	        <a class="close"></a>
-    </div>
- 
-</div>
+		<div class="overlay" id="settime"> 
+        <div id="alarm-dialog"> 
+        	<div style="text-align:center; background-color:lightblue; font-size:30px; height:50px">PowerOn Policy Setting</div>
+        	<div id="menu" style="width:100px; height:460px; background-color:lightgray; margin-top:0px;">
+        		<ul>
+        			<li>Work Day:</li>
+        			<li>Repeat:</li>
+        			<li>Time:</li>
+        			<li></li>
+        			<li style="line-height:140px;">Interval:</li>
+        		</ul>
+        	</div>
+            
 
+		    <div style="margin-top:20px; text-align:center;">
+		    	<div id="Mon" class="week" style="margin-left:70px">
+		         <span>Mon</span>
+			    </div>
+			    <div style="float:left;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+			    <div id="Tues" class="week">
+			         <span>Tues</span>
+			    </div>
+			    <div style="float:left;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+			    <div id="Wed" class="week">
+			         <span>Wed</span>
+			    </div>
+			    <div style="float:left;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+			    <div id="Thur" class="week">
+			         <span>Thur</span>
+			    </div>
+			    <div style="float:left;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+			    <div id="Fri" class="week">
+			         <span>Fri</span>
+			    </div>
+			    <div style="float:left;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+			    <div id="Sat" class="week">
+			         <span>Sat</span>
+			    </div>
+			    <div style="float:left;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+			    <div id="Sun" class="week">
+			         <span>Sun</span>
+			    </div>
+		    </div>
+	    	
+		    <br /><br /><br /><br />
+            <!-- <h2>Repeat:</h2> -->
+		    
+		    <div style="margin-top:20px">
+		    <form action="" method="get"> 
+		    <label><input id="thisweek" name="repeat" type="radio" value="This Week" />This Week<span style="font-size:12px;">&nbsp;&nbsp;&nbsp;</span></label>
+		    <label><input id="everyweek" name="repeat" type="radio" value="Every Week" />Every Week</label> 
+		    </form> 
+		    </div>
+		    <!--<h2>Time:</h2>   -->
+		    <br />
+		    <div style="margin-top:20px">
+		    <label class="hours"> hour 
+                <input id="hour" type="number" value="0" min="0" max="23"/> 
+            </label> 
+            <label class="minutes">
+            minute
+                <input id="minute" type="number" value="0" min="0" max="59"/> 
+            </label> 
+            <label class="seconds">
+            second
+                <input id="second" type="number" value="0" min="0" max="59"/> 
+            </label> 
+            <!--  <h2>Interval:</h2> -->
+            </div>
+            
+           <br />
+             <form action="/example/html/form_action.asp" method="get">
+			  <p><input id="interval" type="number" value="60" min="0" sytle="float:left; margin-left:20px;"/>&nbsp;&nbsp;S</p>
+			</form>
+			<div>
+				<div class="button-holder"> 
+                <a id="alarm-set" class="button blue" onClick="setPolicy()">set</a>
+                <a id="alarm-clear" class="button red" onClick="clearPolicy()">Clear</a>
+	            </div> 
+			</div>
+            
+            <a class="close"></a> 
+        </div> 
+    </div> 
+		
+		
+	
+	<script src="./jtable/jquery.jtable.min.js"></script>
+	<script src="./js/powerpolicy.js"></script>
 
 </div>
 </body>

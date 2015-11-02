@@ -114,6 +114,7 @@
       <bean id="ConsoleRestController" class="com.vmware.horizontoolset.console.ConsoleRestController"/>
     <bean id="WebMKSController" class="com.vmware.horizontoolset.console.WebMKSController" />
        <bean id="PowerController" class="com.vmware.horizontoolset.power.PowerController" />
+       <bean id="PowerRestController" class="com.vmware.horizontoolset.power.PowerRestController" />
    
     <bean id="EventCache" class="com.vmware.horizon.auditing.db.EventDBCache" />
    

@@ -189,7 +189,7 @@ public class PolicyRestController {
 		if( gpoCache.profileNameExist(profileName) ){
 			return false;
 		}	//TODO delete
-		
+		 
 		if( !gpoCache.add2NameList(profileName,description) ){	
 			return false;
 		}

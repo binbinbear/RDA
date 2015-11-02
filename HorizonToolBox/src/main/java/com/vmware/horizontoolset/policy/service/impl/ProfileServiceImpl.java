@@ -103,7 +103,6 @@ public class ProfileServiceImpl implements ProfileService{
 
 		PolicyModel[] policies = JsonUtil.jsonToJava(policiesStr, PolicyModel[].class);
 		ProfileModel newPro = new ProfileModel(profileName, description, policies);  //String -> json
-		
 
 		String newProStr = JsonUtil.javaToJson(newPro);
 		return SharedStorageAccess.set(profileName, newProStr);
