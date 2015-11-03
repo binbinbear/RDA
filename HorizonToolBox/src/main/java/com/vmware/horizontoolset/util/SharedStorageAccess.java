@@ -1,5 +1,9 @@
 package com.vmware.horizontoolset.util;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
 import javax.naming.NameNotFoundException;
 import javax.naming.NamingException;
 import javax.naming.directory.Attribute;
@@ -72,7 +76,66 @@ public class SharedStorageAccess {
 		return namePrefix + key + ',' + namePostfix;
 	}
 	
-
+	
+	private static final String separator = "\\/\\/";
+	
+	public static List<String> getList(String key){
+		log.debug("SharedStorageAccess: using default context");
+		List<String> list =  Collections.emptyList();
+		String content = get(key);
+		if (content ==null){
+			return list;
+		}
+		
+		String[] array = content.split(separator);
+		for (int i=0;i<array.length;i++){
+			list.add(array[i]);
+		}
+		return list;
+	}
+	
+	public static void  setList(String key, List<String> values){
+		log.debug("SharedStorageAccess: using default context");
+		
+		StringBuffer buffer = new StringBuffer();
+		for (int i=0;i<values.size();i++){
+			if (i>0){
+				buffer.append(separator);
+			}
+			buffer.append(values.get(i));
+		}
+		set(key, new String(buffer));
+	}
+	
+	private static final String mapSeparator = ">=<";
+	
+	public static Map<String,String> getMap(String key){
+		log.debug("SharedStorageAccess: using default context");
+		Map<String, String> map = Collections.emptyMap();
+		List<String> content = getList(key);
+		if (content == null || content.size() == 0){
+			return map;
+		}
+		
+		for (String one: content){
+			String[] kv =one.split(mapSeparator);
+			map.put(kv[0], kv[1]);
+		}
+		
+		return map;
+	}
+	
+	public static void  setMap(String key, Map<String, String> map){
+		log.debug("SharedStorageAccess: using default context");
+		List<String> content = Collections.emptyList();
+		for (String mkey:map.keySet()){
+			content.add(mkey+mapSeparator+map.get(mkey));
+		}
+		
+		setList(key,content);
+	}
+	
+	
 	public static String get(String key) {
 		log.debug("SharedStorageAccess: using default context");
 		
