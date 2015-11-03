@@ -14,6 +14,14 @@ public class PowerOnJob implements CronJob{
 		this.cron = cron;
 	}
 	
+	public void setPoolName(String poolName){
+		this.poolName = poolName;
+	}
+	
+ 	public String getPoolName() {
+		return poolName;
+	}
+
 	public void setCron(String cron){
 		this.cron = cron;
 	}

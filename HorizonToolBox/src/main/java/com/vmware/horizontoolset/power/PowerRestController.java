@@ -16,39 +16,57 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.vmware.horizontoolset.policy.util.GpoCache;
 import com.vmware.horizontoolset.util.SessionUtil;
+import com.vmware.horizontoolset.util.SharedStorageAccess;
 
 
 @RestController
 public class PowerRestController {
 	private static Logger log = Logger.getLogger(PowerRestController.class);
-//	private static GpoCache gpoCache = null;
-//	
-//	public PowerRestController() {
-//		gpoCache = GpoCache.getInstance();
-//	}
+	private static List<PowerOnJob> poJobs = new ArrayList<PowerOnJob>();
 	
 	@RequestMapping("/pool/list")
 	public List<String> getPools(HttpSession session) {
 		List<String> pools = SessionUtil.getAllDesktopPools(session);
+		poJobs.clear();
 		for (int i = 0; i < pools.size(); i++) {
-			log.debug("power:" + pools.get(i));
+			poJobs.add(new PowerOnJob(pools.get(i), null));			
 		}
 		return pools;
 	}
 	
 	@RequestMapping(value = "/power/myajax")
-	public String addKeys(@RequestParam(value="content", required=true)String content ) {
+	public String postPolicy(@RequestParam(value="content", required=true)String content ) {
 	    //return "hello";
-//		if (gpoCache.saveProfile2Ldap("powerpolicy", "", content)) {
-//			content += "success";
-//		}
+		//SharedStorageAccess.set("powerpolicy", content);
+		content = content.substring(1, content.length()-1);
+		String[] policys = content.split(",");
+		for (int i = 0; i < policys.length; i++) {
+			String[] tmp = policys[i].split(":");
+			for (int j = 0; j < poJobs.size(); j++) {
+				if (poJobs.get(j).getPoolName().compareTo(tmp[0].substring(1, tmp[0].length()-1)) == 0) {
+					poJobs.get(j).setCron(tmp[1].substring(1, tmp[1].length()-1));
+					break;
+				}
+			}
+		}
+		
+		for (int i = 0; i < poJobs.size(); i++) {
+			log.debug("poJobs: poolNam : " + poJobs.get(i).getPoolName() + ", cron : " + poJobs.get(i).getCron());
+		}
 		return content;
 	}
 	
 	
 //	@RequestMapping(value = "/power/getpolicy")
 //	public String getPowerPolicy(@RequestParam(value="filename", required=true)String filename ) {
-//		return gpoCache.getProfileFromLdap(filename);
+//		String content = SharedStorageAccess.get(filename);
+//		return content;
 //	}
-//	
+	
+	@RequestMapping(value = "/power/getpolicy")
+	public String getPowerPolicy() {
+		String content = SharedStorageAccess.get("powerpolicy");
+		return content;
+	}
+	
 }

@@ -8,6 +8,7 @@ $.extend(true, $.hik.jtable.prototype.options, {
 });
 
 var powerpolicy = {};
+var cronpolicy = {};
 
 if (!window.ToolBox){
 	window.ToolBox= {};
@@ -15,7 +16,7 @@ if (!window.ToolBox){
 
 if (!ToolBox.Power) {
 	function powerController ($scope, $http){
-		$scope.powerpolicys = [];
+		$scope.powerpolicys = "";
 		$scope.reloadData = function(){
 			$(".loadingrow").attr("style","");
 			$scope.index = 1;
@@ -28,14 +29,17 @@ if (!ToolBox.Power) {
 			});
 			
 			
-//			var testJson;
+////			var testJson;
 //			$http.get('./power/getpolicy').success(function(data){
-//				testJson = eval("(" + data + ")");
+//				//testJson = eval("(" + data + ")");
+//				if (data == null) {
+//					document.getElementById('VC6').innerHTML = "1111";
+//				} else {
+//					document.getElementById('VC6').innerHTML = "2222";
+//				}
+//				
 //			});
-//			
-//			for (var key in testJson) {
-//				document.getElementById(key).innerHTML = testJson[key].toString();
-//			}
+
 			
 		 }; 
 		 $scope.reloadData();		 
@@ -98,53 +102,85 @@ function setWindow(id) {
 }
 
 function setPolicy() {
+	
+	var chooseWeek = false;
+	var cron = "";
+	cron += eval(document.getElementById('second')).value + " "
+		+ eval(document.getElementById('minute')).value + " " + eval(document.getElementById('hour')).value + " * * ";
+	
+	
 	var pp = "The VMs in pool will power on at ";
 	pp += eval(document.getElementById('hour')).value + ":" + eval(document.getElementById('minute')).value + ":" + eval(document.getElementById('second')).value
 	         + ", ";
 	if (document.getElementById('everyweek').checked){
+		//cron += "1 ";
 		pp += "every";
 	} else{
+		//cron == "0 ";
 		pp += "only this";
 	}
 	
 	if (document.getElementById('Mon').style.backgroundColor=='lightblue') {
 		pp += " " + document.getElementById('Mon').innerText;
+		cron += "1,";
+		chooseWeek = true;
 	}
 	if (document.getElementById('Tues').style.backgroundColor=='lightblue') {
 		pp += " " + document.getElementById('Tues').innerText;
+		cron += "2,";
+		chooseWeek = true;
 	}
 	if (document.getElementById('Wed').style.backgroundColor=='lightblue') {
 		pp += " " + document.getElementById('Wed').innerText;
+		cron += "3,";
+		chooseWeek = true;
 	}
 	if (document.getElementById('Thur').style.backgroundColor=='lightblue') {
 		pp += " " + document.getElementById('Thur').innerText;
+		cron += "4,";
+		chooseWeek = true;
 	}
 	if (document.getElementById('Fri').style.backgroundColor=='lightblue') {
 		pp += " " + document.getElementById('Fri').innerText;
+		cron += "5,";
+		chooseWeek = true;
 	}
 	if (document.getElementById('Sat').style.backgroundColor=='lightblue') {
 		pp += " " + document.getElementById('Sat').innerText;
+		cron += "6,";
+		chooseWeek = true;
 	}
 	if (document.getElementById('Sun').style.backgroundColor=='lightblue') {
 		pp += " " + document.getElementById('Sun').innerText;
+		cron += "0,";
+		chooseWeek = true;
 	}
-	
+	cron = cron.substring(0,cron.length-1);
 	pp += ", the interval is " + eval(document.getElementById('interval')).value + "s";
 	
 	document.getElementById(v_id).innerHTML = pp.toString();
 	
 	powerpolicy[v_id.toString()] = pp;
+	cronpolicy[v_id.toString()] = cron;
+	
+	if (chooseWeek == false) {
+		alert("Please choose the workday!");
+		return ;
+	}
+	
+	
 	
 	$("#settime").hide();
 	exitSetting();
-	testAjax();
+	postPolicys();
 }
 
 function clearPolicy() {
 	document.getElementById(v_id).innerHTML = 'There is no policy now. Click to add';
 	delete powerpolicy[v_id.toString()];
+	delete cronpolicy[v_id.toString()];
 	$("#settime").hide(); 
-	testAjax();
+	postPolicys();
 }
 
 
@@ -156,7 +192,6 @@ function exitSetting() {
 	document.getElementById("Fri").style.backgroundColor='lightgray';
 	document.getElementById("Sat").style.backgroundColor='lightgray';
 	document.getElementById("Sun").style.backgroundColor='lightgray';
-//	document.getElementById("thisweek").attr("checked", true);
 	document.getElementById("thisweek").checked = true;
 	document.getElementById("hour").value="0";
 	document.getElementById("minute").value="0";
@@ -164,29 +199,10 @@ function exitSetting() {
 	document.getElementById("interval").value="60";
 }
 
-//function testAjax() {
-//	var tmpList = [];
-//	tmpList[0] = "asdf";
-//	tmpList[1] = "1";
-//	$.ajax({
-//		url: "./power/myajax?content="+"asdf",
-//		
-//		success: function(data){alert(data);},
-//		failure: function(errMsg) {
-//			alert(errMsg);
-//		}
-//	});
-//	
-//}
 
-function testAjax() {
-//	var tmpList = {};
-//	tmpList['a'] = "asdf";
-//	tmpList['b'] = "1";
-//	tmpList['e'] = "qwer";
-//	delete tmpList['a'];
+function postPolicys() {
 	$.ajax({
-		url: "./power/myajax?content="+JSON.stringify(powerpolicy),
+		url: "./power/myajax?content="+JSON.stringify(cronpolicy),
 		success: function(data){alert(data);},
 		failure: function(errMsg) {
 			alert(errMsg);
