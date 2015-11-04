@@ -29,6 +29,7 @@ import com.vmware.vdi.vlsi.binding.vdi.resources.Desktop.CustomizationSettings;
 import com.vmware.vdi.vlsi.binding.vdi.resources.Desktop.DesktopInfo;
 import com.vmware.vdi.vlsi.binding.vdi.resources.Desktop.DesktopSummaryView;
 import com.vmware.vdi.vlsi.binding.vdi.resources.Farm.FarmInfo;
+import com.vmware.vdi.vlsi.binding.vdi.resources.Farm.FarmSummaryView;
 import com.vmware.vdi.vlsi.binding.vdi.resources.RDSServer.RDSServerSummaryView;
 import com.vmware.vdi.vlsi.binding.vdi.users.Session.SessionLocalSummaryView;
 import com.vmware.vdi.vlsi.binding.vdi.utils.ADContainer;
@@ -241,12 +242,12 @@ public class ViewQueryService {
 		return Query.count(this._connection, SessionLocalSummaryView.class, filter);
 	}
 
-	private List<FarmInfo> farminfolist ;
+	private List<FarmSummaryView> farminfolist ;
 	public List<SessionFarm> getAllSessionFarms() {
 		log.debug("Start to query farms");
 		List<SessionFarm> list = new ArrayList<SessionFarm>();
 		if (farminfolist == null){
-			farminfolist = this.getAllObjects(FarmInfo.class);
+			farminfolist = this.getAllObjects(FarmSummaryView.class);
 		}
 		
 		
@@ -255,7 +256,7 @@ public class ViewQueryService {
 	            return list;
 	    }
 	    
-	    for (FarmInfo farm: farminfolist){
+	    for (FarmSummaryView farm: farminfolist){
 	    	list.add(new SessionFarmImpl(farm, this.getAppSessionCount(farm.id)));
 	    }
 	    
@@ -319,10 +320,10 @@ public class ViewQueryService {
 	
 	public List<Farm>  getAllFarms(){
 		if (farminfolist == null){
-			farminfolist = this.getAllObjects(FarmInfo.class);
+			farminfolist = this.getAllObjects(FarmSummaryView.class);
 		}
 		List<Farm> farms = new ArrayList<Farm>();
-		for (FarmInfo info: farminfolist){
+		for (FarmSummaryView info: farminfolist){
 			farms.add(new BasicFarm(info));
 		}
 		return farms;

@@ -1,7 +1,7 @@
 package com.vmware.horizontoolset.viewapi.impl;
 
 import com.vmware.horizontoolset.viewapi.SessionFarm;
-import com.vmware.vdi.vlsi.binding.vdi.resources.Farm.FarmInfo;
+import com.vmware.vdi.vlsi.binding.vdi.resources.Farm.FarmSummaryView;
 
 public class SessionFarmImpl implements SessionFarm{
 
@@ -43,8 +43,8 @@ public class SessionFarmImpl implements SessionFarm{
 		this.sessionCount = count;
 	}
 	
-	public SessionFarmImpl(FarmInfo info, int sessionCount){
-		this.farmname = info.data.displayName;
+	public SessionFarmImpl(FarmSummaryView info, int sessionCount){
+		this.farmname = info.data.name;
 		this.sessionCount = sessionCount;
 	}
 	@Override
