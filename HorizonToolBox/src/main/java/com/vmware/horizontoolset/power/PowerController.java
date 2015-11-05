@@ -1,7 +1,5 @@
 package com.vmware.horizontoolset.power;
 
-import java.util.UUID;
-
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
@@ -15,13 +13,9 @@ import com.vmware.horizontoolset.Application;
 public class PowerController {
 	private static final String view = "power";
 
-    
     @RequestMapping(value="/power", method=RequestMethod.GET)
     public String get(Model model, HttpSession session) {
-    	//model.addAttribute("translatedJsonURL", SessionUtil.getTranslatedJsonURL(session));
-        model.addAttribute("view", view);
-        //model.addAttribute("user", SessionUtil.getuser(session));
-        
+        model.addAttribute("view", view); 
     	return Application.MAINPAGE;
     }
 }

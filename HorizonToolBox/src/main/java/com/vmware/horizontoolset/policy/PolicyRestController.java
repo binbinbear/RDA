@@ -138,7 +138,7 @@ public class PolicyRestController {
 		ret.Records=profiles.toArray();
 		ret.TotalRecordCount=profiles.size();
 		log.debug("[DEBUG ] ret: " + ret.toString());
-		//add by wx
+
 		if(ret.Records.length > 0) {
 			log.debug("[ret] " + ret.Records[0].toString());
 		}

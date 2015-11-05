@@ -50,8 +50,6 @@ public class PolicyController {
 			@RequestParam(value="selected[]", required=false) String[] selected,
 			HttpServletRequest request) {
 		String response = "";
-		
-		//add by wx 9-15
 	    String sysDriver = System.getProperty("user.home");
 	    sysDriver = sysDriver.substring(0, sysDriver.indexOf(":"));
 		
@@ -60,8 +58,6 @@ public class PolicyController {
 			switch (cmd) {
 			case "get-records":
 				//To-do: remvoe hardcode later
-				
-				//add by wx 9-15
 				response = readFile(sysDriver + ":\\temp\\test.json");
 				//response = readFile("c:\\temp\\test.json");
 				break;
@@ -71,8 +67,6 @@ public class PolicyController {
 				
 				try {
 					//To-do: remvoe hardcode later
-					
-					//add by wx 9-15
 					Object obj = parser.parse(new FileReader(sysDriver + ":\\temp\\test.json"));
 					//Object obj = parser.parse(new FileReader("c:\\temp\\test.json"));
 					JSONObject jsonObject = (JSONObject) obj;
@@ -99,7 +93,6 @@ public class PolicyController {
 					jsonObject.put("records", newRecords);	
 					
 					//To-do: remvoe hardcode later
-					//add by wx 9-15
 					FileWriter file = new FileWriter(sysDriver + ":\\temp\\test.json");
 					//FileWriter file = new FileWriter("c:\\temp\\test.json");
 					file.write(jsonObject.toJSONString());
@@ -114,12 +107,10 @@ public class PolicyController {
 					e.printStackTrace();
 				}
 				
-				//add by wx 9-15
 				response = readFile(sysDriver + ":\\temp\\test.json");
 				//response = readFile("c:\\temp\\test.json");
 				break;
 			default:
-				//add by wx 9-15
 				response = readFile(sysDriver + ":\\temp\\test.json");
 				//response = readFile("c:\\temp\\test.json");
 			}
@@ -153,7 +144,6 @@ public class PolicyController {
 		
 		try {
 			//To-do: remvoe hardcode later
-			//add by wx 9-15
 			String sysDriver = System.getProperty("user.home");
 		    sysDriver = sysDriver.substring(0, sysDriver.indexOf(":"));
 			Object obj = parser.parse(new FileReader(sysDriver + ":\\temp\\test.json"));
@@ -182,7 +172,6 @@ public class PolicyController {
 			jsonObject.put("records", newRecords);	
 			
 			//To-do: remvoe hardcode later
-			//add by wx 9-15
 			FileWriter file = new FileWriter(sysDriver + ":\\temp\\test.json");
 			//FileWriter file = new FileWriter("c:\\temp\\test.json");
 			file.write(jsonObject.toJSONString());

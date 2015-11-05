@@ -404,11 +404,8 @@ th.header div{
 
 
 /*-------------------------
-	Alarm Dialog
+	Power Policy
 --------------------------*/
-
-
-/* Hide the arrows dispayed in number inputs in webkit */
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
@@ -427,10 +424,9 @@ input::-webkit-inner-spin-button {
 	z-index:10;
 }
 
-#alarm-dialog, 
-#time-is-up{
+#set-dialog{
 	width:700px;
-	height:510px;
+	height:410px;
 	background-color:#fff;
 	border-radius:2px;
 	box-shadow: 0 0 8px rgba(0,0,0,0.2);
@@ -441,7 +437,7 @@ input::-webkit-inner-spin-button {
 	text-align:center;
 }
 
-#alarm-dialog h2{
+#set-dialog h2{
 	text-transform: uppercase;
 	font-size:18px;
 	color:#5e6268;
@@ -449,7 +445,7 @@ input::-webkit-inner-spin-button {
 	margin-left:20px;
 }
 
-#alarm-dialog >div>label{
+#set-dialog >div>label{
 	text-transform: uppercase;
 	background-color: #f4f4f4;
 	width: 80px;
@@ -460,7 +456,7 @@ input::-webkit-inner-spin-button {
 	margin: 4px;
 }
 
-#alarm-dialog>div>label>input{
+#set-dialog>div>label>input{
 	display: block;
 	border: 0;
 	font: inherit;
@@ -473,12 +469,12 @@ input::-webkit-inner-spin-button {
 	background-color:#fff;
 }
 
-#alarm-dialog .button-holder{
+#set-dialog .button-holder{
 	padding-top: 50px;
 	padding-bottom:0;
 }
 
-#alarm-dialog .button-holder .button{
+#set-dialog .button-holder .button{
 	box-shadow:0 2px 2px #eee;
 	padding:13px 22px;
 	margin:3px;
@@ -486,25 +482,21 @@ input::-webkit-inner-spin-button {
 
 .button.blue{
 	background-color:#82cddd;
-
 	background-image:-webkit-linear-gradient(top, #86d3e4, #82cddd);
 	background-image:-moz-linear-gradient(top, #86d3e4, #82cddd);
 	background-image:linear-gradient(top, #86d3e4, #82cddd);
-
 	border-color:#72c1d2;
 }
 
 .button.red{
 	background-color:#ff8080;
-
 	background-image:-webkit-linear-gradient(top, #86d3e4, #82cddd);
 	background-image:-moz-linear-gradient(top, #86d3e4, #82cddd);
 	background-image:linear-gradient(top, #86d3e4, #82cddd);
-
 	border-color:#72c1d2;
 }
 
-#alarm-dialog .close{
+#set-dialog .close{
 	width: 36px;
 	height: 36px;
 	background: url('../img/close.png');
@@ -518,7 +510,7 @@ form label{
 	display: inline-block;
 }
 
-#alarm-dialog .week{
+#set-dialog .week{
 	float:left;
 	width:50px;
 	height:50px;
@@ -526,7 +518,7 @@ form label{
 	border-radius:25px;
 }
 
-#alarm-dialog .week span{
+#set-dialog .week span{
 	height:50px;
 	line-height:50px;
 	display:block;
@@ -534,7 +526,7 @@ form label{
 	text-align:center;
 }
 
-#alarm-dialog div>ul>li{
+#set-dialog div>ul>li{
 	font-size:18px;
 	color:black;
 	line-height:70px;

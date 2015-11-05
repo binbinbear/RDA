@@ -5,12 +5,14 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
+import org.quartz.SchedulerException;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.vmware.horizontoolset.util.CronScheduler;
 
-
+@RestController
 public class PowerScheduleRestController {
 
 	private CronScheduler<PowerOnJob> scheduler;
@@ -38,7 +40,7 @@ public class PowerScheduleRestController {
 	    		int n = Integer.parseInt(interval);
 	    		PowerOnJob job = new PowerOnJob(poolName, cron, n);
 	    		scheduler.addOrUpdateCron(job);
-	    		return "successful";
+	    		return "successful ";
 	    	} catch (Exception e) {
 	    		log.warn("Error updating app limit.", e);
 	    		return "failed";
@@ -47,9 +49,8 @@ public class PowerScheduleRestController {
 	
 	  @RequestMapping("/power/all")
 	    public List<PowerOnJob> getAllPowerPolicies(HttpSession session) {
-		 
-		    return this.scheduler.getAllJobs();
-		 	
-
+		  return this.scheduler.getAllJobs();
 		}
+	  
+	  
 }

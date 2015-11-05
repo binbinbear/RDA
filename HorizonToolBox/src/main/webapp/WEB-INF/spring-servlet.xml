@@ -44,12 +44,12 @@
   </bean>   
   <bean id="loginController" class="com.vmware.horizontoolset.LoginController">
    <property name="server"> 
-            <value>10.112.118.30</value>
+            <value>localhost</value>
             </property> 
             
             <!-- please make sure this is false when publishing -->
             <property name="remoteDebug">
-            	<value>true</value>
+            	<value>false</value>
             </property>
             <property name="matchedVersions">
             	<array>
@@ -115,7 +115,8 @@
     <bean id="WebMKSController" class="com.vmware.horizontoolset.console.WebMKSController" />
        <bean id="PowerController" class="com.vmware.horizontoolset.power.PowerController" />
        <bean id="PowerRestController" class="com.vmware.horizontoolset.power.PowerRestController" />
-   
+   	<bean id="PowerScheduleRestController" class="com.vmware.horizontoolset.power.PowerScheduleRestController" />
+   	
     <bean id="EventCache" class="com.vmware.horizon.auditing.db.EventDBCache" />
    
    

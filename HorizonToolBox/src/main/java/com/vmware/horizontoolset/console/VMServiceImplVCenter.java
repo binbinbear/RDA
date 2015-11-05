@@ -235,8 +235,6 @@ public class VMServiceImplVCenter implements VMService {
 			log.info("Connection is ready");
 			ServiceInstance service = vc.getServiceInstance();
 			
-			
-			
 			ManagedObjectReference vmMor = findVM(service, path);
 			VirtualMachine vm = new VirtualMachine(service.getServerConnection(), vmMor);
 			return vm.getRuntime().getPowerState().toString().toLowerCase();

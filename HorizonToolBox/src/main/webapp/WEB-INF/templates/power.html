@@ -7,9 +7,9 @@
 <title>Power</title>
 </head>
 <body>
-<div id="power" th:fragment="fragment"> 
-
-	<h3 class="pageHeader">
+	<div id="power" th:fragment="fragment"> 
+	
+		<h3 class="pageHeader">
 			<table border="0" cellpadding="0" cellspacing="0" width="100%">
 				<tbody>
 					<tr>
@@ -25,12 +25,7 @@
 		</h3>
 		
 		<div ng-controller="powerCtrl">
-		
 			<div class="scrollarea list" style="width: 100%; height:auto!important; height:350px; min-height:350px">
-
-
-
-
 
 <style type="text/css">
 .dataTable td.vmNameColumn {
@@ -50,9 +45,6 @@
 	margin-right: 10px;
 	margin-bottom: 14px;
 }
-
-
-
 
 #refreshData {
 	display: none;
@@ -80,8 +72,7 @@
 </style>
 
 				
-				<table id="forQaVmsTable" class="dataTable searchResultsTable"
-					cellspacing="0">
+				<table id="forQaVmsTable" class="dataTable searchResultsTable" cellspacing="0">
 					<thead>
 						<tr>
 							<th class="sorted order1" id="poolname"  style="width:30%;">PoolName</th>
@@ -92,7 +83,6 @@
 						<tr id="loading" class="loadingrow">
 						    <td></td>
 							<td class="alarm"></td>
-							
 						</tr>
 						<tr ng-repeat="p in powerpolicys">
 						    <td><div>{{p}}</div></td>
@@ -102,106 +92,80 @@
 						    </div>
 						    </td>
 						</tr>
-						
 					</tbody>
 				</table>
-				
-
 			</div>
-			
-			
 		</div>
 		
 		<div class="overlay" id="settime"> 
-        <div id="alarm-dialog"> 
-        	<div style="text-align:center; background-color:lightblue; font-size:30px; height:50px">PowerOn Policy Setting</div>
-        	<div id="menu" style="width:100px; height:460px; background-color:lightgray; margin-top:0px;">
-        		<ul>
-        			<li>Work Day:</li>
-        			<li>Repeat:</li>
-        			<li>Time:</li>
-        			<li></li>
-        			<li style="line-height:140px;">Interval:</li>
-        		</ul>
-        	</div>
-            
-
-		    <div style="margin-top:20px; text-align:center;">
-		    	<div id="Mon" class="week" style="margin-left:70px">
-		         <span>Mon</span>
+	        <div id="set-dialog"> 
+	        	<div style="text-align:center; background-color:lightblue; font-size:30px; height:50px">PowerOn Policy Setting</div>
+	        	<div id="menu" style="width:100px; height:360px; background-color:lightgray; margin-top:0px;">
+	        		<ul>
+	        			<li>Work Day:</li>
+	        			<li>Time:</li>
+	        			<li></li>
+	        			<li style="line-height:140px;">Interval:</li>
+	        		</ul>
+	        	</div>
+	            
+			    <div style="margin-top:20px; text-align:center;">
+			    	<div id="Mon" class="week" style="margin-left:70px">
+			        	<span>Mon</span>
+				    </div>
+				    <div style="float:left;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+				    <div id="Tues" class="week">
+				    	<span>Tues</span>
+				    </div>
+				    <div style="float:left;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+				    <div id="Wed" class="week">
+				    	<span>Wed</span>
+				    </div>
+				    <div style="float:left;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+				    <div id="Thur" class="week">
+				    	<span>Thur</span>
+				    </div>
+				    <div style="float:left;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+				    <div id="Fri" class="week">
+				    	<span>Fri</span>
+				    </div>
+				    <div style="float:left;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+				    <div id="Sat" class="week">
+				    	<span>Sat</span>
+				    </div>
+				    <div style="float:left;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+				    <div id="Sun" class="week">
+				    	<span>Sun</span>
+				    </div>
 			    </div>
-			    <div style="float:left;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-			    <div id="Tues" class="week">
-			         <span>Tues</span>
+			    <br /><br /><br /><br />
+			    <!-- <div style="margin-top:20px">
+				    <form action="" method="get"> 
+					    <label><input id="thisweek" name="repeat" type="radio" value="This Week" />This Week<span style="font-size:12px;">&nbsp;&nbsp;&nbsp;</span></label>
+					    <label><input id="everyweek" name="repeat" type="radio" value="Every Week" />Every Week</label> 
+				    </form> 
 			    </div>
-			    <div style="float:left;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-			    <div id="Wed" class="week">
-			         <span>Wed</span>
-			    </div>
-			    <div style="float:left;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-			    <div id="Thur" class="week">
-			         <span>Thur</span>
-			    </div>
-			    <div style="float:left;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-			    <div id="Fri" class="week">
-			         <span>Fri</span>
-			    </div>
-			    <div style="float:left;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-			    <div id="Sat" class="week">
-			         <span>Sat</span>
-			    </div>
-			    <div style="float:left;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-			    <div id="Sun" class="week">
-			         <span>Sun</span>
-			    </div>
-		    </div>
-	    	
-		    <br /><br /><br /><br />
-            <!-- <h2>Repeat:</h2> -->
-		    
-		    <div style="margin-top:20px">
-		    <form action="" method="get"> 
-		    <label><input id="thisweek" name="repeat" type="radio" value="This Week" />This Week<span style="font-size:12px;">&nbsp;&nbsp;&nbsp;</span></label>
-		    <label><input id="everyweek" name="repeat" type="radio" value="Every Week" />Every Week</label> 
-		    </form> 
-		    </div>
-		    <!--<h2>Time:</h2>   -->
-		    <br />
-		    <div style="margin-top:20px">
-		    <label class="hours"> hour 
-                <input id="hour" type="number" value="0" min="0" max="23"/> 
-            </label> 
-            <label class="minutes">
-            minute
-                <input id="minute" type="number" value="0" min="0" max="59"/> 
-            </label> 
-            <label class="seconds">
-            second
-                <input id="second" type="number" value="0" min="0" max="59"/> 
-            </label> 
-            <!--  <h2>Interval:</h2> -->
-            </div>
-            
-           <br />
-             <form action="/example/html/form_action.asp" method="get">
-			  <p><input id="interval" type="number" value="60" min="0" sytle="float:left; margin-left:20px;"/>&nbsp;&nbsp;S</p>
-			</form>
-			<div>
-				<div class="button-holder"> 
-                <a id="alarm-set" class="button blue" onClick="setPolicy()">set</a>
-                <a id="alarm-clear" class="button red" onClick="clearPolicy()">Clear</a>
-	            </div> 
-			</div>
-            
-            <a class="close"></a> 
-        </div> 
-    </div> 
-		
-		
-	
+			    <br />-->
+			    <div style="margin-top:20px">
+				    <label class="hours"> hour<input id="hour" type="number" value="0" min="0" max="23"/></label> 
+		            <label class="minutes">minute<input id="minute" type="number" value="0" min="0" max="59"/></label> 
+		            <label class="seconds">second<input id="second" type="number" value="0" min="0" max="59"/></label> 
+	            </div>
+	            <br />
+				<form action="/example/html/form_action.asp" method="get">
+					<p><input id="interval" type="number" value="60" min="0" sytle="float:left; margin-left:20px;"/>&nbsp;&nbsp;S</p>
+				</form>
+				<div>
+					<div class="button-holder"> 
+		                <a id="alarm-set" class="button blue" onClick="setPolicy()">set</a>
+		                <a id="alarm-clear" class="button red" onClick="clearPolicy()">Clear</a>
+		            </div> 
+				</div>
+	            <a class="close"></a> 
+	        </div> 
+	    </div> 
 	<script src="./jtable/jquery.jtable.min.js"></script>
 	<script src="./js/powerpolicy.js"></script>
-
-</div>
+	</div>
 </body>
 </html>

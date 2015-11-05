@@ -55,19 +55,15 @@ public class PowerOnJob implements CronJob{
     			log.error("Cant' get api service");
     			return;
     		}
-    		
     		operator = new ViewOperator(api.getConn());
     		VDIContext vdiCtx = VDIContextFactory.defaultVDIContext();
     		com.vmware.horizontoolset.viewapi.operator.DesktopPool pool = operator.getDesktopPool(this.poolName);
-    		
     		if (pool == null){
     			log.error("Can't find the pool with name:"+ this.poolName);
     			return;
     		}
     		List<Machine> machines = pool.machines.get(); 
-    		
     		if (machines==null || machines.size() == 0){
-
     			log.error("Can't find vm in the pool:"+ this.poolName);
     			return;
     			
@@ -93,7 +89,6 @@ public class PowerOnJob implements CronJob{
 	    		
 	    		VMServiceImplVCenter vmservice = new VMServiceImplVCenter(vdiCtx , vcname , minfo.managedMachineData.getVirtualCenterData().path);
 	    		vmservice.poweron();
-	    		
 	    		Thread.sleep(getInterval());
     		}
     		api.close();
@@ -123,8 +118,5 @@ public class PowerOnJob implements CronJob{
 	public String getKey() {
 		return this.poolName;
 	}
-
-
-
-
+	
 }

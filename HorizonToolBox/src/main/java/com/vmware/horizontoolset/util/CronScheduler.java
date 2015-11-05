@@ -18,6 +18,8 @@ import org.quartz.TriggerBuilder;
 
 import org.quartz.impl.StdSchedulerFactory;
 
+import com.vmware.horizontoolset.power.PowerOnJob;
+
 
 
 public class CronScheduler<T extends CronJob> {
@@ -66,8 +68,6 @@ public class CronScheduler<T extends CronJob> {
 	public void removeCron(String id) throws SchedulerException{
 		scheduler.deleteJob(JobKey.jobKey(id));
 	}
-	
-	
 	
 }
 
