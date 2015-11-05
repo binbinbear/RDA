@@ -2,9 +2,17 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>ERROR</title>
 </head>
 <body>
-Some error happens.
+<p>Some error happens. </p>
+<p>This may caused by session time out or invalid operation.</p>
+<p>You will be redirected to login page in several seconds</p>
+ <script type="text/javascript">
+ setTimeout(function(){
+	 window.location.href = "./Logout"; 
+ },3000);
+
+ </script>
 </body>
 </html>

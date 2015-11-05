@@ -3,7 +3,6 @@ package com.vmware.vdi.admin.be.events;
 /**
  * It defines the sources for event object in admin console.
  *
- * @author dliu
  *
  */
 public class AdminEventSource {

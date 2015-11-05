@@ -9,7 +9,6 @@ import com.vmware.vdi.events.enums.EventSeverity;
 /**
  * The interface IAdminEventProvider defines the APIs for event sources.
  *
- * @author dliu
  *
  */
 public interface AdminEventProvider {

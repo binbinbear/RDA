@@ -53,11 +53,10 @@
             </property>
             <property name="matchedVersions">
             	<array>
-            		<value>6.0.0</value>
-            		<value>6.0.1</value>
-            		<value>6.0.2</value>
+            		<value>6.0</value>            		
             		<value>6.1</value>
             		<value>6.2</value>
+            		<value>6.3</value>
             	</array>
             </property>
   </bean>
@@ -82,10 +81,12 @@
  
    <bean id="remoteAssistController" class="com.vmware.horizontoolset.ra.RemoteAssistController"/>
    <bean id="remoteAssistRestController" class="com.vmware.horizontoolset.ra.RemoteAssistRestController"/>
+      <!-- 
    <bean id="deviceFilterController" class="com.vmware.horizontoolset.device.controller.DeviceFilterController"/>
    <bean id="deviceFilterRestController" class="com.vmware.horizontoolset.device.controller.DeviceFilterRestController"/>
-   <bean id="policyController" class="com.vmware.horizontoolset.PolicyController"/>
 
+   <bean id="policyController" class="com.vmware.horizontoolset.PolicyController"/>
+ -->
    <bean id="SessionMsgRestController" class="com.vmware.horizontoolset.SessionMsgRestController"/>
    <!--  
    <bean id="EmailController" class="com.vmware.horizontoolset.email.EmailController"/>
@@ -104,10 +105,12 @@
    <bean id="limitRestController" class="com.vmware.horizontoolset.limit.LimitRestController"/>
 
    
-   
    <bean id="infoRestController" class="com.vmware.horizontoolset.ProductInfoRestController"/>
    
-  <!--  <bean id="PolicyRestNewController" class="com.vmware.horizontoolset.policy.PolicyRestController"/>  -->
+   <!-- 
+   <bean id="PolicyRestNewController" class="com.vmware.horizontoolset.policy.PolicyRestController"/>
+    -->
+
    
       <bean id="ConsoleController" class="com.vmware.horizontoolset.console.ConsoleController"/>
    
@@ -126,7 +129,6 @@
    
         <task:scheduled ref="EventCache" method="updateCache" cron="0 0 * * * ?"/>   
         
-         <task:scheduled ref="clientrestController" method="updateCachedReport" cron="0 0 1 * * ?"/>  
        <!--   <task:scheduled ref="limitRestController" method="refresh" cron="0 30 * * * ?"/> -->
    </task:scheduled-tasks>  
    
@@ -143,13 +145,5 @@
       <property name="config" ref="rewriter"/>
     </bean>
     
-
-    
-    
-   <!-- Execute once a day on 1:00 am , Seconds Minutes Hours DayofMonth Month DayofWeek -->
-	<!-- Power Cron Trigger, 0 0 8 ? * MON-FRI  default is 8:00 every working days -->
-
-    
-   
    
 </beans>

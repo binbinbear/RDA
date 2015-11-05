@@ -32,7 +32,6 @@ import com.vmware.vdi.events.server.forwarders.database.connectors.EventDBConnec
  * The class AdminEventDatabase provides the functionalities to retrieve event
  * data from database.
  *
- * @author dliu
  *
  */
 public class AdminEventDatabase extends DBConnection {

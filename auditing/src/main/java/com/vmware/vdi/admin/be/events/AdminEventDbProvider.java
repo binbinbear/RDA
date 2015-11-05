@@ -25,7 +25,6 @@ import com.vmware.vdi.events.server.forwarders.database.connectors.EventDBConnec
  * The class AdminEventLogProvider provides the functionalities to retrieve
  * event data from database.
  *
- * @author dliu
  *
  */
 public class AdminEventDbProvider implements AdminEventProvider {

@@ -39,6 +39,9 @@ public class EventDBCache {
 		lastCachedTime = -1;
 	}
 
+	public static long getLastCachedTime(){
+		return lastCachedTime;
+	}
 	
 	public static void updateCache(){
 		try {

@@ -3,7 +3,6 @@ package com.vmware.vdi.admin.be.events;
 /**
  * It defines what kind of events need to be displayed on admin's screen.
  *
- * @author dliu
  *
  */
 public class AdminEventFilter {
