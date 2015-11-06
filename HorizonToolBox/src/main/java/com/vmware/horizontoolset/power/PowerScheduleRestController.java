@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vmware.horizontoolset.util.CronScheduler;
+import com.vmware.horizontoolset.util.SessionUtil;
 
 @RestController
 public class PowerScheduleRestController {
@@ -49,7 +50,16 @@ public class PowerScheduleRestController {
 	
 	  @RequestMapping("/power/all")
 	    public List<PowerOnJob> getAllPowerPolicies(HttpSession session) {
-		  return this.scheduler.getAllJobs();
+		  List<PowerOnJob> alljobs = this.scheduler.getAllJobs();
+		  List<String> pools = SessionUtil.getAllDesktopPools(session);
+		  for (String pool:pools){
+			  PowerOnJob j = new PowerOnJob(pool);
+			  if (!alljobs.contains(j)){
+				  alljobs.add(j);
+			  }
+		  }
+		  
+		  return alljobs;
 		}
 	  
 	  

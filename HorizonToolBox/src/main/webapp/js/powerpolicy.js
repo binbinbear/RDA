@@ -7,166 +7,177 @@ $.extend(true, $.hik.jtable.prototype.options, {
 	}
 });
 
-var powerpolicydisplay = {};
-var cronpolicy = {};
 
 if (!window.ToolBox){
 	window.ToolBox= {};
 }
 
-if (!ToolBox.Power) {
+if (!ToolBox.PowerPolicy) {
+	function ToText(cron){
+		//Seconds Minutes Hours DayofMonth Month DayofWeek
+		var crons = cron.split(" ");
+		for (var i=0;i<2;i++){
+			if (crons[i].length<2){
+				crons[i] = "0" + crons[i];
+			}
+		}
+		
+		var text = crons[2] + ":" + crons[1]+":"+crons[0] + " at every"
+		
+		
+		var weekdays = crons[5].split(",");
+		
+		for (var i=0;i<weekdays.length;i++){
+			text = text +" " + weekdays[i];
+		}
+		return text;
+	}
+	
 	function powerController ($scope, $http){
 		$scope.powerpolicys = "";
 		$scope.reloadData = function(){
 			$(".loadingrow").attr("style","");
 			$scope.index = 1;
-			$http.get('./pool/list').success(function(data){
+			$http.get('./power/all').success(function(data){
 				$(".loadingrow").attr("style","display:none");
 				if(data){	
-					$scope.powerpolicys = data;
+					for (var i=0;i<data.length;i++){
+						if (data[i].cron == null || data[i].cron == ""){
+							data[i].crontext = "No Power Policy";
+						}else{
+							data[i].crontext = ToText(data[i].cron);
+						}
+					}
+					
+					$scope.powerpolicys =  data;
 				}
 			});
 		 }; 
-		 $scope.reloadData();		 
+		 $scope.reloadData();		
+		 $scope.editPolicy = ToolBox.PowerPolicy.loadPolicy;
 	}
 
-	ToolBox.Power = {
+	ToolBox.PowerPolicy = {
 		controller: ToolBox.NgApp.controller('powerCtrl', powerController)
 
 	};
-	ToolBox.Power.init = function() {
+	
+	
+	ToolBox.PowerPolicy.loadPolicy = function(poweronjob){
+		 console.log("edit pool:"+poweronjob.poolName);
+		  $("#desktopName").text(poweronjob.poolName);
+		var cron = poweronjob.cron;
+		if (cron ==null || cron==""){
+			ToolBox.PowerPolicy._clearPolicy();
+			
+		}else{
+			var interval = poweronjob.interval;
+			$("#interval").val(interval);
+			
+			//Seconds Minutes Hours DayofMonth Month DayofWeek
+			var crons = cron.split(" ");
+			$('#second').val(crons[0]);
+			$('#minute').val(crons[1]);
+			$('#hour').val(crons[2]);
+			
+			var weekdays = crons[5].split(",");
+			
+			for (var i=0;i<weekdays.length;i++){
+				$("#"+weekdays[i]).addClass("wselected");
+			}
+		}
+		
+		
+		
+		$("#policyDialog").show();
+	}
+	
+	ToolBox.PowerPolicy._clearPolicy = function(){
+
+		$(".wselected").removeClass("wselected");
+
+		document.getElementById("hour").value="0";
+		document.getElementById("minute").value="0";
+		document.getElementById("second").value="0";
+		document.getElementById("interval").value="60";
+	
+	}
+	
 
 
+	ToolBox.PowerPolicy._sendToServer = function addOrUpdatePolicy(poolname, cron, interval) {
+		$.ajax({
+			url: "./power/update",
+			data: {poolName:poolname, cron:cron, interval:interval},
+			success: function(data){
+				alert("Successful! This page will be refreshed.");
+				window.location.reload();
+			},
+			failure: function(errMsg) {
+				alert("Failed, this page will be refreshed.");
+				window.location.reload();
+			}
+		});
+		
+	}
+	
+	ToolBox.PowerPolicy.setPolicy = function() {
+		//TODO: check values
+		var chooseWeek = false;
+		var cron = "";
+		cron += $('#second').val() + " "
+			+ $('#minute').val() + " " + $('#hour').val() + " ? * ";
+
+		
+		var allselected = $(".wselected");
+		if(allselected.length == 0){
+			alert("Please select at least one weekday");
+			return;
+		}
+		
+		for (var i=0;i<allselected.length;i++){
+			cron += allselected[i].id;
+			if (i<allselected.length-1){
+				cron += ","
+			}
+		}
+		
+		
+		$("#policyDialog").hide();
+		
+		ToolBox.PowerPolicy._sendToServer($("#desktopName").text(),cron, $("#interval").val());
+		
+		
+		
+	}
+	
+	
+	ToolBox.PowerPolicy.init = function() {
+		 $('a.close').click(function(){ 
+		        $("#policyDialog").hide(); 
+		        ToolBox.PowerPolicy._clearPolicy();
+		    }); 
+		 $('.week').click(function(){		
+				if(this.classList.contains("wselected")){
+					this.classList.remove("wselected");
+				}else{
+					this.classList.add("wselected");
+				}
+			});
+		 
+		 $('#setPolicy').click(ToolBox.PowerPolicy.setPolicy);
 	};
 	
-	
-}
-$(window).load(ToolBox.Power.init);
 
-$(function(){  
-	var v_id;
-	$('.week').click(function(){		
-		if(this.style.backgroundColor=='lightgray'){
-			this.style.backgroundColor='lightblue';
-		}else{
-			this.style.backgroundColor='lightgray';
-		}
-	});
- 
-    $('a.close').click(function(){ 
-        $("#settime").hide(); 
-    }); 
-    
-}); 
-
-function setWindow(id) {
-	v_id = id;
-	$("#settime").show(); 
-}
-
-function setPolicy() {
-	var chooseWeek = false;
-	var cron = "";
-	cron += eval(document.getElementById('second')).value + " "
-		+ eval(document.getElementById('minute')).value + " " + eval(document.getElementById('hour')).value + " ? * ";
-	var pp = "The VMs in pool will power on at ";
-	pp += eval(document.getElementById('hour')).value + ":" + eval(document.getElementById('minute')).value + ":" + eval(document.getElementById('second')).value
-	         + ", ";
 	
-//	if (document.getElementById('everyweek').checked){
-//		//cron += "1 ";
-//		pp += "every";
-//	} else{
-//		//cron == "0 ";
-//		pp += "only this";
-//	}
-	
-	if (document.getElementById('Mon').style.backgroundColor=='lightblue') {
-		pp += " " + document.getElementById('Mon').innerText;
-		cron += "MON,";
-		chooseWeek = true;
-	}
-	if (document.getElementById('Tues').style.backgroundColor=='lightblue') {
-		pp += " " + document.getElementById('Tues').innerText;
-		cron += "TUES,";
-		chooseWeek = true;
-	}
-	if (document.getElementById('Wed').style.backgroundColor=='lightblue') {
-		pp += " " + document.getElementById('Wed').innerText;
-		cron += "WED,";
-		chooseWeek = true;
-	}
-	if (document.getElementById('Thur').style.backgroundColor=='lightblue') {
-		pp += " " + document.getElementById('Thur').innerText;
-		cron += "THU,";
-		chooseWeek = true;
-	}
-	if (document.getElementById('Fri').style.backgroundColor=='lightblue') {
-		pp += " " + document.getElementById('Fri').innerText;
-		cron += "FRI,";
-		chooseWeek = true;
-	}
-	if (document.getElementById('Sat').style.backgroundColor=='lightblue') {
-		pp += " " + document.getElementById('Sat').innerText;
-		cron += "SAT,";
-		chooseWeek = true;
-	}
-	if (document.getElementById('Sun').style.backgroundColor=='lightblue') {
-		pp += " " + document.getElementById('Sun').innerText;
-		cron += "SUN,";
-		chooseWeek = true;
-	}
-	cron = cron.substring(0,cron.length-1);
-	pp += ", the interval is " + eval(document.getElementById('interval')).value + "s";
-	
-	document.getElementById(v_id).innerHTML = pp.toString();
-	
-	powerpolicydisplay[v_id.toString()] = pp;
-	cronpolicy[v_id.toString()] = cron;
-	
-	if (chooseWeek == false) {
-		alert("Please choose the workday!");
-		return ;
-	}
-	
-	$("#settime").hide();
-	
-	addOrUpdatePolicy(v_id, cron);
-	exitSetting();
-}
-
-function clearPolicy() {
-	document.getElementById(v_id).innerHTML = 'There is no policy now. Click to add';
-	delete powerpolicydisplay[v_id.toString()];
-	delete cronpolicy[v_id.toString()];
-	$("#settime").hide(); 
-	//delete policy
-}
-
-function exitSetting() {
-	document.getElementById("Mon").style.backgroundColor='lightgray';
-	document.getElementById("Tues").style.backgroundColor='lightgray';
-	document.getElementById("Wed").style.backgroundColor='lightgray';
-	document.getElementById("Thur").style.backgroundColor='lightgray';
-	document.getElementById("Fri").style.backgroundColor='lightgray';
-	document.getElementById("Sat").style.backgroundColor='lightgray';
-	document.getElementById("Sun").style.backgroundColor='lightgray';
-//	document.getElementById("thisweek").checked = true;
-	document.getElementById("hour").value="0";
-	document.getElementById("minute").value="0";
-	document.getElementById("second").value="0";
-	document.getElementById("interval").value="60";
 }
 
 
-function addOrUpdatePolicy(v_id, cron) {
-	$.ajax({
-		url: "./power/update",
-		data: {poolName:v_id.toString(), cron:cron, interval:eval(document.getElementById('interval')).value + "000"},
-		success: function(data){alert(data);},
-		failure: function(errMsg) {
-			alert(errMsg);
-		}
-	});
-	
-}
+$(window).load(ToolBox.PowerPolicy.init);
+
+
+
+
+
+
+

@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.vmware.horizontoolset.console.VMServiceImplVCenter;
 import com.vmware.horizontoolset.util.CronJob;
-
+import com.vmware.horizontoolset.util.StringUtil;
 import com.vmware.horizontoolset.util.TaskModuleUtil;
 import com.vmware.horizontoolset.viewapi.ViewAPIService;
 import com.vmware.horizontoolset.viewapi.operator.Machine;
@@ -20,6 +20,32 @@ import com.vmware.vdi.vlsi.binding.vdi.resources.Machine.MachineInfo;
 @JsonIgnoreProperties(value={"log"})
 public class PowerOnJob implements CronJob{
 
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((poolName == null) ? 0 : poolName.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		PowerOnJob other = (PowerOnJob) obj;
+		if (poolName == null) {
+			if (other.poolName != null)
+				return false;
+		} else if (!poolName.equals(other.poolName))
+			return false;
+		return true;
+	}
+
 	private String poolName;
 	private String cron;
 	private static Logger log = Logger.getLogger(PowerOnJob.class);
@@ -29,6 +55,10 @@ public class PowerOnJob implements CronJob{
 		this.poolName = poolName;
 		this.cron = cron;
 		this.interval = startInterval;
+	}
+	
+	public PowerOnJob(String poolName){
+		this(poolName, null, 0);
 	}
 	
 	public void setPoolName(String poolName){
@@ -47,6 +77,10 @@ public class PowerOnJob implements CronJob{
 	
 	@Override
 	public void execute()  {
+		if (StringUtil.isEmpty(this.cron)){
+			log.warn("Empty poweron job");
+			return;
+		}
 		ViewOperator operator=null;
 		ViewAPIService api = null;
     	try {
