@@ -62,11 +62,13 @@ public class CronScheduler<T extends CronJob> {
 
 	public void clear() throws SchedulerException{
 		this.scheduler.clear();
+		this.alljobs.clear();
 	}
 	
 
 	public void removeCron(String id) throws SchedulerException{
 		scheduler.deleteJob(JobKey.jobKey(id));
+		this.alljobs.remove(id);
 	}
 	
 }

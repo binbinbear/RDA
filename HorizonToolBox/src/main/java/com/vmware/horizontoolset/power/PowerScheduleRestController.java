@@ -47,6 +47,19 @@ public class PowerScheduleRestController {
 	    		return "failed";
 	    	}
 	    } 
+	  
+	  @RequestMapping("/power/remove")
+			public String removePowerPolicy(HttpSession session,
+					@RequestParam(value="poolName", required=true) String poolName) {
+		    	
+		    	try {
+		    		scheduler.removeCron(poolName);		    		
+		    		return "successful ";
+		    	} catch (Exception e) {
+		    		log.warn("Error updating app limit.", e);
+		    		return "failed";
+		    	}
+		    } 
 	
 	  @RequestMapping("/power/all")
 	    public List<PowerOnJob> getAllPowerPolicies(HttpSession session) {

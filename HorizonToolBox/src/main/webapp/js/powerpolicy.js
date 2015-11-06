@@ -76,7 +76,6 @@ if (!ToolBox.PowerPolicy) {
 			
 			//Seconds Minutes Hours DayofMonth Month DayofWeek
 			var crons = cron.split(" ");
-			$('#second').val(crons[0]);
 			$('#minute').val(crons[1]);
 			$('#hour').val(crons[2]);
 			
@@ -98,14 +97,13 @@ if (!ToolBox.PowerPolicy) {
 
 		document.getElementById("hour").value="0";
 		document.getElementById("minute").value="0";
-		document.getElementById("second").value="0";
-		document.getElementById("interval").value="60";
+		document.getElementById("interval").value="5";
 	
 	}
 	
 
 
-	ToolBox.PowerPolicy._sendToServer = function addOrUpdatePolicy(poolname, cron, interval) {
+	ToolBox.PowerPolicy._sendUpdateToServer = function addOrUpdatePolicy(poolname, cron, interval) {
 		$.ajax({
 			url: "./power/update",
 			data: {poolName:poolname, cron:cron, interval:interval},
@@ -121,11 +119,26 @@ if (!ToolBox.PowerPolicy) {
 		
 	}
 	
+	ToolBox.PowerPolicy._sendRemoveToServer = function addOrUpdatePolicy(poolname) {
+		$.ajax({
+			url: "./power/remove",
+			data: {poolName:poolname},
+			success: function(data){
+				alert("Successful! This page will be refreshed.");
+				window.location.reload();
+			},
+			failure: function(errMsg) {
+				alert("Failed, this page will be refreshed.");
+				window.location.reload();
+			}
+		});
+		
+	}
+	
 	ToolBox.PowerPolicy.setPolicy = function() {
 		//TODO: check values
-		var chooseWeek = false;
 		var cron = "";
-		cron += $('#second').val() + " "
+		cron +=  "0 "
 			+ $('#minute').val() + " " + $('#hour').val() + " ? * ";
 
 		
@@ -145,7 +158,16 @@ if (!ToolBox.PowerPolicy) {
 		
 		$("#policyDialog").hide();
 		
-		ToolBox.PowerPolicy._sendToServer($("#desktopName").text(),cron, $("#interval").val());
+		ToolBox.PowerPolicy._sendUpdateToServer($("#desktopName").text(),cron, $("#interval").val());
+		
+		
+		
+	}
+	
+	ToolBox.PowerPolicy.removePolicy = function() {
+		
+		
+		ToolBox.PowerPolicy._sendRemoveToServer($("#desktopName").text());
 		
 		
 		
@@ -166,6 +188,7 @@ if (!ToolBox.PowerPolicy) {
 			});
 		 
 		 $('#setPolicy').click(ToolBox.PowerPolicy.setPolicy);
+		 $('#removePolicy').click(ToolBox.PowerPolicy.removePolicy);
 	};
 	
 

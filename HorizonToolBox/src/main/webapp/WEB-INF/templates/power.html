@@ -29,53 +29,6 @@
 
 <style type="text/css">
 
-.dataTable td.vmNameColumn {
-	width: 25%;
-}
-
-.dataTable td.ipAddressColumn {
-	width: 85px;
-}
-
-.dataTable td.powerStateColumn {
-	width: 170px;
-}
-
-.searchBoxWebkit {
-	margin-left: 15px;
-	margin-right: 10px;
-	margin-bottom: 14px;
-}
-
-#refreshData {
-	display: none;
-	float: right;
-	margin-right: 10px;
-}
-
-#bulkMenu {
-	float: left;
-	width: 200px;
-	min-height: 20px;
-	padding-left: 8px;
-}
-
-.Nav {
-	float: left;
-}
-
-.colUserIcon {
-	width: 50px !important;
-	padding: 0px !important;
-	margin: 0px !important;
-	text-align: center;
-}
-
-
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-    display: none;
-}
 
 
 .overlay{
@@ -102,37 +55,8 @@ input::-webkit-inner-spin-button {
 	text-align:center;
 }
 
-#set-dialog h2{
-	text-transform: uppercase;
-	font-size:18px;
-	color:#5e6268;
-	text-align:left;
-	margin-left:20px;
-}
 
-#set-dialog >div>label{
-	text-transform: uppercase;
-	background-color: #f4f4f4;
-	width: 80px;
-	height: 85px;
-	font-size: 11px;
-	display: inline-block;
-	padding: 10px;
-	margin: 4px;
-}
 
-#set-dialog>div>label>input{
-	display: block;
-	border: 0;
-	font: inherit;
-	font-size: 17px;
-	padding: 6px;
-	outline: none;
-	text-align: center;
-	width: 59px;
-	margin: 10px auto;
-	background-color:#fff;
-}
 
 #set-dialog .button-holder{
 	padding-top: 50px;
@@ -144,6 +68,7 @@ input::-webkit-inner-spin-button {
 	box-shadow:0 2px 2px #eee;
 	padding:13px 22px;
 	margin:3px;
+	font-size:20px;
 }
 
 .button.blue{
@@ -172,9 +97,7 @@ input::-webkit-inner-spin-button {
 	cursor:pointer;
 }
 
-form label{
-	display: inline-block;
-}
+
 
 #set-dialog .week{
 	float:left;
@@ -183,6 +106,7 @@ form label{
 	height:50px;
 	background-color:lightgray;
 	border-radius:25px;
+	margin: 4px;
 }
 
 #set-dialog .wselected{
@@ -197,10 +121,22 @@ form label{
 	text-align:center;
 }
 
-#set-dialog div>ul>li{
-	font-size:18px;
-	color:black;
-	line-height:70px;
+#set-dialog table{
+	border:none;
+	margin: 10px;
+}
+
+#set-dialog table td{	
+	margin: 10px;
+	padding: 10px;
+	border: none;
+}
+
+#set-dialog .powerinput{
+	padding: 5px;
+	width: 40px;
+	display: inline;
+	
 }
 </style>
 
@@ -233,64 +169,71 @@ form label{
 		<div class="overlay" id="policyDialog"> 
 	        <div id="set-dialog"> 
 	        	<div style="text-align:center; background-color:lightblue; font-size:30px; height:50px">PowerOn Policy for desktop <span id="desktopName"></span></div>
-	        	<div id="menu" style="width:100px; height:360px; background-color:lightgray; margin-top:0px;">
-	        		<ul>
-	        			<li>Work Day:</li>
-	        			<li>Time:</li>
-	        			<li></li>
-	        			<li style="line-height:140px;">Interval:</li>
-	        		</ul>
-	        	</div>
-	            
-			    <div style="margin-top:20px; text-align:center;">
-			    	<div id="MON" class="week" style="margin-left:70px">
+	        	<div>
+	        		<table>
+	        			<tr>
+	        			    <td>
+	        			       <div>Work Day:</div>
+	        			    </td>
+	        			    <td>
+	        			    <div>
+			    	<div id="MON" class="week" >
 			        	<span>Mon</span>
 				    </div>
-				    <div style="float:left;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+				   
 				    <div id="TUE" class="week">
 				    	<span>Tues</span>
 				    </div>
-				    <div style="float:left;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+				    
 				    <div id="WED" class="week">
 				    	<span>Wed</span>
 				    </div>
-				    <div style="float:left;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+				    
 				    <div id="THU" class="week">
 				    	<span>Thur</span>
 				    </div>
-				    <div style="float:left;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+				    
 				    <div id="FRI" class="week">
 				    	<span>Fri</span>
 				    </div>
-				    <div style="float:left;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+				    
 				    <div id="SAT" class="week">
 				    	<span>Sat</span>
 				    </div>
-				    <div style="float:left;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+				   
 				    <div id="SUN" class="week">
 				    	<span>Sun</span>
 				    </div>
 			    </div>
-			    <br /><br /><br /><br />
-			    <!-- <div style="margin-top:20px">
-				    <form action="" method="get"> 
-					    <label><input id="thisweek" name="repeat" type="radio" value="This Week" />This Week<span style="font-size:12px;">&nbsp;&nbsp;&nbsp;</span></label>
-					    <label><input id="everyweek" name="repeat" type="radio" value="Every Week" />Every Week</label> 
-				    </form> 
-			    </div>
-			    <br />-->
-			    <div style="margin-top:20px">
-				    <label class="hours"> hour<input id="hour" type="number" value="0" min="0" max="23"/></label> 
-		            <label class="minutes">minute<input id="minute" type="number" value="0" min="0" max="59"/></label> 
-		            <label class="seconds">second<input id="second" type="number" value="0" min="0" max="59"/></label> 
+	        			    </td>
+	        			</tr>
+	        			  
+	        			<tr>
+	        			<td><div>Power-on Time:</div></td>
+	        			<td>
+	        			     <div>
+	        			     
+				   <input class="powerinput" id="hour" value="0" title="Hour" placeholder="Hour"/>
+				   <span style="padding: 10px"> : </span>
+				   
+		            <input  class="powerinput" id="minute"  title="Minute" value="0" placeholder="Minute"/>
+		           <span style="padding: 10px"> : 00 </span>
 	            </div>
-	            <br />
-				<form action="/example/html/form_action.asp" method="get">
-					<p><input title="The interval between powering-on two desktops" id="interval" type="number" value="60" min="0" sytle="float:left; margin-left:20px;"/>&nbsp;&nbsp;S</p>
-				</form>
+	        			</td>
+	        			</tr>
+	        			<tr>
+	        			<td>Interval:</td>
+	        			<td><p><input class="powerinput" title="The interval between powering-on two desktops" id="interval" placeholder="Seconds" value="5"  />Seconds</p>
+						</td>
+	        			</tr>
+	        		</table>
+	        	</div>
+	        	
+	            
 				<div>
 					<div class="button-holder"> 
-		                <a id="setPolicy" class="button blue" >set</a>
+		                <a id="setPolicy" class="button blue" >Set</a>
+		                  <a id="removePolicy" class="button blue" >Delete this policy</a>
 		            </div> 
 				</div>
 	            <a class="close"></a> 
