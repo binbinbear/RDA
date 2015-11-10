@@ -21,7 +21,7 @@ namespace HRAInstaller
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
 
-                Application.Run(new Form1());
+                Application.Run(new FormMain());
             }
             else if (args.Length == 2)
             {
@@ -65,7 +65,7 @@ namespace HRAInstaller
         private static void Install(int type)
         {
             Config.installType = type;
-            Installer.Init(msg);
+            Installer.Init(null, msg);
 
             while (Installer.RunNextStep())
                 ;

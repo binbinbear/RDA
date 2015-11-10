@@ -7,6 +7,7 @@ using System.ComponentModel;
 using Microsoft.Win32.SafeHandles;
 using System.IO;
 using System.Threading;
+using ETEUtils;
 
 namespace CreateRAString
 {
@@ -443,8 +444,8 @@ namespace CreateRAString
 
             if (ret == null || exitCode > 0)
             {
-                Log.LogException(
-                    "Start import conversion: CreateProcessAsUser failed with " + lastException.Message + " => Exitcode: " + exitCode + " => Output: " + (string.IsNullOrEmpty(LastOutput) ? string.Empty : LastOutput), null);
+                Log.Error(
+                    "Start import conversion: CreateProcessAsUser failed with " + lastException.Message + " => Exitcode: " + exitCode + " => Output: " + (string.IsNullOrEmpty(LastOutput) ? string.Empty : LastOutput));
                 return false;
             }
 

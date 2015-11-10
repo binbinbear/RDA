@@ -86,6 +86,11 @@ namespace ETEUtils
             _log(e);
         }
 
+        public static void Error(string message, Exception e)
+        {
+            _log(e);
+        }
+
         public static void Info(object o)
         {
             _log(o);   

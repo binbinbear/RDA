@@ -36,8 +36,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\ETEUtils\Log.cs">
+      <Link>Log.cs</Link>
+    </Compile>
     <Compile Include="Debug.cs" />
-    <Compile Include="Log.cs" />
     <Compile Include="SimplePipe.cs" />
     <Compile Include="ProcessUtil.cs" />
     <Compile Include="Program.cs" />

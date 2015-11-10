@@ -22,7 +22,15 @@ namespace HRARequestor
         [STAThread]
         static void Main()
         {
-            InitLog();
+            try
+            {
+                InitLog();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Fail initializing log: " + e.Message, GetTitle());
+                return;
+            }
 
             try
             {
