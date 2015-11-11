@@ -11,15 +11,14 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import org.apache.log4j.Logger;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-/**
- *
- * @author tiliu
- */
+
 public class JsonUtil {
-    
+    private static Logger logger = Logger.getLogger(JsonUtil.class);
     public static <T> T load(String fileName, Class<T> klass) throws IOException {
         File file = new File(fileName);
 
@@ -29,12 +28,11 @@ public class JsonUtil {
         }
     }
 
-    public static void save(String fileName, Object o) {
+    public static void save(String fileName, Object o) throws IOException {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         try (FileWriter out = new FileWriter(fileName);) {
             out.write(gson.toJson(o));
-        } catch (Exception e) {
-        }
+        } 
     }
     
     public static String javaToJson(Object obj){
@@ -46,7 +44,16 @@ public class JsonUtil {
     public static <T> T jsonToJava(String json, Class<T> clazz) {
     	if (json == null)
     		return null;
-    	Gson gson = new Gson();
-    	return gson.fromJson(json, clazz);
+    	try{
+    		Gson gson = new Gson();
+            T result = (T) gson.fromJson(json, clazz);
+            return result;
+    	}catch(Exception ex){
+    		logger.error("Can't change json to java, json:"+ json + " class:"+clazz.getCanonicalName(), ex);
+    	}
+    	
+    	return null;
+    	
+    	
     }
 }

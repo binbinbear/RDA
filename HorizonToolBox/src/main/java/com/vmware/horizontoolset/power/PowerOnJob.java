@@ -51,6 +51,19 @@ public class PowerOnJob implements CronJob{
 	private static Logger log = Logger.getLogger(PowerOnJob.class);
 	
 	private int interval = 5000;
+	
+	public static Logger getLog() {
+		return log;
+	}
+
+	public static void setLog(Logger log) {
+		PowerOnJob.log = log;
+	}
+
+	public void setInterval(int interval) {
+		this.interval = interval;
+	}
+
 	public PowerOnJob(String poolName, String cron, int startInterval){
 		this.poolName = poolName;
 		this.cron = cron;
@@ -61,6 +74,9 @@ public class PowerOnJob implements CronJob{
 		this(poolName, null, 0);
 	}
 	
+	public PowerOnJob(){
+		
+	}
 	public void setPoolName(String poolName){
 		this.poolName = poolName;
 	}
@@ -77,10 +93,12 @@ public class PowerOnJob implements CronJob{
 	
 	@Override
 	public void execute()  {
+		
 		if (StringUtil.isEmpty(this.cron)){
 			log.warn("Empty poweron job");
 			return;
 		}
+		log.info("Start to execte poweronjob for pool:"+this.poolName+ " cron:"+this.cron + " interval:"+this.interval);
 		ViewOperator operator=null;
 		ViewAPIService api = null;
     	try {
@@ -152,5 +170,6 @@ public class PowerOnJob implements CronJob{
 	public String getKey() {
 		return this.poolName;
 	}
-	
+
+
 }

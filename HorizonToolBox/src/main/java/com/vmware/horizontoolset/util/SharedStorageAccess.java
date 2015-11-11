@@ -1,6 +1,8 @@
 package com.vmware.horizontoolset.util;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -77,13 +79,13 @@ public class SharedStorageAccess {
 	}
 	
 	
-	private static final String separator = "\\/\\/";
+	private static final String separator = "<;;;>";
 	
 	public static List<String> getList(String key){
-		log.debug("SharedStorageAccess: using default context");
-		List<String> list =  Collections.emptyList();
+		log.debug("SharedStorageAccess get List: using default context, key:" + key);
+		List<String> list =  new ArrayList<String>();
 		String content = get(key);
-		if (content ==null){
+		if (StringUtil.isEmpty(content)){
 			return list;
 		}
 		
@@ -95,7 +97,7 @@ public class SharedStorageAccess {
 	}
 	
 	public static void  setList(String key, List<String> values){
-		log.debug("SharedStorageAccess: using default context");
+		log.debug("SharedStorageAccess set List: using default context, key:"+ key);
 		
 		StringBuffer buffer = new StringBuffer();
 		for (int i=0;i<values.size();i++){
@@ -109,9 +111,15 @@ public class SharedStorageAccess {
 	
 	private static final String mapSeparator = ">=<";
 	
+	/**
+	 * 
+	 * @param key
+	 * @param T   must be POJO bean
+	 * @return
+	 */
 	public static Map<String,String> getMap(String key){
-		log.debug("SharedStorageAccess: using default context");
-		Map<String, String> map = Collections.emptyMap();
+		log.debug("SharedStorageAccess get Map: using default context, key:"+key);
+		Map<String, String> map = new HashMap<String, String>();
 		List<String> content = getList(key);
 		if (content == null || content.size() == 0){
 			return map;
@@ -125,9 +133,14 @@ public class SharedStorageAccess {
 		return map;
 	}
 	
+	/**
+	 * 
+	 * @param key
+	 * @param map
+	 */
 	public static void  setMap(String key, Map<String, String> map){
-		log.debug("SharedStorageAccess: using default context");
-		List<String> content = Collections.emptyList();
+		log.debug("SharedStorageAccess set Map: using default context, key:"+ key);
+		List<String> content = new ArrayList<String>();
 		for (String mkey:map.keySet()){
 			content.add(mkey+mapSeparator+map.get(mkey));
 		}
@@ -137,7 +150,7 @@ public class SharedStorageAccess {
 	
 	
 	public static String get(String key) {
-		log.debug("SharedStorageAccess: using default context");
+		log.debug("SharedStorageAccess get: using default context, key:" + key);
 		
 		String name = getName(key); 
 		
@@ -146,7 +159,11 @@ public class SharedStorageAccess {
 			
 			Attributes attrs = dirCtx.getAttributes(name, new String[] {attrId});
 			Attribute a = attrs.get(attrId);
-			return (String) a.get();
+			String result =  (String) a.get();
+			if (result!=null){
+				result = result.trim();
+			}
+			return result;
 		} catch (NameNotFoundException e) {
 			log.debug("LDAP key not found: " + name + ". e=" + e);
 			//omit
@@ -158,6 +175,10 @@ public class SharedStorageAccess {
 	}
 	
 	public static void set(String key, String value) {
+		if (StringUtil.isEmpty(value)){
+			//empty string can not be set, so we have to use " "
+			value = " ";
+		}
 		String name = getName(key);
 
 		try (VDIContext vdiCtx = VDIContextFactory.defaultVDIContext();) {

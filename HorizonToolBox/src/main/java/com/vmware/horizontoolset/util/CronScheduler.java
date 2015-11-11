@@ -1,10 +1,7 @@
 package com.vmware.horizontoolset.util;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.quartz.CronScheduleBuilder;
 import org.quartz.JobBuilder;
 
@@ -18,31 +15,26 @@ import org.quartz.TriggerBuilder;
 
 import org.quartz.impl.StdSchedulerFactory;
 
-import com.vmware.horizontoolset.power.PowerOnJob;
 
 
 
 public class CronScheduler<T extends CronJob> {
 
-	//TODO: persistance, and load
-	private Map<String, T> alljobs;
-	
+	private static Logger log = Logger.getLogger(CronScheduler.class);
 	private Scheduler scheduler;
-	public CronScheduler() throws SchedulerException{
-		this.scheduler = new StdSchedulerFactory().getScheduler();
-		this.scheduler.start();
-		this.alljobs = new HashMap<String,T>();
-	}
-
-
-	public List<T> getAllJobs(){
-		return new ArrayList<T>(alljobs.values());
+	public CronScheduler() {
+		try{
+			this.scheduler = new StdSchedulerFactory().getScheduler();
+			this.scheduler.start();
+		}catch(Exception ex){
+			log.error(ex.getMessage(),ex);
+		}
 		
 	}
+
+
 	
 	public void addOrUpdateCron( T job) throws SchedulerException{
-		
-			this.alljobs.put(job.getKey(),job);
 			scheduler.deleteJob(JobKey.jobKey(job.getKey()));
 			
 			JobDetail jobdetail = JobBuilder.newJob(InternalJob.class)
@@ -62,13 +54,11 @@ public class CronScheduler<T extends CronJob> {
 
 	public void clear() throws SchedulerException{
 		this.scheduler.clear();
-		this.alljobs.clear();
 	}
 	
 
 	public void removeCron(String id) throws SchedulerException{
 		scheduler.deleteJob(JobKey.jobKey(id));
-		this.alljobs.remove(id);
 	}
 	
 }

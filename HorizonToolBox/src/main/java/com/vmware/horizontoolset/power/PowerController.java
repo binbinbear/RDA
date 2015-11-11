@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.vmware.horizontoolset.Application;
+import com.vmware.horizontoolset.util.SessionUtil;
 
 @Controller
 public class PowerController {
@@ -16,6 +17,7 @@ public class PowerController {
     @RequestMapping(value="/power", method=RequestMethod.GET)
     public String get(Model model, HttpSession session) {
         model.addAttribute("view", view); 
+        model.addAttribute("user", SessionUtil.getuser(session));
     	return Application.MAINPAGE;
     }
 }
