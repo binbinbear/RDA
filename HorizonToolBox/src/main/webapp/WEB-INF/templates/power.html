@@ -9,24 +9,6 @@
 <body>
 	<div id="power" th:fragment="fragment"> 
 	
-		<h3 class="pageHeader">
-			<table border="0" cellpadding="0" cellspacing="0" width="100%">
-				<tbody>
-					<tr>
-						<td>
-							<div class="pageHeaderDiv">
-								<img src="./img/window_information.png" alt="Dashboard" />
-								&nbsp;&nbsp; {{'Power Policies'|i18n}}&nbsp; 
-							</div>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-		</h3>
-		
-		<div ng-controller="powerCtrl">
-			<div class="scrollarea list" style="width: 100%; height:auto!important; height:350px; min-height:350px">
-
 <style type="text/css">
 
 
@@ -42,7 +24,7 @@
 	z-index:10;
 }
 
-#set-dialog{
+#policyDialog{
 	width:700px;
 	height:410px;
 	background-color:#fff;
@@ -58,13 +40,13 @@
 
 
 
-#set-dialog .button-holder{
+#policyDialog .button-holder{
 	padding-top: 50px;
 	padding-bottom:0;
 	cursor: pointer;
 }
 
-#set-dialog .button-holder .button{
+#policyDialog .button-holder .button{
 	box-shadow:0 2px 2px #eee;
 	padding:13px 22px;
 	margin:3px;
@@ -87,7 +69,7 @@
 	border-color:#72c1d2;
 }
 
-#set-dialog .close{
+#policyDialog .close{
 	width: 36px;
 	height: 36px;
 	background: url('./img/close.png');
@@ -99,7 +81,7 @@
 
 
 
-#set-dialog .week{
+#policyDialog .week{
 	float:left;
 	cursor: pointer;
 	width:50px;
@@ -109,11 +91,11 @@
 	margin: 4px;
 }
 
-#set-dialog .wselected{
+#policyDialog .wselected{
 	background-color:lightblue;
 }
 
-#set-dialog .week span{
+#policyDialog .week span{
 	height:50px;
 	line-height:50px;
 	display:block;
@@ -121,24 +103,41 @@
 	text-align:center;
 }
 
-#set-dialog table{
+#policyDialog table{
 	border:none;
 	margin: 10px;
 }
 
-#set-dialog table td{	
+#policyDialog table td{	
 	margin: 10px;
 	padding: 10px;
 	border: none;
 }
 
-#set-dialog .powerinput{
+#policyDialog .powerinput{
 	padding: 5px;
 	width: 40px;
 	display: inline;
 	
 }
 </style>
+		<h3 class="pageHeader">
+			<table border="0" cellpadding="0" cellspacing="0" width="100%">
+				<tbody>
+					<tr>
+						<td>
+							<div class="pageHeaderDiv">
+								<img src="./img/window_information.png" alt="Dashboard" />
+								&nbsp;&nbsp; {{'Power Policies'|i18n}}&nbsp; 
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</h3>
+		
+		<div ng-controller="powerCtrl">
+			<div class="scrollarea list" style="width: 100%; height:auto!important; height:350px; min-height:350px">
 
 				
 				<table id="forQaVmsTable" class="dataTable searchResultsTable" cellspacing="0">
@@ -164,10 +163,48 @@
 					</tbody>
 				</table>
 			</div>
-		</div>
+			
+			<div>
+			<p>Power-on History:</p></div>
+			 <div  class="scrollarea list" style="width: 100%; height:auto!important; height:350px; min-height:350px">
+
+				
+				<table  class="dataTable searchResultsTable" cellspacing="0">
+					<thead>
+						<tr>
+							<th class="sorted order1" id="poolname"  style="width:20%;">PoolName</th>
+							<th style="width:20%;">Start Time</th>
+							<th style="width:20%;">End Time</th>
+							<th style="width:40%;">Result</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr id="loading" class="loadingresultrow">
+						    <td class="alarm"></td>
+							<td class="alarm"></td>
+							<td class="alarm"></td>
+							<td class="alarm"></td>
+						</tr>
+						<tr ng-repeat="r in history">
+						    <td><div>{{r.poolName}}</div></td>
+						    
+						    <td >
+						    {{r.startTime}}
+						    </td>
+						     <td >
+						    {{r.endTime}}
+						    </td>
+						    <td >
+						   <span>Successful:</span> <span> {{r.successful}} </span>
+						   <span>Failed:</span> <span> {{r.failed}} </span>
+						    </td>
+						    
+						</tr>
+					</tbody>
+				</table>
+			</div>
 		
 		<div class="overlay" id="policyDialog"> 
-	        <div id="set-dialog"> 
 	        	<div style="text-align:center; background-color:lightblue; font-size:30px; height:50px">PowerOn Policy for desktop <span id="desktopName"></span></div>
 	        	<div>
 	        		<table>
@@ -239,6 +276,11 @@
 	            <a class="close"></a> 
 	        </div> 
 	    </div> 
+	    
+	    
+
+			
+			
 	<script src="./jtable/jquery.jtable.min.js"></script>
 	<script src="./js/powerpolicy.js"></script>
 	</div>

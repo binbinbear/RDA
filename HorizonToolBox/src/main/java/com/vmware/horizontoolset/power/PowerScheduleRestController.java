@@ -2,20 +2,17 @@ package com.vmware.horizontoolset.power;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+
 
 import javax.servlet.http.HttpSession;
 
-import org.apache.catalina.manager.util.SessionUtils;
 import org.apache.log4j.Logger;
-import org.quartz.SchedulerException;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.vmware.horizontoolset.util.CronScheduler;
 import com.vmware.horizontoolset.util.SessionUtil;
-import com.vmware.horizontoolset.util.SharedStorageAccess;
 
 
 /**
@@ -81,6 +78,12 @@ public class PowerScheduleRestController {
 			}
 		  	
 		  	return alljobs;
+		}
+	  
+	  
+	  @RequestMapping("/power/result")
+	    public List<PowerOnJobResult> getAllPowerResults(HttpSession session) {
+		  	return PowerOnResult.getAllResults();
 		}
 	  
 	  

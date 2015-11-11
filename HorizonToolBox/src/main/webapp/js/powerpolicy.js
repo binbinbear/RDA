@@ -52,6 +52,21 @@ if (!ToolBox.PowerPolicy) {
 					$scope.powerpolicys =  data;
 				}
 			});
+			
+			$http.get('./power/result').success(function(data){
+				$(".loadingresultrow").attr("style","display:none");
+				if(data){	
+					for (var i=0;i<data.length;i++){
+						data[i].endTime = new Date(data[i].endTime).toLocaleString();
+						data[i].startTime = new Date(data[i].startTime).toLocaleString();
+						
+					}
+					
+					$scope.history =  data;
+				}
+			});
+			
+			
 		 }; 
 		 $scope.reloadData();		
 		 $scope.editPolicy = ToolBox.PowerPolicy.loadPolicy;

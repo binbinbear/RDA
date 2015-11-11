@@ -98,6 +98,8 @@ public class PowerOnJob implements CronJob{
 			log.warn("Empty poweron job");
 			return;
 		}
+		PowerOnJobResult result = new PowerOnJobResult(this.poolName);
+		PowerOnResult.addResult(result);
 		log.info("Start to execte poweronjob for pool:"+this.poolName+ " cron:"+this.cron + " interval:"+this.interval);
 		ViewOperator operator=null;
 		ViewAPIService api = null;
@@ -140,18 +142,26 @@ public class PowerOnJob implements CronJob{
 	    		}
 	    		
 	    		VMServiceImplVCenter vmservice = new VMServiceImplVCenter(vdiCtx , vcname , minfo.managedMachineData.getVirtualCenterData().path);
-	    		vmservice.poweron();
+	    		boolean powerresult = vmservice.poweron();
+	    		if (powerresult){
+	    			result.success();
+	    		}else{
+	    			result.fail(minfo.base.name);
+	    			log.warn("Can't power on vm:"+ minfo.base.name);
+	    		}
+	    		
 	    		Thread.sleep(getInterval());
     		}
     		api.close();
 
     	}catch(Exception ex){
     		log.warn("Exception", ex);
-    		
+    		result.fail("");
     	}finally{
     		if (operator!=null){
     			operator.close();
-    		}    		
+    		}    	
+    		result.end();
     	}
 		
 	}
