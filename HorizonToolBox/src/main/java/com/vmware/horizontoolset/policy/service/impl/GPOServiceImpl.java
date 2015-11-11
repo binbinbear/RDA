@@ -101,7 +101,6 @@ public class GPOServiceImpl implements GPOService{
 		Map<String,String>  backupGpoParam = new HashMap<String, String>();
 		backupGpoParam.put("Name", "'" + gpoName + "'");
 		
-		//add by wx 9-15
 	    String sysDriver = System.getProperty("user.home");
 	    sysDriver = sysDriver.substring(0, sysDriver.indexOf(":"));
 		backupGpoParam.put("Path", sysDriver + ":\\temp\\");
@@ -184,7 +183,6 @@ public class GPOServiceImpl implements GPOService{
 		Map<String, String> importGpoParam = new HashMap<String, String>();
 		importGpoParam.put("BackupGpoName", "'" + gpoName + "'");
 		importGpoParam.put("TargetName", "'" + gpoName + "'");
-		//add by wx 9-15
 	    String sysDriver = System.getProperty("user.home");
 	    sysDriver = sysDriver.substring(0, sysDriver.indexOf(":"));
 		importGpoParam.put("Path", sysDriver + ":\\temp\\");

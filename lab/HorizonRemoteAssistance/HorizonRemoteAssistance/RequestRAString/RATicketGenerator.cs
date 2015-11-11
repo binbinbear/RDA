@@ -5,8 +5,8 @@ using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Globalization;
 using System.IO;
-using System.Xml;
 using System.Diagnostics;
+using System.Xml;
 
 namespace CreateRAString
 {
@@ -131,7 +131,7 @@ namespace CreateRAString
                         p.Kill();
                     }
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     //Log.Error(e);
                 }

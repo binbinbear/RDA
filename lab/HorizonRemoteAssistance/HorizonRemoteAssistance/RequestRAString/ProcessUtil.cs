@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.ComponentModel;
 using Microsoft.Win32.SafeHandles;
 using System.IO;
+using ETEUtils;
 
 namespace CreateRAString
 {
@@ -76,7 +77,7 @@ namespace CreateRAString
                 var identity = WindowsIdentity.GetCurrent();
                 if (identity == null)
                 {
-                    Log.LogException("Start import conversion:  Get current identity token failed", null);
+                    Log.Error("Start import conversion:  Get current identity token failed");
                     return false;
                 }
 
@@ -96,8 +97,8 @@ namespace CreateRAString
                 ret = DuplicateTokenEx(Token, GENERIC_ALL, ref sa, SecurityImpersonation, TokenType, ref DupedToken);
                 if (ret == false)
                 {
-                    Log.LogException(
-                        "Start import conversion: DuplicateTokenEx failed with " + new Win32Exception().Message, null);
+                    Log.Error(
+                        "Start import conversion: DuplicateTokenEx failed with " + new Win32Exception().Message);
                     return false;
                 }
 
@@ -156,8 +157,8 @@ namespace CreateRAString
 
                 if (ret == false || exitCode > 0)
                 {
-                    Log.LogException(
-                        "Start import conversion: CreateProcessAsUser failed with " + lastException.Message + " => Exitcode: " + exitCode + " => Output: " + (string.IsNullOrEmpty(result) ? string.Empty : result), null);
+                    Log.Error(
+                        "Start import conversion: CreateProcessAsUser failed with " + lastException.Message + " => Exitcode: " + exitCode + " => Output: " + (string.IsNullOrEmpty(result) ? string.Empty : result));
                     return false;
                 }
 
@@ -166,15 +167,14 @@ namespace CreateRAString
 
                 if (ret == false)
                 {
-                    Log.LogException("Start import conversion: Closing token failed with " + new Win32Exception().Message,
-                                       null);
+                    Log.Error("Start import conversion: Closing token failed with " + new Win32Exception().Message);
                 }
 
             }
             catch (Exception e)
             {
                 ret = false;
-                Log.LogFatalException(e);
+                Log.Error(e);
             }
             return ret;
         }

@@ -9,8 +9,6 @@ import com.vmware.vdi.events.server.forwarders.database.connectors.EventDBConnec
  * The class AdminEventDbQuery provides the functionalities to build database
  * queries by database type.
  *
- * @author dliu
- *
  */
 public abstract class AdminEventDbQuery {
     private static final Logger logger = Logger
@@ -267,7 +265,6 @@ public abstract class AdminEventDbQuery {
  * The class AdminEventSqlServerQuery implements the queries for events and
  * arguments with MS SQL Sever database.
  *
- * @author dliu
  *
  */
 class AdminEventSqlServerQuery extends AdminEventDbQuery {

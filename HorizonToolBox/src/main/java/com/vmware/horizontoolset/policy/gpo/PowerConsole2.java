@@ -79,7 +79,6 @@ public class PowerConsole2 {
     }
     
     public static void main(String[] args) {
-		//add by wx 9-15
 	    String sysDriver = System.getProperty("user.home");
 	    sysDriver = sysDriver.substring(0, sysDriver.indexOf(":"));
 		Output o = execute("test-path " + sysDriver + ":\\Windows");

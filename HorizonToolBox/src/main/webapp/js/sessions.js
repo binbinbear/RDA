@@ -81,7 +81,6 @@ if (!ToolBox.Session || !ToolBox.Session.init){
 			    	  days = "30";
 			    	  period="7200";
 			      }else if (type=="halfyear"){
-					  //add by wx 9-23
 					  days = "180";
 					  period = "21600";
 				  }

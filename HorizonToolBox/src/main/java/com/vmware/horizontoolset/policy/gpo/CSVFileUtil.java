@@ -206,7 +206,6 @@ public class CSVFileUtil {
     
     //Test
     public static void main(String[] args) throws Exception {
-		//add by wx 9-15
 		String sysDriver = System.getProperty("user.home");
 		sysDriver = sysDriver.substring(0, sysDriver.indexOf(":"));
 		CSVFileUtil mycsv = new CSVFileUtil(sysDriver + ":\\AIKiw.csv");

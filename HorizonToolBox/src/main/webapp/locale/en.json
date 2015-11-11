@@ -18,6 +18,7 @@ window.l10Ntable={
     "Clients":"Clients",
     "Remote Assistance":"Remote Assistance",
     "Desktop Agent Policies":"Desktop Agent Policies",
+    "Power Policies":"Power Policies",
     "Application Pool Usage Monitor":"Application Pool Usage Monitor",
     "Email Notification":"Email Notification",
     "Console Access":"Console Access",

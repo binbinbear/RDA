@@ -437,17 +437,8 @@ THE SOFTWARE.
 
                 //Show the error message if server returns error
                 if (data.Result != 'OK') {
-					//add by wx 9-29
-					window.alert("Your session is timeout!");
-					window.location.href="../Login";
-					return;
-					// if (data.Result == 'Internal Server Error') {
-						// window.alert("Your session is timeout!");
-						// window.location.href="../Login";
-						// return;
-					// }
-                    // self._showError(data.Message);
-                    // return;
+                     self._showError(data.Message);
+                     return;
                 }
 
                 //Re-generate table rows
@@ -476,10 +467,7 @@ THE SOFTWARE.
                     funcResult.done(function(data) {
                         completeReload(data);
                     }).fail(function() {
-                        //self._showError(self.options.messages.serverCommunicationError);
-						//add by wx 9-29
-						window.alert("Your session is timeout!");
-						window.location.href="../Login";
+                        self._showError(self.options.messages.serverCommunicationError);
 						
                     }).always(function() {
                         self._hideBusy();
@@ -502,10 +490,7 @@ THE SOFTWARE.
                     },
                     error: function () {
                         self._hideBusy();
-                        //self._showError(self.options.messages.serverCommunicationError);
-						//add by wx 9-29
-						window.alert("Your session is timeout!");
-						window.location.href="../Login";
+                        self._showError(self.options.messages.serverCommunicationError);
                     }
                 });
 
@@ -874,21 +859,15 @@ THE SOFTWARE.
                 async: false,
                 success: function (data) {
                     if (data.Result != 'OK') {
-                    	//add by wx 10-12
-    					window.alert("Your session is timeout!");
-    					window.location.href="../Login";
-                        //self._showError(data.Message);
+                        self._showError(data.Message);
                         return;
                     }
 
                     options = data.Options;
                 },
                 error: function () {
-                	//add by wx 10-12
-					window.alert("Your session is timeout!");
-					window.location.href="../Login";
-                    //var errMessage = self._formatString(self.options.messages.cannotLoadOptionsFor, fieldName);
-                    //self._showError(errMessage);
+                    var errMessage = self._formatString(self.options.messages.cannotLoadOptionsFor, fieldName);
+                    self._showError(errMessage);
                 }
             });
 

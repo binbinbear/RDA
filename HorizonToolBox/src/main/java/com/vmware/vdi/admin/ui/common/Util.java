@@ -28,7 +28,6 @@ import com.vmware.vdi.admin.be.events.AdminEvent;
 /**
  * This class holds utility functions.
  *
- * @author vivian
  *
  */
 public class Util {

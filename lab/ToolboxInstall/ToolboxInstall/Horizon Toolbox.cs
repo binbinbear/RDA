@@ -370,7 +370,8 @@ namespace ToolboxInstall
             string tomcatPath = GetToolBoxPath(path, true);
             string tmp = tomcatPath;
             tomcatPath = tomcatPath.Substring(0, tomcatPath.LastIndexOf(".zip"));
-            string[] content = { "cd " + tomcatPath + @"\bin", "call service.bat remove", "cd ..", "cd ..", @"rd/s/q .\" + tomcatPath.Substring(tomcatPath.LastIndexOf(@"\")+1)};
+            string shortCutPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + @"\HorzionToolbox.lnk";
+            string[] content = { "cd " + tomcatPath + @"\bin", "call service.bat remove", "cd ..", "cd ..", @"rd/s/q .\" + tomcatPath.Substring(tomcatPath.LastIndexOf(@"\")+1), @"del /f /q " + shortCutPath};
             File.WriteAllLines(path + "uninstall.bat", content);
             File.Delete(tmp);
 

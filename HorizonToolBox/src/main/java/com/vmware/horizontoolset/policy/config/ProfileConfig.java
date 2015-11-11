@@ -1346,12 +1346,13 @@ public class ProfileConfig {
 		String configPath = System.getProperty("user.dir") + "\\src\\main\\webapp\\resources\\polFiles\\PolicyConfig.json";
 		String ConfigJson = JsonUtil.javaToJson(allPol);
 		System.out.println(ConfigJson);
-		JsonUtil.save(configPath, allPol);
+		
 		
 		//********************************************************
 		//Test
 		ProfileConfig  polConfig = null;
 		try {
+			JsonUtil.save(configPath, allPol);
 			polConfig = JsonUtil.load(configPath, ProfileConfig.class);
 		} catch (IOException e) {
 			System.out.println("load error !!!");

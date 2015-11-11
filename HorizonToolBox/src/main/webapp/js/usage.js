@@ -203,7 +203,6 @@ if (!ToolBox.Usage || !ToolBox.Usage.init){
 			      }else if (type=="day"){
 			    	  days="2";
 			      }
-				  //add by wx 9-23
 				  else if (type=="halfyear"){
 					  days="180"
 				  }

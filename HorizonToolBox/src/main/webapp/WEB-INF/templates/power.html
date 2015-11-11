@@ -1,0 +1,288 @@
+<html>
+<head>
+<meta charset="ISO-8859-1"/>
+<link href="css/report.css" rel="stylesheet" />
+
+<link href="css/cupertino/jquery-ui.custom.min.css" rel="stylesheet" />
+<title>Power</title>
+</head>
+<body>
+	<div id="power" th:fragment="fragment"> 
+	
+<style type="text/css">
+
+
+
+.overlay{
+	display:none;
+	position:fixed;
+	width:100%;
+	height:100%;
+	top:0;
+	left:0;
+	background-color:rgba(0,0,0,0.2);
+	z-index:10;
+}
+
+#policyDialog{
+	width:700px;
+	height:410px;
+	background-color:#fff;
+	border-radius:2px;
+	box-shadow: 0 0 8px rgba(0,0,0,0.2);
+	position:fixed;
+	top:200px;
+	left:50%;
+	margin-left:-350px;
+	text-align:center;
+}
+
+
+
+
+#policyDialog .button-holder{
+	padding-top: 50px;
+	padding-bottom:0;
+	cursor: pointer;
+}
+
+#policyDialog .button-holder .button{
+	box-shadow:0 2px 2px #eee;
+	padding:13px 22px;
+	margin:3px;
+	font-size:20px;
+}
+
+.button.blue{
+	background-color:#82cddd;
+	background-image:-webkit-linear-gradient(top, #86d3e4, #82cddd);
+	background-image:-moz-linear-gradient(top, #86d3e4, #82cddd);
+	background-image:linear-gradient(top, #86d3e4, #82cddd);
+	border-color:#72c1d2;
+}
+
+.button.red{
+	background-color:#ff8080;
+	background-image:-webkit-linear-gradient(top, #86d3e4, #82cddd);
+	background-image:-moz-linear-gradient(top, #86d3e4, #82cddd);
+	background-image:linear-gradient(top, #86d3e4, #82cddd);
+	border-color:#72c1d2;
+}
+
+#policyDialog .close{
+	width: 36px;
+	height: 36px;
+	background: url('./img/close.png');
+	position: absolute;
+	top: -18px;
+	right: -18px;
+	cursor:pointer;
+}
+
+
+
+#policyDialog .week{
+	float:left;
+	cursor: pointer;
+	width:50px;
+	height:50px;
+	background-color:lightgray;
+	border-radius:25px;
+	margin: 4px;
+}
+
+#policyDialog .wselected{
+	background-color:lightblue;
+}
+
+#policyDialog .week span{
+	height:50px;
+	line-height:50px;
+	display:block;
+	color:#000;
+	text-align:center;
+}
+
+#policyDialog table{
+	border:none;
+	margin: 10px;
+}
+
+#policyDialog table td{	
+	margin: 10px;
+	padding: 10px;
+	border: none;
+}
+
+#policyDialog .powerinput{
+	padding: 5px;
+	width: 40px;
+	display: inline;
+	
+}
+</style>
+		<h3 class="pageHeader">
+			<table border="0" cellpadding="0" cellspacing="0" width="100%">
+				<tbody>
+					<tr>
+						<td>
+							<div class="pageHeaderDiv">
+								<img src="./img/window_information.png" alt="Dashboard" />
+								&nbsp;&nbsp; {{'Power Policies'|i18n}}&nbsp; 
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</h3>
+		
+		<div ng-controller="powerCtrl">
+			<div class="scrollarea list" style="width: 100%; height:auto!important; height:350px; min-height:350px">
+
+				
+				<table id="forQaVmsTable" class="dataTable searchResultsTable" cellspacing="0">
+					<thead>
+						<tr>
+							<th class="sorted order1" id="poolname"  style="width:30%;">PoolName</th>
+							<th style="width:70%;">PowerOn Policy</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr id="loading" class="loadingrow">
+						    <td></td>
+							<td class="alarm"></td>
+						</tr>
+						<tr ng-repeat="p in powerpolicys">
+						    <td><div>{{p.poolName}}</div></td>
+						    <td>
+						    <div >
+						    <a class="policyitem" ng-click="editPolicy(p)">{{p.crontext}}</a>
+						    </div>
+						    </td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			
+			<div>
+			<p>Power-on History:</p></div>
+			 <div  class="scrollarea list" style="width: 100%; height:auto!important; height:350px; min-height:350px">
+
+				
+				<table  class="dataTable searchResultsTable" cellspacing="0">
+					<thead>
+						<tr>
+							<th class="sorted order1" id="poolname"  style="width:20%;">PoolName</th>
+							<th style="width:20%;">Start Time</th>
+							<th style="width:20%;">End Time</th>
+							<th style="width:40%;">Result</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr id="loading" class="loadingresultrow">
+						    <td class="alarm"></td>
+							<td class="alarm"></td>
+							<td class="alarm"></td>
+							<td class="alarm"></td>
+						</tr>
+						<tr ng-repeat="r in history">
+						    <td><div>{{r.poolName}}</div></td>
+						    
+						    <td >
+						    {{r.startTime}}
+						    </td>
+						     <td >
+						    {{r.endTime}}
+						    </td>
+						    <td >
+						   <span>Successful:</span> <span> {{r.successful}} </span>
+						   <span>Failed:</span> <span> {{r.failed}} </span>
+						    </td>
+						    
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		
+		<div class="overlay" id="policyDialog"> 
+	        	<div style="text-align:center; background-color:lightblue; font-size:30px; height:50px">PowerOn Policy for desktop <span id="desktopName"></span></div>
+	        	<div>
+	        		<table>
+	        			<tr>
+	        			    <td>
+	        			       <div>Work Day:</div>
+	        			    </td>
+	        			    <td>
+	        			    <div>
+			    	<div id="MON" class="week" >
+			        	<span>Mon</span>
+				    </div>
+				   
+				    <div id="TUE" class="week">
+				    	<span>Tues</span>
+				    </div>
+				    
+				    <div id="WED" class="week">
+				    	<span>Wed</span>
+				    </div>
+				    
+				    <div id="THU" class="week">
+				    	<span>Thur</span>
+				    </div>
+				    
+				    <div id="FRI" class="week">
+				    	<span>Fri</span>
+				    </div>
+				    
+				    <div id="SAT" class="week">
+				    	<span>Sat</span>
+				    </div>
+				   
+				    <div id="SUN" class="week">
+				    	<span>Sun</span>
+				    </div>
+			    </div>
+	        			    </td>
+	        			</tr>
+	        			  
+	        			<tr>
+	        			<td><div>Power-on Time:</div></td>
+	        			<td>
+	        			     <div>
+	        			     
+				   <input class="powerinput" id="hour" value="0" title="Hour" placeholder="Hour"/>
+				   <span style="padding: 10px"> : </span>
+				   
+		            <input  class="powerinput" id="minute"  title="Minute" value="0" placeholder="Minute"/>
+		           <span style="padding: 10px"> : 00 </span>
+	            </div>
+	        			</td>
+	        			</tr>
+	        			<tr>
+	        			<td>Interval:</td>
+	        			<td><p><input class="powerinput" title="The interval between powering-on two desktops" id="interval" placeholder="Seconds" value="5"  />Seconds</p>
+						</td>
+	        			</tr>
+	        		</table>
+	        	</div>
+	        	
+	            
+				<div>
+					<div class="button-holder"> 
+		                <a id="setPolicy" class="button blue" >Set</a>
+		                  <a id="removePolicy" class="button blue" >Delete this policy</a>
+		            </div> 
+				</div>
+	            <a class="close"></a> 
+	        </div> 
+	    </div> 
+	    
+	    
+
+			
+			
+	<script src="./jtable/jquery.jtable.min.js"></script>
+	<script src="./js/powerpolicy.js"></script>
+	</div>
+</body>
+</html>

@@ -44,20 +44,19 @@
   </bean>   
   <bean id="loginController" class="com.vmware.horizontoolset.LoginController">
    <property name="server"> 
-            <value>localhost</value>
+            <value>10.112.118.27</value>
             </property> 
             
             <!-- please make sure this is false when publishing -->
             <property name="remoteDebug">
-            	<value>false</value>
+            	<value>true</value>
             </property>
             <property name="matchedVersions">
             	<array>
-            		<value>6.0.0</value>
-            		<value>6.0.1</value>
-            		<value>6.0.2</value>
+            		<value>6.0</value>            		
             		<value>6.1</value>
             		<value>6.2</value>
+            		<value>6.3</value>
             	</array>
             </property>
   </bean>
@@ -82,27 +81,23 @@
  
    <bean id="remoteAssistController" class="com.vmware.horizontoolset.ra.RemoteAssistController"/>
    <bean id="remoteAssistRestController" class="com.vmware.horizontoolset.ra.RemoteAssistRestController"/>
-   <bean id="deviceFilterController" class="com.vmware.horizontoolset.device.controller.DeviceFilterController"/>
-   <bean id="deviceFilterRestController" class="com.vmware.horizontoolset.device.controller.DeviceFilterRestController"/>
-   <bean id="policyController" class="com.vmware.horizontoolset.PolicyController"/>
 
    <bean id="SessionMsgRestController" class="com.vmware.horizontoolset.SessionMsgRestController"/>
-   <!--  
-   <bean id="EmailController" class="com.vmware.horizontoolset.email.EmailController"/>
+
+   <bean id="PowerController" class="com.vmware.horizontoolset.power.PowerController"/>
+   <bean id="PowerRestController" class="com.vmware.horizontoolset.power.PowerRestController"/>
+   <bean id="PowerScheduleRestController" class="com.vmware.horizontoolset.power.PowerScheduleRestController" />
    
-   <bean id="limitController" class="com.vmware.horizontoolset.limit.LimitController"/>
-   <bean id="limitRestController" class="com.vmware.horizontoolset.limit.LimitRestController"/>
-    -->
+   
    <bean id="infoRestController" class="com.vmware.horizontoolset.ProductInfoRestController"/>
-   
-   <bean id="PolicyRestNewController" class="com.vmware.horizontoolset.policy.PolicyRestController"/>
+ 
    
       <bean id="ConsoleController" class="com.vmware.horizontoolset.console.ConsoleController"/>
    
       <bean id="ConsoleRestController" class="com.vmware.horizontoolset.console.ConsoleRestController"/>
     <bean id="WebMKSController" class="com.vmware.horizontoolset.console.WebMKSController" />
-       <bean id="PowerController" class="com.vmware.horizontoolset.power.PowerController" />
-   
+     
+     	
     <bean id="EventCache" class="com.vmware.horizon.auditing.db.EventDBCache" />
    
    
@@ -110,10 +105,8 @@
    <task:scheduled-tasks>   
    		<task:scheduled ref="clientrestController" method="updateCachedReport" cron="0 0 1 * * ?"/>  
    
-        <task:scheduled ref="EventCache" method="updateCache" cron="0 0 * * * ?"/>   
-        
-         <task:scheduled ref="clientrestController" method="updateCachedReport" cron="0 0 1 * * ?"/>  
-       <!--   <task:scheduled ref="limitRestController" method="refresh" cron="0 30 * * * ?"/> -->
+        <task:scheduled ref="EventCache" method="updateCache" cron="0 0 2 * * ?"/>   
+
    </task:scheduled-tasks>  
    
    <websocket:handlers>
@@ -129,7 +122,5 @@
       <property name="config" ref="rewriter"/>
     </bean>
     
-    
-   
    
 </beans>

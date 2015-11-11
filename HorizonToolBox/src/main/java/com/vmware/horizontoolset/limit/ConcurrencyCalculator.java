@@ -24,7 +24,7 @@ import com.vmware.horizon.auditing.report.Event;
  * @author nanw
  *
  */
-class ConcurrencyCalculator {
+public class ConcurrencyCalculator {
 
 	private static Logger log = Logger.getLogger(ConcurrencyCalculator.class);
 	

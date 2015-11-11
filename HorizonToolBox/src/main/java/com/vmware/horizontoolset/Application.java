@@ -19,7 +19,6 @@ public class Application {
     	log.info("Horizon Tool Set Application is being loaded!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
     }
     public void setViewServerPath(String viewServerPath){
-    	//add by wx 9-15
     	String sysDriver = System.getProperty("user.home");
 		sysDriver = sysDriver.substring(0, sysDriver.indexOf(":"));
 		LDAP.setViewServerPath(sysDriver + viewServerPath.substring(viewServerPath.indexOf(":")-1));

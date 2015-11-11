@@ -11,6 +11,9 @@
 						<td>
 							<div class="pageHeaderDiv">
 								<img src="img/window_information.png" alt="Dashboard" />&nbsp;&nbsp;{{'Session Audit Report'|i18n}} &nbsp;
+								
+								<a href="./refreshSession"> {{'Click here to generate the newest reports now'|i18n}}</a>
+			
 							</div>
 						</td>
 					</tr>
@@ -24,7 +27,6 @@
 				<option value="day">{{'Last 2 day'|i18n}}</option>
 				<option value="week" selected="selected">{{'Last 7 days'|i18n}}</option>
 				<option value="month">{{'Last 1 month'|i18n}}</option>
-				<!--add by wx 9-23 -->
 				<option value="halfyear">{{'Last 6 months'|i18n}}</option>
 			</select>
 			<label for="desktoppool">{{'Select desktop pool or RDS farm'|i18n}}: </label>
@@ -32,6 +34,7 @@
 			<select id="desktoppool" name="desktoppool">
 				<option value="all" selected="selected">{{'ALL'|i18n}}</option>
 			</select>
+			
 			<div>
 				<svg>
 			</svg>
@@ -47,8 +50,7 @@
 						<tr>
 							<td>
 								<div class="pageHeaderDiv">
-									<img src="img/window_information.png" alt="Dashboard" />&nbsp;&nbsp;{{'Current Sessions'|i18n}} &nbsp; <span class="updateDate"> </span> <a
-										href="./refreshSession"> {{'Click here to update this report now'|i18n}}</a>
+									<img src="img/window_information.png" alt="Dashboard" />&nbsp;&nbsp;{{'Current Sessions'|i18n}} &nbsp; <span class="updateDate"> </span> 
 								</div>
 							</td>
 							<td id="loadingAnim"></td>

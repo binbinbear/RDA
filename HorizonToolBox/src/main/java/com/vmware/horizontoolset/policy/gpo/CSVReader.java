@@ -165,7 +165,6 @@ public class CSVReader {
 
    public static void main(String[] args) throws IOException {
 		
-	  //add by wx 9-15
 	  String sysDriver = System.getProperty("user.home");
 	  sysDriver = sysDriver.substring(0, sysDriver.indexOf(":"));
 	  File file = new File(sysDriver + ":\\AIKiw.csv");

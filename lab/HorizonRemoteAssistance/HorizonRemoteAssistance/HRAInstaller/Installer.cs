@@ -7,6 +7,8 @@ using System.Threading;
 using System.IO;
 using System.Windows.Forms;
 using System.Reflection;
+using System.Security.AccessControl;
+using System.Security.Principal;
 
 namespace HRAInstaller
 {
@@ -39,8 +41,11 @@ namespace HRAInstaller
         private static MsgHandler msgHandler;
         public static int returnCode = RET_CANCELED;
 
-        public static void Init(MsgHandler msgHandler)
+        private static Form parent;
+
+        public static void Init(Form parent, MsgHandler msgHandler)
         {
+            Installer.parent = parent;
             Installer.msgHandler = msgHandler;
 
             string version = "Horizon Remote Assistance v" + Assembly.GetExecutingAssembly().GetName().Version;
@@ -51,9 +56,10 @@ namespace HRAInstaller
                 new Step {f=TerminateProcess_HRARequestor, message="Check existing HRA Requestor..."},
                 new Step {f=CopyHRARequestorToAllUserDesktop, message="Install Horizon Remote Assistance to desktop (all user)..."},
                 new Step {f=EnableWindowsRAFeatureForClient, message="Enable Windows Feature: Remote Assistance..."},
+                new Step {f=UpdateClientRegistryPermission, message="Update registry..."},
                 new Step {f=AllowRemoteAssistance, message="Allow receiving remote assistance..."},
-                new Step {f=ConfigFirewallRuleForRemoteAssistance, message="Configure Firewall..."}
-
+                new Step {f=ConfigFirewallRuleForRemoteAssistance, message="Configure Firewall..."},
+                new Step {f=EnsureMSRAInitialization, message="Start MSRA to ensure initial config..."}
             };
 
             installForAdmin = new Step[] {
@@ -371,6 +377,58 @@ namespace HRAInstaller
 
         }
 
+        private static void EnsureMSRAInitialization()
+        {
+            if (Installer.parent != null)
+            {
+                Installer.parent.Invoke(new MethodInvoker(()=>
+                {
+                    MessageBox.Show(Installer.parent, "To make sure MSRA is initialized for first time use, the installer will launch MSRA now. \r\nPlease ignore it and just CLOSE the MSRA window after it's launched.", "Horizon Remote Assistance Installer", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }));
+            }
+            else
+            {
+                //console silent mode
+            }
+
+            msg("Starting MSRA to ensure it's initialized for first time use...");
+            Process p = Process.Start("msra.exe");
+            p.WaitForExit(60 * 1000);
+            msg("Killing MSRA...");
+            p.Kill();
+        }
+
+        private static void UpdateClientRegistryPermission()
+        {
+            //Grant everyone "READ" permission to View agent config
+
+            string key = @"HKEY_LOCAL_MACHINE\Software\VMware, Inc.\VMwareVDM\Agent\Configuration";
+
+            using (RegistryKey rk = Registry.LocalMachine.OpenSubKey(key, true))
+            {
+                if (rk == null)
+                {
+                    msg("  No Horizon View Agent configuration found.");
+                    return;
+                }
+
+                RegistrySecurity rs = rk.GetAccessControl();
+
+                // Creating registry access rule for 'Everyone' NT account
+                SecurityIdentifier sid = new SecurityIdentifier(WellKnownSidType.WorldSid, null);
+                NTAccount account = sid.Translate(typeof(NTAccount)) as NTAccount;
+
+                RegistryAccessRule rar = new RegistryAccessRule(
+                    account.ToString(),
+                    RegistryRights.ReadPermissions,
+                    InheritanceFlags.ContainerInherit | InheritanceFlags.ObjectInherit,
+                    PropagationFlags.None,
+                    AccessControlType.Allow);
+
+                rs.AddAccessRule(rar);
+                rk.SetAccessControl(rs);
+            }
+        }
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////
 

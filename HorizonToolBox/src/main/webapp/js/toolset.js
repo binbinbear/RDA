@@ -547,6 +547,11 @@ ToolBox.init =  function(){
 					policy:{"btn": $("#L1_03"),
 						"href" : $("#L1_03_01")},
 						
+					power:{"btn": $("#L1_03"),
+						"href" : $("#L1_03_03")},
+					
+					power:{"btn": $("#L1_03"),
+						"href" : $("#L1_03_02")},
 						
 					console:{"btn": $("#L1_04")}
 								

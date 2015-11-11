@@ -20,7 +20,6 @@ import com.vmware.vdi.events.enums.EventSeverity;
  *
  * Events will be retrieved from either database or log files.
  *
- * @author dliu
  *
  */
 public class AdminEventManager {

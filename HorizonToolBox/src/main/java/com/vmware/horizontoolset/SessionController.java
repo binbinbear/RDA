@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.vmware.horizon.auditing.db.EventDBCache;
 import com.vmware.horizontoolset.util.SessionUtil;
 @Controller
 public class SessionController {
@@ -30,6 +31,7 @@ public class SessionController {
     
     @RequestMapping(value="/refreshSession", method=RequestMethod.GET)
     public String refresh(Model model, HttpSession session) {
+    	EventDBCache.expire();
     	SessionRestController.cleanReport();
     	return "redirect:/session"; 
     }

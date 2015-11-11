@@ -11,7 +11,6 @@ import com.vmware.vdi.events.enums.EventSeverity;
 /**
  * It defines the event object in admin console.
  *
- * @author dliu
  *
  */
 public class AdminEvent {

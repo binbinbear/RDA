@@ -156,7 +156,6 @@ a.rndButtonSmall:active span {
     list-style: none;
     margin: 0px;
     padding: 0px;
-    background: url("../images/topGradient.gif");
     background-repeat: repeat-x;
     background-position: bottom;
     padding-bottom: 5px;
@@ -1425,7 +1424,6 @@ h3.pageHeader{
 }
 
 .loggedInUser{
-    width:240px;
     line-height: 3em;
     overflow:hidden;
     float: right;
