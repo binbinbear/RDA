@@ -38,6 +38,9 @@ public class AdminEvent {
     
     private String desktopId;
     
+    private String eventType;
+    
+    private String brokerSessionId;
     /**
      * Get the short version of the message for the event
      *
@@ -202,6 +205,10 @@ public class AdminEvent {
 	public void setClientIP(String clientIP) {
 		this.clientIP = clientIP;
 	}
+	
+	public void setBrokerSessionId(String brokerSessionId) {
+		this.brokerSessionId = brokerSessionId;
+	}
 
 	public String getMachineName() {
 		return machineName;
@@ -225,5 +232,17 @@ public class AdminEvent {
 
 	public void setDesktopId(String desktopId) {
 		this.desktopId = desktopId;
+	}
+	
+	public void setEventType(String eventType) {
+		this.eventType = eventType;
+	}
+	
+	public String getEventType() {
+		return this.eventType;
+	}
+	
+	public String getBrokerSessionId() {
+		return this.brokerSessionId;
 	}
 }

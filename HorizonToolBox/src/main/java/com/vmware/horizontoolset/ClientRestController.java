@@ -2,17 +2,22 @@ package com.vmware.horizontoolset;
 
 import java.io.File;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vmware.horizontoolset.report.ClientReport;
 import com.vmware.horizontoolset.report.ReportUtilExtension;
 import com.vmware.horizontoolset.util.LDAP;
 import com.vmware.horizontoolset.util.SessionUtil;
+import com.vmware.horizontoolset.viewapi.ViewAPIService;
+import com.vmware.horizon.auditing.EventsAuditing;
+import com.vmware.horizon.auditing.report.BrokerSession;
 
 @RestController
 public class ClientRestController {
@@ -28,6 +33,8 @@ public class ClientRestController {
 	
 	
 	public static final int MAX_FILE_SIZE = 1024*1024*64;
+	
+	private static final String defaultDays = "30";
 	
 	
 	static void cleanReport(){
@@ -72,6 +79,26 @@ public class ClientRestController {
 		previousFolder = ldap.getCEIPFolder()+File.separator+"spool";
 		updateCachedReport();
 		return cachedreport;
+	}
+	
+	@RequestMapping("/client/brokersessionlist")
+	public List<BrokerSession> getBrokerSessionList(HttpSession session, 
+    		@RequestParam(value="user", required=false, defaultValue="") String userName,
+    		@RequestParam(value="days", required=false, defaultValue=defaultDays) String days) {
+		ViewAPIService service = SessionUtil.getViewAPIService(session);
+		
+		log.info("Start to query broker session for "+userName+new Date());
+		 
+		 int daysToShow = Integer.parseInt(days);
+	    	if (daysToShow<=0){
+	    		daysToShow = Integer.parseInt(defaultDays);
+	    	}
+		log.debug("Get Broker Events: "+new Date());
+		EventsAuditing auditing = SessionUtil.getSessionObj(session, EventsAuditing.class);
+		List<BrokerSession> result = auditing.getBrokerSessions(userName, daysToShow);
+		log.info("List broker sessions done. Size = " + result.size());
+		
+		return result;
 	}
 }
 

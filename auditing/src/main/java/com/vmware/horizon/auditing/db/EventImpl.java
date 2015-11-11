@@ -46,6 +46,13 @@ public class EventImpl implements Event{
 	private static final String REQUEST_APP= " requested Application ";
 	private static final String HAS_EXPIRED = "has expired";
 	private static final String HAS_EXPIRED_PREFIX = "session on machine ";
+	
+	/**
+	 * *List the event type description in database table
+	 */
+	private static final String TYPE_BROKER_USERLOGGEDIN = "BROKER_USERLOGGEDIN";
+	private static final String TYPE_BROKER_USERLOGGEDOUT = "BROKER_USERLOGGEDOUT";
+	
 
 	private EventType type = EventType.Others;
 	private String username;
@@ -56,6 +63,7 @@ public class EventImpl implements Event{
 	private String shortMessage;
 	
 	private String clientIp;
+	private String brokerSessionId = "";
 
 	private String getValue(String all, String key){
 		//get pool name from the message
@@ -74,7 +82,6 @@ public class EventImpl implements Event{
 
 		}
 		return null;
-
 	}
 
 	//create a dummy connect or disconnect event. 
@@ -89,6 +96,7 @@ public class EventImpl implements Event{
 		}
 		this.sourceName = pairevent.getSourceName();
 		this.clientIp = pairevent.getClientIP();
+		this.brokerSessionId = pairevent.getBrokerSessionId();
 
 	}
 	
@@ -102,6 +110,8 @@ public class EventImpl implements Event{
 		this.shortMessage = event.getMessage().toLowerCase();
 		this.time = event.getTime();
 		this.clientIp = event.getClientIP();
+		this.brokerSessionId = event.getBrokerSessionId();
+		String eventTypeInDatabase = event.getEventType();
 		//if(EventModule.Agent.equals(event.getModule()) && event.isInfo() ){
 		if(EventModule.Agent.equals(event.getModule())){
 			if (shortMessage.contains(ACCEPT)){
@@ -131,13 +141,13 @@ public class EventImpl implements Event{
 			}
 
 		} else if (EventModule.Broker.equals(event.getModule())) {
-			if (shortMessage.contains(LOGOUT)) {
-				this.type = EventType.Logout;
+			if(eventTypeInDatabase.equals(TYPE_BROKER_USERLOGGEDIN)) {
+				this.type = EventType.BrokerLoggedin;
+			} else if(eventTypeInDatabase.equals(TYPE_BROKER_USERLOGGEDOUT)) {
+				this.type = EventType.BrokerLoggedout;
 			} else if (shortMessage.contains(REQUEST_APP)) {
 				this.type = EventType.RequestApp;
 			}
-			
-		
 		}
 	}
 
@@ -190,7 +200,7 @@ public class EventImpl implements Event{
 
 	@Override
 	public String getShortMessage() {
-		return shortMessage;
+		return this.shortMessage;
 	}
 
 	@Override
@@ -199,4 +209,8 @@ public class EventImpl implements Event{
 		return this.clientIp;
 	}
 
+	@Override
+	public String getBrokerSessionId() {
+		return this.brokerSessionId;
+	}
 }

@@ -63,6 +63,8 @@ public class AdminEventDatabase extends DBConnection {
     private static boolean adminEventCountInitialized = false;
 
     private static int adminEventCount = 0;
+    
+    public static final String BROKER_SESSIONID_DESC = "BrokerSessionId";
 
     /**
      * Query the default number of events the back end fetches with each
@@ -235,6 +237,7 @@ public class AdminEventDatabase extends DBConnection {
         Date time = calendar.getTime();
 
         String query = this.dbquery.getEventQuery(filter, index, count);
+        logger.info("Query string: " + query + " Filter: " + filter.getFilterText());
 
         // load the event objects
         Map<Integer, Event> events = new HashMap<Integer, Event>();
@@ -247,7 +250,7 @@ public class AdminEventDatabase extends DBConnection {
             // prepare the event query parameters
             int param = 1;
             stmt.setTimestamp(param++, new java.sql.Timestamp(time.getTime()));
-            stmt.setString(param++, "Agent");
+            //stmt.setString(param++, filter.getFilterText());
             logger.info("Start Execute statement");
             // execute the event query statement
             stmt.execute();
@@ -467,11 +470,14 @@ public class AdminEventDatabase extends DBConnection {
         	event.put(EventAttribute.PROP_DESKTOP_ID, strvalue);
         }else if (EventAttribute.PROP_POOL_ID.name.equalsIgnoreCase(name)){
         	event.put(EventAttribute.PROP_POOL_ID, strvalue);
-        }else {
+        }else if (EventAttribute.PROP_CLIENT_IP_ADDRESS.name.equalsIgnoreCase(name)){
+        	event.put(EventAttribute.PROP_CLIENT_IP_ADDRESS, strvalue);
+        }else if (BROKER_SESSIONID_DESC.equalsIgnoreCase(name)) {
+        	event.put(BROKER_SESSIONID_DESC, strvalue);
+        }
+        else {
         	event.put(name, strvalue);
         }
-        
-
     }
 
 

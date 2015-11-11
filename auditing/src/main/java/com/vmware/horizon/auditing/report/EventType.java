@@ -3,9 +3,11 @@ package com.vmware.horizon.auditing.report;
 
 public enum EventType {
 	Connection, 
-	Loggedin,
+	AgentLoggedin,
+	AgentLoggedout,
 	Disconnection, 
 	RequestApp,
-	Logout,
+	BrokerLoggedin,
+	BrokerLoggedout,
 	Others;
 }

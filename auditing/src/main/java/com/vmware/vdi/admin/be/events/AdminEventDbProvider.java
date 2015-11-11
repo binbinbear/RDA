@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import com.vmware.horizon.auditing.report.EventType;
 import com.vmware.vdi.adamwrapper.adam.AdamEventsDatabaseManager;
 import com.vmware.vdi.adamwrapper.exceptions.ADAMServerException;
 import com.vmware.vdi.adamwrapper.ldap.VDIContext;
@@ -20,6 +21,7 @@ import com.vmware.vdi.events.enums.EventAttribute;
 import com.vmware.vdi.events.enums.EventModule;
 import com.vmware.vdi.events.enums.EventSeverity;
 import com.vmware.vdi.events.server.forwarders.database.connectors.EventDBConnection;
+import com.vmware.vdi.admin.be.events.AdminEventDatabase;
 
 /**
  * The class AdminEventLogProvider provides the functionalities to retrieve
@@ -29,6 +31,7 @@ import com.vmware.vdi.events.server.forwarders.database.connectors.EventDBConnec
  *
  */
 public class AdminEventDbProvider implements AdminEventProvider {
+	
 
     private static class AdminRenderer implements EventAttributeRenderer {
         private static boolean equals(Enum<?> key, Object value) {
@@ -251,17 +254,22 @@ public class AdminEventDbProvider implements AdminEventProvider {
         String desktopId = (String) event.get(EventAttribute.PROP_DESKTOP_ID);
         String poolId = (String) event.get(EventAttribute.PROP_POOL_ID);
         
-        
-       // String ip = (String) event.get(EventAttribute.PROP_CLIENT_IP_ADDRESS);
+        String ip = (String) event.get(EventAttribute.PROP_CLIENT_IP_ADDRESS);
 
 
         String machinename = (String) event.get(EventAttribute.PROP_NODE);
         
+        String eventType = (String) event.get(EventAttribute.PROP_TYPE);
+        
+        // peter: need use static string
+        String brokerSessionId = (String)event.get(AdminEventDatabase.BROKER_SESSIONID_DESC);
+        
         
         AdminEvent adminevent = new AdminEvent();
         adminevent.setEventId(eventId);
+        adminevent.setEventType(eventType);
         adminevent.setTime(time);
-       // adminevent.setClientIP(ip);
+        adminevent.setClientIP(ip);
         adminevent.setModule(EventModule.valueOf(module));
 
         adminevent.setUserSID(sid);
@@ -271,6 +279,8 @@ public class AdminEventDbProvider implements AdminEventProvider {
         adminevent.setMessage(message);
         
         adminevent.setMachineName(machinename);
+        adminevent.setBrokerSessionId(brokerSessionId);
+
      
         return adminevent;
     }

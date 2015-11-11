@@ -157,7 +157,73 @@ if (!window.ToolBox){
 	window.ToolBox= {};
 }
 if (!ToolBox.Client || !ToolBox.Client.init){
+	
+	function  tableController($scope, ngTableParams) {
+
+		$scope.days = "7";
+		 $scope.$watch("days", function () {
+		        $scope.reloadData();
+		        
+		  });
+		 $scope.BrokerTable=window.l10Ntable;
+		 $scope.data = [];
+		 $scope.reloadData = function(){
+			 if($("#loading2").length == 0){			    	// $('#accumulatedUsing').append("<div class=\"loadingdiv\">Loading</div>"); 
+					$('#BrokeSessionTable').append("<tr id=\"loading2\" class=\"loadingrow\"><td class=\"desktopName \" ></td>"
+							+"<td class=\"desktopName \" ></td><td class=\"desktopName \" ></td><td class=\"desktopName \" ></td>"
+							+ "<td class=\"desktopName \" ></tr>");
+			     }
+	        var thisRequestData = {user:$("#user").val(),days:$scope.days};
+	        
+			 $.ajax({
+					url: './client/brokersessionlist',
+					type: "GET",
+					data:thisRequestData,
+					success: function (data) {
+						$(".updateDate").text("");
+						$(".loadingrow").remove();
+						if(data){	
+							for(var i = 0; i < data.length; i++){
+								// peter: how to handle the exception time range
+								data[i].loggedInTime = new Date(data[i].disconnectionTime).toLocaleString();
+								data[i].loggedOutTime = new Date(data[i].connectionTime).toLocaleString();
+							}
+							$scope.data = data;
+						}
+						$scope.tableParams.reload();
+					}, 
+					error:function(XMLHttpRequest, textStatus, errorThrown){
+						var sessionstatus = XMLHttpRequest.getResponseHeader("sessionstatus");
+						if ("timeout" == sessionstatus){
+							window.location.reload();	
+							return;
+						}
+						$(".loadingrow").remove();
+						$scope.data = [];
+						 $(".updateDate").text("Error happens when getting data from Event DB");
+						 $scope.tableParams.reload();
+				    }
+				});
+		 }
+	    $scope.tableParams = new ngTableParams({
+	        page: 1,            // show first page
+	        count: 10           // count per page
+	    }, {
+	        total: 0, // length of data
+	        getData: function($defer, params) {
+	        	var data = $scope.data;
+	        	if ((params.page() - 1) * params.count() >= data.length){
+							params.page(1);
+				}
+	        	params.total(data.length);
+	        	$defer.resolve(data.slice((params.page() - 1) * params.count(), params.page() * params.count()));		
+												 
+	        }
+	    });
+	}
+	
 	ToolBox.Client = {
+			app:  ToolBox.NgApp.controller('BrokerSeessionCtrl', tableController),
 			osdata: [],
 			versiondata: [],
 			colorMap: {
@@ -288,8 +354,6 @@ if (!ToolBox.Client || !ToolBox.Client.init){
 				ToolBox.Client.refreshModel();
 				$("#viewType").change(ToolBox.Client.refreshModel);
 				$(".enableButton").click(ToolBox.Client.popEnableDialog);
-				
-				
 			}
 	}
 }

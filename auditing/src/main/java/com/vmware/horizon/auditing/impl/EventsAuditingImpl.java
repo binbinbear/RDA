@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 import com.vmware.horizon.auditing.EventsAuditing;
 import com.vmware.horizon.auditing.db.EventDBUtil;
 import com.vmware.horizon.auditing.report.AccumulatedUsageReport;
+import com.vmware.horizon.auditing.report.BrokerSession;
 import com.vmware.horizon.auditing.report.ConcurrentConnectionsReport;
 import com.vmware.horizon.auditing.report.Connection;
 import com.vmware.horizon.auditing.report.Event;
@@ -98,5 +99,22 @@ public class EventsAuditingImpl implements EventsAuditing{
 	
 	}
 	
-	
+	@Override
+	public List<BrokerSession> getBrokerSessions(String username, int daysToShow) {
+		if (username == null){
+			username= "";
+		}
+		
+		if (daysToShow<=0 || (daysToShow>max_days)){
+			log.error("days can't be less than 0 or bigger than :"+ max_days);
+			return null;
+		}
+		
+		// should get all events 
+		log.info("broker session  started. username: " + username + "daysToShow " + daysToShow);
+		List<Event> events= this.dbutil.getEvents(username, daysToShow, "");
+		log.info("Size of event list  :"+ events.size());
+		return ReportUtil.getBrokerSessions(events, username);
+		
+	}
 }

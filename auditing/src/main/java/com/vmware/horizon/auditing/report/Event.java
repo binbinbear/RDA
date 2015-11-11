@@ -12,5 +12,6 @@ public interface Event extends Comparable<Event>{
 	public String getShortMessage();
 	
 	public String getClientIP();
+	public String getBrokerSessionId();
 	
 }

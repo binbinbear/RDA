@@ -70,8 +70,50 @@
 		
 </div>
 		
+		<h3 class="pageHeader">
+				<table border="0" cellpadding="0" cellspacing="0" width="100%">
+					<tbody>
+						<tr>
+							<td>
+								<div class="pageHeaderDiv">
+									<img src="img/window_information.png" alt="Dashboard" />&nbsp;&nbsp;
+									{{'Client IP information'|i18n}} &nbsp;<span class="updateDate"> </span> 
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</h3>
+			
+		<div class="poolContainer" ng-controller="BrokerSeessionCtrl"
+			style="width: 100%; height: 90%; overflow: scroll; overflow-x: hidden;">
 
-
+			<label>{{'Account Name'|i18n}}: </label> <input type="text"
+				id="user" name="user" value="" /> 
+				<button ng-click="reloadData()" class="btn btn-default">{{'Search'|i18n}}</button>
+			&nbsp;&nbsp; <label>{{'Show report for'|i18n}}: </label>
+			<select ng-model="days">
+				<option value="2">{{'Last 2 days'|i18n}}</option>
+				<option value="7" selected="selected">{{'Last 7 days'|i18n}}</option>
+				<option value="30">{{'Last 1 month'|i18n}}</option>
+				<!--add by wx 9-23 -->
+				<option value="180">{{'Last 6 months'|i18n}}</option>
+			</select>
+			<table id="BrokeSessionTable" ng-table="tableParams" class="dataTable">
+				<tr ng-repeat="session in $data">
+					<td data-title="BrokerTable['UserName']">{{session.userName}}</td>
+					<td data-title="BrokerTable['Client IP']">{{session.clientIP}}</td>
+					<td data-title="BrokerTable['Login Time']">{{session.loggedInTimeStr}}</td>
+					<td data-title="BrokerTable['Log out Time']">{{session.loggedOutTimeStr}}</td>
+				</tr>
+				<tr id="loading2" class="loadingrow">
+						<td class="desktopName " ></td>
+						<td class="desktopName " ></td>
+						<td class="desktopName " ></td>
+						<td class="desktopName " ></td>
+				</tr>
+			</table>
+		</div>
 
 		<script type="text/javascript" charset="utf-8" src="./js/d3.min.js"></script>
 		<script src="./js/clients.js"></script>

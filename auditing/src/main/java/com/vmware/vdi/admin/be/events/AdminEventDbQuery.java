@@ -297,9 +297,16 @@ class AdminEventSqlServerQuery extends AdminEventDbQuery {
         buffer.append(EventAttribute.PROP_TIME);
         buffer.append(">=?");
         
-        buffer.append(" AND ");
+        buffer.append(" AND (");
         buffer.append(EventAttribute.PROP_MODULE.name);
-        buffer.append("=?");
+        buffer.append(" = 'Agent' ");
+        buffer.append(" OR (");
+        buffer.append(EventAttribute.PROP_MODULE.name);
+        buffer.append(" = 'Broker'");
+        buffer.append(" AND ");
+        buffer.append(EventAttribute.PROP_TYPE.name);
+        buffer.append(" IN ('BROKER_USERLOGGEDIN','BROKER_USERLOGGEDOUT')))");
+
 
         buffer.append(" ORDER BY ");
         buffer.append(EventDBConnection.EVENTID);
@@ -364,9 +371,16 @@ class AdminEventOracleQuery extends AdminEventDbQuery {
         buffer.append(" WHERE ");
         buffer.append(EventAttribute.PROP_TIME);
         buffer.append(">=?");
-        buffer.append(" AND ");
+   
+        buffer.append(" AND (");
         buffer.append(EventAttribute.PROP_MODULE.name);
-        buffer.append("=?");
+        buffer.append(" = 'Agent' ");
+        buffer.append(" OR (");
+        buffer.append(EventAttribute.PROP_MODULE.name);
+        buffer.append(" = 'Broker'");
+        buffer.append(" AND ");
+        buffer.append(EventAttribute.PROP_TYPE.name);
+        buffer.append(" IN ('BROKER_USERLOGGEDIN','BROKER_USERLOGGEDOUT')))");
         
         buffer.append(" ORDER BY ");
         buffer.append(EventDBConnection.EVENTID);

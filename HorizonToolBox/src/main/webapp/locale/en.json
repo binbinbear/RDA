@@ -166,5 +166,7 @@ window.l10Ntable={
     "Email Notifications":"Email Notifications",
     "SMTP Host":"SMTP Host",
     "SMTP Port":"SMTP Port",
-    "Customized properties":"Customized properties"
+    "Customized properties":"Customized properties",
+    "Login Time":"Login Time",
+    "Log out Time":"Log out Time"
 }

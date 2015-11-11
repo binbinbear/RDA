@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 
 import com.vmware.horizon.auditing.db.ConnectionImpl;
 import com.vmware.horizon.auditing.db.EventImpl;
+import com.vmware.horizon.auditing.db.BrokerSessionImpl;
 
 
 public class ReportUtil {
@@ -61,7 +62,7 @@ public class ReportUtil {
 				String key = event.getMachineDNSName() + eventUserName;
 				if (event.getType() == EventType.Connection){
 					connectionEvents.put(key, event);
-				} else if (event.getType() == EventType.Loggedin){
+				} else if (event.getType() == EventType.AgentLoggedin){
 					loggedInEvents.put(key, event);
 				} else if (event.getType() == EventType.Disconnection){
 					Event connectionEvent = connectionEvents.get(key);
@@ -206,4 +207,74 @@ public class ReportUtil {
 		return new ConcurrentConnectionsReport(result);
 	}
 
+	
+	/**
+	 * Get all the broker sessions based on the users
+	 * @param events
+	 * @param userName     null to get all users
+	 * @return 
+	 */
+	public static List<BrokerSession> getBrokerSessions(List<Event> events, String userName) {
+		if (userName == null){
+			userName = "";
+		}
+		userName = userName.toLowerCase();
+		List<BrokerSession> result = new ArrayList<BrokerSession>();
+		
+		if (events.size()==0){
+			return result;
+		}
+		
+		int eventsSize = events.size();
+		Map<String,Event> brokerLoginEvents = new HashMap<String, Event>();
+		Date earliestDate = events.get(eventsSize -1 ).getTime();
+		
+		log.debug("before tranverse events: "+new Date());
+		  
+		 
+		 
+		for (int i = eventsSize -1; i>=0; i--) {
+			Event event = events.get(i);
+			String eventUserName = event.getUserName();
+			
+			if (eventUserName!=null && ( userName.length() == 0 || eventUserName.contains(userName))){
+				if(event.getType() == EventType.BrokerLoggedin) {
+					String key = event.getBrokerSessionId();
+					brokerLoginEvents.put(key, event);
+				} else if (event.getType() == EventType.BrokerLoggedout) {
+					String key = event.getBrokerSessionId();
+					// get matched broker session event
+					Event brokerSessionEvent = brokerLoginEvents.get(key);
+					if(brokerSessionEvent != null) { // normal case
+						if(brokerSessionEvent.getType() == EventType.BrokerLoggedin) {
+							BrokerSessionImpl brokerSession= new BrokerSessionImpl(brokerSessionEvent, event);
+							result.add(brokerSession);
+						} else {
+							// exception, need assert or log
+							log.error("Found related broker event for session: " + key + ", but its type(" + brokerSessionEvent.getType().toString()
+									+ ") is not login event!");
+						}
+					} else { // cannot find login event
+						log.warn("Cannot find the matched broker login event for session: " + key + " time: " + event.getTime().toString());
+					}
+					brokerLoginEvents.remove(key);
+				} else { // skip these events;
+					
+				}
+			}
+		}
+		Date unknownDate = new Date(0);
+		//for all broker session  without logout events, they should be connecting events
+		for (Event event: brokerLoginEvents.values()){
+			BrokerSessionImpl brokerSession= new BrokerSessionImpl(event, null);
+			result.add(brokerSession);
+		}
+		 log.debug("after tranverse events: "+new Date());
+		
+		
+		java.util.Collections.sort(result);
+		log.debug("All broker sessions:" + result.size());
+		
+		return result;
+	}
 }

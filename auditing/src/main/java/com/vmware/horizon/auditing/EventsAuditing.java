@@ -1,10 +1,12 @@
 package com.vmware.horizon.auditing;
 
+
 import java.util.List;
 
 import com.vmware.horizon.auditing.report.AccumulatedUsageReport;
 import com.vmware.horizon.auditing.report.ConcurrentConnectionsReport;
 import com.vmware.horizon.auditing.report.Connection;
+import com.vmware.horizon.auditing.report.BrokerSession;
 
 
 public interface EventsAuditing extends AutoCloseable{
@@ -51,4 +53,12 @@ public interface EventsAuditing extends AutoCloseable{
 	public ConcurrentConnectionsReport getConcurrentConnectionsReport(String poolName, int daysToShow, long period);
 	
 	public AccumulatedUsageReport getAccumulatedUsageReport(String poolName,int daysToShow);
+	
+	/**
+	 * 
+	 * @param username  null means all users
+	 * @param daysToShow   integer, 30, 7 or any days; should be less or equal than 31
+	 * @return
+	 */
+	public List<BrokerSession> getBrokerSessions(String username, int daysToShow);
 }

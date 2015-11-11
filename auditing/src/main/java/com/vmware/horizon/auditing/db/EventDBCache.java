@@ -28,7 +28,9 @@ public class EventDBCache {
 	private static int cachedDays = 90;
 	
 	private static Set<Event> cachedEvents =new HashSet<Event>();
-	private static final String filterText = "Agent";
+	
+	// // Actually this filter doesn't work and has been hard code now. Please see getEventQuery
+	private static final String filterText = "('Agent', 'Broker')";	
 	private static int pagingSize = 50000;
 	private static final long millisecondsHour = 1000L * 3600L;
 	private static final long millisecondsDay = millisecondsHour * 24L;

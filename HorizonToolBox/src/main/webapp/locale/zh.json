@@ -165,5 +165,7 @@ window.l10Ntable={
     "SMTP Host": "SMTP主机",
     "SMTP Port": "SMTP端口",
     "To Address(separated by ,)": "应对（由‘，’分隔）",
-    "Customized properties": "自定义属性"
+    "Customized properties": "自定义属性",
+    "Login Time":"登陆时间",
+    "Log out Time":"注销时间"
 }
