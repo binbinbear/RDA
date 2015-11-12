@@ -78,8 +78,8 @@ public class SharedStorageAccess {
 		return namePrefix + key + ',' + namePostfix;
 	}
 	
-	
-	private static final String separator = "<;;;>";
+	//use some chars that can't be typed to avoid conflict
+	private static final String separator = "" + (char) 198   + (char)214;
 	
 	public static List<String> getList(String key){
 		log.debug("SharedStorageAccess get List: using default context, key:" + key);
@@ -109,7 +109,8 @@ public class SharedStorageAccess {
 		set(key, new String(buffer));
 	}
 	
-	private static final String mapSeparator = ">=<";
+	//use some chars that can't be typed to avoid conflict
+	private static final String mapSeparator = ""  + (char)199 + (char) 215;
 	
 	/**
 	 * 
@@ -127,7 +128,12 @@ public class SharedStorageAccess {
 		
 		for (String one: content){
 			String[] kv =one.split(mapSeparator);
-			map.put(kv[0], kv[1]);
+			if (kv.length > 1){
+				map.put(kv[0], kv[1]);
+			}else{
+				log.error("Invalid map content:" + one);
+			}
+			
 		}
 		
 		return map;
