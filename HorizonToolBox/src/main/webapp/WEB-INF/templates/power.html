@@ -117,7 +117,7 @@
 					cellspacing="0">
 					<thead>
 						<tr>
-							<th class="sorted order1" id="poolname" style="width: 30%;">PoolName</th>
+							<th class="sorted order1" id="poolname" style="width: 30%;">{{'PoolName'|i18n}}</th>
 							<th style="width: 70%;">{{'PowerOn Policy'|i18n}}</th>
 						</tr>
 					</thead>
@@ -139,7 +139,7 @@
 			</div>
 
 			<div>
-			<p>{{'Power-on History:'|i18n}}</p></div>
+			<p>{{'Power-on History:'|i18n}}</p>
 			</div>
 			<div class="scrollarea list"
 				style="width: 100%; height: auto !important; height: 350px; min-height: 350px">
@@ -177,7 +177,7 @@
 			<div class="overlay" id="policyDialog">
 				<div
 					style="text-align: center; background-color: lightblue; font-size: 25px; height: 35px">
-					{{'PowerOn Policy for desktop'|i18n}}<span id="desktopName"></span>
+					{{'PowerOn Policy for desktop:'|i18n}}<span id="desktopName"></span>
 				</div>
 				<div>
 					<table>
@@ -236,14 +236,14 @@
 							<td><p>
 									<input class="powerinput"
 										title="The interval between powering-on two desktops"
-										id="interval" placeholder="Seconds" value="2" /> Seconds
+										id="interval" placeholder="Seconds" value="2" /> {{'Seconds'|i18n}}
 								</p></td>
 						</tr>
 					</table>
 					<div style="text-align:left;margin:10px">
-					<p>Select at least one week-day</p>
-					<p>Power-on time is between 0:00 and 23:59 </p>
-					<p>Example: If the interval value is 2(seconds), then powering-on 200 VMs will last for 100 seconds</p>
+					<p>{{'Select at least one week-day'|i18n}}</p>
+					<p>{{'Power-on time is between 0:00 and 23:59'|i18n}} </p>
+					<p>{{'Example: If the interval value is 2(seconds), then powering-on 100 VMs will last for 200 seconds'|i18n}}</p>
 					</div>
 				</div>
 

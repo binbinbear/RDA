@@ -199,7 +199,11 @@ window.l10Ntable={
     "Interval:":"间隔:",
     "Set":"设置",
     "Delete this policy":"删除当前策略",
-    "PowerOn Policy for desktop":"开机策略 桌面池:",
+    "PowerOn Policy for desktop:":"开机策略 桌面池:",
+    "Click here to generate the newest reports now":"点击这里，产生最新报告",
+    "Select at least one week-day":"选择至少一个工作日",
+    "Power-on time is between 0:00 and 23:59":"开机时间在0:00 and 23:59之间",
+    "Example: If the interval value is 2(seconds), then powering-on 100 VMs will last for 200 seconds":"示例: 假如时间间隔是2秒, 打开100个虚拟机需要200秒",
     "Seconds":"秒",
-    "Click here to generate the newest reports now":"点击这里，产生最新报告"
+    "PoolName":"池名称"
 }
