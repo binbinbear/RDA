@@ -14,7 +14,7 @@
 				<tbody>
 					<tr>
 						<td>
-							<div class="pageHeaderDiv">Virtual Machines</div>
+							<div class="pageHeaderDiv">{{'Virtual Machines'|i18n}}</div>
 						</td>
 					</tr>
 				</tbody>
@@ -25,7 +25,7 @@
 				<table  style="width: 850px;" class="noborder">
 					<tbody>
 						<tr>
-							<td>Filter by VM</td>
+							<td>{{'Filter by VM'|i18n}}</td>
 
 							<td width="280px">
 								<div id="loadingGif">&nbsp;&nbsp;&nbsp;&nbsp;</div> <input
@@ -37,7 +37,7 @@
 							
 							<select name="filterPool" id="filterPool" ng-model="pool"
 								style="display: inline-block;">
-									<option selected="selected" value="">Select Pool or Type</option>
+									<option selected="selected" value="">{{'Select Pool or Type'|i18n}}</option>
 									<option th:each="pool : ${pools}" th:value="${pool}">
 										<span th:text="${pool}"></span>
 									</option>
@@ -115,10 +115,10 @@
 					<thead>
 						<tr>
 							<th></th>
-							<th class="sorted order1">Name</th>
-							<th>Agent State</th>
-							<th>Pool</th>
-							<th>DNS Name</th>
+							<th class="sorted order1">{{'Name'|i18n}}</th>
+							<th>{{'Agent State'|i18n}}</th>
+							<th>{{'Pool'|i18n}}</th>
+							<th>{{'DNS Name'|i18n}}</th>
 							
 						</tr>
 					</thead>

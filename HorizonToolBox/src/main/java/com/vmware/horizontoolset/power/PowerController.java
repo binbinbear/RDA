@@ -18,6 +18,8 @@ public class PowerController {
     public String get(Model model, HttpSession session) {
         model.addAttribute("view", view); 
         model.addAttribute("user", SessionUtil.getuser(session));
+        model.addAttribute("translatedJsonURL", SessionUtil.getTranslatedJsonURL(session));
+        
     	return Application.MAINPAGE;
     }
 }

@@ -143,8 +143,8 @@
 				<table id="forQaVmsTable" class="dataTable searchResultsTable" cellspacing="0">
 					<thead>
 						<tr>
-							<th class="sorted order1" id="poolname"  style="width:30%;">PoolName</th>
-							<th style="width:70%;">PowerOn Policy</th>
+							<th class="sorted order1" id="poolname"  style="width:30%;">{{'Pool Name'|i18n}}</th>
+							<th style="width:70%;">{{'PowerOn Policy'|i18n}}</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -165,17 +165,17 @@
 			</div>
 			
 			<div>
-			<p>Power-on History:</p></div>
+			<p>{{'Power-on History:'|i18n}}</p></div>
 			 <div  class="scrollarea list" style="width: 100%; height:auto!important; height:350px; min-height:350px">
 
 				
 				<table  class="dataTable searchResultsTable" cellspacing="0">
 					<thead>
 						<tr>
-							<th class="sorted order1" id="poolname"  style="width:20%;">PoolName</th>
-							<th style="width:20%;">Start Time</th>
-							<th style="width:20%;">End Time</th>
-							<th style="width:40%;">Result</th>
+							<th class="sorted order1" id="poolname"  style="width:20%;">{{'Pool Name'|i18n}}</th>
+							<th style="width:20%;">{{'Start Time'|i18n}}</th>
+							<th style="width:20%;">{{'End Time'|i18n}}</th>
+							<th style="width:40%;">{{'Result'|i18n}}</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -195,8 +195,8 @@
 						    {{r.endTime}}
 						    </td>
 						    <td >
-						   <span>Successful:</span> <span> {{r.successful}} </span>
-						   <span>Failed:</span> <span> {{r.failed}} </span>
+						   <span>{{'Successful:'|i18n}}</span> <span> {{r.successful}} </span>
+						   <span>{{'Failed:'|i18n}}</span> <span> {{r.failed}} </span>
 						    </td>
 						    
 						</tr>
@@ -205,48 +205,48 @@
 			</div>
 		
 		<div class="overlay" id="policyDialog"> 
-	        	<div style="text-align:center; background-color:lightblue; font-size:30px; height:50px">PowerOn Policy for desktop <span id="desktopName"></span></div>
+	        	<div style="text-align:center; background-color:lightblue; font-size:30px; height:50px">{{'PowerOn Policy for desktop'|i18n}} <span id="desktopName"></span></div>
 	        	<div>
 	        		<table>
 	        			<tr>
 	        			    <td>
-	        			       <div>Work Day:</div>
+	        			       <div>{{'Work Day:'|i18n}}</div>
 	        			    </td>
 	        			    <td>
 	        			    <div>
 			    	<div id="MON" class="week" >
-			        	<span>Mon</span>
+			        	<span>{{'Mon'|i18n}}</span>
 				    </div>
 				   
 				    <div id="TUE" class="week">
-				    	<span>Tues</span>
+				    	<span>{{'Tues'|i18n}}</span>
 				    </div>
 				    
 				    <div id="WED" class="week">
-				    	<span>Wed</span>
+				    	<span>{{'Wed'|i18n}}</span>
 				    </div>
 				    
 				    <div id="THU" class="week">
-				    	<span>Thur</span>
+				    	<span>{{'Thur'|i18n}}</span>
 				    </div>
 				    
 				    <div id="FRI" class="week">
-				    	<span>Fri</span>
+				    	<span>{{'Fri'|i18n}}</span>
 				    </div>
 				    
 				    <div id="SAT" class="week">
-				    	<span>Sat</span>
+				    	<span>{{'Sat'|i18n}}</span>
 				    </div>
 				   
 				    <div id="SUN" class="week">
-				    	<span>Sun</span>
+				    	<span>{{'Sun'|i18n}}</span>
 				    </div>
 			    </div>
 	        			    </td>
 	        			</tr>
 	        			  
 	        			<tr>
-	        			<td><div>Power-on Time:</div></td>
+	        			<td><div>{{'Power-on Time:'|i18n}}</div></td>
 	        			<td>
 	        			     <div>
 	        			     
@@ -259,8 +259,8 @@
 	        			</td>
 	        			</tr>
 	        			<tr>
-	        			<td>Interval:</td>
-	        			<td><p><input class="powerinput" title="The interval between powering-on two desktops" id="interval" placeholder="Seconds" value="5"  />Seconds</p>
+	        			<td>{{'Interval:'|i18n}}</td>
+	        			<td><p><input class="powerinput" title="The interval between powering-on two desktops" id="interval" placeholder="Seconds" value="5"  />{{'Seconds'|i18n}}</p>
 						</td>
 	        			</tr>
 	        		</table>
@@ -269,8 +269,8 @@
 	            
 				<div>
 					<div class="button-holder"> 
-		                <a id="setPolicy" class="button blue" >Set</a>
-		                  <a id="removePolicy" class="button blue" >Delete this policy</a>
+		                <a id="setPolicy" class="button blue" >{{'Set'|i18n}}</a>
+		                  <a id="removePolicy" class="button blue" >{{'Delete this policy'|i18n}}</a>
 		            </div> 
 				</div>
 	            <a class="close"></a> 

@@ -17,7 +17,8 @@ public class ConsoleController {
 		model.addAttribute("pools", SessionUtil.getAllDesktopPools(session));
 		model.addAttribute("view", view);
 		model.addAttribute("user", SessionUtil.getuser(session));
-		
+		 model.addAttribute("translatedJsonURL", SessionUtil.getTranslatedJsonURL(session));
+	       
 
 		return "toolset";
 
