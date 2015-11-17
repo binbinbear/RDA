@@ -395,7 +395,11 @@ namespace HRAInstaller
             Process p = Process.Start("msra.exe");
             p.WaitForExit(60 * 1000);
             msg("Killing MSRA...");
-            p.Kill();
+            try
+            {
+                p.Kill();
+            }
+            catch { }
         }
 
         private static void UpdateClientRegistryPermission()
