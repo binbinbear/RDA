@@ -14,14 +14,19 @@ import com.vmware.horizontoolset.util.SharedStorageAccess;
 
 //this must be singleton
 public class PersistancePowerScheduler extends CronScheduler<PowerOnJob>{
-
-	private static PersistancePowerScheduler _instance = new PersistancePowerScheduler();
+	
+	private static Logger log = Logger.getLogger(PersistancePowerScheduler.class);
+	
+	private static PersistancePowerScheduler _instance ;
 	
 	public static PersistancePowerScheduler getInstance(){
+		if (_instance == null){
+			_instance = new PersistancePowerScheduler();
+		}
 		return _instance;
 	}
 	
-	private static Logger log = Logger.getLogger(PersistancePowerScheduler.class);
+	
 	
 	@Override
 	public  void addOrUpdateCron(PowerOnJob job) throws SchedulerException {
@@ -54,7 +59,7 @@ public class PersistancePowerScheduler extends CronScheduler<PowerOnJob>{
 				super.addOrUpdateCron(job);
 			}
 		}catch(Exception ex){
-			log.error(ex.getMessage(),ex);
+			log.error("Can't get jobs from LDAP",ex);
 		}
 	}
 

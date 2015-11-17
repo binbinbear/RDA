@@ -76,7 +76,17 @@ if (!ToolBox.PowerPolicy) {
 		controller: ToolBox.NgApp.controller('powerCtrl', powerController)
 
 	};
-	
+	var checkReady = function(){
+		$('.week').attr("title","Click to select");
+		var allselected = $(".wselected");
+		if(allselected.length == 0){
+			$('#setPolicy').addClass("disabled");
+		}else{
+			$('#setPolicy').removeClass("disabled");
+		}
+		
+		allselected.attr("title","Click to remove this day");
+	}
 	
 	ToolBox.PowerPolicy.loadPolicy = function(poweronjob){
 		 console.log("edit pool:"+poweronjob.poolName);
@@ -102,7 +112,7 @@ if (!ToolBox.PowerPolicy) {
 		}
 		
 		
-		
+		checkReady();
 		$("#policyDialog").show();
 	}
 	
@@ -112,7 +122,7 @@ if (!ToolBox.PowerPolicy) {
 
 		document.getElementById("hour").value="0";
 		document.getElementById("minute").value="0";
-		document.getElementById("interval").value="5";
+		document.getElementById("interval").value="2";
 	
 	}
 	
@@ -151,6 +161,23 @@ if (!ToolBox.PowerPolicy) {
 	}
 	
 	ToolBox.PowerPolicy.setPolicy = function() {
+		if ($('#setPolicy').hasClass("disabled")){
+			return;
+		}
+		if ($('#minute').val() <0 || $('#minute').val() >=60){
+			alert ("Invalid minute value");
+			return;
+		}
+		if ($('#hour').val() <0 || $('#hour').val() >=24){
+			alert ("Invalid hour value");
+			return;
+		}
+		
+		if($("#interval").val()<=0 || $("#interval").val() >10){
+			alert ("The interval value should be between 0 and 10");
+			return;
+		}
+		
 		//TODO: check values
 		var cron = "";
 		cron +=  "0 "
@@ -175,8 +202,6 @@ if (!ToolBox.PowerPolicy) {
 		
 		ToolBox.PowerPolicy._sendUpdateToServer($("#desktopName").text(),cron, $("#interval").val());
 		
-		
-		
 	}
 	
 	ToolBox.PowerPolicy.removePolicy = function() {
@@ -188,8 +213,11 @@ if (!ToolBox.PowerPolicy) {
 		
 	}
 	
+
 	
 	ToolBox.PowerPolicy.init = function() {
+		
+		 
 		 $('a.close').click(function(){ 
 		        $("#policyDialog").hide(); 
 		        ToolBox.PowerPolicy._clearPolicy();
@@ -197,9 +225,13 @@ if (!ToolBox.PowerPolicy) {
 		 $('.week').click(function(){		
 				if(this.classList.contains("wselected")){
 					this.classList.remove("wselected");
+					
 				}else{
-					this.classList.add("wselected");
+					this.classList.add("wselected");					
 				}
+				
+				checkReady();
+				
 			});
 		 
 		 $('#setPolicy').click(ToolBox.PowerPolicy.setPolicy);
