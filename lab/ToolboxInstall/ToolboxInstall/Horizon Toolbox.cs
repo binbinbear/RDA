@@ -152,7 +152,8 @@ namespace ToolboxInstall
         {
             //Application.DoEvents();
             //set JRE_HOME
-           
+
+            String processToKill = "tomcat8.exe";
             UpdaterichTextBox1("Checking if Horizon View Connection Server has been installed on this computer...");
             //output("Checking if connection server has been installed on this computer...");
             string jre_path = string.Empty;
@@ -261,6 +262,8 @@ namespace ToolboxInstall
                        // p1.StandardInput.WriteLine(@"ping www.baidu.com");
                         p1.StandardInput.WriteLine(@"cd " + svrPath);
                         p1.StandardInput.WriteLine(@"set JRE_HOME=" + jre_path);
+                        p1.StandardInput.WriteLine(@"set PROCESSKILL=" + processToKill);
+                        p1.StandardInput.WriteLine(@"TASKKILL /F /IM %PROCESSKILL%");
                         p1.StandardInput.WriteLine(@"service.bat remove");
                         p1.StandardInput.WriteLine(@"cd " + svrPath.Substring(0, svrPath.IndexOf(@"\") + 1));
                         p1.StandardInput.WriteLine(@"exit");
@@ -371,7 +374,7 @@ namespace ToolboxInstall
             string tmp = tomcatPath;
             tomcatPath = tomcatPath.Substring(0, tomcatPath.LastIndexOf(".zip"));
             string shortCutPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + @"\HorzionToolbox.lnk";
-            string[] content = { "cd " + tomcatPath + @"\bin", "call service.bat remove", "cd ..", "cd ..", @"rd/s/q .\" + tomcatPath.Substring(tomcatPath.LastIndexOf(@"\")+1), @"del /f /q " + shortCutPath};
+            string[] content = { "cd " + tomcatPath + @"\bin", @"set PROCESSKILL=" + processToKill, @"TASKKILL /F /IM %PROCESSKILL%", "call service.bat remove", "cd ..", "cd ..", @"rd/s/q .\" + tomcatPath.Substring(tomcatPath.LastIndexOf(@"\") + 1), @"del /f /q " + shortCutPath };
             File.WriteAllLines(path + "uninstall.bat", content);
             File.Delete(tmp);
 
