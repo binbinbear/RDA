@@ -1,0 +1,24 @@
+Horizon Toolbox 2.0 release note
+
+New features
+·	Console Access
+	List all VMs for desktop pools, and you can filter VMs by VM name or DNS name. 
+	Clicking the VM name, the vSphere console for that VM will pop out. 
+·	Power-on policy
+	Lists all desktop pools and their power policies.
+	Power Policy can power on all VMs in a desktop pool with some schedule, like 8:00 AM on all work days. 
+	You can setup power policy for each desktop pool.	
+·	Client IP address auditing
+	List detailed information for all broker sessions, including user name, Client IP addresses, login time and log out time.
+·	Installation file
+	GUI installation process
+
+Enhancements
+·	Auditing performance
+	Compared with toolbox 1.5, auditing performance has been enhanced due to improved SQL query.
+·	Remote assistance
+	Update the workflow so it's more stable with Windows Remote Assistance. In addition, installation on helpdesk is no longer needed
+	Compatibility improvement for different Horizon View version
+	The end user side installer makes sure Windows Remote Assistance model is correctly configured.
+
+

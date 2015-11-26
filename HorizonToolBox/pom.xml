@@ -19,18 +19,18 @@
 			<artifactId>log4j</artifactId>
 		</dependency>
 
-        <dependency>
-            <groupId>com.vmware</groupId>
+		<dependency>
+			<groupId>com.vmware</groupId>
 			<artifactId>auditing</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
-        </dependency>
+		</dependency>
 
-        <dependency>
-            <groupId>javax.servlet</groupId>
+		<dependency>
+			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
 			<version>3.1.0</version>
-            <scope>provided</scope>
-        </dependency>
+			<scope>provided</scope>
+		</dependency>
 
 		<dependency>
 			<groupId>com.vmware</groupId>
@@ -39,9 +39,9 @@
 			<scope>system</scope>
 			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/view-api.jar</systemPath>
 		</dependency>
-		
 
-		
+
+
 		<dependency>
 			<groupId>com.vmware</groupId>
 			<artifactId>adamwrapper</artifactId>
@@ -75,14 +75,14 @@
 			<scope>system</scope>
 			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/coreadmin.jar</systemPath>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.vmware</groupId>
 			<artifactId>events-common</artifactId>
 			<version>1.0</version>
 			<scope>system</scope>
 			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/events-common.jar</systemPath>
-		
+
 		</dependency>
 
 		<dependency>
@@ -91,44 +91,44 @@
 			<version>1.0</version>
 			<scope>system</scope>
 			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/events-server.jar</systemPath>
-		
+
 		</dependency>
-		
+
 		<dependency>
-    		<groupId>com.google.code.gson</groupId>
-    		<artifactId>gson</artifactId>
-    		<version>2.3</version>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.3</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.vmware</groupId>
 			<artifactId>dbwrapper</artifactId>
 			<version>1.0</version>
 			<scope>system</scope>
 			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/dbwrapper.jar</systemPath>
-		
+
 		</dependency>
-		
-		
+
+
 		<dependency>
 			<groupId>com.vmware</groupId>
 			<artifactId>securitymanager</artifactId>
 			<version>1.0</version>
 			<scope>system</scope>
 			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/securitymanager.jar</systemPath>
-		
+
 		</dependency>
-		
-				
+
+
 		<dependency>
 			<groupId>com.vmware</groupId>
 			<artifactId>commonutils</artifactId>
 			<version>1.0</version>
 			<scope>system</scope>
 			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/commonutils.jar</systemPath>
-		
+
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.vmware</groupId>
 			<artifactId>vijava55b20130927</artifactId>
@@ -136,11 +136,11 @@
 			<scope>system</scope>
 			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/vijava55b20130927.jar</systemPath>
 		</dependency>
-		
+
 		<dependency>
-    		<groupId>org.apache.servicemix.bundles</groupId>
-    		<artifactId>org.apache.servicemix.bundles.dom4j</artifactId>
-    		<version>1.6.1_5</version>
+			<groupId>org.apache.servicemix.bundles</groupId>
+			<artifactId>org.apache.servicemix.bundles.dom4j</artifactId>
+			<version>1.6.1_5</version>
 		</dependency>
 
 		<dependency>
@@ -176,37 +176,37 @@
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-web</artifactId>
-		</dependency>	
+		</dependency>
 
 
-        <dependency>
-        	<groupId>junit</groupId>
-        	<artifactId>junit</artifactId>
-        	<scope>test</scope>
-        </dependency>
-       
-     <dependency>
-	<groupId>net.sf.supercsv</groupId>
-	<artifactId>super-csv</artifactId>
-	<version>2.2.0</version>
-</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
 
-        
-        				
+		<dependency>
+			<groupId>net.sf.supercsv</groupId>
+			<artifactId>super-csv</artifactId>
+			<version>2.2.0</version>
+		</dependency>
+
+
+
 		<dependency>
 			<groupId>com.microsoft</groupId>
 			<artifactId>SQLServerDriver</artifactId>
 			<version>1.0</version>
 			<scope>system</scope>
 			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/sqljdbc4.jar</systemPath>
-		
+
 		</dependency>
-		
-		 <dependency>
+
+		<dependency>
 			<groupId>com.googlecode.json-simple</groupId>
 			<artifactId>json-simple</artifactId>
 			<version>1.1</version>
-		  </dependency>
+		</dependency>
 
 		<dependency>
 			<groupId>javax.mail</groupId>
@@ -225,164 +225,26 @@
 		</dependency>
 	</dependencies>
 
-	<profiles>
-		<profile>
-			<id>defualtProfile</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-		</profile>
-
-		<profile>
-			<id>release</id>
-			<build>
-				<plugins>
-					
-					<!-- compress js and csss -->
-					<plugin>
-
-						<groupId>org.apache.maven.plugins</groupId>
-
-						<artifactId>maven-antrun-plugin</artifactId>
-
-						<executions>
-
-							<execution>
-
-								<phase>prepare-package</phase>
-
-								<goals>
-
-									<goal>run</goal>
-
-								</goals>
-
-								<configuration>
-
-									<tasks>
-										<property name="closure-compiler" value="build/compressor/compiler.jar" />
-
-										<property name="js.compress.directory"
-											value="${project.build.directory}/toolbox/js" />
-
-										<echo message="begin compress javascripts" />
 
 
-										<apply executable="java" parallel="false"
-											dest="${js.compress.directory}">
-
-											<fileset dir="src/main/webapp/js" excludes="**/*.min.js" />
-
-											<arg value="-jar" />
-
-											<arg value="${closure-compiler}" />
-											<arg value="--angular_pass" />
-											
-											<arg value="--language_in" />
-
-											<arg value="ECMASCRIPT5" />
-
-											<arg value="--js" />
-
-											<srcfile />
-
-											<arg value="--js_output_file" />
-
-											<targetfile />
-
-											<mapper type="regexp" from="^(.*)\.(js)$" to="\1-tempmin.\2" />
-
-										</apply>
-
-										<move todir="${js.compress.directory}">
-
-											<fileset dir="${js.compress.directory}" includes="**/*.js" />
-
-											<mapper type="regexp" from="^(.*)-tempmin\.(js)$" to="\1.\2" />
-
-										</move>
-
-
-										<echo message="end compress" />
-
-										<property name="yuicompressor" value="build/compressor/yuicompressor.jar" />
-
-										<property name="css.compress.directory"
-											value="${project.build.directory}/toolbox/css" />
-
-										<echo message="begin compress css" />
-
-										<apply executable="java" parallel="false" failonerror="true"
-											dest="${css.compress.directory}">
-
-											<fileset dir="src/main/webapp/css" excludes="**/*.min.css" />
-
-											<arg line="-jar" />
-
-											<arg path="${yuicompressor}" />
-
-											<arg line="--charset UTF-8" />
-
-											<arg value="--type" />
-
-											<arg value="css" />
-
-											<srcfile />
-
-											<arg line="-o" />
-
-											<targetfile />
-
-											<mapper type="regexp" from="^(.*)\.(css)$" to="\1-tempmin.\2" />
-
-
-										</apply>
-
-										<move todir="${css.compress.directory}">
-
-											<fileset dir="${css.compress.directory}" includes="**/*.css" />
-
-											<mapper type="regexp" from="^(.*)-tempmin\.(css)$" to="\1.\2" />
-
-										</move>
-
-
-										<echo message="compress css successfully" />
-
-									</tasks>
-
-								</configuration>
-
-							</execution>
-
-						</executions>
-
-					</plugin>
-
-				</plugins>
-			</build>
-
-		</profile>
-	</profiles>
-
-<properties>
-<BUILD_MAJOR>${project.version}</BUILD_MAJOR>
-<BUILD_MINOR>${maven.build.timestamp}</BUILD_MINOR>
-</properties>
+	<properties>
+		<BUILD_MAJOR>${project.version}</BUILD_MAJOR>
+		<BUILD_MINOR>${maven.build.timestamp}</BUILD_MINOR>
+	</properties>
 
 	<build>
-	<finalName>${project.artifactId}</finalName>
-	
-	
-<resources>
-    <resource>
-    		<includes>
-			<include>*.properties</include>
-		</includes>
-        <directory>${project.basedir}/src/main/java</directory>
-        <filtering>true</filtering>
-    </resource>
-</resources>
+		<finalName>${project.artifactId}</finalName>
+
+
+		<resources>
+			<resource>
+				<includes>
+					<include>*.properties</include>
+				</includes>
+				<directory>${project.basedir}/src/main/java</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
 
 
 		<plugins>
@@ -443,9 +305,9 @@
 				<artifactId>maven-war-plugin</artifactId>
 				<configuration>
 					<packagingExcludes>
-					**/*.class,
-					**/toolbox_proguard_base.jar,
-					**/sqljdbc4.jar
+						**/*.class,
+						**/toolbox_proguard_base.jar,
+						**/sqljdbc4.jar
 					</packagingExcludes>
 					<useCache>true</useCache>
 				</configuration>
@@ -464,14 +326,14 @@
 				<artifactId>maven-antrun-plugin</artifactId>
 				<executions>
 					<execution>
-					    <id>prepareTomcat</id>
+						<id>prepareTomcat</id>
 						<phase>package</phase>
 						<goals>
 							<goal>run</goal>
 						</goals>
 						<configuration>
 							<tasks>
-								<copy todir="../Tomcat/HorizonToolbox/webapps" overwrite="true" >
+								<copy todir="../Tomcat/HorizonToolbox/webapps" overwrite="true">
 									<fileset dir="target" includes="toolbox.war" />
 								</copy>
 								<copy todir="../Tomcat/HorizonToolbox/" overwrite="true">
