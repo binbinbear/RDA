@@ -168,7 +168,8 @@ namespace ToolboxInstall
 
             if (string.Compare(jre_path, string.Empty) == 0 || jre_path.IndexOf("Server") == -1)
             {
-                ExceptionOccur();
+                String errorInfo = @"JRE path is invalid. Please install Horizon Toolbox on a Horizon Connection Server!";
+                ExceptionOccur(errorInfo);
                 MessageBox.Show(@"Error: Please install Horizon Toolbox on a Horizon Connection Server!");
                 return;
             }
@@ -232,7 +233,8 @@ namespace ToolboxInstall
             }
             catch
             {
-                ExceptionOccur();
+                String errorInfo = @"Fail installing the HorizonToolBox, please reinstall it!";
+                ExceptionOccur(errorInfo);
                // Console.WriteLine(@"Fail installing the HorizonToolBox, please reinstall it!");
               //  Console.Write("Please press 'Enter' key to continue ... ");
                // Console.ReadLine();
@@ -274,8 +276,9 @@ namespace ToolboxInstall
             //p1.Close();
             if (SvrStatus(ServiceName) != None)
             {
-                ExceptionOccur();
-                MessageBox.Show(@"Fail removing the Tomcat, please uninstall it manually, and rerun this program!");
+                String errorInfo = @"Fail removing the Tomcat, please uninstall it manually, and rerun this program!";
+                ExceptionOccur(errorInfo);
+                MessageBox.Show(errorInfo);
                 //Console.ReadLine();
                 return;
             }
@@ -304,8 +307,9 @@ namespace ToolboxInstall
                 //If the file or folder is processed, then it cannot be deleted
                 if (!isDelete)
                 {
-                    ExceptionOccur();
-                    MessageBox.Show(@"The files of HorizonToolBox are being used by some process, please stop Toolbox and run this program again!");
+                    String errorInfo = @"The files of HorizonToolBox are being used by some process, please stop Toolbox and run this program again!";
+                    ExceptionOccur(errorInfo);
+                    MessageBox.Show(errorInfo);
                    // Console.WriteLine(@"The file or files of HorizonToolBox is occupied by some process, please release it and run this program again!");
                   //  Console.Write("Please press 'Enter' key to continue ... ");
                     //Console.ReadLine();
@@ -315,8 +319,9 @@ namespace ToolboxInstall
                 bool sucUnZip = UnZip(pathOfZip, path);
                 if (sucUnZip == false)
                 {
-                    ExceptionOccur();
-                    MessageBox.Show(@"Fail unzipping the file, please unzip the file : " + pathOfZip + @"  manually and run this program again!");
+                    String errorInfo = @"Fail unzipping the file, please unzip the file : " + pathOfZip + @"  manually and run this program again!";
+                    ExceptionOccur(errorInfo);
+                    MessageBox.Show(errorInfo);
                     //Console.WriteLine(@"Fail to unzip the file, please unzip the file : " + pathOfZip + @"  by manual and run this program again!");
                     //Console.Write("Please press 'Enter' key to continue ... ");
                     //Console.ReadLine();
@@ -358,8 +363,9 @@ namespace ToolboxInstall
 
             if (SvrStatus(ServiceName) == None)
             {
-                ExceptionOccur();
-                MessageBox.Show("Fail installing Tomcat. Please restart this program again or install the tomcat manually.");
+                String errorInfo = @"Fail installing Tomcat. Please restart this program again or install the tomcat manually.";
+                ExceptionOccur(errorInfo);
+                MessageBox.Show(errorInfo);
                 return;
             }
 
@@ -617,8 +623,9 @@ namespace ToolboxInstall
                     }
                     catch (Exception e)
                     {
-                        ExceptionOccur();
-                        MessageBox.Show("Failed opening your browser, please access toolbox manually.");
+                        String errorInfo = "Failed opening your browser, please access toolbox manually.";
+                        ExceptionOccur(errorInfo);
+                        MessageBox.Show(errorInfo);
                         //Console.WriteLine(e.ToString());
                        // Console.Write("Please press 'Enter' key to continue ... ");
                         //Console.ReadLine();
@@ -650,12 +657,17 @@ namespace ToolboxInstall
         /// 
         /// </summary>
         /// <param name="msg"></param>
-        private void ExceptionOccur()
+        private void ExceptionOccur(String errorInfo)
         {
             timer1.Enabled = false;
             UpdateprogressBar1(0);
             Updatelabel1("0%");
-            UpdaterichTextBox1(@"Some error happened!");
+            if (errorInfo.Length == 0)
+            {
+                UpdaterichTextBox1(@"Some error happened!");
+            }
+            else
+                UpdaterichTextBox1(errorInfo);
         }
 
         private void label1_Click(object sender, EventArgs e)
