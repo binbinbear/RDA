@@ -110,7 +110,11 @@ goto end
 rem Remove the service
 echo Removing the service '%SERVICE_NAME%' ...
 echo Using CATALINA_BASE:    "%CATALINA_BASE%"
+echo Task kill
 
+set PROCESSKILL=Tomcat8.exe
+
+TASKKILL /F /IM %PROCESSKILL%
 "%EXECUTABLE%" //DS//%SERVICE_NAME% ^
     --LogPath "%CATALINA_BASE%\logs"
 if not errorlevel 1 goto removed
