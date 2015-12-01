@@ -154,7 +154,7 @@
         "DisplayName" = "8:Release"
         "IsDebugOnly" = "11:FALSE"
         "IsReleaseOnly" = "11:TRUE"
-        "OutputFilename" = "8:Release\\VMWARE-Horizon-Toolbox-x64-2.0.0.msi"
+        "OutputFilename" = "8:Release\\VMWARE-Horizon-Toolbox-x64-2.0.1.msi"
         "PackageFilesAs" = "3:2"
         "PackageFileSize" = "3:-2147483648"
         "CabType" = "3:1"
@@ -295,8 +295,8 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_379C46F577864A4CB51716D2679DECBC"
             {
-            "SourcePath" = "8:..\\..\\..\\HorizonToolBox\\target\\HorizonToolbox2.0.0.zip"
-            "TargetName" = "8:HorizonToolbox2.0.0.zip"
+            "SourcePath" = "8:..\\..\\..\\HorizonToolBox\\target\\HorizonToolbox2.0.1.zip"
+            "TargetName" = "8:HorizonToolbox2.0.1.zip"
             "Tag" = "8:"
             "Folder" = "8:_E9E6E9D056D6454280F9D0605AAA1644"
             "Condition" = "8:"
@@ -529,7 +529,7 @@
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:2.0.0"
+        "ProductVersion" = "8:2.0.1"
         "Manufacturer" = "8:VMware"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
