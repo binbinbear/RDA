@@ -147,9 +147,9 @@ $(document)
 					if (location.search) {
 						$("#bar").hide();
 						if (window.location.protocol == "https:")
-							protocol = "wss:";
+							protocol = "wss://";
 						else
-							protocol = "ws:";
+							protocol = "ws://";
 						var vmurl = protocol + window.location.host + $(".vmurl").text();
 						_wmks.wmks("connect", vmurl);
 						$("#spinner").addClass("spinner");
