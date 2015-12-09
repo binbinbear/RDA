@@ -29,10 +29,15 @@
 				<option value="month">{{'Last 1 month'|i18n}}</option>
 				<option value="halfyear">{{'Last 6 months'|i18n}}</option>
 			</select>
-			<label for="desktoppool">{{'Select desktop pool or RDS farm'|i18n}}: </label>
+			<label for="desktoppool">{{'Select desktop pool ID'|i18n}}: </label>
 			
 			<select id="desktoppool" name="desktoppool">
 				<option value="all" selected="selected">{{'ALL'|i18n}}</option>
+
+				<option th:each="pool : ${pools}" th:value="${pool}">
+					<span th:text="${pool}"></span>
+				</option>
+
 			</select>
 			
 			<div>

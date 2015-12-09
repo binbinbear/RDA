@@ -61,7 +61,6 @@
             </property>
   </bean>
 <bean id="logoutController" class="com.vmware.horizontoolset.LogoutController"/>
-  <bean id="CommonRestController" class="com.vmware.horizontoolset.CommonRestController"/>
  
   <bean id="sessionController" class="com.vmware.horizontoolset.SessionController"/>
 

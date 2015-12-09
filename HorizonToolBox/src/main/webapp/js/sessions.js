@@ -47,25 +47,7 @@ if (!ToolBox.Session || !ToolBox.Session.init){
 		    	loadingDiv.addClass("messagediv");
 		    	loadingDiv.text(message);
 		    },
-		    getViewPools: function(){
-				$.ajax({
-					url: './common/poolfarms',
-					type: "GET",
-					success: function (data) {
-						if (!data || !data.length){
-							return;
-						}
-						 var poolbody = $("#desktoppool");
-						 for (var i= 0; i< data.length; i++){
-								var dSD = data[i];
-								var option = "<option value=\""   +  dSD + "\"> "+ dSD+"</option>";
-							 	poolbody.append(option);
-							}
-					}, 
-					error: function(data) {
-					}
-				});
-			},
+		    
 			refreshHistorySession: function(){
 				$("svg").empty();
 				 var type = $("#viewType").val();
@@ -215,7 +197,6 @@ if (!ToolBox.Session || !ToolBox.Session.init){
 			
 			
 			init: function(){
-				ToolBox.Session.getViewPools();
 				ToolBox.Session.refreshHistorySession();
 				ToolBox.Session.refreshCurrentSession();
 				$("#viewType").change(ToolBox.Session.refreshHistorySession);
