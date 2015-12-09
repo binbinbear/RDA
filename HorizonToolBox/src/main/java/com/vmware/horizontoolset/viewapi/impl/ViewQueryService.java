@@ -28,7 +28,6 @@ import com.vmware.vdi.vlsi.binding.vdi.resources.Desktop;
 import com.vmware.vdi.vlsi.binding.vdi.resources.Desktop.CustomizationSettings;
 import com.vmware.vdi.vlsi.binding.vdi.resources.Desktop.DesktopInfo;
 import com.vmware.vdi.vlsi.binding.vdi.resources.Desktop.DesktopSummaryView;
-import com.vmware.vdi.vlsi.binding.vdi.resources.Farm.FarmInfo;
 import com.vmware.vdi.vlsi.binding.vdi.resources.Farm.FarmSummaryView;
 import com.vmware.vdi.vlsi.binding.vdi.resources.RDSServer.RDSServerSummaryView;
 import com.vmware.vdi.vlsi.binding.vdi.users.Session.SessionLocalSummaryView;
@@ -46,7 +45,7 @@ import com.vmware.vim.binding.vmodl.DataObject;
 
 public class ViewQueryService {
 	private static Logger log = Logger.getLogger(ViewQueryService.class);
-	
+
 	private Desktop _desktop;
 	private BaseImageSnapshot _snapshotService;
 	private Connection _connection;
@@ -55,10 +54,10 @@ public class ViewQueryService {
 		this._connection = connect;
 		this._desktop = connect.get(Desktop.class);
 		this._snapshotService = connect.get(BaseImageSnapshot.class);
-		
+
 	}
-	
-	
+
+
 	private ADContainerInfo[]  _containerInfos;
 	ADContainerInfo[] getContainers(ViewComposerDomainAdministratorId adminID){
 		if (adminID ==null){
@@ -68,13 +67,13 @@ public class ViewQueryService {
 		if (_containerInfos == null){
 			 ADContainer _container = _connection.get(ADContainer.class);
 			 _containerInfos= _container.listByViewComposerDomainAdministrator(adminID);
-			 
+
 		}
 		return _containerInfos;
 	}
-	
-	
-	
+
+
+
 	public ADContainerInfo getContainer(CustomizationSettings customSettings){
 		if (customSettings == null){
 			log.info("customSettings is null!!");
@@ -85,7 +84,7 @@ public class ViewQueryService {
 			log.info("can't get infos");
 			return null;
 		}
-		
+
 		String id = customSettings.getAdContainer().getId();
 		String validID = id.substring(id.lastIndexOf('/')).toLowerCase();
 		for (int i=0;i<infos.length;i++){
@@ -98,48 +97,53 @@ public class ViewQueryService {
 	}
 	public DesktopInfo getDesktopInfo(DesktopSummaryView summary){
 		DesktopInfo desktopinfo = this._desktop.get(summary.id);
-		
+
 		if (desktopinfo == null){
 			log.warn("desktop not found for:"+summary.desktopSummaryData.displayName);
 		}
 		return desktopinfo;
 	}
-	
-	
-	
-	public Template getTemplate(String id, String templatePath){	
+
+
+
+	public Template getTemplate(String id, String templatePath){
 		Template template = Cache.getTemplate(id);
 		if (template !=null){
 			log.debug("Great VM cache hit " + templatePath);
 			return template;
 		}
-		
+
 
 		log.info("Create template for "+ templatePath);
 		Cache.addOrUpdateTemplate(id, new TemplateImpl(templatePath));
 		return Cache.getTemplate(id);
 	}
-	
-	
+
+
 	public BaseImageSnapshotInfo[] getSnapShots(BaseImageVmId vmid){
-		return this._snapshotService.list( vmid);
+		try{
+			return this._snapshotService.list( vmid);
+		}catch(Exception ex){
+			log.error("Can't get snapshot for vmid:"+vmid.id,ex);
+		}
+		return null;
 	}
-	
-	
+
+
 	public VM getVM(BaseImageVmId vmid, String fullPath){
 		VM result = Cache.getVM(vmid.id);
 		if (result !=null){
 			log.info("Great VM cache hit ");
 			return result;
 		}
-		
+
 
 		log.info("Create vm for "+ fullPath);
 		Cache.addOrUpdateVM(vmid.id, new VMImpl(fullPath));
 		return Cache.getVM(vmid.id);
 	}
 
-	
+
 	  private <T extends DataObject> List<T> getAllObjects(Class<T> type) {
 		  log.debug("Start to query");
 	        List<T> ret = new ArrayList<>();
@@ -154,29 +158,29 @@ public class ViewQueryService {
 	        }
 	        return ret;
 	    }
-	
+
 
 	private List<DesktopSummaryView> getDesktopSummaryViews(){
 		log.debug("Start to query pools");
 
-		return getAllObjects(DesktopSummaryView.class);	  
+		return getAllObjects(DesktopSummaryView.class);
 	}
-	
-	
+
+
 	private List<RDSServerSummaryView> getRDSServerSummaryViews(){
 		log.debug("Start to query pools");
 
-		return getAllObjects(RDSServerSummaryView.class);	  
+		return getAllObjects(RDSServerSummaryView.class);
 	}
-	
-	
+
+
 	private List<ApplicationInfo> getApplicationInfos(){
 		log.debug("Start to query pools");
 
-		return getAllObjects(ApplicationInfo.class);	  
+		return getAllObjects(ApplicationInfo.class);
 	}
-	
-	
+
+
 	public List<SessionPool> getAllSessionPools(){
 		List<DesktopSummaryView>  results = this.getDesktopSummaryViews();
 		List<SessionPool> list = new ArrayList<SessionPool>();
@@ -186,18 +190,19 @@ public class ViewQueryService {
 	    		list.add(pool);
 	    	}
 	    }
-	    
+
 	    if (list.size()>0){
-		    Collections.sort(list,new Comparator<SessionPool>(){  
-	            public int compare(SessionPool arg0, SessionPool arg1) {  
+		    Collections.sort(list,new Comparator<SessionPool>(){
+	            @Override
+				public int compare(SessionPool arg0, SessionPool arg1) {
 	                return arg1.getSessionCount()- arg0.getSessionCount();
-	            }  
-	        });  
+	            }
+	        });
 	    }
 
-	    
+
 	        return list;
-		
+
 	}
 
 
@@ -209,7 +214,7 @@ public class ViewQueryService {
 		log.debug("Start to query pools");
 		List<DesktopSummaryView> results = this.getDesktopSummaryViews();
 		List<SnapShotViewPool> list = new ArrayList<SnapShotViewPool>();
-		
+
 	    if (results == null || results.size() == 0) {
 	    	log.debug("no results in queryResults");
 	        return list;
@@ -219,24 +224,24 @@ public class ViewQueryService {
 	    	if (pool!=null){
 	    		list.add(pool);
 	    	}
-	    	
+
 	    }
 	        return list;
 	}
 
-	
+
 	private static final SessionLocalSummaryViewCName SESSION_LOCAL_SUMMARY_VIEW_CNAME = new SessionLocalSummaryViewCName();
 	private static final CName<DesktopId> desktopCName = SESSION_LOCAL_SUMMARY_VIEW_CNAME.referenceData.desktop;
 	private static final CName<FarmId> farmCName = SESSION_LOCAL_SUMMARY_VIEW_CNAME.referenceData.farm;
-	
+
 	public int getAllSessionCount(){
 		return Query.count(this._connection, SessionLocalSummaryView.class,null);
 	}
-	
+
 	public List<SessionLocalSummaryView> getAllSessions(){
 		return this.getAllObjects(SessionLocalSummaryView.class);
 	}
-	
+
 	public int getSessionCount(DesktopId desktopid){
 		QueryFilter filter = QueryFilter.equals(desktopCName,		desktopid);
 		return Query.count(this._connection, SessionLocalSummaryView.class, filter);
@@ -249,27 +254,28 @@ public class ViewQueryService {
 		if (farminfolist == null){
 			farminfolist = this.getAllObjects(FarmSummaryView.class);
 		}
-		
-		
+
+
 	    if (farminfolist == null || farminfolist.size()==0) {
 	    	log.debug("no result is returned");
 	            return list;
 	    }
-	    
+
 	    for (FarmSummaryView farm: farminfolist){
 	    	list.add(new SessionFarmImpl(farm, this.getAppSessionCount(farm.id)));
 	    }
-	    
+
 
 	    if (list.size()>0){
-		    Collections.sort(list,new Comparator<SessionFarm>(){  
-	            public int compare(SessionFarm arg0, SessionFarm arg1) {  
+		    Collections.sort(list,new Comparator<SessionFarm>(){
+	            @Override
+				public int compare(SessionFarm arg0, SessionFarm arg1) {
 	                return arg1.getAppSessionCount()- arg0.getAppSessionCount();
-	            }  
-	        });  
+	            }
+	        });
 	    }
 
-	    
+
 		return list;
 	}
 
@@ -281,7 +287,7 @@ public class ViewQueryService {
 	    filters[0] =   QueryFilter.equals(farmCName, id);
 	    filters[1] = QueryFilter.equals(desktopCName, null);
 
-		
+
 		return Query.count(this._connection, SessionLocalSummaryView.class,QueryFilter.and(filters) );
 	}
 
@@ -296,14 +302,14 @@ public class ViewQueryService {
 		    	list.add(PoolFactory.getBasicViewPool(desktop));
 		    }
 	    }
-	    
+
 		return list;
 	}
 
 	public List<ApplicationInfo> getAllApplicationPools() {
 		return getAllObjects(ApplicationInfo.class);
 	}
-	
+
 	public List<RDS> getAllBasicRDSHosts() {
 		List<RDSServerSummaryView> rdssummaryviews = this.getRDSServerSummaryViews();
 		List<RDS>  list = new ArrayList<RDS>();
@@ -314,10 +320,10 @@ public class ViewQueryService {
 		    	list.add(new BasicRDS(rds));
 		    }
 	    }
-	    
+
 		return list;
 	}
-	
+
 	public List<Farm>  getAllFarms(){
 		if (farminfolist == null){
 			farminfolist = this.getAllObjects(FarmSummaryView.class);
@@ -327,10 +333,10 @@ public class ViewQueryService {
 			farms.add(new BasicFarm(info));
 		}
 		return farms;
-		
-		
+
+
 	}
-	
+
 
 	public List<ConnectionServer> getAllConnectionServers() {
 		com.vmware.vdi.vlsi.binding.vdi.infrastructure.ConnectionServer cs = this._connection.get(com.vmware.vdi.vlsi.binding.vdi.infrastructure.ConnectionServer.class);
