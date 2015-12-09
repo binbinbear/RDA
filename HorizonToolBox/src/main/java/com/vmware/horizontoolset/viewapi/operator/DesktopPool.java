@@ -2,6 +2,8 @@ package com.vmware.horizontoolset.viewapi.operator;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.vmware.vdi.vlsi.binding.vdi.entity.DesktopId;
 import com.vmware.vdi.vlsi.binding.vdi.entity.SessionId;
 import com.vmware.vdi.vlsi.binding.vdi.resources.Desktop;
@@ -26,15 +28,31 @@ public class DesktopPool {
 	public final DesktopId id;
 	private DesktopInfo info;
 
+	private static Logger log = Logger.getLogger(DesktopPool.class);
+
 	public final CachedObjs<Machine> machines = new CachedObjs<Machine>(ViewConfig.SAFE_API_TIMEOUT) {
 
 		@Override
 		protected void populateCache(List<Machine> objects) {
+			if (summary == null || summary.name == null){
+				log.error("Pool is null , no machine is got");
+				return;
+			}
 			objects.clear();
 			QueryFilter filter = QueryFilter.equals(MachineSummaryViewCName.MACHINE_SUMMARY_VIEW_CNAME.base.desktop, id);
 	        try (Query<MachineSummaryView> query = new Query<>(conn, MachineSummaryView.class, filter)) {
 	            for (MachineSummaryView v : query) {
-	            	objects.add(new Machine(conn, v, summary.name));
+	            	if (v.summaryData!=null && v.summaryData.virtualCenter!=null){
+	            		try{
+		            		objects.add(new Machine(conn, v, summary.name));
+		            	}catch(Exception ex){
+		            		log.error("Can't get Machine for pool:"+ summary.name );
+		            	}
+	            	}else{
+	            		log.error("ignore this VM since it has no vcenter for pool:"+summary.name);
+	            	}
+
+
 	            }
 	        }
 		}
