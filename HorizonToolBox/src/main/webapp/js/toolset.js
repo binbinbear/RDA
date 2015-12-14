@@ -520,7 +520,7 @@ ToolBox.init =  function(){
 			success: function (data) {
 				$("div[name=version]").empty();$("div[name=version1]").empty();$("div[name=version2]").empty();
 				$("div[name=version]").append("Version:"+data.version);
-				$("div[name=version1]").append("Copyright (C)1998-2014. VMware, Inc. All rights reserved. This product is protected by U.S. and international copyright and intellectual property laws. This product is covered by one or more patents listed at http://www.vmware.com/go/patents.");
+				$("div[name=version1]").append("Copyright (C)1998-2015. VMware, Inc. All rights reserved. This product is protected by U.S. and international copyright and intellectual property laws. This product is covered by one or more patents listed at http://www.vmware.com/go/patents.");
 				$("div[name=version2]").append("VMware is a registered trademark or trademark of VMware, Inc. in the United States and/or other jurisdictions. All other marks and names mentioned herein may be trademarks of their respective companies.");
 			    $( "#aboutdialog" ).dialog( "open" );
 			}, 
