@@ -1,8 +1,8 @@
 package com.vmware.horizontoolset.ceip;
 
 public class ClientOS {
-	private static String[] osnames = {"OS X","Windows 7", "Windows 8", "Windows XP", "iPhone", "Android"};
-	
+	private static String[] osnames = {"OS X","Windows 7", "Windows 8", "Windows XP", "iPhone", "Android", "Windows 10"};
+
 	public static String getOS(String os){
 		os = os.toLowerCase();
 		for (String osName: osnames){
@@ -10,6 +10,6 @@ public class ClientOS {
 				return osName;
 			}
 		}
-		return "Others"; 
+		return os;
 	}
 }

@@ -6,9 +6,7 @@ import org.apache.log4j.Logger;
 
 import com.vmware.horizon.auditing.report.Event;
 import com.vmware.horizon.auditing.report.EventType;
-
 import com.vmware.vdi.admin.be.events.AdminEvent;
-
 import com.vmware.vdi.events.enums.EventModule;
 
 /**
@@ -36,23 +34,23 @@ public class EventImpl implements Event{
 	}
 
 	private static final String ACCEPT = "has accepted an allocated session";
-	
+
 	private static final String LOGGEDIN = "has logged in to a new session";
 	private static final String USER = "user ";
-	
+
 	private static final String DISCONNECT = "has disconnected from machine ";
 	private static final String LOG_OFF = "has logged off machine ";
 	private static final String LOGOUT = " has logged out";
 	private static final String REQUEST_APP= " requested Application ";
 	private static final String HAS_EXPIRED = "has expired";
 	private static final String HAS_EXPIRED_PREFIX = "session on machine ";
-	
+
 	/**
 	 * *List the event type description in database table
 	 */
 	private static final String TYPE_BROKER_USERLOGGEDIN = "BROKER_USERLOGGEDIN";
 	private static final String TYPE_BROKER_USERLOGGEDOUT = "BROKER_USERLOGGEDOUT";
-	
+
 
 	private EventType type = EventType.Others;
 	private String username;
@@ -61,7 +59,7 @@ public class EventImpl implements Event{
 	private String sourceName = "";
 	private int eventId = 0;
 	private String shortMessage;
-	
+
 	private String clientIp;
 	private String brokerSessionId = "";
 
@@ -84,7 +82,7 @@ public class EventImpl implements Event{
 		return null;
 	}
 
-	//create a dummy connect or disconnect event. 
+	//create a dummy connect or disconnect event.
 	public EventImpl(Event pairevent, Date time){
 		this.username = pairevent.getUserName();
 		this.machineName = pairevent.getMachineDNSName();
@@ -99,14 +97,14 @@ public class EventImpl implements Event{
 		this.brokerSessionId = pairevent.getBrokerSessionId();
 
 	}
-	
+
 	public EventImpl(AdminEvent event){
 		this.eventId = event.getEventId();
 		this.username = event.getUsername();
 		if (this.username==null){
 			this.username="";
 		}
-		
+
 		this.shortMessage = event.getMessage().toLowerCase();
 		this.time = event.getTime();
 		this.clientIp = event.getClientIP();
@@ -116,20 +114,24 @@ public class EventImpl implements Event{
 		if(EventModule.Agent.equals(event.getModule())){
 			if (shortMessage.contains(ACCEPT)){
 				this.type = EventType.Connection;
-				
+
 			}else if (shortMessage.contains(DISCONNECT)  ){
 				this.type = EventType.Disconnection;
-				
+
 			}else if (shortMessage.contains(LOG_OFF)){
 				this.type = EventType.Disconnection;
-				
+
 			} else if (shortMessage.contains(HAS_EXPIRED)){
 				this.type = EventType.Disconnection;
-				
+
 			} else {
 				this.type = EventType.Others;
 			}
-			this.username = getValue(shortMessage, USER);
+
+			this.username = event.getUsername();
+			if (this.username == null || this.username.length() == 0){
+				this.username = getValue(shortMessage, USER);
+			}
 			this.machineName = event.getMachineName();
 			if( null == this.machineName ){
 				this.machineName = "";
@@ -205,7 +207,7 @@ public class EventImpl implements Event{
 
 	@Override
 	public String getClientIP() {
-		
+
 		return this.clientIp;
 	}
 
@@ -213,4 +215,5 @@ public class EventImpl implements Event{
 	public String getBrokerSessionId() {
 		return this.brokerSessionId;
 	}
+
 }
