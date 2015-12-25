@@ -18,11 +18,16 @@ public class Application {
     public Application(){
     	log.info("Horizon Tool Set Application is being loaded!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
     }
+
+    private static final String defaultServer = "C:\\Program Files\\VMware\\VMware View\\Server";
     public void setViewServerPath(String viewServerPath){
-    	String sysDriver = System.getProperty("user.home");
-		sysDriver = sysDriver.substring(0, sysDriver.indexOf(":"));
-		LDAP.setViewServerPath(sysDriver + viewServerPath.substring(viewServerPath.indexOf(":")));
-    	//LDAP.setViewServerPath(viewServerPath);
+    	if (defaultServer.equalsIgnoreCase(viewServerPath)){
+    		String sysDriver = System.getProperty("user.home");
+    		sysDriver = sysDriver.substring(0, sysDriver.indexOf(":"));
+    		LDAP.setViewServerPath(sysDriver + viewServerPath.substring(viewServerPath.indexOf(":")));
+    	}else{
+    		LDAP.setViewServerPath(viewServerPath);
+    	}
     }
 
 	public void setEventCachedDays(int days){
