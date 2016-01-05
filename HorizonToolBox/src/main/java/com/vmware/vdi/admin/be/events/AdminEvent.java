@@ -1,12 +1,9 @@
 package com.vmware.vdi.admin.be.events;
 
 import java.text.DateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import com.vmware.vdi.events.enums.EventModule;
-import com.vmware.vdi.events.enums.EventSeverity;
 
 /**
  * It defines the event object in admin console.
@@ -20,7 +17,7 @@ public class AdminEvent {
 
 
     private Date time;
-    
+
     private String clientIP;
 
     private EventModule module;
@@ -30,15 +27,15 @@ public class AdminEvent {
     private String userSID;
 
     private String username;
-    
+
     private String machineName;
-    
+
     private String poolId;
-    
+
     private String desktopId;
-    
+
     private String eventType;
-    
+
     private String brokerSessionId;
     /**
      * Get the short version of the message for the event
@@ -133,14 +130,9 @@ public class AdminEvent {
     }
 
 
-    /**
-     * It returns the localized string for event severity.
-     *
-     * @return The localized event severity.
-     */
     public String getSeverityString() {
-        return com.vmware.vdi.admin.ui.common.Util
-                .getLocalizedEventSeverity(this);
+        return "";
+        //do nothing
     }
 
     public void setSeverityString(String severity) {
@@ -179,7 +171,7 @@ public class AdminEvent {
         this.username = username;
     }
 
-   
+
     /**
      * @return the eventId
      */
@@ -195,7 +187,7 @@ public class AdminEvent {
         this.eventId = eventId;
     }
 
-   
+
 
 	public String getClientIP() {
 		return clientIP;
@@ -204,7 +196,7 @@ public class AdminEvent {
 	public void setClientIP(String clientIP) {
 		this.clientIP = clientIP;
 	}
-	
+
 	public void setBrokerSessionId(String brokerSessionId) {
 		this.brokerSessionId = brokerSessionId;
 	}
@@ -232,15 +224,15 @@ public class AdminEvent {
 	public void setDesktopId(String desktopId) {
 		this.desktopId = desktopId;
 	}
-	
+
 	public void setEventType(String eventType) {
 		this.eventType = eventType;
 	}
-	
+
 	public String getEventType() {
 		return this.eventType;
 	}
-	
+
 	public String getBrokerSessionId() {
 		return this.brokerSessionId;
 	}

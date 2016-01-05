@@ -1,5 +1,7 @@
 package com.vmware.horizontoolset.util;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -30,7 +32,7 @@ public class DBStorage extends ToolboxStorage {
 	@Override
 	public List<String> getList(String key) {
 		// TODO Auto-generated method stub
-		return null;
+		return new ArrayList<String>();
 	}
 
 	@Override
@@ -42,7 +44,7 @@ public class DBStorage extends ToolboxStorage {
 	@Override
 	public Map<String, String> getMap(String key) {
 		// TODO Auto-generated method stub
-		return null;
+		return new HashMap<String, String>();
 	}
 
 	@Override
