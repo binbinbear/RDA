@@ -24,33 +24,33 @@ public class EmailUtil {
 	private static Properties serverProps;
 	private static Logger log = Logger.getLogger(EmailUtil.class);
 	private static final String EMAIL_CONFIG = "EMAIL_KEY";
-	
+
 	public static EmailServerProps loadServerProps(){
-		
+
 		log.debug("EmailUtil.loadServerProps");
-		
+
 		try{
 			//try go get from ldap
-			String props = SharedStorageAccess.get(EMAIL_CONFIG);
-			
+			String props = ToolboxStorage.getStorage().get(EMAIL_CONFIG);
+
 			if (props != null && !props.isEmpty()) {
 				Gson gson = new Gson();
 				_emailserverprops = gson.fromJson(props, EmailServerProps.class);
 			}
-			
+
 			if (_emailserverprops != null && _emailserverprops.isValid()){
-				
+
 				serverenabled = true;
-				
+
 				initImpl(_emailserverprops);
 				log.debug("EmailUtil.loadServerProps: email config loaded.");
-				
+
 			} else {
-				
+
 				String msg = _emailserverprops == null ? "null." : "invalid.";
 				log.debug("EmailUtil.loadServerProps: email config is " + msg);
 			}
-			
+
 		}catch(Exception ex){
 			log.warn("can't load email config from ldap", ex);
 		}
@@ -58,18 +58,18 @@ public class EmailUtil {
 		return _emailserverprops;
 	}
 
-	
+
 	public synchronized static boolean init(EmailServerProps props) {
-		
+
 		boolean success = initImpl(props);
-		
+
 		//try to set to ldap
-		SharedStorageAccess.set(EMAIL_CONFIG, JsonUtil.javaToJson(props));
-		
+		ToolboxStorage.getStorage().set(EMAIL_CONFIG, JsonUtil.javaToJson(props));
+
 		return success;
 
 	}
-	
+
 	private static boolean initImpl(EmailServerProps props) {
 		_emailserverprops = props;
 		serverProps = new Properties();
@@ -81,7 +81,7 @@ public class EmailUtil {
 		serverProps.setProperty("mail.password", props.getMailPassword());
 		serverProps.setProperty("mail.auth", String.valueOf(props.isAuth()));
 		serverProps.setProperty("mail.smtp.auth",String.valueOf(props.isAuth()));
-		
+
 		String customizedprops = _emailserverprops.getCustomizedProperty();
 		if (customizedprops!=null && !customizedprops.isEmpty()){
 			String [] all = customizedprops.split(",");
@@ -94,19 +94,19 @@ public class EmailUtil {
 							if (thispair.length == 2){
 								serverProps.setProperty(thispair[0], thispair[1]);
 							}
-							
+
 						}
 					}
 				}
 			}
-			
+
 		}
 		serverenabled = true;
 		return true;
 	}
-	
-	
-	
+
+
+
 	public static boolean isValidEmailAddress(String email) {
 		   try {
 		      new InternetAddress(email).validate();
@@ -115,13 +115,13 @@ public class EmailUtil {
 		   }
 		   return true;
 		}
-	
-	
+
+
 	private static  void sendMail(String[] to, String[] cc, String[] bcc, String subject, String content) {
-		
+
 		try{
 			Msg m = new Msg(to, cc, bcc, subject, content);
-			
+
 			Session session = Session.getDefaultInstance(EmailUtil.serverProps, null);
 			Message msg = m.toMessage(session);
 
@@ -129,7 +129,7 @@ public class EmailUtil {
 		//	Transport.send(msg);
 			Transport transport = session.getTransport(EmailUtil.serverProps.getProperty("mail.transport.protocol"));
 			try {
-				transport.connect((String) EmailUtil.serverProps.getProperty("mail.smtp.host"),EmailUtil.serverProps.getProperty("mail.user"), 
+				transport.connect(EmailUtil.serverProps.getProperty("mail.smtp.host"),EmailUtil.serverProps.getProperty("mail.user"),
 	        		 EmailUtil.serverProps.getProperty("mail.password") );
 				transport.sendMessage(msg, msg.getRecipients(Message.RecipientType.TO));
 				log.info("[MailSender] Mail sent");
@@ -140,20 +140,20 @@ public class EmailUtil {
 			log.error("Cant' send message due to excpetion:", ex);
 		}
 	}
-	
+
 	public synchronized static void sendMail(String titile, String body) {
-		
+
 		loadServerProps();
-		
+
 		if (!serverenabled) {
 			log.warn("Can't send email since config is not valid.");
 			return;
 		}
-		
+
 		String toAddress =_emailserverprops.getToAddress();
 
 		if (toAddress == null || toAddress.isEmpty()){
-			
+
 			log.warn("Can't send email since config is not valid.");
 			return;
 		}
@@ -168,8 +168,8 @@ public class EmailUtil {
 			if (!t.isEmpty() && EmailUtil.isValidEmailAddress(t)){
 				listTo.add(t);
 			}
-		}	
-		
+		}
+
 		if (listTo.size()<=0){
 			log.warn("Don't know the reciever of the email");
 			return;
@@ -182,18 +182,18 @@ public class EmailUtil {
 		if (toall!=null && toall.length>0){
 			sendMail(toall, null, null, titile, body);
 		}
-		
+
 	}
-	
+
 	private static final class Msg {
 		String[] to;
 		String[] cc;
 		String[] bcc;
 		String subject;
 		String content;
-		
 
-		
+
+
 		public Msg(String[] to, String[] cc, String[] bcc, String subject, String content) {
 			super();
 			this.to = to;
@@ -205,7 +205,7 @@ public class EmailUtil {
 
 		public String getAllRecipients() {
 			StringBuilder sb = new StringBuilder();
-			
+
 			if (to != null) {
 				for (String s : to)
 					sb.append(s).append(';');
@@ -220,7 +220,7 @@ public class EmailUtil {
 			}
 			return sb.toString();
 		}
-		
+
 		public Message toMessage(Session session) throws AddressException, MessagingException {
 
 			MimeMessage mm = new MimeMessage(session);
@@ -243,6 +243,6 @@ public class EmailUtil {
 			return mm;
 		}
 	}
-	
+
 
 }

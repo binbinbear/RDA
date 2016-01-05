@@ -227,4 +227,14 @@ public class AdminEventManager {
         }
         return template;
     }
+
+
+    public boolean isToolboxTableAvaiable(VDIContext ctx) {
+    	for (AdminEventProvider provider: this.providers) {
+            if (provider.prepareToolboxTable(ctx)){
+            	return true;
+            }
+        }
+    	return false;
+    }
 }

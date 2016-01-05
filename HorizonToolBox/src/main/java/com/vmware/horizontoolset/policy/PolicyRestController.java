@@ -32,7 +32,7 @@ import com.vmware.horizontoolset.policy.util.GpoCache.GpoType;
 import com.vmware.horizontoolset.policy.util.ViewPoolCache;
 import com.vmware.horizontoolset.util.JsonUtil;
 import com.vmware.horizontoolset.util.SessionUtil;
-import com.vmware.horizontoolset.util.SharedStorageAccess;
+import com.vmware.horizontoolset.util.ToolboxStorage;
 import com.vmware.horizontoolset.viewapi.Container;
 import com.vmware.horizontoolset.viewapi.LinkedClonePool;
 import com.vmware.horizontoolset.viewapi.SnapShotViewPool;
@@ -47,42 +47,42 @@ public class PolicyRestController {
 	private static GpoCache gpoCache = null;
 	private static final int refershInterValSeconds = 300;
 	private static final String DefaultDomainPolicy = "Default Domain Policy";
-	
+
 	private AssignmentService ldapAssignmentService;
 	private PolFileService polFileService;
-	
+
 	public PolicyRestController(){
 		log.debug("Create Policy Rest Controller");
-		
+
 		gpoCache = GpoCache.getInstance();
 		ldapAssignmentService = new AssignmentServiceImpl();
 		polFileService = new PolFileServiceImpl();
 		log.debug("Policy Rest Controller has initialized");
 		debugFunc();
 	}
-	
+
 	private void debugFunc(){
-		log.debug("[DEBUG ] [debugFunc] profileMap:: " + SharedStorageAccess.get("profileMap"));
-		log.debug("[DEBUG ] [debugFunc] subLengthTable:: " + SharedStorageAccess.get("subLengthTable"));
-		log.debug("[DEBUG ] [debugFunc] ppMapping:: " + SharedStorageAccess.get("ppMapping"));
+		log.debug("[DEBUG ] [debugFunc] profileMap:: " + ToolboxStorage.getStorage().get("profileMap"));
+		log.debug("[DEBUG ] [debugFunc] subLengthTable:: " + ToolboxStorage.getStorage().get("subLengthTable"));
+		log.debug("[DEBUG ] [debugFunc] ppMapping:: " + ToolboxStorage.getStorage().get("ppMapping"));
 	}
-	
+
 	@RequestMapping("/policy/login/check")
 	public boolean policyLogin(HttpSession session){
 		GPOService gpoService = SessionUtil.getSessionObj(session, GPOService.class);
 		log.debug("[DEBUG ] sessionName:"+session.getId() + "; ");
 		if(null==gpoService)
 			return false;
-		return true;	
+		return true;
 	}
-	
+
 	@RequestMapping("/policy/login")
-	public boolean policyLogin(@RequestParam(value="user", required=true)String user, 
-			   @RequestParam(value="pass", required=true)String pass, 
-			   @RequestParam(value="computerName", required=true)String computerName, 
+	public boolean policyLogin(@RequestParam(value="user", required=true)String user,
+			   @RequestParam(value="pass", required=true)String pass,
+			   @RequestParam(value="computerName", required=true)String computerName,
 			   @RequestParam(value="domainfullName", required=true)String domainfullName,
 			   HttpSession session){
-		
+
 		ViewAPIServiceImpl service = (ViewAPIServiceImpl) SessionUtil.getViewAPIService(session);
 		String currentDomain = service.get_domain();
 		GPOService gpoService = new GPOServiceImpl(user,pass,computerName,currentDomain,domainfullName );
@@ -95,10 +95,10 @@ public class PolicyRestController {
 		gpoService.checkDir();
 		SessionUtil.setSessionObj(session, gpoService);
 		gpoCache.updateCache(gpoService);
-		
+
 		return true;
 	}
-	
+
 	@RequestMapping("/policy/profile/getnamelist")
 	public JTableData returnNameList(HttpSession session){
 		// ----------------------------------
@@ -108,7 +108,7 @@ public class PolicyRestController {
 		// edit					update cache
 		// time interval 		xxxxxxx
 		// ----------------------------------
-		
+
 		if(gpoCache==null){
 			log.debug("[DEBUG ] gpoCache == null !!!");
 			gpoCache = GpoCache.getInstance();
@@ -119,7 +119,7 @@ public class PolicyRestController {
     		GPOService gpoService = SessionUtil.getSessionObj(session, GPOService.class);
     		gpoCache.updateCache(gpoService);
     	}
-		
+
 		JTableData ret = new JTableData();
 		List<ProfileItem> profiles = new ArrayList<ProfileItem>();
 		Map<String, String> proItems = gpoCache.getNameList();
@@ -145,7 +145,7 @@ public class PolicyRestController {
 		//log.debug("[ret] " + ret.Records[0].toString());
 		return ret;
 	}
-	
+
 	@RequestMapping("/policy/profile/getprofile")
 	public ProfileModel getProfile(@RequestParam(value="profileName", required=true)String profileName, HttpSession session){
 		// ----------------------------------
@@ -170,49 +170,49 @@ public class PolicyRestController {
 		}
 		log.debug("[DEBUG ] editProStr=" + editProStr);
 		ProfileModel editPro = JsonUtil.jsonToJava(editProStr, ProfileModel.class);
-		
+
 		return editPro;
 	}
-	
+
 	@RequestMapping("/policy/profile/checkProfileName")
 	public boolean checkProfileName(@RequestParam(value="profileName", required=true)String profileName){
 		return !gpoCache.profileNameExist(profileName);
 	}
-	
+
 	@RequestMapping("/policy/profile/updateProfile")
-	public boolean updateProfile( @RequestParam(value="profileName", required=true)String profileName, 
-								  @RequestParam(value="description", required=false,defaultValue="")String description, 
-								  @RequestParam(value="policiesStr", required=false)String policiesStr, 
+	public boolean updateProfile( @RequestParam(value="profileName", required=true)String profileName,
+								  @RequestParam(value="description", required=false,defaultValue="")String description,
+								  @RequestParam(value="policiesStr", required=false)String policiesStr,
 								  HttpSession session){
 		log.debug("[DEBUG ] [updateProfile] GPO_NAME=" + profileName + ",desc: " + description + " \n content: " + policiesStr);
-		
+
 		if( gpoCache.profileNameExist(profileName) ){
 			return false;
 		}	//TODO delete
-		 
-		if( !gpoCache.add2NameList(profileName,description) ){	
+
+		if( !gpoCache.add2NameList(profileName,description) ){
 			return false;
 		}
-		
+
 		if ( !gpoCache.saveProfile2Ldap(profileName, description, policiesStr) ){
 			gpoCache.deleteFromNameList(profileName);
 			return false;
 		}
-		
+
 		if( !polFileService.createPolFile(profileName) ){
 			gpoCache.deleteFromNameList(profileName);
 			return false;
 		}
-		
+
 		GPOService gpoService = SessionUtil.getSessionObj(session, GPOService.class);
-		
+
 		if( gpoService.policyNewProcess(profileName) ){	//policyProcess(profileName, description)
-			
-			log.debug("[DEBUG ] policyNewProcess success");	
-			
+
+			log.debug("[DEBUG ] policyNewProcess success");
+
 			//delete pol file
 			polFileService.deletePolFile(profileName);
-			
+
 			return true;
 		}else{
 			gpoCache.deleteFromNameList(profileName);
@@ -220,29 +220,29 @@ public class PolicyRestController {
 
 		return false;
 	}
-	
+
 	@RequestMapping("/policy/profile/editProfile")
 	public synchronized boolean editProfile(@RequestParam(value="profileName", required=true)String profileName, String description, String policiesStr, HttpSession session){
 		log.debug("[DEBUG ] [edit] " + profileName);
-		
+
 		if( !gpoCache.modifyNameList(profileName,description) ){
 			log.debug("[DEBUG ] profileName not exist");
 			return false;	// profileName not exist
 		}
-		
+
 		if( !gpoCache.saveProfile2Ldap(profileName, description, policiesStr) ){
 			log.debug("[DEBUG ] saveProfile2Ldap error");
 			return false;
 		}
-		
+
 		// edit GPO
 		if( !polFileService.createPolFile(profileName) ){
 			log.debug("[DEBUG ] createPolFile error");
 			return false;
 		}
-		
+
 		GPOService gpoService = SessionUtil.getSessionObj(session, GPOService.class);
-		
+
 		if( !gpoService.policyEidtProcess(profileName) ){
 			log.debug("[DEBUG ] editProfile error");
 			gpoCache.deleteFromNameList(profileName);
@@ -250,7 +250,7 @@ public class PolicyRestController {
 		}
 		return true;
 	}
-	
+
 	@RequestMapping("/policy/profile/delete")
 	public synchronized boolean deleteProfile(@RequestParam(value="profileName", required=true)String profileName, HttpSession session){
 		GpoType gType = gpoCache.getGpoType(profileName);
@@ -270,14 +270,14 @@ public class PolicyRestController {
 		}
 		return true;
 	}
-	
+
 	// =======================================================================================
 	//	assignment
 	// =======================================================================================
-	
+
 	@RequestMapping("/policy/profile/assignprofiles")
 	public synchronized boolean assignProfiles( @RequestParam(value="profileNames", required=true)String profileNames,
-												@RequestParam(value="poolNames", required=true)String poolNames, 
+												@RequestParam(value="poolNames", required=true)String poolNames,
 												HttpSession session){
 
 		String[] _profileNames = JsonUtil.jsonToJava(profileNames, String[].class);
@@ -292,7 +292,7 @@ public class PolicyRestController {
 				if (m.matches()) {
 					log.debug("[DEBUG ] ouName:"+ouName);
 					GPOService gpoService = SessionUtil.getSessionObj(session, GPOService.class);
-					gpoService.linkGPO(_profileNames[i], ouName);	
+					gpoService.linkGPO(_profileNames[i], ouName);
 				}else{
 					log.debug("[DEBUG ] ouName==null");
 					return false;
@@ -304,10 +304,10 @@ public class PolicyRestController {
 		}
 		return false;
 	}
-	
+
 	@RequestMapping("/policy/profile/deletepoolprofile")
-	public synchronized void deletePoolProfile( @RequestParam(value="poolName", required=true)String poolName, 
-											    @RequestParam(value="profileName", required=true)String profileName, 
+	public synchronized void deletePoolProfile( @RequestParam(value="poolName", required=true)String poolName,
+											    @RequestParam(value="profileName", required=true)String profileName,
 											    HttpSession session){
 		ldapAssignmentService.deleteFromPPMap(poolName,profileName);
 		log.debug("[DEBUG ] deleteFromPPMap Over");
@@ -321,18 +321,18 @@ public class PolicyRestController {
 		log.debug("[DEBUG ] poolName=" + poolName);
 		return ldapAssignmentService.getPorfilesOfPool(poolName);
 	}
-	
-	@RequestMapping("/pool/viewpools/getviewpools")	
+
+	@RequestMapping("/pool/viewpools/getviewpools")
     public synchronized JTableData getViewPools(HttpSession session) {
-		
-		
+
+
 		updateCache(session);
 		if(vpCache!=null){
 			log.debug("[DEBUG ] [getViewPools()] "+vpCache.getCached_ou().toString());
 		}else{
 			log.debug("[DEBUG ] [vpCache!=null]");
 		}
-		
+
     	JTableData ret = new JTableData();
     	List<PoolItem> poolArray = new ArrayList<PoolItem>();
     	if( vpCache.getCached_ou().size()==0 ){ //TODO
@@ -347,23 +347,23 @@ public class PolicyRestController {
 		ret.TotalRecordCount=poolArray.size();
     	return ret;
 	}
-	
+
 	@RequestMapping("/policy/assignment/priority")
-	public synchronized boolean changePriority( @RequestParam(value="poolName", required=true)String poolName, 
-												@RequestParam(value="profilesStr", required=true)String profilesStr, 
+	public synchronized boolean changePriority( @RequestParam(value="poolName", required=true)String poolName,
+												@RequestParam(value="profilesStr", required=true)String profilesStr,
 												HttpSession session){
 		GPOService gpoService = SessionUtil.getSessionObj(session, GPOService.class);
-		
+
 		ViewAPIServiceImpl service = (ViewAPIServiceImpl) SessionUtil.getViewAPIService(session);
 		String currentDomain = service.get_domain();
 		//currentDomain = ",dc=" + currentDomain + ",dc=com";
 		currentDomain = ",dc=" + currentDomain + ",dc=fvt";
 		log.debug("[DEBUG ] currentDomain: "+currentDomain);
-		
+
 		String[] profiles = JsonUtil.jsonToJava(profilesStr, String[].class);
 		List<String> profileList = Arrays.asList(profiles);
 		String ouName = vpCache.getCached_ou().get(poolName);
-		
+
 		if(profiles.length==0 || ouName==null){
 			return false;
 		}
@@ -372,7 +372,7 @@ public class PolicyRestController {
 		log.debug("[DEBUG ] [cached_ou]" + vpCache.getCached_ou().toString());
 
 		ouName += currentDomain;
-		
+
 		//run powershell in priority of GPO
 		String order = null;
 		log.debug("[priority] profileList: "+profileList.toString());
@@ -383,10 +383,10 @@ public class PolicyRestController {
 		ldapAssignmentService.setPorfilesOfPool(poolName, profileList);
 		return true;
 	}
-	
+
 	private void updateCache(HttpSession session){
 		log.debug("[DEBUG ] [update cache] !!!");
-		
+
 		Long currenttime = new Date().getTime();
     	if (vpCache !=null && currenttime - vpCache.getUpdatedDate().getTime() < 1000 *refershInterValSeconds ){
     		 log.debug("[DEBUG ] No need to update vpCache");
@@ -402,7 +402,7 @@ public class PolicyRestController {
         	try{
                 log.debug("[DEBUG ] Receive get request for pools, farms");
                 ViewAPIService service = SessionUtil.getViewAPIService(session);
-                
+
                 if (service!=null){
                 	pools = service.getAllDesktopPools();	//bug
                 	for(ViewPool pool : pools){
@@ -419,7 +419,7 @@ public class PolicyRestController {
                 }else{
                 	log.debug("[DEBUG ] [service == null]");
                 }
-                
+
         	}catch(Exception ex){
         		log.error("Exception, return empty array",ex);
         	}
@@ -434,11 +434,11 @@ public class PolicyRestController {
         	}
     	}
 	}
-	
+
 	private Map<String,String> getOU(ViewAPIService service){
 		log.debug("[DEBUG ] [getOU]");
 		Map<String,String> ouMap = new HashMap<String,String>();
-    	List<SnapShotViewPool> ssvpList = service.getDetailedAutoPools(); 
+    	List<SnapShotViewPool> ssvpList = service.getDetailedAutoPools();
     	if(null==ssvpList){
     		log.debug("[ERROR ] ssvpList==null !!!");
     	}else{
@@ -449,7 +449,7 @@ public class PolicyRestController {
 		for(SnapShotViewPool ssvp : ssvpList){
 			if( ssvp.getViewType().equals(ViewType.LinkedClone) ){
 				log.debug("[DEBUG ] [LinkedClone] " + ssvp.getName());
-				LinkedClonePool linkedClonePool = (LinkedClonePool)ssvp;	
+				LinkedClonePool linkedClonePool = (LinkedClonePool)ssvp;
 				try {
 					Container container = linkedClonePool.getADContainer();
 					if(container != null){
@@ -457,7 +457,7 @@ public class PolicyRestController {
 						if(ouName.contains("OU=")){
 							ouMap.put(linkedClonePool.getName(), ouName);
 						}
-						
+
 					}else{
 						log.debug("[DEBUG ] [container == null] ");
 					}
@@ -471,5 +471,5 @@ public class PolicyRestController {
 		}
 		return ouMap;
 	}
-	
+
 }

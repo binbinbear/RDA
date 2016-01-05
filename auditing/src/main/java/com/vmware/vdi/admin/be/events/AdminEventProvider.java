@@ -35,4 +35,6 @@ public interface AdminEventProvider {
      */
     public List<AdminEvent> getEventList(VDIContext ctx, AdminEventFilter filter)
         throws Exception;
+
+    public boolean prepareToolboxTable(VDIContext ctx);
 }

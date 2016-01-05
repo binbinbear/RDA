@@ -4,11 +4,9 @@ package com.vmware.vdi.admin.be.events;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -22,10 +20,10 @@ import com.vmware.vdi.admin.ui.common.Util;
 import com.vmware.vdi.dbwrapper.DBConnection;
 import com.vmware.vdi.dbwrapper.DatabaseConfig;
 import com.vmware.vdi.dbwrapper.exceptions.DBConnectionException;
+import com.vmware.vdi.dbwrapper.structure.Column;
 import com.vmware.vdi.events.Event;
 import com.vmware.vdi.events.enums.EventAttribute;
 import com.vmware.vdi.events.enums.EventSeverity;
-import com.vmware.vdi.events.server.forwarders.database.DataTypeRefs;
 import com.vmware.vdi.events.server.forwarders.database.connectors.EventDBConnection;
 
 /**
@@ -62,7 +60,7 @@ public class AdminEventDatabase extends DBConnection {
     private static boolean adminEventCountInitialized = false;
 
     private static int adminEventCount = 0;
-    
+
     public static final String BROKER_SESSIONID_DESC = "BrokerSessionId";
 
     /**
@@ -262,8 +260,8 @@ public class AdminEventDatabase extends DBConnection {
         } finally {
             this.closeStatement(stmt);
         }
-        
-        
+
+
         logger.info("DB query finished successfully with events:"+events.size());
         // load the event arguments for event objects
        // if (!this.readEventArguments(events, time)) {
@@ -372,7 +370,7 @@ public class AdminEventDatabase extends DBConnection {
                 resultset = null;
             }
         }
-        
+
 
         String argquery = this.dbquery.getArgumentsQuery();
 
@@ -390,13 +388,13 @@ public class AdminEventDatabase extends DBConnection {
             argstmt.execute();
             logger.info("Start reading arguments");
             // load event objects from database
-            
+
             ResultSet argresultset = argstmt.getResultSet();
 
             while ((argresultset != null)) {
                 while (argresultset.next() ) {
                     int eventId = argresultset.getInt(1);
-                   
+
                     Event event = events.get(eventId);
                     if (event != null) {
                         //get argument here
@@ -409,14 +407,14 @@ public class AdminEventDatabase extends DBConnection {
                 	argresultset = null;
                 }
             }
-            
+
         } catch (SQLException e) {
             logger.error("Failed to load events from arugment table:", e);
-           
+
         } finally {
             this.closeStatement(argstmt);
         }
-        
+
     }
 
     /**
@@ -432,37 +430,37 @@ public class AdminEventDatabase extends DBConnection {
         int eventId = resultset.getInt(columnIndex++);
         Date time = resultset.getTimestamp(columnIndex++);
         String type = resultset.getString(columnIndex++);
-       
+
         String module = resultset.getString(columnIndex++);
-       
+
         String node = resultset.getString(columnIndex++);
         String text = resultset.getString(columnIndex++);
 
-       
+
         Event event = new Event();
         event.put(EventDBConnection.EVENTID, new Integer(eventId));
         event.put(EventAttribute.PROP_TIME, time);
         event.put(EventAttribute.PROP_TYPE, type);
 
         event.put(EventAttribute.PROP_MODULE, module);
-     
-        
+
+
         event.put(EventAttribute.PROP_NODE, node);
         event.put(EventAttribute.PROP_EVENT_TEXT, text);
-        
 
-        
+
+
         return event;
     }
 
-  
+
     private void readArgument(ResultSet resultset, Event event) throws SQLException {
 //    	buffer.append(EventDBConnection.EVENTID);
 //        buffer.append(", Name");
 //        buffer.append(", StrValue");
         int columnIndex = 1;
         int eventId = resultset.getInt(columnIndex++);
-        
+
         String name = resultset.getString(columnIndex++);
         String strvalue = resultset.getString(columnIndex++);
         if (EventAttribute.PROP_DESKTOP_ID.name.equalsIgnoreCase(name)){
@@ -496,5 +494,47 @@ public class AdminEventDatabase extends DBConnection {
             }
         }
     }
+
+    private static final String TOOLBOXTABLE_NAME = "Toolbox";
+    private static final String TOOLBOX_Column_ID = "ID";
+    private static final String TOOLBOX_Column_KEY1 = "KEY1";
+    private static final String TOOLBOX_Column_KEY2 = "KEY2";
+    private static final String TOOLBOX_Column_Value = "VALUE";
+
+    //return true if the table is created successfully
+    //return false if the table exists there
+    //throw exception if the table can't be created
+    public boolean createToolobxTable() throws DBConnectionException{
+    	if (isToolboxTableExists()){
+    		//table exist, not create again.
+    		return false;
+    	}
+    	Column[] cols = new Column[4];
+        Column id = new Column(TOOLBOX_Column_ID, Column.DataType.INTEGER);
+        id.setPrimaryKey(true);
+
+        Column k1 = new Column(TOOLBOX_Column_KEY1, Column.DataType.TEXT);
+        k1.setIndexed(true);
+
+        Column k2 = new Column(TOOLBOX_Column_KEY2, Column.DataType.TEXT);
+
+        Column value = new Column(TOOLBOX_Column_Value, Column.DataType.TEXT);
+
+        cols[0] = id;
+        cols[1] = k1;
+        cols[2] = k2;
+        cols[3] = value;
+
+    	super.getWriter().createTable(TOOLBOXTABLE_NAME, cols);
+
+    	return true;
+    }
+
+    public boolean isToolboxTableExists() throws DBConnectionException{
+
+    	return super.getReader().tableExists(TOOLBOXTABLE_NAME);
+    }
+
+
 
 }
