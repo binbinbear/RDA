@@ -18,9 +18,10 @@ public class DBStorage extends ToolboxStorage {
 	private EventDBUtil dbUtil;
 	public DBStorage() throws StorageException{
 		this.dbUtil = EventDBUtil.createDefault();
-		if (!this.dbUtil.isToolboxTableAvaiable()){
+		//DB is not ready, so disable for a short time
+//		if (!this.dbUtil.isToolboxTableAvaiable()){
 			throw new StorageException("Event DB can't be used, try LDAP or some other way!");
-		}
+//		}
 	}
 
 	@Override

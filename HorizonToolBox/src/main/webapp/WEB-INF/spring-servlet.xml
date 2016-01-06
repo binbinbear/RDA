@@ -87,6 +87,8 @@
    <bean id="PowerRestController" class="com.vmware.horizontoolset.power.PowerRestController"/>
    <bean id="PowerScheduleRestController" class="com.vmware.horizontoolset.power.PowerScheduleRestController" />
    
+    <bean id="DeviceFilterController" class="com.vmware.horizontoolset.devicefilter.DeviceFilterController"/>
+       <bean id="DeviceFilterRestController" class="com.vmware.horizontoolset.devicefilter.DeviceFilterRestController"/>
    
    <bean id="infoRestController" class="com.vmware.horizontoolset.ProductInfoRestController"/>
  

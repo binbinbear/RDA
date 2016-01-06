@@ -543,14 +543,11 @@ ToolBox.init =  function(){
 
 				
 					remoteassist:{"btn": $("#L1_02")},
-					
-					policy:{"btn": $("#L1_03"),
-						"href" : $("#L1_03_01")},
 						
 					power:{"btn": $("#L1_03"),
-						"href" : $("#L1_03_03")},
+						"href" : $("#L1_03_01")},
 					
-					power:{"btn": $("#L1_03"),
+					devicefilter:{"btn": $("#L1_03"),
 						"href" : $("#L1_03_02")},
 						
 					console:{"btn": $("#L1_04")}
