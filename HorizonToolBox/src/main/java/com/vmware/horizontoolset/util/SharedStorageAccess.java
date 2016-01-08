@@ -15,7 +15,6 @@ import javax.naming.directory.DirContext;
 
 import org.apache.log4j.Logger;
 
-import com.vmware.vdi.adamwrapper.exceptions.ADAMConnectionFailedException;
 import com.vmware.vdi.adamwrapper.ldap.VDIContext;
 import com.vmware.vdi.adamwrapper.ldap.VDIContextFactory;
 
@@ -41,6 +40,7 @@ public class SharedStorageAccess extends ToolboxStorage{
 
 	@Override
 	public void delete(String key) {
+		log.info("Start to delete key:"+ key +" from LDAP");
 		String name = getName(key);
 
 		try (VDIContext vdiCtx = VDIContextFactory.defaultVDIContext();) {
@@ -52,24 +52,42 @@ public class SharedStorageAccess extends ToolboxStorage{
 		}
 	}
 
-	private static void create(DirContext dirCtx, String name, String value) {
 
-		Attributes attributes=new BasicAttributes();
-        Attribute classes = new BasicAttribute("objectClass");
-        classes.add("top");
-        classes.add("Group");
-        attributes.put(classes);
+	private static Attribute newAttribute(){
+		  return new BasicAttribute(attrId," ");
+	}
 
-        Attribute data = new BasicAttribute("description", value);
-        attributes.put(data);
+	private static Attributes getOrcreate(DirContext dirCtx, String name) throws NamingException {
 
-        try {
-        	DirContext newEntry = dirCtx.createSubcontext(name, attributes);
-            newEntry.close();
-        } catch (Exception e) {
-        	log.error("Fail creating subcontext: " + name, e);
-        } finally {
-        }
+		log.info("Start to get or create LDAP item:"+ name);
+
+		try{
+			Attributes attrs = dirCtx.getAttributes(name, new String[] {attrId});
+			log.info("Attributes found, return directly");
+			return attrs;
+		}catch(NameNotFoundException ex){
+			log.info("Name not found, try to create a new one");
+			Attributes attributes=new BasicAttributes(true);
+	        Attribute classes = new BasicAttribute("objectClass");
+	        classes.add("top");
+	        classes.add("pae-PropertyObject");
+	        classes.add("pae-VDMProperties");
+	        attributes.put(classes);
+
+	        attributes.put(newAttribute());
+
+	        try {
+	        	dirCtx.createSubcontext(name, attributes);
+	        } catch (Exception e) {
+	        	log.error("Fail creating subcontext: " + name, e);
+	        	return null;
+	        }
+	        return attributes;
+		}
+
+
+
+
 	}
 
 
@@ -77,41 +95,70 @@ public class SharedStorageAccess extends ToolboxStorage{
 		return namePrefix + key + ',' + namePostfix;
 	}
 
-	//use some chars that can't be typed to avoid conflict
-	private static final String separator = "" + (char) 198   + (char)214;
 
 	@Override
 	public List<String> getList(String key){
-		log.debug("SharedStorageAccess get List: using default context, key:" + key);
+		log.info("SharedStorageAccess get List: using default context, key:" + key);
 		List<String> list =  new ArrayList<String>();
-		String content = get(key);
-		if (StringUtil.isEmpty(content)){
+
+		String name = getName(key);
+
+		try (VDIContext vdiCtx = VDIContextFactory.defaultVDIContext();) {
+			DirContext dirCtx = vdiCtx.getDirContext();
+			Attributes attrs = getOrcreate(dirCtx,name);
+
+
+			Attribute a = attrs.get(attrId);
+			for (int i=0; i<a.size();i++){
+				String result =  (String) a.get(i);
+				if (result!=null){
+					result = result.trim();
+				}
+				list.add(result);
+			}
+
+			return list;
+		}
+		catch (Exception e) {
+			log.warn("Error reading SharedStorageAccess. key=" + key, e);
 			return list;
 		}
 
-		String[] array = content.split(separator);
-		for (int i=0;i<array.length;i++){
-			list.add(array[i]);
-		}
-		return list;
 	}
 
 	@Override
-	public void  setList(String key, List<String> values){
-		log.debug("SharedStorageAccess set List: using default context, key:"+ key);
+	public void setList(String key, List<String> values) {
+		log.info("SharedStorageAccess set List: using default context, key:" + key);
+		String name = getName(key);
+		try {
 
-		StringBuffer buffer = new StringBuffer();
-		for (int i=0;i<values.size();i++){
-			if (i>0){
-				buffer.append(separator);
+			VDIContext vdiCtx = VDIContextFactory.defaultVDIContext();
+			DirContext dirCtx = vdiCtx.getDirContext();
+
+			Attributes attrs = getOrcreate(dirCtx,name);
+
+
+			Attribute a = attrs.get(attrId);
+			a.clear();
+			for (int i = 0; i < values.size(); i++) {
+				String value = values.get(i);
+				if (!a.contains(value)) {
+					log.info("Add value:"+value);
+					a.add(i,value);
+				}
 			}
-			buffer.append(values.get(i));
+
+
+
+			dirCtx.modifyAttributes( name, DirContext.REPLACE_ATTRIBUTE,attrs);
+		} catch (Exception e1) {
+			log.error("Fail connecting to default VDI context.", e1);
 		}
-		set(key, new String(buffer));
+
 	}
 
-	//use some chars that can't be typed to avoid conflict
-	private static final String mapSeparator = ""  + (char)199 + (char) 215;
+
+	private static final String mapSeparator = "<==>"  ;
 
 	/**
 	 *
@@ -121,7 +168,7 @@ public class SharedStorageAccess extends ToolboxStorage{
 	 */
 	@Override
 	public Map<String,String> getMap(String key){
-		log.debug("SharedStorageAccess get Map: using default context, key:"+key);
+		log.info("SharedStorageAccess get Map: using default context, key:"+key);
 		Map<String, String> map = new HashMap<String, String>();
 		List<String> content = getList(key);
 		if (content == null || content.size() == 0){
@@ -129,9 +176,12 @@ public class SharedStorageAccess extends ToolboxStorage{
 		}
 
 		for (String one: content){
-			String[] kv =one.split(mapSeparator);
-			if (kv.length > 1){
-				map.put(kv[0], kv[1]);
+			int index = one.indexOf(mapSeparator);
+			if (index>0){
+				String k = one.substring(0,index);
+				String v = one.substring(index+mapSeparator.length());
+				log.info("Found Key:"+k+" Value:"+v);
+				map.put(k,v);
 			}else{
 				log.error("Invalid map content:" + one);
 			}
@@ -148,7 +198,7 @@ public class SharedStorageAccess extends ToolboxStorage{
 	 */
 	@Override
 	public void  setMap(String key, Map<String, String> map){
-		log.debug("SharedStorageAccess set Map: using default context, key:"+ key);
+		log.info("SharedStorageAccess set Map: using default context, key:"+ key);
 		List<String> content = new ArrayList<String>();
 		for (String mkey:map.keySet()){
 			content.add(mkey+mapSeparator+map.get(mkey));
@@ -160,57 +210,21 @@ public class SharedStorageAccess extends ToolboxStorage{
 
 	@Override
 	public String get(String key) {
-
-
-		log.debug("SharedStorageAccess get: using default context, key:" + key);
-
-		String name = getName(key);
-
-		try (VDIContext vdiCtx = VDIContextFactory.defaultVDIContext();) {
-			DirContext dirCtx = vdiCtx.getDirContext();
-
-			Attributes attrs = dirCtx.getAttributes(name, new String[] {attrId});
-			Attribute a = attrs.get(attrId);
-			String result =  (String) a.get();
-			if (result!=null){
-				result = result.trim();
-			}
-			return result;
-		} catch (NameNotFoundException e) {
-			log.debug("LDAP key not found: " + name + ". e=" + e);
-			//omit
-		} catch (Exception e) {
-			log.warn("Error reading SharedStorageAccess. key=" + key, e);
-			return null;
+		log.info("LDAP Get key:"+key);
+		List<String> list = getList(key);
+		if (list == null ||list.size() == 0){
+			log.info("value is not found");
+			return "";
 		}
-		return null;
+		log.info("value is found:"+list.get(0));
+		return list.get(0);
 	}
 
 	@Override
 	public void set(String key, String value) {
-		if (StringUtil.isEmpty(value)){
-			//empty string can not be set, so we have to use " "
-			value = " ";
-		}
-		String name = getName(key);
 
-		try (VDIContext vdiCtx = VDIContextFactory.defaultVDIContext();) {
-			DirContext dirCtx = vdiCtx.getDirContext();
-
-			try {
-				Attributes attrs = dirCtx.getAttributes(name, new String[] {attrId});
-				Attribute a = attrs.get(attrId);
-				a.set(0, value);
-				dirCtx.modifyAttributes(name, DirContext.REPLACE_ATTRIBUTE, attrs);
-			} catch (NameNotFoundException e) {
-				create(dirCtx, name, value);
-			} catch (IllegalStateException e) {
-				log.debug("Set value problem: Already exist?", e);
-			} catch (NamingException e) {
-				log.error("Error set key: " + key, e);
-			}
-		} catch (ADAMConnectionFailedException e1) {
-			log.error("Fail connecting to default VDI context.", e1);
-		}
+		ArrayList<String> list = new ArrayList<String>();
+		list.add(value);
+		this.setList(key, list);
 	}
 }

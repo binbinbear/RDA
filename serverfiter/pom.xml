@@ -3,6 +3,9 @@
   <groupId>com.vmware</groupId>
   <artifactId>serverfilter</artifactId>
   <version>0.0.1-SNAPSHOT</version>
+  <properties>
+  	<toolbox.dir>${project.basedir}/../HorizonToolbox/</toolbox.dir>
+  </properties>
   <build>
   	<plugins>
   			<plugin>
@@ -39,8 +42,42 @@
   			<systemPath>${project.basedir}/lib/jdom.jar</systemPath>
   		</dependency>
   		
+		<dependency>
+			<groupId>com.vmware</groupId>
+			<artifactId>adamwrapper</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${toolbox.dir}/src/main/webapp/WEB-INF/lib/adamwrapper.jar</systemPath>
+		</dependency>
+		
+				<dependency>
+			<groupId>com.vmware</groupId>
+			<artifactId>dbwrapper</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${toolbox.dir}/src/main/webapp/WEB-INF/lib/dbwrapper.jar</systemPath>
 
+		</dependency>
   		
+  						<dependency>
+			<groupId>com.vmware</groupId>
+			<artifactId>events-common</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${toolbox.dir}/src/main/webapp/WEB-INF/lib/events-common.jar</systemPath>
+
+		</dependency>
+		
+		
+			<dependency>
+			<groupId>com.vmware</groupId>
+			<artifactId>events-server</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${toolbox.dir}/src/main/webapp/WEB-INF/lib/events-server.jar</systemPath>
+
+		</dependency>
+
   		<dependency>
   			<groupId>commons-lang</groupId>
   			<artifactId>commons-lang</artifactId>
