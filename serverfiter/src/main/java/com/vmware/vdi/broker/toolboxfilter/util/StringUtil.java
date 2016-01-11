@@ -1,4 +1,4 @@
-package com.vmware.horizon.auditing.db;
+package com.vmware.vdi.broker.toolboxfilter.util;
 
 public class StringUtil {
 	public static boolean isEmpty(String s){

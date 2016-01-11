@@ -6,27 +6,50 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.vmware.horizontoolset.util.JsonUtil;
+import com.vmware.horizontoolset.util.SessionUtil;
 
 @RestController
 public class DeviceFilterRestController {
 
+	private static FilterStorage storage = new FilterStorage();
+	private static Logger log = Logger.getLogger(DeviceFilterRestController.class);
 	  @RequestMapping("/devicefilter/all")
 	    public List<DeviceFilterPolicy> getAllPolicies(HttpSession session) {
-		  //TODO: get from DB
-		  List<DeviceFilterPolicy> all = new ArrayList<DeviceFilterPolicy>();
-		  DeviceFilterPolicy p1 = new DeviceFilterPolicy("pool1");
-		  p1.setBlack(true);
+		  List<DeviceFilterPolicy> policies = storage.policies.get();
+		  log.info("Policies found:"+ policies.size());
+		  List<String> pools = SessionUtil.getAllDesktopPools(session);
+			for (String pool:pools){
+				DeviceFilterPolicy emptypolicy = new DeviceFilterPolicy(pool);
+				if (!policies.contains(emptypolicy)){
+					policies.add(emptypolicy);
+				}
+			}
+		  return policies;
+	  }
 
-		  List<DeviceFilterItem> items = new ArrayList<DeviceFilterItem>();
-		  items.add(new DeviceFilterItem(DeviceFilterEnum.IP,"192.168.1.*"));
+	  @RequestMapping("/devicefilter/update")
+		public String updateFilterPolicy(HttpSession session,
+				@RequestParam(value="policyStr", required=true) String policyStr) {
 
-		  p1.setItems(items);
+	    	try {
 
-		  all.add(p1);
-		  return all;
-		}
+	    		DeviceFilterPolicy policy = JsonUtil.jsonToJava(policyStr, DeviceFilterPolicy.class);
+
+
+	    		storage.addOrUpdate(policy);
+
+	    		return "successful ";
+	    	} catch (Exception e) {
+	    		log.warn("Error updating access policy for  "+ policyStr,e);
+	    		return "failed";
+	    	}
+	    }
 
 
 	  @RequestMapping("/devicefilter/result")

@@ -1,9 +1,10 @@
-package com.vmware.horizontoolset.devicefilter;
+package com.vmware.vdi.broker.devicefilter;
 
 import java.util.Map;
 
-import com.vmware.horizontoolset.util.StringUtil;
+import org.apache.log4j.Logger;
 
+import com.vmware.vdi.broker.toolboxfilter.util.StringUtil;
 
 public class DeviceFilterItem {
 
@@ -26,14 +27,18 @@ public class DeviceFilterItem {
 		this.reg = reg;
 	}
 
-
+	private static Logger log = Logger.getLogger(DeviceFilterItem.class);
 	//true for matched, false for mis-matched
 	public boolean checkMatched(Map<String, String> env){
+
 		String key = this.type.toString();
 		String value = env.get(key);
+		log.info("key:"+ key + " value in environment:"+ value+ " reg in filter:"+ reg);
 		if (!StringUtil.isEmpty(value) && reg.matches(value)){
+			log.info("rule matched");
 			return true;
 		}
+		log.info("rule not matched");
 		return false;
 
 	}

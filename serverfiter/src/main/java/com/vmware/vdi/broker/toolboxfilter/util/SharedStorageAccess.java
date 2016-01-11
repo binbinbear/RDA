@@ -1,4 +1,4 @@
-package com.vmware.horizontoolset.util;
+package com.vmware.vdi.broker.toolboxfilter.util;
 
 import java.util.ArrayList;
 import java.util.HashMap;

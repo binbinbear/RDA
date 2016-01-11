@@ -1,25 +1,13 @@
-package com.vmware.horizontoolset.util;
+package com.vmware.vdi.broker.toolboxfilter.util;
 
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
-
-import com.vmware.horizon.auditing.db.StorageException;
-
 public abstract class ToolboxStorage {
-
-	private static Logger log = Logger.getLogger(ToolboxStorage.class);
 	public static ToolboxStorage getStorage(){
-		try {
-			ToolboxStorage _instance = new DBStorage();
-			return _instance;
-		} catch (StorageException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			log.error(e.getMessage(),e);
-			return new SharedStorageAccess();
-		}
+
+		return new SharedStorageAccess();
+
 
 	}
 

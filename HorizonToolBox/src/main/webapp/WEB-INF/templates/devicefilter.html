@@ -130,7 +130,7 @@
 							<td><div>{{p.poolName}}</div></td>
 							<td>
 								<div>
-									<a class="policyitem" ng-click="editPolicy(p)">{{p.isBlack}}</a>
+									<a class="policyitem" ng-click="editPolicy(p)">{{p.text}}</a>
 								</div>
 							</td>
 						</tr>
@@ -178,25 +178,16 @@
 			<div class="overlay" id="policyDialog">
 				<div
 					style="text-align: center; background-color: lightblue; font-size: 25px; height: 35px">
-					{{'PowerOn Policy for desktop:'|i18n}}<span id="desktopName"></span>
+					{{'Access Policy for desktop:'|i18n}}<span id="desktopName"></span>
 				</div>
 				<div>
 					<table>
-						<tr>
-							<td>
-								<div>{{'Policy Type:'|i18n}}</div>
-							</td>
-							<td>
-								<div>
-									
-								</div>
-							</td>
-						</tr>
+						
 
 						<tr>
-							<td><div>{{'Filters:'|i18n}}</div></td>
+							<td><div>{{'IP WhiteList Filters:'|i18n}}</div></td>
 							<td>
-								
+								<textarea id="iplist" cols="20" rows="10"> </textarea>
 							</td>
 						</tr>
 						

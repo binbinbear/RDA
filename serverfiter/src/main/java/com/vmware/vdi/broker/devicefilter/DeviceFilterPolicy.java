@@ -1,38 +1,14 @@
-package com.vmware.horizontoolset.devicefilter;
+package com.vmware.vdi.broker.devicefilter;
 
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 public class DeviceFilterPolicy {
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((poolName == null) ? 0 : poolName.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		DeviceFilterPolicy other = (DeviceFilterPolicy) obj;
-		if (poolName == null) {
-			if (other.poolName != null)
-				return false;
-		} else if (!poolName.equals(other.poolName))
-			return false;
-		return true;
-	}
-
-
 	private String poolName;
 
+	private static Logger log = Logger.getLogger(DeviceFilterPolicy.class);
 	private boolean isBlack;
 
 	public DeviceFilterPolicy(String poolname){
@@ -65,15 +41,16 @@ public class DeviceFilterPolicy {
 
 	//true for allow, false for dis-allow;
 	public boolean checkAccess(Map<String, String> envInfo){
-
+		log.info("This poolname:" + this.poolName+" This isBlack:"+ this.isBlack);
 		for (DeviceFilterItem item : items){
 			if (item.checkMatched(envInfo)){
+				log.info("item matched:"+ item.getReg());
 				if (this.isBlack){
 					//if this is a black list and one black item is matched, we block directly
+					log.info("block due to black list");
 					return false;
-				}
-			}else{
-				if (!this.isBlack){
+				}else{
+					log.info("allow due to white list");
 					//if this is a white list and one white item is matched, we allow directly
 					return true;
 				}
