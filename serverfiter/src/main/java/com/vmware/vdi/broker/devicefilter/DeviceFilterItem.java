@@ -34,7 +34,7 @@ public class DeviceFilterItem {
 		String key = this.type.toString();
 		String value = env.get(key);
 		log.info("key:"+ key + " value in environment:"+ value+ " reg in filter:"+ reg);
-		if (!StringUtil.isEmpty(value) && reg.matches(value)){
+		if (!StringUtil.isEmpty(value) && value.matches(reg)){
 			log.info("rule matched");
 			return true;
 		}
@@ -42,4 +42,5 @@ public class DeviceFilterItem {
 		return false;
 
 	}
+
 }
