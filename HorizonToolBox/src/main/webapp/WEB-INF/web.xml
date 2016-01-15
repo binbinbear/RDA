@@ -66,6 +66,6 @@
   </welcome-file-list>
 
 	<error-page>
-    	<location>/WEB-INF/templates/error.html</location>
+    	<location>/WEB-INF/templates/error.jsp</location>
 	</error-page>
 </web-app>
