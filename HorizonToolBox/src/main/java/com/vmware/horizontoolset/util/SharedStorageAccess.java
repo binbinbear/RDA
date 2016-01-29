@@ -15,6 +15,7 @@ import javax.naming.directory.DirContext;
 
 import org.apache.log4j.Logger;
 
+import com.vmware.horizontoolset.LoginController;
 import com.vmware.vdi.adamwrapper.ldap.VDIContext;
 import com.vmware.vdi.adamwrapper.ldap.VDIContextFactory;
 
@@ -100,7 +101,8 @@ public class SharedStorageAccess extends ToolboxStorage{
 
 		String name = getName(key);
 
-		try (VDIContext vdiCtx = VDIContextFactory.defaultVDIContext();) {
+		try  {
+			VDIContext vdiCtx = VDIContextFactory.defaultVDIContext();
 			DirContext dirCtx = vdiCtx.getDirContext();
 			Attributes attrs = getOrcreate(dirCtx,name);
 
@@ -119,7 +121,7 @@ public class SharedStorageAccess extends ToolboxStorage{
 
 			return list;
 		}
-		catch (Exception e) {
+		catch (Throwable e) {
 			log.warn("Error reading SharedStorageAccess. key=" + key, e);
 			return list;
 		}
@@ -131,7 +133,6 @@ public class SharedStorageAccess extends ToolboxStorage{
 		log.info("SharedStorageAccess set List: using default context, key:" + key);
 		String name = getName(key);
 		try {
-
 			VDIContext vdiCtx = VDIContextFactory.defaultVDIContext();
 			DirContext dirCtx = vdiCtx.getDirContext();
 

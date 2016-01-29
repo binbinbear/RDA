@@ -15,6 +15,7 @@ import com.vmware.horizontoolset.viewapi.Farm;
 import com.vmware.horizontoolset.viewapi.ViewAPIService;
 import com.vmware.horizontoolset.viewapi.operator.Machine;
 import com.vmware.horizontoolset.viewapi.operator.ViewOperator;
+import com.vmware.vdi.vlsi.binding.vdi.resources.Application.ApplicationInfo;
 
 public class SessionUtil {
 
@@ -150,6 +151,15 @@ public class SessionUtil {
 		return getViewOperator(session).getDesktopPoolNames();
 	}
 
+	
+	public static List<String> getAllAppPools(HttpSession session){
+		List<ApplicationInfo> apps = SessionUtil.getViewAPIService(session).getAllApplicationPools();
+		List<String> appnames = new ArrayList<String>();
+		for (ApplicationInfo app: apps){
+			appnames.add(app.getData().getName());
+		}
+		return appnames;
+	}
 	public static List<String> getAllFarms(HttpSession session) {
 		List<Farm> allfarms = getViewAPIService(session).getAllFarms();
 		List<String> farms = new ArrayList<String>();

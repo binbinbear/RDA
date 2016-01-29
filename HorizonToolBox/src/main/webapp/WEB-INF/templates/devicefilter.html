@@ -22,8 +22,9 @@
 }
 
 #policyDialog {
-	width: 700px;
-	height: 410px;
+    width: 700px;
+	/*height: 410px;*/
+	height: 1000px;
 	background-color: #fff;
 	border-radius: 2px;
 	box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
@@ -180,26 +181,62 @@
 					style="text-align: center; background-color: lightblue; font-size: 25px; height: 35px">
 					{{'Access Policy for desktop:'|i18n}}<span id="desktopName"></span>
 				</div>
-				<div>
-					<table>
-						
-
-						<tr>
-							<td><div>{{'IP WhiteList Filters:'|i18n}}</div></td>
+				
+				<!-- XU YUE MODIFIED ON 20160128 -->
+				<div id = "policyCategoryArea">
+					<form>
+						<input type = "radio" name = "PolicyCategory" value = "black" ng-model = "isBlack" />Black Policy
+						<input type = "radio" name = "PolicyCategory" value = "white" ng-model = "isBlack" />White Policy
+					</form>
+				</div>
+				
+				<!-- XU YUE MODIFIED ON 20160125 -->
+				<div id = "policyTableArea">
+					<table id = "policyTable">
+						<thead>
+							<tr>
+								<th>Policy Type</th>
+								<th></th>
+								<th>Policy Value</th>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody>
+						<tr ng-repeat = "d in policytabledata track by $index">
 							<td>
-								<textarea id="iplist" cols="20" rows="10"> </textarea>
+								<select ng-model = "d.policyType">
+									<option value = "IP_Address">IP</option>
+									<option value = "MAC_Address">MAC</option>
+									<option value = "Type">OS</option>
+								</select>
+							</td>
+							<td>
+							<!-- Grep PART FOR FURTHER DEVELOPMENT -->
+								<select ng-model = "d.policyGrep">
+									<option value = "matches">MATCHES</option>
+									<option value = "contains">CONTAINS</option>
+									<option value = "ncontains">NOT CONTAINS</option>
+								</select>
+							</td>
+							<td>
+								<input type = "text" ng-model = "d.policyValue"/>
+							</td>
+							<td>
+								<button ng-click = "removeCurrentPolicy($index)">DELETE</button>
 							</td>
 						</tr>
-						
+						</tbody>
 					</table>
-
 				</div>
 
 
 				<div>
 					<div class="button-holder">
-						<button id="setPolicy">{{'Set'|i18n}}</button>
-						<button id="removePolicy">{{'Delete this policy'|i18n}}</button>
+						<!-- <button id="setPolicy">{{'Set'|i18n}}</button> -->
+						<!-- <button id="removePolicy">{{'Delete this policy'|i18n}}</button> -->
+						<button type="button" id = "createPolicy" ng-click = "createPolicyItem()">NEW</button>
+						<button type = "button" id = "setPolicy" ng-click = "setPolicy()">{{'set'|i18n}}</button>
+						<button type = "button" id = "clearPolicy" ng-click = "clearPolicy()">CLEAR</button>
 					</div>
 				</div>
 				<a class="close"></a>

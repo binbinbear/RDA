@@ -23,6 +23,9 @@ public class DeviceFilterRestController {
 	    public List<DeviceFilterPolicy> getAllPolicies(HttpSession session) {
 		  List<DeviceFilterPolicy> policies = storage.policies.get();
 		  log.info("Policies found:"+ policies.size());
+		  
+		  // XU YUE MODIFIED ON 20160129
+		  /* ORIGIN CODE
 		  List<String> pools = SessionUtil.getAllDesktopPools(session);
 			for (String pool:pools){
 				DeviceFilterPolicy emptypolicy = new DeviceFilterPolicy(pool);
@@ -30,6 +33,24 @@ public class DeviceFilterRestController {
 					policies.add(emptypolicy);
 				}
 			}
+		  */
+		  
+		  List<String> desktoppools = SessionUtil.getAllDesktopPools(session);
+		  List<String> applicationpools = SessionUtil.getAllAppPools(session);
+		  for( String pool:desktoppools ){
+			  DeviceFilterPolicy emptypolicy = new DeviceFilterPolicy( pool );
+			  if( !policies.contains(emptypolicy)){
+				  policies.add( emptypolicy );
+			  }
+		  }
+		  for( String pool:applicationpools ){
+			  DeviceFilterPolicy emptypolicy = new DeviceFilterPolicy( pool );
+			  if( !policies.contains(emptypolicy)){
+				  policies.add( emptypolicy );
+			  }
+		  }
+			
+		  // MODIFICATION END
 		  return policies;
 	  }
 
