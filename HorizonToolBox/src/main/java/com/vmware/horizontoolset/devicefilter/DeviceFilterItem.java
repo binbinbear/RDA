@@ -10,7 +10,11 @@ public class DeviceFilterItem {
 	public DeviceFilterItem(DeviceFilterEnum type, String reg){
 		this.type = type;
 		this.reg = reg;
+		this.grep = DeviceFilterGrep.MATCHES;
 	}
+
+	private DeviceFilterGrep grep;
+
 	private DeviceFilterEnum type;
 	public DeviceFilterEnum getType() {
 		return type;
@@ -36,5 +40,11 @@ public class DeviceFilterItem {
 		}
 		return false;
 
+	}
+	public DeviceFilterGrep getGrep() {
+		return grep;
+	}
+	public void setGrep(DeviceFilterGrep grep) {
+		this.grep = grep;
 	}
 }

@@ -13,7 +13,20 @@ if (!window.ToolBox){
 }
 
 if (!ToolBox.Devicefilter) {
-
+	function policyfilter( type, value, grep){
+		if (!type){
+			type="IP_Address"
+		}
+		if (!value){
+			value = "";
+		}
+		if (!grep){
+			grep = "MATCHES";
+		}
+		this.type=type;
+		this.grep=grep;
+		this.reg=value;
+	}
 	
 	function devicefilterCtrl ($scope, $http){
 		
@@ -31,6 +44,7 @@ if (!ToolBox.Devicefilter) {
 				if(data){	
 					for (var i=0;i<data.length;i++){
 						if (data[i].items == null || data[i].items.length == 0){
+							//bug here: distinguish between no items and no policy
 							data[i].text = "No Access Policy";
 						}else{
 							data[i].text = "Click to Edit "+ (data[i].isBlack? "black list": "white list");
@@ -54,34 +68,17 @@ if (!ToolBox.Devicefilter) {
 		 $scope.editPolicy = function(policy){
 			 console.log("edit Policy");
 			 
-			 var items = policy.items;
-			 // XU YUE MODIFIED ON 20150125
-			 // ORIGIN CODE
-			 /*
-			 var str = "";
-			 if (items!=null){
-				 for (var i=0;i<items.length;i++){
-					str = str+ items[i].reg+"\n";
-				 }
-			 }
-			 $("#desktopName").val(policy.poolName);
-			 $("#iplist").val(str);
-			 */
-			 
 			 $scope.isBlack = (policy.isBlack)?"black":"white";
 			 $scope.clearPolicy();
-			 if( items != null ){
-				 for( var i = 0; i < items.length; ++i ){
-					 $scope.policytabledata[i] = {
-							 "policyType": items[i].type,
-							 "policyGrep": items[i].grep,
-							 "policyValue": items[i].reg
-					 };
-				 }
+			 
+			 $scope.policytabledata =  policy.items;
+			 
+			 if (!$scope.policytabledata || $scope.policytabledata.length==0){
+				 $scope.policytabledata = [];
+				 $scope.policytabledata[0] = new policyfilter();
 			 }
 			 $("#desktopName").text( policy.poolName );
-			 //$("#desktopName").val( policy.poolName );
-			 // MODIFICATION END
+
 			 $("#policyDialog").show();
 		 }
 		 
@@ -89,11 +86,7 @@ if (!ToolBox.Devicefilter) {
 		 $scope.createPolicyItem = function(){
 			 var L = $scope.policytabledata.length;
 			 
-			 $scope.policytabledata[ L ] = {
-					 "policyType": "IP_Address",
-					 "policyGrep": "matches",
-					 "policyValue":""
-			 };
+			 $scope.policytabledata[ L ] = new policyfilter();
 		 }
 		 $scope.removeCurrentPolicy = function( index ){
 			 if( $scope.policytabledata.length > 0 ){
@@ -101,7 +94,7 @@ if (!ToolBox.Devicefilter) {
 			 }
 		 }
 		 $scope.clearPolicy = function(){
-			 console.log("Clear Policy.")
+			 console.log("Clear Policy.");
 			 $scope.policytabledata = [];
 		 }
 		 // MODIFICATION END
@@ -111,46 +104,17 @@ if (!ToolBox.Devicefilter) {
 	ToolBox.Devicefilter = {
 		controller: ToolBox.NgApp.controller('devicefilterCtrl', devicefilterCtrl),
 		setPolicy: function(){
-			console.log("setPolicy To be developed");
-			// XU YUE MODIFIED ON 20160125
-			/* ORIGIN CODE
-			var iplist = $("#iplist").val().split("\n");
-			var items =[];
-			for (var i=0;i<iplist.length;i++){
-				var ip = iplist[i];
-				var item = {
-						type: "IP_Address",
-						reg: ip
-				}
-				items[i] = item;
-			}
-			*/
-			// MODIFICATION START
-			var items = [];
-			var i = 0;
+			
 			var appElement = document.querySelector('[ng-controller=devicefilterCtrl]');
 			var $scope = angular.element(appElement).scope();
-			
-			var tdata = $scope.policytabledata;
-			var L = tdata.length;
-			//if( L < 1 )		return false;
-			for( i = 0; i < L; ++i ){
-				if( tdata[i].policyValue == "" )	continue;
-				var item = {
-						type: tdata[i].policyType,
-						grep: tdata[i].policyGrep,
-						reg:  tdata[i].policyValue
-				};
-				items[i] = item;
-			}
-			// MODIFICATION END
+
 			
 			var poolname = $("#desktopName").text();
 			var policy = {
 					poolName: poolname,
 					//isBlack: false,
 					isBlack: ($scope.isBlack == "black")?true:false,
-					items: items
+					items: $scope.policytabledata
 			};
 			
 			var str = JSON.stringify(policy);
@@ -204,15 +168,8 @@ if (!ToolBox.Devicefilter) {
 	ToolBox.Devicefilter.init = function() {
 		 
 		 $('#setPolicy').click(ToolBox.Devicefilter.setPolicy);
-		 // XU YUE MODIFIED ON 20160128	
-		 // ORIGIN CODE
-		 //$('#removePolicy').click(ToolBox.Devicefilter.removePolicy);
-		 // ORIGIN CODE END
-		 //$('#clearPolicy').click( ToolBox.Devicefilter._clearPolicy);
-		 // MODIFICATION END
 		 $('a.close').click(function(){ 
 		        $("#policyDialog").hide(); 
-		        ToolBox.Devicefilter._clearPolicy();
 		    }); 
 	};
 	

@@ -22,16 +22,15 @@
 }
 
 #policyDialog {
-    width: 700px;
-	/*height: 410px;*/
-	height: 1000px;
+    width: 70%;
+	height: 75%;
 	background-color: #fff;
 	border-radius: 2px;
 	box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
 	position: fixed;
-	top: 200px;
-	left: 50%;
-	margin-left: -350px;
+	top: 10%;
+	left: 40%;
+	margin-left: -30%;
 	text-align: center;
 }
 
@@ -45,27 +44,8 @@
 	cursor: pointer;
 }
 
-#policyDialog .week {
-	float: left;
-	cursor: pointer;
-	width: 50px;
-	height: 50px;
-	background-color: lightgray;
-	border-radius: 25px;
-	margin: 4px;
-}
 
-#policyDialog .wselected {
-	background-color: lightblue;
-}
 
-#policyDialog .week span {
-	height: 50px;
-	line-height: 50px;
-	display: block;
-	color: #000;
-	text-align: center;
-}
 
 #policyDialog table {
 	border: none;
@@ -77,13 +57,6 @@
 	padding: 10px;
 	border: none;
 }
-
-#policyDialog .powerinput {
-	padding: 5px;
-	width: 40px;
-	display: inline;
-}
-
 
 
 .button-holder button {
@@ -183,28 +156,42 @@
 				</div>
 				
 				<!-- XU YUE MODIFIED ON 20160128 -->
-				<div id = "policyCategoryArea">
-					<form>
-						<input type = "radio" name = "PolicyCategory" value = "black" ng-model = "isBlack" />Black Policy
-						<input type = "radio" name = "PolicyCategory" value = "white" ng-model = "isBlack" />White Policy
-					</form>
+				<div id = "policyCategoryArea" style="font-size: 20px; margin: 10px">
+					
+					
+					<input type = "radio" name = "PolicyCategory" value = "black" ng-model = "isBlack" />
+					<span>Forbidden list </span>
+
+					<input style="margin-left:20px" type = "radio" name = "PolicyCategory" value = "white" ng-model = "isBlack" />
+					<span>Allowed list </span>
+					
 				</div>
 				
+				<div>
+					<span style="font-size: 15px">You can set more than 1 filters for your policy. The connection is forbidden (or allowed) if any one of the filters is matched. </span>
+				</div>
+				<div style="text-align: left; margin: 10px;">
+				<a href="#" style="font-size: 18px" ng-click = "createPolicyItem()" >
+				<img src="img/add.png" style=" height: 20px;" alt="+"/>
+				Add a filter </a>
+				</div>
+				
+				
 				<!-- XU YUE MODIFIED ON 20160125 -->
-				<div id = "policyTableArea">
+				<div id = "policyTableArea"  class="scrollarea list" style="height: 60%">
 					<table id = "policyTable">
-						<thead>
-							<tr>
-								<th>Policy Type</th>
-								<th></th>
-								<th>Policy Value</th>
-								<th></th>
-							</tr>
-						</thead>
 						<tbody>
+						<tr>
+							   <th style="width: 28%">Policy Type</th>
+								<th style="width: 18%"></th>
+								<th style="width: 28%">Policy Value</th>
+								<th style="width: 18%"></th>
+							
+						</tr>
+
 						<tr ng-repeat = "d in policytabledata track by $index">
 							<td>
-								<select ng-model = "d.policyType">
+								<select style="width:90%" ng-model = "d.type">
 									<option value = "IP_Address">IP</option>
 									<option value = "MAC_Address">MAC</option>
 									<option value = "Type">OS</option>
@@ -212,17 +199,19 @@
 							</td>
 							<td>
 							<!-- Grep PART FOR FURTHER DEVELOPMENT -->
-								<select ng-model = "d.policyGrep">
-									<option value = "matches">MATCHES</option>
-									<option value = "contains">CONTAINS</option>
-									<option value = "ncontains">NOT CONTAINS</option>
+								<select  style="width:90%" ng-model = "d.grep">
+									<option value = "MATCHES">MATCHES</option>
+									<option disabled="disabled" value = "CONTAINS">CONTAINS</option>
+									<option disabled="disabled" value = "NCONTAINS">NOT CONTAINS</option>
 								</select>
 							</td>
 							<td>
-								<input type = "text" ng-model = "d.policyValue"/>
+								<input  style="width:90%" type = "text" ng-model = "d.reg"/>
 							</td>
 							<td>
-								<button ng-click = "removeCurrentPolicy($index)">DELETE</button>
+								<a href="#" style="font-size: 18px" ng-click = "removeCurrentPolicy($index)" >
+									<img src="img/close.png" style=" height: 20px;" alt="-"/>
+								 </a>
 							</td>
 						</tr>
 						</tbody>
@@ -234,9 +223,9 @@
 					<div class="button-holder">
 						<!-- <button id="setPolicy">{{'Set'|i18n}}</button> -->
 						<!-- <button id="removePolicy">{{'Delete this policy'|i18n}}</button> -->
-						<button type="button" id = "createPolicy" ng-click = "createPolicyItem()">NEW</button>
+						
 						<button type = "button" id = "setPolicy" ng-click = "setPolicy()">{{'set'|i18n}}</button>
-						<button type = "button" id = "clearPolicy" ng-click = "clearPolicy()">CLEAR</button>
+						
 					</div>
 				</div>
 				<a class="close"></a>
