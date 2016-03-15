@@ -51,7 +51,9 @@ if (!ToolBox.PowerPolicy) {
 					
 					$scope.powerpolicys =  data;
 				}
-			});
+			}).error(function(){
+				window.location.href = "./Logout";
+			});;
 			
 			$http.get('./power/result').success(function(data){
 				$(".loadingresultrow").attr("style","display:none");
@@ -64,7 +66,9 @@ if (!ToolBox.PowerPolicy) {
 					
 					$scope.history =  data;
 				}
-			});
+			}).error(function(){
+				window.location.href = "./Logout";
+			});;
 			
 			
 		 }; 

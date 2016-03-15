@@ -29,6 +29,8 @@ if (!ToolBox.Console) {
 							}
 							$scope.vms = data;
 						}
+				}).error(function(){
+					window.location.href = "./Logout";
 				});
 		 };
 		

@@ -39,8 +39,8 @@ public class DeviceFilterPolicy {
 		this.items = items;
 	}
 
-	//true for allow, false for dis-allow;
-	public boolean checkAccess(Map<String, String> envInfo){
+
+	private boolean _checkAccess (Map<String, String> envInfo){
 		log.info("This poolname:" + this.poolName+" This isBlack:"+ this.isBlack);
 		for (DeviceFilterItem item : items){
 			if (item.checkMatched(envInfo)){
@@ -59,4 +59,17 @@ public class DeviceFilterPolicy {
 		//if this is a white list and none item is matched, we block; if this is a black list and none is matched, we allow;
 		return this.isBlack;
 	}
+
+	//true for allow, false for dis-allow;
+	public boolean checkAccess(Map<String, String> envInfo){
+		boolean isAllowed = this._checkAccess(envInfo);
+		if (!isAllowed){
+			//write log to a special file
+			BlockedLogger.getInstance().logBlockedAccess(new BlockedAccess(envInfo, this.poolName));
+		}
+
+		return isAllowed;
+	}
+
+
 }

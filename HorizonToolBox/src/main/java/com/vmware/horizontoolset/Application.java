@@ -20,12 +20,19 @@ public class Application {
     }
 
     private static final String defaultServer = "C:\\Program Files\\VMware\\VMware View\\Server";
+
+    public static String getViewServerPath(){
+    	return Application.viewServerPath;
+    }
+    private static String viewServerPath = defaultServer;
     public void setViewServerPath(String viewServerPath){
     	if (defaultServer.equalsIgnoreCase(viewServerPath)){
     		String sysDriver = System.getProperty("user.home");
     		sysDriver = sysDriver.substring(0, sysDriver.indexOf(":"));
-    		LDAP.setViewServerPath(sysDriver + viewServerPath.substring(viewServerPath.indexOf(":")));
+    		Application.viewServerPath = sysDriver + viewServerPath.substring(viewServerPath.indexOf(":"));
+    		LDAP.setViewServerPath(Application.viewServerPath);
     	}else{
+    		Application.viewServerPath = viewServerPath;
     		LDAP.setViewServerPath(viewServerPath);
     	}
     }

@@ -50,4 +50,17 @@ public class FilterStorage {
 
 	}
 
+	public void remove(String poolname){
+		List<DeviceFilterPolicy> allpolicies = this.policies.get(true);
+		allpolicies.remove(new DeviceFilterPolicy(poolname));
+
+		List<String> allnew = new ArrayList<String>();
+		for (DeviceFilterPolicy p: allpolicies){
+			allnew.add(JsonUtil.javaToJson(p));
+		}
+		ToolboxStorage.getStorage().setList(AccessPolicy, allnew);
+		this.policies.get(true);
+
+	}
+
 }

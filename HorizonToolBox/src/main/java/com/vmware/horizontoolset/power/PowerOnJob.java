@@ -20,7 +20,7 @@ import com.vmware.vdi.vlsi.binding.vdi.resources.Machine.MachineInfo;
 @JsonIgnoreProperties(value={"log"})
 public class PowerOnJob implements CronJob{
 
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -49,9 +49,9 @@ public class PowerOnJob implements CronJob{
 	private String poolName;
 	private String cron;
 	private static Logger log = Logger.getLogger(PowerOnJob.class);
-	
-	private int interval = 5000;
-	
+
+	private int interval = 5;
+
 	public static Logger getLog() {
 		return log;
 	}
@@ -69,18 +69,18 @@ public class PowerOnJob implements CronJob{
 		this.cron = cron;
 		this.interval = startInterval;
 	}
-	
+
 	public PowerOnJob(String poolName){
 		this(poolName, null, 0);
 	}
-	
+
 	public PowerOnJob(){
-		
+
 	}
 	public void setPoolName(String poolName){
 		this.poolName = poolName;
 	}
-	
+
  	public String getPoolName() {
 		return poolName;
 	}
@@ -88,12 +88,12 @@ public class PowerOnJob implements CronJob{
 	public void setCron(String cron){
 		this.cron = cron;
 	}
-	
 
-	
+
+
 	@Override
 	public void execute()  {
-		
+
 		if (StringUtil.isEmpty(this.cron)){
 			log.warn("Empty poweron job");
 			return;
@@ -116,13 +116,13 @@ public class PowerOnJob implements CronJob{
     			log.error("Can't find the pool with name:"+ this.poolName);
     			return;
     		}
-    		List<Machine> machines = pool.machines.get(); 
+    		List<Machine> machines = pool.machines.get();
     		if (machines==null || machines.size() == 0){
     			log.error("Can't find vm in the pool:"+ this.poolName);
     			return;
-    			
+
     		}
-    		
+
     		String vcname=null;
     		for (Machine m: machines){
     			MachineInfo minfo = api.getMachineInfo(m.getVmid());
@@ -131,16 +131,16 @@ public class PowerOnJob implements CronJob{
     	    		continue;
     	    	}
 
-    	    	
+
 	    		if( vcname == null){
 	    			vcname =  api.getVCInfo(m.getVcenterId()).serverSpec.serverName;
 	    		}
-	    		
+
 	    		if (vcname == null){
     	    		log.warn("Can not find vc for pool:"+this.poolName);
     	    		return;
 	    		}
-	    		
+
 	    		VMServiceImplVCenter vmservice = new VMServiceImplVCenter(vdiCtx , vcname , minfo.managedMachineData.getVirtualCenterData().path);
 	    		boolean powerresult = vmservice.poweron();
 	    		if (powerresult){
@@ -149,29 +149,31 @@ public class PowerOnJob implements CronJob{
 	    			result.fail(minfo.base.name);
 	    			log.warn("Can't power on vm:"+ minfo.base.name);
 	    		}
-	    		
-	    		Thread.sleep(getInterval());
+
+	    		Thread.sleep(getInterval() * 1000);
     		}
     		api.close();
-
+    		log.info("Power on VMs finished");
     	}catch(Exception ex){
     		log.warn("Exception", ex);
     		result.fail("");
     	}finally{
     		if (operator!=null){
     			operator.close();
-    		}    	
+    		}
     		result.end();
+
     	}
-		
+
 	}
 
 	@Override
 	public String getCron() {
-		
+
 		return cron;
 	}
 
+	//in seconds
 	public int getInterval() {
 		return interval;
 	}

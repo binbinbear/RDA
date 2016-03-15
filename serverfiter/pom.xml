@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.vmware</groupId>
-  <artifactId>serverfilter</artifactId>
+  <artifactId>toolboxfilter</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <properties>
   	<toolbox.dir>${project.basedir}/../HorizonToolbox/</toolbox.dir>
@@ -16,6 +16,27 @@
 					<source>1.7</source>
 					<target>1.7</target>
 				</configuration>
+			</plugin>
+			
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copyJarToToolbox</id>
+						<phase>package</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<tasks>
+								<copy todir="../HorizonToolBox/src/main/webapp/resources" overwrite="true">
+									<fileset dir="target" includes="*.jar" />
+								</copy>
+								
+							</tasks>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
   </plugins>
   </build>

@@ -53,13 +53,22 @@ if (!ToolBox.Devicefilter) {
 					$scope.dapolicies =  data;
 					console.log( $scope.dapolicies );
 				}
+			}).error(function(){
+				window.location.href = "./Logout";
 			});
 			
 			$http.get('./devicefilter/result').success(function(data){
 				$(".loadingresultrow").attr("style","display:none");
 				if(data){	
+					
+					for(var i = 0; i < data.length; i++){
+						data[i].date = new Date(data[i].date).toLocaleString();
+					}
+					
 					$scope.history =  data;
 				}
+			}).error(function(){
+				window.location.href = "./Logout";
 			});
 			
 			
@@ -97,55 +106,59 @@ if (!ToolBox.Devicefilter) {
 			 console.log("Clear Policy.");
 			 $scope.policytabledata = [];
 		 }
+		 $scope.setPolicy = function(){
+
+				var poolname = $("#desktopName").text();
+				var policy = {
+						poolName: poolname,
+						//isBlack: false,
+						isBlack: ($scope.isBlack == "black")?true:false,
+						items: $scope.policytabledata
+				};
+				
+				var str = JSON.stringify(policy);
+				console.log("to server:"+str);
+				ToolBox.Devicefilter._sendUpdateToServer(str);
+				$("#policyDialog").hide();
+			
+		 }
+		 $scope.removePolicy = function(){
+					var poolname = $("#desktopName").text();
+					ToolBox.Devicefilter._sendRemoveToServer(poolname);
+					$("#policyDialog").hide();
+				
+			
+		 }
 		 // MODIFICATION END
 	
 	}
 
 	ToolBox.Devicefilter = {
 		controller: ToolBox.NgApp.controller('devicefilterCtrl', devicefilterCtrl),
-		setPolicy: function(){
-			
-			var appElement = document.querySelector('[ng-controller=devicefilterCtrl]');
-			var $scope = angular.element(appElement).scope();
+	
 
-			
-			var poolname = $("#desktopName").text();
-			var policy = {
-					poolName: poolname,
-					//isBlack: false,
-					isBlack: ($scope.isBlack == "black")?true:false,
-					items: $scope.policytabledata
-			};
-			
-			var str = JSON.stringify(policy);
-			console.log("to server:"+str);
-			ToolBox.Devicefilter._sendUpdateToServer(str);
-			$("#policyDialog").hide();
-		},
 		
-		removePolicy: function(){
-			console.log("removePolicy To be developed");
-		},
-		
-		_clearPolicy: function(){
-			// XU YUE MODIFIED ON 20160128
-			// ORIGIN CODE
-			// $("#iplist").val("");
-			// $("#desktopName").val("");
-			// ORIGIN CODE ENDS
-			var appElement = document.querySelector('[ng-controller=devicefilterCtrl]');
-			var $scope = angular.element(appElement).scope();
-			$scope.$apply( function(){
-				$scope.clearPolicy();
-			})
-			ToolBox.Devicefilter.setPolicy();
-			// MODIFICATION END
+		_sendRemoveToServer: function(poolname){
+			$.ajax({
+				url: "./devicefilter/remove",
+				data: {pool: poolname},
+				success: function(data){
+					alert("Successful! This page will be refreshed.");
+					window.location.reload();
+				},
+				failure: function(errMsg) {
+					alert("Failed, this page will be refreshed.");
+					window.location.reload();
+				}
+			});
+			
 		},
 
 
 		_sendUpdateToServer : function addOrUpdatePolicy(policyRequestStr) {
 			$.ajax({
 				url: "./devicefilter/update",
+				type: "POST",
 				data: {policyStr: policyRequestStr},
 				success: function(data){
 					alert("Successful! This page will be refreshed.");
@@ -167,10 +180,56 @@ if (!ToolBox.Devicefilter) {
 	
 	ToolBox.Devicefilter.init = function() {
 		 
+		 $(function () {
+			    $( "#enable-confirm" ).dialog({
+				      resizable: false,
+				      autoOpen: false,
+				        height: "auto",
+				        width: "400px",
+				      modal: true,
+				      buttons: {
+				        "Accept": function() {
+				        	window.location.href = "./enablefilter";
+				            $( this ).dialog( "close" );
+				        },
+				        Cancel: function() {
+				          $( this ).dialog( "close" );
+				        }
+				      }
+				    });
+			    
+			    $( "#disable-confirm" ).dialog({
+				      resizable: false,
+				      autoOpen: false,
+				        height: "auto",
+				        width: "400px",
+				      modal: true,
+				      buttons: {
+				        "Accept": function() {
+				        	window.location.href = "./disablefilter";
+				            $( this ).dialog( "close" );
+				        },
+				        Cancel: function() {
+				          $( this ).dialog( "close" );
+				        }
+				      }
+				    });
+			});
+		 
 		 $('#setPolicy').click(ToolBox.Devicefilter.setPolicy);
 		 $('a.close').click(function(){ 
 		        $("#policyDialog").hide(); 
 		    }); 
+		 
+		 $(".enableFilterButton").click (function(){
+			 $( "#enable-confirm" ).dialog("open");
+			 
+		 });
+		 $(".disableFilterButton").click (function(){
+			 $( "#disable-confirm" ).dialog("open");
+			
+		 });
+	
 	};
 	
 

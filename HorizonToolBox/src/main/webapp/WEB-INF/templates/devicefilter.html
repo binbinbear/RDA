@@ -82,7 +82,22 @@
 			</table>
 		</h3>
 
-		<div ng-controller="devicefilterCtrl">
+       <button  th:class="${filterEnabled}? 'disableFilterButton' : 'enableFilterButton' "
+			th:text="${filterEnabled}? 'Disable Client Filter' : 'Enable Client Filter'"> </button>
+
+						
+<div id="enable-confirm" title="Enable Access Policies?">
+  <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Enabling this feature will reboot VMware Horizon View Web Component Service, this may take some seconds. 
+  You should log out and log in Toolbox again after enabling this feature. Are you sure you want to continue? </p>
+</div>
+
+<div id="disable-confirm" title="Disable Access Policies?">
+  <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Disabling this feature will reboot VMware Horizon View Web Component Service, this may take some seconds. 
+  You should log out and log in Toolbox again after disabling this feature. Are you sure you want to continue? </p>
+</div>
+				
+				
+		<div ng-controller="devicefilterCtrl" th:class="${filterEnabled}? 'active' : 'hiddenClients'">
 			<div class="scrollarea list"
 				style="width: 100%; height: auto !important; height: 350px; min-height: 350px">
 
@@ -122,11 +137,12 @@
 				<table class="dataTable searchResultsTable" cellspacing="0">
 					<thead>
 						<tr>
-							<th class="sorted order1" id="poolname" style="width: 20%;">{{'Pool Name'|i18n}}</th>
-							<th style="width: 20%;">{{'Time'|i18n}}</th>							
-							<th style="width: 20%;">{{'Device IP'|i18n}}</th>
-							<th style="width: 20%;">{{'Device MAC'|i18n}}</th>
-							<th style="width: 20%;">{{'Device OS'|i18n}}</th>
+							<th class="sorted order1" id="poolname" style="width: 16%;">{{'Pool Name'|i18n}}</th>
+							<th style="width: 16%;">{{'Time'|i18n}}</th>							
+							<th style="width: 16%;">{{'Device IP'|i18n}}</th>
+							<th style="width: 16%;">{{'Device MAC'|i18n}}</th>
+							<th style="width: 16%;">{{'Device Type'|i18n}}</th>
+							<th style="width: 16%;">{{'User Name'|i18n}}</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -136,14 +152,16 @@
 							<td class="alarm"></td>
 							<td class="alarm"></td>
 							<td class="alarm"></td>
+							<td class="alarm"></td>
 						</tr>
 						<tr ng-repeat="r in history">
-							<td><div>{{r.poolName}}</div></td>
+							<td><div>{{r.pool}}</div></td>
 
-							<td>{{r.time}}</td>
+							<td>{{r.date}}</td>
 							<td>{{r.ip}}</td>
 							<td>{{r.mac}}</td>
-							<td>{{r.os}}</td>
+							<td>{{r.type}}</td>
+							<td>{{r.user}}</td>
 						</tr>
 					</tbody>
 				</table>
@@ -166,9 +184,12 @@
 					<span>Allowed list </span>
 					
 				</div>
-				
+
 				<div>
-					<span style="font-size: 15px">You can set more than 1 filters for your policy. The connection is forbidden (or allowed) if any one of the filters is matched. </span>
+					<span style="text-align: left; font-size: 15px">CIDR IP Range should be like "10.112.118.0/24", which means from "10.112.118.0" to "10.112.118.255"</span>
+				</div>
+				<div>
+					<span style="text-align: left; font-size: 15px">MAC address could be regular expression like "a8:20:66:25.*"</span>
 				</div>
 				<div style="text-align: left; margin: 10px;">
 				<a href="#" style="font-size: 18px" ng-click = "createPolicyItem()" >
@@ -192,9 +213,9 @@
 						<tr ng-repeat = "d in policytabledata track by $index">
 							<td>
 								<select style="width:90%" ng-model = "d.type">
-									<option value = "IP_Address">IP</option>
-									<option value = "MAC_Address">MAC</option>
-									<option value = "Type">OS</option>
+									<option value = "IP_Address">CIDR IP Range</option>
+									<option value = "MAC_Address">MAC address</option>
+									<option value = "Type">Device Type</option>
 								</select>
 							</td>
 							<td>
@@ -221,11 +242,10 @@
 
 				<div>
 					<div class="button-holder">
-						<!-- <button id="setPolicy">{{'Set'|i18n}}</button> -->
-						<!-- <button id="removePolicy">{{'Delete this policy'|i18n}}</button> -->
 						
-						<button type = "button" id = "setPolicy" ng-click = "setPolicy()">{{'set'|i18n}}</button>
 						
+						<button type = "button" id = "setPolicy" ng-click = "setPolicy()">{{'Set'|i18n}}</button>
+						<button type = "button"  id = "removePolicy"  ng-click = "removePolicy()">{{'Delete all'|i18n}}</button>
 					</div>
 				</div>
 				<a class="close"></a>

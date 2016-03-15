@@ -23,7 +23,7 @@ import com.vmware.vdi.adamwrapper.ldap.VDIContextFactory;
 
 public class LDAP implements AutoCloseable {
 	/**
-	 * 
+	 *
 	 */
 	private static Logger log = Logger.getLogger(LDAP.class);
 
@@ -52,10 +52,10 @@ public class LDAP implements AutoCloseable {
 		return this.vdiContext;
 	}
 	DirContext getContext() {
-		
+
 		return this.dirContext;
 	}
-	
+
 	// TODO: FIXME: only local host is supported by this default context.
 	public LDAP(String username, String password, String domain) throws ADAMConnectionFailedException {
 		this.vdiContext = VDIContextFactory.VDIContext(username, password, domain);
@@ -102,7 +102,7 @@ public class LDAP implements AutoCloseable {
         env.put(Context.SECURITY_CREDENTIALS, password);
 		 try {
 			 dirContext = new InitialDirContext(env);
-			
+
 			} catch (NamingException e) {
 				log.warn("Can't connect to server", e);
 				e.printStackTrace();
@@ -121,9 +121,9 @@ public class LDAP implements AutoCloseable {
 	public static LDAP _get_junit_ldap(String hostname, String username, String password, String domain){
 		return new LDAP(hostname, username, password, domain);
 	}
-	
 
-	   
+
+
 	public String getValue(String key){
 		   if (dirContext ==null){
 			   log.warn("Can't get since ctx is null!");
@@ -201,7 +201,7 @@ public class LDAP implements AutoCloseable {
 		}
 
 	}
-	
+
 	private static final String CEIPEnabled = "ceipEnabled";
 	private static final String CEIPSpoolDirectory = "ceipSpoolDirectory";
 
@@ -218,6 +218,11 @@ public class LDAP implements AutoCloseable {
 	}
 
 	private static String viewServerPath;
+
+	public static String getViewServerPath(){
+		return viewServerPath;
+	}
+
 	public static void setViewServerPath(String viewServerPath){
 		LDAP.viewServerPath = viewServerPath;
 	}
@@ -227,8 +232,8 @@ public class LDAP implements AutoCloseable {
 			return path;
 		}
 
-		String tempDir = LDAP.viewServerPath + File.separator + "broker" + File.separator + "temp"; 
-		
+		String tempDir = LDAP.viewServerPath + File.separator + "broker" + File.separator + "temp";
+
 		log.debug("CEIP directory is:" + tempDir);
 		return tempDir;
 	}
@@ -242,11 +247,11 @@ public class LDAP implements AutoCloseable {
 		return ceipEnabled;
 
 	}
-	   
+
 //	   public static void main(String args[]){
 //		   LDAP ldap = new LDAP("10.112.118.27", "administrator", "ca$hc0w");
 //		   ldap.enableCEIP();
 //		   System.out.println(ldap.isCEIPEnabled());
 //	   }
-	   
+
 }
