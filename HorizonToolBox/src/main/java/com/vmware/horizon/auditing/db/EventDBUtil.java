@@ -1,7 +1,5 @@
 package com.vmware.horizon.auditing.db;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -81,13 +79,7 @@ public class EventDBUtil implements AutoCloseable, ToolBoxDB {
 		log.debug("All Events size:" + allEvents.size());
 
 		//sort by time, ascending (early event first)
-		Collections.sort(allEvents, new Comparator<Event>() {
-
-			@Override
-			public int compare(Event o1, Event o2) {
-				return (int)(o1.getTime().getTime() - o2.getTime().getTime());
-			}
-		});
+		java.util.Collections.sort(allEvents);
 
 		return allEvents;
 	}

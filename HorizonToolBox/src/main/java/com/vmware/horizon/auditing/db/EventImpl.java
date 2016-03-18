@@ -54,7 +54,29 @@ public class EventImpl implements Event{
 
 	private EventType type = EventType.Others;
 	private String username;
+	public void setUsername(String username) {
+
+		if (username ==null){
+			username = "";
+		}
+		username = username.toLowerCase();
+		if(username.contains("@")){
+			String res[] = username.split("@");
+			username = res[0];
+		}
+		this.username = username;
+
+	}
+
 	private String machineName = "";
+	public void setMachineName(String machineName) {
+		if(machineName ==null){
+			machineName = "";
+		}
+
+		this.machineName = machineName.toLowerCase();
+	}
+
 	private Date time;
 	private String sourceName = "";
 	private int eventId = 0;
@@ -84,8 +106,9 @@ public class EventImpl implements Event{
 
 	//create a dummy connect or disconnect event.
 	public EventImpl(Event pairevent, Date time){
-		this.username = pairevent.getUserName();
-		this.machineName = pairevent.getMachineDNSName();
+		setUsername(pairevent.getUserName());
+
+		setMachineName(pairevent.getMachineDNSName());
 		this.time = time;
 		if (pairevent.getType()==EventType.Connection){
 			this.type = EventType.Disconnection;
@@ -100,10 +123,8 @@ public class EventImpl implements Event{
 
 	public EventImpl(AdminEvent event){
 		this.eventId = event.getEventId();
-		this.username = event.getUsername();
-		if (this.username==null){
-			this.username="";
-		}
+		setUsername( event.getUsername());
+
 
 		this.shortMessage = event.getMessage().toLowerCase();
 		this.time = event.getTime();
@@ -128,15 +149,13 @@ public class EventImpl implements Event{
 				this.type = EventType.Others;
 			}
 
-			this.username = event.getUsername();
+			setUsername( event.getUsername());
 			if (this.username == null || this.username.length() == 0){
-				this.username = getValue(shortMessage, USER);
+				setUsername( getValue(shortMessage, USER));
 			}
-			this.machineName = event.getMachineName();
-			if( null == this.machineName ){
-				this.machineName = "";
-			}
-			this.machineName = this.machineName.toLowerCase();
+			setMachineName(event.getMachineName());
+
+
 			this.sourceName = event.getDesktopId();
 			if (this.sourceName == null || this.sourceName.length() == 0){
 				this.sourceName = event.getPoolId();
@@ -160,10 +179,7 @@ public class EventImpl implements Event{
 
 	@Override
 	public String getUserName() {
-		if(this.username.contains("@")){
-			String res[] = this.username.split("@");
-			this.username = res[0];
-		}
+
 		return this.username;
 	}
 

@@ -149,7 +149,7 @@ public class PowerOnJob implements CronJob{
 	    			result.fail(minfo.base.name);
 	    			log.warn("Can't power on vm:"+ minfo.base.name);
 	    		}
-
+	    		log.debug("sleep " + getInterval()  + " seconds after powering VM:"+minfo.base.name);
 	    		Thread.sleep(getInterval() * 1000);
     		}
     		api.close();

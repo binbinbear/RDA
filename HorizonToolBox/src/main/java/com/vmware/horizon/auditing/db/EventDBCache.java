@@ -20,23 +20,23 @@ import com.vmware.vdi.admin.be.events.AdminEventManager;
 
 public class EventDBCache {
 	private static Logger log = Logger.getLogger(EventDBCache.class);
-	
-	
+
+
 	private static long lastCachedTime = -1;
-	
+
 	//maximum days is 90 (3 months)
 	private static int cachedDays = 90;
-	
+
 	private static Set<Event> cachedEvents =new HashSet<Event>();
-	
+
 	// // Actually this filter doesn't work and has been hard code now. Please see getEventQuery
-	private static final String filterText = "('Agent', 'Broker')";	
+	private static final String filterText = "('Agent', 'Broker')";
 	private static int pagingSize = 50000;
 	private static final long millisecondsHour = 1000L * 3600L;
 	private static final long millisecondsDay = millisecondsHour * 24L;
 	private static final long millisecondsAll = millisecondsDay *getCachedDays();
-	
-	
+
+
 	public synchronized static void expire() {
 		lastCachedTime = -1;
 	}
@@ -44,7 +44,7 @@ public class EventDBCache {
 	public static long getLastCachedTime(){
 		return lastCachedTime;
 	}
-	
+
 	public static void updateCache(){
 		try {
 			updateCache(VDIContextFactory.defaultVDIContext());
@@ -54,13 +54,13 @@ public class EventDBCache {
 			log.error("Can't update cache with default context", e);
 		}
 	}
-	
+
 	private synchronized static void updateCache(VDIContext vdiContext){
 		//by default, query events within cachedDays
 		int days = getCachedDays();
 		long currentTime = new Date().getTime();
 		if ( cachedEvents.size()>0){
-			
+
 			long hours = (currentTime - lastCachedTime)/(millisecondsHour);
 			if (lastCachedTime != -1 && hours<=1 ){
 				log.info("Cache hit, No need to query again in two hours");
@@ -73,7 +73,7 @@ public class EventDBCache {
 				days = getCachedDays();
 			}
 		}
-		
+
 		//remove event older than cachedDays
 		Iterator<Event> iterator = cachedEvents.iterator();
 		while (iterator.hasNext()) {
@@ -82,8 +82,8 @@ public class EventDBCache {
 				iterator.remove();
 			}
 		}
-	
-		
+
+
 		log.info("Previous events size:" + cachedEvents.size());
 		lastCachedTime = currentTime;
 
@@ -102,29 +102,29 @@ public class EventDBCache {
 		log.info("New Events:" + adminEvent.size());
 
 		for (AdminEvent adminevent: adminEvent){
-			
+
 			EventImpl event = new EventImpl(adminevent);
 			//log.debug("  Type=" + event.getType() + ", msg=" + event.getShortMessage());
-			
+
 			if (event.getType() != EventType.Others){
 				cachedEvents.add(event);
 				//log.debug("  (added)");
 			}
-			
+
 		}
 		log.info("Events after updating:"+ cachedEvents.size());
 	}
-	
+
 	static List<Event> getEvents(VDIContext vdiContext, int recentdays){
 		if (lastCachedTime == -1){
 			updateCache(vdiContext);
 		}
-		
+
 		long currentTime = new Date().getTime();
-		
+
 		List<Event> result = new ArrayList<Event>();
-		
-		
+
+
 		for (Event event: cachedEvents ){
 			if (currentTime -event.getTime().getTime()  < millisecondsDay * recentdays){
 				result.add(event);
@@ -132,7 +132,7 @@ public class EventDBCache {
 		}
 		log.debug("Current cache size:" + cachedEvents.size());
 		log.debug("All events size:" + result.size());
-		
+
 		return result;
 	}
 
@@ -155,5 +155,5 @@ public class EventDBCache {
 	public static void setPagingSize(int pagingSize) {
 		EventDBCache.pagingSize = pagingSize;
 	}
-	
+
 }

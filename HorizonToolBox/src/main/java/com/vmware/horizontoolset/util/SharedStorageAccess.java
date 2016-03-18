@@ -15,7 +15,6 @@ import javax.naming.directory.DirContext;
 
 import org.apache.log4j.Logger;
 
-import com.vmware.horizontoolset.LoginController;
 import com.vmware.vdi.adamwrapper.ldap.VDIContext;
 import com.vmware.vdi.adamwrapper.ldap.VDIContextFactory;
 
@@ -54,6 +53,16 @@ public class SharedStorageAccess extends ToolboxStorage{
 	}
 
 
+	private static void initAttr(DirContext dirCtx, Attributes attrs){
+
+		Attribute classes = new BasicAttribute("objectClass");
+        classes.add("top");
+        classes.add("pae-PropertyObject");
+        classes.add("pae-VDMProperties");
+        attrs.put(classes);
+        attrs.put(new BasicAttribute(attrId," "));
+
+	}
 
 	private static Attributes getOrcreate(DirContext dirCtx, String name) throws NamingException {
 
@@ -62,17 +71,16 @@ public class SharedStorageAccess extends ToolboxStorage{
 		try{
 			Attributes attrs = dirCtx.getAttributes(name, new String[] {attrId});
 			log.info("Attributes found, return directly");
+			Attribute a = attrs.get(attrId);
+			if (a==null){
+				initAttr(dirCtx, attrs);
+				dirCtx.modifyAttributes( name, DirContext.REPLACE_ATTRIBUTE,attrs);
+			}
 			return attrs;
 		}catch(NameNotFoundException ex){
 			log.info("Name not found, try to create a new one");
 			Attributes attributes=new BasicAttributes(true);
-	        Attribute classes = new BasicAttribute("objectClass");
-	        classes.add("top");
-	        classes.add("pae-PropertyObject");
-	        classes.add("pae-VDMProperties");
-	        attributes.put(classes);
-
-	        attributes.put(new BasicAttribute(attrId," "));
+	        initAttr(dirCtx, attributes);
 
 	        try {
 	        	dirCtx.createSubcontext(name, attributes);
@@ -106,8 +114,11 @@ public class SharedStorageAccess extends ToolboxStorage{
 			DirContext dirCtx = vdiCtx.getDirContext();
 			Attributes attrs = getOrcreate(dirCtx,name);
 
-
 			Attribute a = attrs.get(attrId);
+			if (a==null){
+				log.warn("No attr found for LDAP name:"+ name);
+				return list;
+			}
 			for (int i=0; i<a.size();i++){
 				String result =  (String) a.get(i);
 				if (result!=null){
@@ -130,14 +141,20 @@ public class SharedStorageAccess extends ToolboxStorage{
 
 	@Override
 	public void setList(String key, List<String> values) {
+
+
 		log.info("SharedStorageAccess set List: using default context, key:" + key);
 		String name = getName(key);
 		try {
 			VDIContext vdiCtx = VDIContextFactory.defaultVDIContext();
 			DirContext dirCtx = vdiCtx.getDirContext();
 
+			if (values.size() == 0){
+				log.info("Remove LDAP attr:" + name);
+				dirCtx.destroySubcontext(name);
+				return;
+			}
 			Attributes attrs = getOrcreate(dirCtx,name);
-
 
 			Attribute a = attrs.get(attrId);
 			a.clear();
@@ -148,8 +165,6 @@ public class SharedStorageAccess extends ToolboxStorage{
 					a.add(i,value);
 				}
 			}
-
-
 
 			dirCtx.modifyAttributes( name, DirContext.REPLACE_ATTRIBUTE,attrs);
 		} catch (Exception e1) {
