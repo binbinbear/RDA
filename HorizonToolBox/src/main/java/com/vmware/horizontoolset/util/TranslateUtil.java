@@ -26,11 +26,11 @@ public class TranslateUtil {
 			return;
 		}
 		String localUniform = locale.toString().toLowerCase();
-		if(language==null||language=="");{
+		if(StringUtil.isEmpty(language)){
 			language=defaultLanguage;
 		}
 		supportLocale.put(localUniform, language);
-		
+
 	}
 	public String getLocaleLanguage(Locale locale){
 		if (locale==null) {

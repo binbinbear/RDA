@@ -88,8 +88,18 @@
    <bean id="PowerRestController" class="com.vmware.horizontoolset.power.PowerRestController"/>
    <bean id="PowerScheduleRestController" class="com.vmware.horizontoolset.power.PowerScheduleRestController" />
    
-    <bean id="DeviceFilterController" class="com.vmware.horizontoolset.devicefilter.DeviceFilterController"/>
-       <bean id="DeviceFilterRestController" class="com.vmware.horizontoolset.devicefilter.DeviceFilterRestController"/>
+   
+   <bean id="DeviceFilterManager" class="com.vmware.horizontoolset.devicefilter.DeviceFilterManagerLDAP"/>
+   
+    <bean id="DeviceFilterController" class="com.vmware.horizontoolset.devicefilter.DeviceFilterController">
+    	<property name="devicemanager" ref="DeviceFilterManager"></property>
+    </bean>
+    
+    
+    
+    <bean id="DeviceFilterRestController" class="com.vmware.horizontoolset.devicefilter.DeviceFilterRestController">
+    	<property name="devicemanager" ref="DeviceFilterManager"></property>
+    </bean>
    
    <bean id="infoRestController" class="com.vmware.horizontoolset.ProductInfoRestController"/>
  

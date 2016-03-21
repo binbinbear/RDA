@@ -36,10 +36,14 @@ public class SharedStorageAccess extends ToolboxStorage{
 
 	private final static String namePrefix = "CN=TEToolbox-";
 	private final static String namePostfix = "OU=Global,OU=Properties,dc=vdi,dc=vmware,dc=int";
-	private final static String attrId = "description";
+	private final static String defaultattrkey = "description";
 
 	@Override
 	public void delete(String key) {
+		if (StringUtil.isEmpty(key)){
+			return;
+		}
+		key = key.toLowerCase();
 		log.info("Start to delete key:"+ key +" from LDAP");
 		String name = getName(key);
 
@@ -53,34 +57,34 @@ public class SharedStorageAccess extends ToolboxStorage{
 	}
 
 
-	private static void initAttr(DirContext dirCtx, Attributes attrs){
+	private static void initAttr(DirContext dirCtx, Attributes attrs, String attrkey){
 
 		Attribute classes = new BasicAttribute("objectClass");
         classes.add("top");
         classes.add("pae-PropertyObject");
         classes.add("pae-VDMProperties");
         attrs.put(classes);
-        attrs.put(new BasicAttribute(attrId," "));
+        attrs.put(new BasicAttribute(attrkey," "));
 
 	}
 
-	private static Attributes getOrcreate(DirContext dirCtx, String name) throws NamingException {
+	private static Attributes getOrcreate(DirContext dirCtx, String name, String attrkey) throws NamingException {
 
 		log.info("Start to get or create LDAP item:"+ name);
 
 		try{
-			Attributes attrs = dirCtx.getAttributes(name, new String[] {attrId});
+			Attributes attrs = dirCtx.getAttributes(name, new String[] {attrkey});
 			log.info("Attributes found, return directly");
-			Attribute a = attrs.get(attrId);
+			Attribute a = attrs.get(attrkey);
 			if (a==null){
-				initAttr(dirCtx, attrs);
+				initAttr(dirCtx, attrs, attrkey);
 				dirCtx.modifyAttributes( name, DirContext.REPLACE_ATTRIBUTE,attrs);
 			}
 			return attrs;
 		}catch(NameNotFoundException ex){
 			log.info("Name not found, try to create a new one");
 			Attributes attributes=new BasicAttributes(true);
-	        initAttr(dirCtx, attributes);
+	        initAttr(dirCtx, attributes, attrkey);
 
 	        try {
 	        	dirCtx.createSubcontext(name, attributes);
@@ -97,29 +101,30 @@ public class SharedStorageAccess extends ToolboxStorage{
 	}
 
 
-	static String getName(String key) {
+	private static String getName(String key) {
 		return namePrefix + key + ',' + namePostfix;
 	}
 
 
-	@Override
-	public List<String> getList(String key){
-		log.info("SharedStorageAccess get List: using default context, key:" + key);
+	private List<String> getList(String namekey, String attrkey){
+
+		log.info("SharedStorageAccess get List: using default context, key:" + namekey);
 		List<String> list =  new ArrayList<String>();
 
-		String name = getName(key);
+		String name = getName(namekey);
 
 		try  {
 			VDIContext vdiCtx = VDIContextFactory.defaultVDIContext();
 			DirContext dirCtx = vdiCtx.getDirContext();
-			Attributes attrs = getOrcreate(dirCtx,name);
+			Attributes attrs = getOrcreate(dirCtx,name, attrkey);
 
-			Attribute a = attrs.get(attrId);
+			Attribute a = attrs.get(attrkey);
 			if (a==null){
-				log.warn("No attr found for LDAP name:"+ name);
+				log.warn("No attr found for LDAP name:"+ name+", attr:"+ attrkey);
 				return list;
 			}
 			for (int i=0; i<a.size();i++){
+
 				String result =  (String) a.get(i);
 				if (result!=null){
 					result = result.trim();
@@ -133,17 +138,24 @@ public class SharedStorageAccess extends ToolboxStorage{
 			return list;
 		}
 		catch (Throwable e) {
-			log.warn("Error reading SharedStorageAccess. key=" + key, e);
+			log.warn("Error reading SharedStorageAccess. key=" + namekey+", attr:"+ attrkey, e);
 			return list;
 		}
-
 	}
 
 	@Override
-	public void setList(String key, List<String> values) {
+	public List<String> getList(String key){
+		if (StringUtil.isEmpty(key)){
+			return null;
+		}
+		key = key.toLowerCase();
+		return this.getList(key, defaultattrkey);
+	}
 
 
-		log.info("SharedStorageAccess set List: using default context, key:" + key);
+	private void setList(String key, String attrkey, List<String> values){
+
+		log.info("SharedStorageAccess set List: using default context, key:" + key +" attr:"+attrkey);
 		String name = getName(key);
 		try {
 			VDIContext vdiCtx = VDIContextFactory.defaultVDIContext();
@@ -154,14 +166,16 @@ public class SharedStorageAccess extends ToolboxStorage{
 				dirCtx.destroySubcontext(name);
 				return;
 			}
-			Attributes attrs = getOrcreate(dirCtx,name);
+			Attributes attrs = getOrcreate(dirCtx,name, attrkey);
 
-			Attribute a = attrs.get(attrId);
+			Attribute a = attrs.get(attrkey);
 			a.clear();
-			for (int i = 0; i < values.size(); i++) {
-				String value = values.get(i);
+
+			dirCtx.modifyAttributes( name, DirContext.REPLACE_ATTRIBUTE,attrs);
+			for (int i=0;i<values.size();i++) {
+				String value = values.get(values.size()-1-i);
 				if (!a.contains(value)) {
-					log.info("Add value:"+value);
+					log.debug("Add value:"+value);
 					a.add(i,value);
 				}
 			}
@@ -171,7 +185,19 @@ public class SharedStorageAccess extends ToolboxStorage{
 			log.error("Fail connecting to default VDI context.", e1);
 		}
 
+
 	}
+
+	@Override
+	public void setList(String key, List<String> values) {
+		if (StringUtil.isEmpty(key)){
+			return;
+		}
+		key = key.toLowerCase();
+		this.setList(key, defaultattrkey, values);
+	}
+
+
 
 
 	private static final String mapSeparator = "<==>"  ;
@@ -184,6 +210,11 @@ public class SharedStorageAccess extends ToolboxStorage{
 	 */
 	@Override
 	public Map<String,String> getMap(String key){
+		if (StringUtil.isEmpty(key)){
+			return null;
+		}
+		key = key.toLowerCase();
+
 		log.info("SharedStorageAccess get Map: using default context, key:"+key);
 		Map<String, String> map = new HashMap<String, String>();
 		List<String> content = getList(key);
@@ -214,6 +245,11 @@ public class SharedStorageAccess extends ToolboxStorage{
 	 */
 	@Override
 	public void  setMap(String key, Map<String, String> map){
+		if (StringUtil.isEmpty(key)){
+			return;
+		}
+		key = key.toLowerCase();
+
 		log.info("SharedStorageAccess set Map: using default context, key:"+ key);
 		List<String> content = new ArrayList<String>();
 		for (String mkey:map.keySet()){
@@ -226,21 +262,62 @@ public class SharedStorageAccess extends ToolboxStorage{
 
 	@Override
 	public String get(String key) {
-		log.info("LDAP Get key:"+key);
-		List<String> list = getList(key);
+		if (StringUtil.isEmpty(key)){
+			return null;
+		}
+		key = key.toLowerCase();
+		return this.get(key, defaultattrkey);
+	}
+
+	@Override
+	public void set(String key, String value) {
+		if (StringUtil.isEmpty(key)){
+			return;
+		}
+		key = key.toLowerCase();
+		this.set(key,defaultattrkey, value);
+	}
+
+
+
+	@Override
+	public String get(String namekey, String attrkey) {
+		if (StringUtil.isEmpty(namekey) || (StringUtil.isEmpty(attrkey))){
+			return null;
+		}
+		namekey = namekey.toLowerCase();
+		attrkey = attrkey.toLowerCase();
+
+		log.info("LDAP Get key:"+namekey+",attr:"+attrkey);
+		List<String> list = getList(namekey,attrkey);
 		if (list == null ||list.size() == 0){
 			log.info("value is not found");
 			return "";
 		}
 		log.info("value is found:"+list.get(0));
 		return list.get(0);
+
 	}
+
 
 	@Override
-	public void set(String key, String value) {
+	public void set(String namekey, String attrkey, String value) {
+		if (StringUtil.isEmpty(namekey) || (StringUtil.isEmpty(attrkey))){
+			return;
+		}
+		namekey = namekey.toLowerCase();
+		attrkey = attrkey.toLowerCase();
 
+		log.info("LDAP Set key:"+namekey+",attr:"+attrkey);
 		ArrayList<String> list = new ArrayList<String>();
 		list.add(value);
-		this.setList(key, list);
+		this.setList(namekey, attrkey, list);
+
+
 	}
+
+
+
+
+
 }

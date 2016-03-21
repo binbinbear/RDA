@@ -96,6 +96,7 @@ if (!ToolBox.Devicefilter) {
 			 var L = $scope.policytabledata.length;
 			 
 			 $scope.policytabledata[ L ] = new policyfilter();
+			
 		 }
 		 $scope.removeCurrentPolicy = function( index ){
 			 if( $scope.policytabledata.length > 0 ){

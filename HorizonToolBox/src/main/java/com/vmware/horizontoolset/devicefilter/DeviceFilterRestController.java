@@ -20,27 +20,31 @@ import com.vmware.horizontoolset.util.SessionUtil;
 @RestController
 public class DeviceFilterRestController {
 
-	private static FilterStorage storage = new FilterStorage();
 	private static Logger log = Logger.getLogger(DeviceFilterRestController.class);
+
+
+	private DeviceFilterManager devicemanager ;
+
+	public DeviceFilterManager getDevicemanager() {
+		return devicemanager;
+	}
+
+	public void setDevicemanager(DeviceFilterManager devicemanager) {
+		this.devicemanager = devicemanager;
+	}
 
 	@RequestMapping("/devicefilter/all")
 	public List<DeviceFilterPolicy> getAllPolicies(HttpSession session) {
-		List<DeviceFilterPolicy> policies = storage.policies.get();
-		log.info("Policies found:" + policies.size());
-		List<String> desktoppools = SessionUtil.getAllDesktopPools(session);
+
+		List<String> pools = SessionUtil.getAllDesktopPools(session);
 		List<String> applicationpools = SessionUtil.getAllAppPools(session);
-		for (String pool : desktoppools) {
-			DeviceFilterPolicy emptypolicy = new DeviceFilterPolicy(pool);
-			if (!policies.contains(emptypolicy)) {
-				policies.add(emptypolicy);
-			}
+		if (applicationpools!=null && !applicationpools.isEmpty()){
+			pools.addAll(applicationpools);
 		}
-		for (String pool : applicationpools) {
-			DeviceFilterPolicy emptypolicy = new DeviceFilterPolicy(pool);
-			if (!policies.contains(emptypolicy)) {
-				policies.add(emptypolicy);
-			}
-		}
+
+		List<DeviceFilterPolicy> policies = this.devicemanager.getAllPolicies(pools);
+
+		log.info("Policies found:" + policies.size());
 
 		return policies;
 	}
@@ -54,7 +58,7 @@ public class DeviceFilterRestController {
 
 			DeviceFilterPolicy policy = JsonUtil.jsonToJava(policyStr, DeviceFilterPolicy.class);
 
-			storage.addOrUpdate(policy);
+			this.devicemanager.updateFilterPolicy(policy);
 
 			return "successful ";
 		} catch (Exception e) {
@@ -69,7 +73,7 @@ public class DeviceFilterRestController {
 		try {
 			log.info("remove policy for pool:" + pool);
 
-			storage.remove(pool);
+			this.devicemanager.removeFilterPolicy(pool);
 
 			return "successful ";
 		} catch (Exception e) {

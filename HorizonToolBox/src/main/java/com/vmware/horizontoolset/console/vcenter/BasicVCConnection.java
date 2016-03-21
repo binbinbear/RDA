@@ -41,16 +41,16 @@ import com.vmware.vim25.mo.ServiceInstance;
  * @see ConnectedVimServiceBase
  */
 public class BasicVCConnection implements VCConnection {
-	
+
 	private static Logger log = Logger.getLogger(BasicVCConnection.class);
-	
+
     private ServiceInstance serviceInstance;
 
     private String username;
     private String password;
     private String url;
     private String host;
-    
+
     public BasicVCConnection(VDIContext ctx,
             String vcname){
 
@@ -64,19 +64,24 @@ public class BasicVCConnection implements VCConnection {
             		break;
             	}
             }
-			
-			this.username = thevc.getUserName();
-			this.password = thevc.getPassword();
-			this.url = thevc.getUrl();
-			this.host = thevc.getServerName();
-			
+			if (thevc!=null){
+				this.username = thevc.getUserName();
+				this.password = thevc.getPassword();
+				this.url = thevc.getUrl();
+				this.host = thevc.getServerName();
+
+			}else{
+				log.error("VC is not found:"+ vcname);
+			}
+
+
 		} catch (ADAMServerException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    	
+
     }
-    
+
     //never use this function
     // this is for local test only
     public BasicVCConnection(String host, String username, String password){
@@ -86,13 +91,15 @@ public class BasicVCConnection implements VCConnection {
     		this.host = host;
     }
 
-    public String getHost() {
+    @Override
+	public String getHost() {
         return this.host;
     }
 
-   
-    
-    public VCConnection connect() {
+
+
+    @Override
+	public VCConnection connect() {
         if (!isConnected()) {
             try {
                 _connect();
@@ -107,18 +114,19 @@ public class BasicVCConnection implements VCConnection {
         return this;
     }
     UserSession userSession;
-    
+
 
 	private void _connect() throws RemoteException, MalformedURLException, ADAMServerException  {
 
-		
+
 		this.serviceInstance = new ServiceInstance( new URL(this.url), this.username,this.password, true);
         userSession = serviceInstance.getSessionManager().getCurrentSession();
-        
+
     }
 
 
-    public boolean isConnected() {
+    @Override
+	public boolean isConnected() {
         if (userSession == null) {
             return false;
         }
@@ -128,7 +136,8 @@ public class BasicVCConnection implements VCConnection {
         return new Date().getTime() < startTime + 30 * 60 * 1000;
     }
 
-    public VCConnection disconnect() {
+    @Override
+	public VCConnection disconnect() {
         if (this.isConnected()) {
             try {
             	serviceInstance.getSessionManager().logout();
@@ -151,7 +160,7 @@ public class BasicVCConnection implements VCConnection {
 	public ServiceInstance getServiceInstance() {
 		return this.serviceInstance;
 	}
-	
+
 	public void close() {
 		disconnect();
 	}

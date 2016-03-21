@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -18,9 +19,17 @@ public class DeviceFilterManagerLDAP implements DeviceFilterManager {
 	private Logger log = Logger.getLogger(DeviceFilterManagerLDAP.class);
 
 	@Override
-	public List<DeviceFilterPolicy> getAllPolicies() {
+	public List<DeviceFilterPolicy> getAllPolicies(List<String> pools) {
+		List<DeviceFilterPolicy> policies = new ArrayList<DeviceFilterPolicy> ();
+		for (String pool: pools){
+			DeviceFilterPolicy policy = storage.getPolicy(pool);
+			if (policy ==null){
+				policy = new DeviceFilterPolicy(pool);
+			}
 
-		return storage.policies.get();
+			policies.add(policy);
+		}
+		return policies;
 	}
 
 	@Override

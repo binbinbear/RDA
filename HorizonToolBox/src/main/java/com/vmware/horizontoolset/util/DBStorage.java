@@ -65,4 +65,16 @@ public class DBStorage extends ToolboxStorage {
 		// TODO Auto-generated method stub
 
 	}
+
+	@Override
+	public String get(String namekey, String attrkey) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void set(String namekey, String attrkey, String value) {
+		// TODO Auto-generated method stub
+
+	}
 }

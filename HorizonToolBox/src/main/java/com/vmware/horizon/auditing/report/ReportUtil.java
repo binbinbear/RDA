@@ -269,7 +269,7 @@ public class ReportUtil {
 				}
 			}
 		}
-		Date unknownDate = new Date(0);
+		//Date unknownDate = new Date(0);
 		//for all broker session  without logout events, they should be connecting events
 		for (Event event: brokerLoginEvents.values()){
 			BrokerSessionImpl brokerSession= new BrokerSessionImpl(event, null);

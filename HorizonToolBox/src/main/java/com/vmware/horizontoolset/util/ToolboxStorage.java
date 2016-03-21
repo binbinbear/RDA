@@ -14,6 +14,7 @@ public abstract class ToolboxStorage {
 
 	public abstract void delete(String key);
 
+
 	public abstract List<String> getList(String key);
 	public abstract void  setList(String key, List<String> values);
 
@@ -21,8 +22,24 @@ public abstract class ToolboxStorage {
 
 	public abstract void  setMap(String key, Map<String, String> map);
 
+	/**
+	 * * Use the default "description" as the attribute key
+	 * @param key
+	 * @return
+	 */
 	public abstract String get(String key);
 
+
+	public abstract String get(String namekey, String attrkey);
+
+	/**
+	 * * Use the default "description" as the attribute key
+	 * @param key
+	 * @param value
+	 */
 	public abstract void set(String key, String value) ;
+
+
+	public abstract void set(String namekey, String attrkey, String value) ;
 
 }

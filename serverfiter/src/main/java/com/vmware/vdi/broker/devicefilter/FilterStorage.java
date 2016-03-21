@@ -1,36 +1,80 @@
 package com.vmware.vdi.broker.devicefilter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.vmware.vdi.broker.toolboxfilter.util.CachedObjs;
 import com.vmware.vdi.broker.toolboxfilter.util.JsonUtil;
+import com.vmware.vdi.broker.toolboxfilter.util.StringUtil;
 import com.vmware.vdi.broker.toolboxfilter.util.ToolboxStorage;
+
+
 
 
 public class FilterStorage {
 	private static Logger log = Logger.getLogger(FilterStorage.class);
-	private static final String AccessPolicy = "AccessPolicy";
-	//dont' use casche for now
-	public final CachedObjs<DeviceFilterPolicy> policies = new CachedObjs<DeviceFilterPolicy>(1) {
+	private static final String AccessPolicy = "AccessPolicy_";
 
-		@Override
-		protected void populateCache(List<DeviceFilterPolicy> objects) {
+	private static final String isBlackKey="adminDescription";
 
-			objects.clear();
-			List<String> allpolicies = ToolboxStorage.getStorage().getList(AccessPolicy);
-			for (String policyStr: allpolicies){
-				try{
-					DeviceFilterPolicy policy = JsonUtil.jsonToJava(policyStr, DeviceFilterPolicy.class);
-					objects.add(policy);
-				}catch(Exception ex){
-					log.error("Can't get policy for str:"+policyStr, ex);
-				}
 
-			}
-			log.info("Policy result in Storage:"+objects.size());
+
+	public DeviceFilterPolicy getPolicy(String poolname){
+		if (poolname==null){
+			log.error("Why pool name is null here?!");
+			return null;
 		}
-	};
+
+		String namekey = AccessPolicy + poolname;
+
+		String isBlack = ToolboxStorage.getStorage().get(namekey,isBlackKey );
+		if (StringUtil.isEmpty(isBlack)){
+			//no policy
+			return null;
+		}
+		//there is a policy
+		boolean isBlackBool = Boolean.getBoolean(isBlack);
+		DeviceFilterPolicy policy = new DeviceFilterPolicy(poolname);
+		policy.setIsBlack(isBlackBool);
+
+		List<DeviceFilterItem> filteritems = new ArrayList<DeviceFilterItem>();
+		List<String> items = ToolboxStorage.getStorage().getList(namekey);
+		for (String policyStr: items){
+			try{
+				DeviceFilterItem item = JsonUtil.jsonToJava(policyStr, DeviceFilterItem.class);
+				filteritems.add(item);
+			}catch(Exception ex){
+				log.error("Can't get policy for str:"+policyStr, ex);
+			}
+
+		}
+
+		policy.setItems(filteritems);
+
+		return policy;
+
+	}
+
+
+	public void addOrUpdate(DeviceFilterPolicy policy){
+		String namekey = AccessPolicy + policy.getPoolName();
+		ToolboxStorage.getStorage().set(namekey, isBlackKey, String.valueOf(policy.getIsBlack()));
+		List<String> items = new ArrayList<String>();
+		for (DeviceFilterItem item: policy.getItems()){
+			items.add(JsonUtil.javaToJson(item));
+		}
+		ToolboxStorage.getStorage().setList(namekey, items);
+	}
+
+	public void remove(String poolname){
+		if (StringUtil.isEmpty(poolname)){
+			log.error("Why pool name is null here when removing?!");
+			return;
+		}
+		String namekey = AccessPolicy + poolname;
+		ToolboxStorage.getStorage().delete(namekey);
+
+	}
 
 }

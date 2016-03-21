@@ -1,7 +1,5 @@
 package com.vmware.vdi.broker.toolboxfilter;
 
-import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.jdom.Element;
 
@@ -22,17 +20,15 @@ public class ConnectionAccessProcessor extends AbstractHorizonProcessor {
 
 	@Override
 	public boolean isMessageAllowed() {
-		List<DeviceFilterPolicy> policies = storage.policies.get();
-		log.info("Number of Access Policy in Storage:"+ policies.size());
-		for (DeviceFilterPolicy policy: policies){
-			String policypool = policy.getPoolName();
-			String requestpool = StringUtil.isEmpty(super.desktopID)? super.applicationID: super.desktopID ;
-			if (!StringUtil.isEmpty(policypool) && policypool.equalsIgnoreCase(requestpool)){
-				log.info("Policy is matched, pool:"+ policypool);
-				return policy.checkAccess(super.envInfo);
-			}else{
-				log.info("Policy is not matched, pool in policy:"+ policypool+ " request pool:"+ requestpool);
-			}
+		String requestpool = StringUtil.isEmpty(super.desktopID)? super.applicationID: super.desktopID ;
+
+		DeviceFilterPolicy policy = storage.getPolicy(requestpool);
+
+		if (policy!=null && policy.getItems()!=null && policy.getItems().size()>0){
+			log.info("Policy is found, pool:"+ requestpool);
+			return policy.checkAccess(super.envInfo);
+		}else{
+			log.info("Policy is not matched,  request pool:"+ requestpool);
 		}
 
 		return true;

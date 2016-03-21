@@ -14,8 +14,20 @@ import com.vmware.horizontoolset.util.SessionUtil;
 public class DeviceFilterController {
 	private static final String view = "devicefilter";
 
-	private DeviceFilterManager devicemanager = new DeviceFilterManagerLDAP();
-    @RequestMapping(value="/devicefilter", method=RequestMethod.GET)
+	private DeviceFilterManager devicemanager ;
+
+
+    public DeviceFilterManager getDevicemanager() {
+		return devicemanager;
+	}
+
+
+	public void setDevicemanager(DeviceFilterManager devicemanager) {
+		this.devicemanager = devicemanager;
+	}
+
+
+	@RequestMapping(value="/devicefilter", method=RequestMethod.GET)
     public String get(Model model, HttpSession session) {
         model.addAttribute("view", view);
         model.addAttribute("user", SessionUtil.getuser(session));
