@@ -1,3 +1,17 @@
+Horizon Toolbox 2.1 release note
+New features
+·	Horizon 7 support
+·	Client Access Filter
+	Filter client devices by MAC address, IP address or Client Type (MAC, Windows, iOS, Android, Linux)
+
+Bug Fixes
+·	Auditing result was not accurate
+·	Power Policy didn't use "interval" value
+·	After deleting a power-on policy, the policy could not be created again.
+·	Console Access failed due to expired session (expired session should be redirected to login page)
+
+
+
 Horizon Toolbox 2.0 release note
 
 New features
