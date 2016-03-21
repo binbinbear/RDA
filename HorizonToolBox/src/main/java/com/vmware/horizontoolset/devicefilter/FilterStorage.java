@@ -31,9 +31,10 @@ public class FilterStorage {
 			return null;
 		}
 		//there is a policy
-		boolean isBlackBool = Boolean.getBoolean(isBlack);
+		boolean isBlackBool = Boolean.parseBoolean(isBlack);
 		DeviceFilterPolicy policy = new DeviceFilterPolicy(poolname);
 		policy.setIsBlack(isBlackBool);
+		log.debug("Policy is black:" +isBlackBool + " for pool:"+poolname);
 
 		List<DeviceFilterItem> filteritems = new ArrayList<DeviceFilterItem>();
 		List<String> items = ToolboxStorage.getStorage().getList(namekey);
