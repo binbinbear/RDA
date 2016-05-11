@@ -3,6 +3,11 @@
 <title>Remote Assistance</title>
 <link href="css/report.css" rel="stylesheet" />
 <link href="css/cupertino/jquery-ui.custom.min.css" rel="stylesheet" />
+   <style>
+	  #raprogressbar .ui-progressbar-value {
+		background-color: #ccc;
+	  }
+  </style>
 </head>
 
 <body>
@@ -16,7 +21,7 @@
 		<h3 class="pageHeader">
 			<div class="pageHeaderDiv">
 								<img src="./img/window_information.png" alt="Dashboard" />
-								&nbsp;&nbsp; {{'Remote Assistance'|i18n}}&nbsp; 
+								&nbsp;&nbsp; {{'Remote Assistance 23'|i18n}}&nbsp; 
 			</div>
 		</h3>
 		
@@ -25,46 +30,56 @@
 		
 		<br/>
 		
-		
-		<p><b>{{'List of Remote Assistance Requests'|i18n}}</b></p>
-		
+		<div id="ratabs">
+				<p>
+				</p>
+		  <ul>
+			<li><a href="#listra"><span>{{'List of Remote Assistance Requests'|i18n}}</span></a></li>
+			<li><a href="#shadowra"><span>{{'Rmote Assistance Shadow'|i18n}}</span></a></li>
+		  </ul>
+		  <div id="listra">
+			<table class='lite_table'>
+				<thead><tr><th>{{'Request Time'|i18n}}</th><th>{{'User'|i18n}}</th><th>{{'Machine Name'|i18n}}</th><th>{{'OS Version'|i18n}}</th><th>{{'Status'|i18n}}</th><th>{{'Action'|i18n}}</th></tr></thead>
+				<tbody id='ra_table'>
+					<tr><td class='loading_place_holder' colspan="10"></td></tr>
+				</tbody>
+				<tfoot></tfoot>
+			</table>
 
-		<table class='lite_table'>
-			<thead><tr><th>{{'Request Time'|i18n}}</th><th>{{'User'|i18n}}</th><th>{{'Machine Name'|i18n}}</th><th>{{'OS Version'|i18n}}</th><th>{{'Status'|i18n}}</th><th>{{'Action'|i18n}}</th></tr></thead>
-			<tbody id='ra_table'>
-				<tr><td class='loading_place_holder' colspan="10"></td></tr>
-			</tbody>
-			<tfoot></tfoot>
-		</table>
-
-		<br/><br/>
-		{{'Note'|i18n}}:
-		<ul>
-			<li><i>{{'Normally remote assistance request is timeout in a few minutes to hours, according to your system setting'|i18n}}.</i></li>
-			<li><i>{{'Remote assistance request history will be kept for some time and deleted automatically'|i18n}}.</i></li>
-		</ul>
+			<br/><br/>
+			{{'Note'|i18n}}:
+			<ul>
+				<li><i>{{'Normally remote assistance request is timeout in a few minutes to hours, according to your system setting'|i18n}}.</i></li>
+				<li><i>{{'Remote assistance request history will be kept for some time and deleted automatically'|i18n}}.</i></li>
+			</ul>
 				
 				
-		<p>
-		{{'To setup the entire environment, refer to'|i18n}} <a href="./static/ra/help.html" target="_blank">{{'Setup Guide'|i18n}}</a>.<br/>
-		</p>
+			<p>
+			{{'To setup the entire environment, refer to'|i18n}} <a href="./static/ra/help.html" target="_blank">{{'Setup Guide'|i18n}}</a>.<br/>
+			</p>
+		  </div>
+		  <div id="shadowra">
+			<table class='lite_table'>
+				<thead><tr><th>User</th><th>Machine name</th><th>Desktop pool</th><th>Type</th><th>OS Version</th><th>Action</th></tr></thead>
+				<tbody id='session_table'>
+					<tr><td class='loading_place_holder' colspan="10"></td></tr>
+				</tbody>
+				<tfoot></tfoot>
+			</table>
+		  </div>
+		</div>
 		
-		<hr/>
+		<div id="radialog" title="Shadow">
+			<div id="shadowmsg">
+		  		<p id="shadowInfo">Shadow operation is running, please wait a moment.</p>
+		 	</div>
+		  	<div id="raprogressbar"></div>
+		</div>
 		
-		<!-- 
-		<table class='lite_table'>
-			<thead><tr><th>User</th><th>Machine name</th><th>Desktop pool</th><th>Type</th><th>OS Version</th><th>Action</th></tr></thead>
-			<tbody id='session_table'>
-				<tr><td class='loading_place_holder' colspan="10"></td></tr>
-			</tbody>
-			<tfoot></tfoot>
-		</table>
-		  -->
 		  
 		<script src="./js/remoteassist.js"></script>
 
 	</div>
-	
 
 </body>
 </html>

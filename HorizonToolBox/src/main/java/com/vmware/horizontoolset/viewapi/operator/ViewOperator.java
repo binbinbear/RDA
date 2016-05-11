@@ -49,6 +49,32 @@ public class ViewOperator implements AutoCloseable {
 		}
 	};
 	
+	public final CachedObjs<Session> activeSessions = new CachedObjs<Session>() {
+
+		@Override
+		protected void populateCache(List<Session> objects) {
+			List<SessionLocalSummaryView> views = op.listAll(SessionLocalSummaryView.class);
+	    	for (int i = 0; i < views.size(); i++) {
+	    		SessionLocalSummaryView v = views.get(i);
+	    		if(v.getSessionData().getSessionState().compareToIgnoreCase("CONNECTED") == 0) {
+	    			objects.add(new Session(op.getConnection(), v));
+	    		}
+	    	}    			
+		}
+	};
+	
+	public final CachedObjs<SessionLocalSummaryView> SessionLocalSummaryViews = new CachedObjs<SessionLocalSummaryView>() {
+
+		@Override
+		protected void populateCache(List<SessionLocalSummaryView> objects) {
+			List<SessionLocalSummaryView> views = op.listAll(SessionLocalSummaryView.class);
+	    	for (int i = 0; i < views.size(); i++) {
+	    		SessionLocalSummaryView v = views.get(i);
+	    		objects.add(v);
+	    	}    			
+		}
+	};
+	
     public ViewOperator(String host, String user, String password, String domain) {
     	op = new ViewOperatorNoCache(host, user, password, domain);
     }

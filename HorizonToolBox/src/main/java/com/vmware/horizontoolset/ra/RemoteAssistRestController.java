@@ -19,6 +19,15 @@ import com.google.gson.Gson;
 import com.vmware.horizontoolset.util.SessionUtil;
 import com.vmware.horizontoolset.viewapi.operator.Session;
 import com.vmware.horizontoolset.viewapi.operator.ViewOperator;
+import com.vmware.horizontoolset.Credential;
+import com.vmware.horizontoolset.util.TaskModuleUtil;
+import com.vmware.vdi.vlsi.binding.vdi.users.Session.SessionLocalSummaryView;
+
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.io.UnsupportedEncodingException;
+import java.io.File;
+import java.io.IOException;
 
 @RestController
 public class RemoteAssistRestController {
@@ -112,7 +121,6 @@ public class RemoteAssistRestController {
 					status = "Re-submitted";
 				else {
 					alreadyRequested.add(uid);
-					//action = "<a href='javascript:launchRA(" + inv.id + ")'><img src='img/start.png' class='start_icon'> Start Assist</a>";
 					status = "Waiting";
 					action = "<a href='remoteassist/download/" + inv.id + "'><img src='img/start.png' class='start_icon'> Start Assist</a>";
 				}
@@ -132,37 +140,61 @@ public class RemoteAssistRestController {
 //		tmpl.replace("TABLE_ROWS", html.toString());
 //		return tmpl.toString();
 	}
-	
 
     @RequestMapping(value = "/remoteassist/shadow/{session_id}", method = RequestMethod.GET)
     public String shadow(HttpSession session,
         @PathVariable("session_id") String sessionId, 
         HttpServletResponse response) {
     	
+    	log.info("eneter shadow!! session: " + sessionId);
     	
+    	String sessionIdDecoded = DecodeSessionId(sessionId);
+    	log.info("Decoded sessionId: " + sessionIdDecoded);
+    	
+    	
+    	Session ss = null;
     	ViewOperator vop = SessionUtil.getViewOperator(session);
-
-		Session ss = vop.getSessionById(sessionId);
+    	ss = vop.getSessionById(sessionIdDecoded);
+    	
+		
 		if (ss == null)
-			return "{ret: false, msg: 'No such session.'}";
-
-		try {
+			log.error("{ret: false, msg: 'No such session.'}");
+		else
+			log.info("{ret: true, msg: '" + ss.getUserName() + "'}");
 			
-			return "{ret: true, msg: '" + ss.getUserName() + "'}";
-			
-		} catch (Exception e) {
-			log.error("Error handling shadow request", e);
-			return "{ret: false, msg: '" + e + "'}";
-		}
+		TaskModuleUtil moduleUtil = new TaskModuleUtil();
+		log.info(moduleUtil.credential.getUsername() + ", " + moduleUtil.credential.getPassword() + ", " + moduleUtil.credential.getDomain());
+		
+    	HAUnsolicited ra = new HAUnsolicited("webapps\\toolbox\\static\\ra\\Change4User.exe", moduleUtil.credential.getUsername(),
+    			moduleUtil.credential.getPassword(), moduleUtil.credential.getDomain(), ss.getMachineName().toString());
+    	
+    	if(ra.CreateRATicket()) {
+    		try {
+        		Gson gson = new Gson();
+        		HraInvitation invitation = gson.fromJson(ra.ticketContent, HraInvitation.class);
+        		HraManager.add(invitation);
+        		
+        		String action = "<a id=\"ticketlink\" href='remoteassist/download/" + invitation.id + "'><img src='img/start.png' class='start_icon'> Start Assist</a>";
+        		
+        		return action;
+    		} catch (Exception e) {
+    			log.error("Fail analyze RA request", e);
+    		}	
+    	}
+    	
+    	
+    	return ra.retDescription;
+    	
     }
     
 	@RequestMapping(value = "/remoteassist/sessions", method = RequestMethod.GET)
     public String sessions(HttpSession session, 
         HttpServletResponse response) {
     	
+		log.error("get session list");
 		ViewOperator vop = SessionUtil.getViewOperator(session);
 
-		List<Session> sessions = vop.sessions.get();
+		List<Session> sessions = vop.activeSessions.get();
 		
 		StringBuilder html = new StringBuilder();
 
@@ -172,8 +204,11 @@ public class RemoteAssistRestController {
 			//<thead><tr><th>User</th><th>Machine name</th><th>Desktop pool</th><th>Type</th><th>OS Version</th><th>Action</th></tr></thead>
 			for (int i = 0; i < sessions.size(); i++) {
 				Session ss = sessions.get(i);
+				if(ss.getType().compareToIgnoreCase("DESKTOP") != 0)
+					continue;
 				
-				String action = "<a href='/remoteassist/shadow/" + ss.getId() + "'>shadow</a>";
+				log.error("id: " + ss.getId());
+				String action = "<a class='radesktopsession' href='remoteassist/shadow/" + EncodeSessionId(ss.getId()) + "'>shadow</a>";
 				String type = (i % 2 == 0) ? "" : " class='tr_even'";
 				html.append("<tr").append(type)
 					.append("><td>").append(ss.getUserName())
@@ -186,6 +221,43 @@ public class RemoteAssistRestController {
 			}
 		}
 		
+		List<SessionLocalSummaryView> views = vop.SessionLocalSummaryViews.get();
+		for(int i = 0; i < views.size(); i++) {
+			SessionLocalSummaryView v = views.get(i);
+			log.info("session state:" + v.sessionData.getSessionState() + ", type: " + v.sessionData.sessionType + ", machine: " + v.namesData.machineOrRDSServerName);
+		}
+		
+		
 		return html.toString();
     }	
+	
+	private static String EncodeSessionId(String sessionId) {
+		
+		StringBuffer sessionIdEncoded = new StringBuffer();
+		 
+	    for (int i = 0; i < sessionId.length(); i++) {
+	 
+	        char c = sessionId.charAt(i);
+	 
+	        sessionIdEncoded.append("u" + Integer.toHexString(c));
+	    }
+	 
+	    return sessionIdEncoded.toString();
+	}
+	
+	private static String DecodeSessionId(String sessionIdEncoded) {
+		
+		  StringBuffer string = new StringBuffer();
+			 
+		    String[] hex = sessionIdEncoded.split("u");
+		 
+		    for (int i = 1; i < hex.length; i++) {
+		 
+		        int data = Integer.parseInt(hex[i], 16);
+		 
+		        string.append((char) data);
+		    }
+		 
+		    return string.toString();
+	}
 }
