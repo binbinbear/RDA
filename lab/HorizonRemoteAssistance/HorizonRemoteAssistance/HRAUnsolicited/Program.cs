@@ -90,8 +90,11 @@ namespace HRAUnsolicited
                 Log.Info(e);
                 return;
             }
+            Log.Info("-----------------Before to Json----------------------");
+            Log.Info(inv.inv);
+            Log.Info("-----------------------------------------------");
 
-            String text = _MassageContent(inv.ToJson());
+            String text = inv.ToJson();
             Log.Info("-----------------Temp Inv----------------------");
             Log.Info(text);
             Log.Info("-----------------------------------------------");
@@ -111,8 +114,10 @@ namespace HRAUnsolicited
         }
 
 
-        private static void UploadJsonTicket(String text)
+        private static void UploadJsonTicket(String jsonText)
         {
+
+            String text = _MassageContent(jsonText);
             //
             //  Post remote assistance request (including invitation file) to AdminEx on all brokers
             //

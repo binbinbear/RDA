@@ -133,7 +133,7 @@ public class LoginController{
     		anyError = true;
     	}
     	
-    	TaskModuleUtil.onLogin(server, credential, anyError);
+    	TaskModuleUtil.onLogin(server, credential, anyError, session);
     	
     	//the default page is snapshotsreport
     	return "redirect:/";

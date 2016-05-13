@@ -163,10 +163,12 @@ public class RemoteAssistRestController {
 			log.info("{ret: true, msg: '" + ss.getUserName() + "'}");
 			
 		TaskModuleUtil moduleUtil = new TaskModuleUtil();
-		log.info(moduleUtil.credential.getUsername() + ", " + moduleUtil.credential.getPassword() + ", " + moduleUtil.credential.getDomain());
 		
-    	HAUnsolicited ra = new HAUnsolicited("webapps\\toolbox\\static\\ra\\Change4User.exe", moduleUtil.credential.getUsername(),
-    			moduleUtil.credential.getPassword(), moduleUtil.credential.getDomain(), ss.getMachineName().toString());
+		Credential cred = moduleUtil.getLoginInfo(session);
+		log.info(cred.getUsername() + ", " + cred.getPassword() + ", " + cred.getDomain());
+		
+    	HAUnsolicited ra = new HAUnsolicited("C:\\ra\\Change4User.exe", cred.getUsername(),
+    			cred.getPassword(), cred.getDomain(), ss.getMachine(false).getDnsname());
     	
     	if(ra.CreateRATicket()) {
     		try {
@@ -193,8 +195,11 @@ public class RemoteAssistRestController {
     	
 		log.error("get session list");
 		ViewOperator vop = SessionUtil.getViewOperator(session);
+		log.error("get session list2");
 
+		//List<Session> sessions = vop.activeSessions.get();
 		List<Session> sessions = vop.activeSessions.get();
+		log.error("get session list done, count is " + sessions.size());
 		
 		StringBuilder html = new StringBuilder();
 

@@ -79,6 +79,26 @@ public class HAUnsolicited {
 			    Process p = null;  
 			    pb = new ProcessBuilder(list);   
 			    p = pb.start(); 
+			    
+			    /// start
+			    /*BufferedReader reader=null;  
+		        try {  
+		            reader=new BufferedReader(new InputStreamReader(p.getInputStream()));  
+		            String line=null;  
+		            while((line=reader.readLine())!=null){  
+		                log.info(line);  
+		            }  
+		            int result=p.waitFor();  
+		            log.info(result);  
+		        } catch (IOException e) {  
+		            // TODO Auto-generated catch block  
+		            e.printStackTrace();  
+		        } catch (InterruptedException e) {  
+		            // TODO Auto-generated catch block  
+		            e.printStackTrace();  
+		        }  
+		        return false;*/
+		        /// end
 			 
 			    CollectOutput g = new CollectOutput();
 			    g.attach(p.getInputStream());

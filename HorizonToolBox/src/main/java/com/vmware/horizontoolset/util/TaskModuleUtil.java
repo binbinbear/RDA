@@ -3,9 +3,12 @@ package com.vmware.horizontoolset.util;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import com.vmware.horizon.auditing.report.Event;
 import com.vmware.horizontoolset.Credential;
 import com.vmware.horizontoolset.viewapi.ViewAPIService;
 import com.vmware.horizontoolset.viewapi.ViewApiFactory;
@@ -14,11 +17,24 @@ public class TaskModuleUtil {
 
 	public static String server;
 	public static Credential credential;
+	private static Map<String,Credential> mapCredential = new HashMap<String, Credential>();
 	
-	public synchronized static void onLogin(String server, Credential newCredential, boolean anyError) {
+	
+	public synchronized static void onLogin(String server, Credential newCredential, boolean anyError, HttpSession session) {
 		if (credential == null || !anyError) {
 			TaskModuleUtil.server = server;
 			credential = newCredential;
+			Credential cred = new Credential(credential.getUsername(), credential.getPassword(), credential.getDomain());
+			mapCredential.put(session.getId(), cred);
+		}
+	}
+	
+	public synchronized static Credential getLoginInfo(HttpSession session) {
+		Credential cred =  mapCredential.get(session.getId());
+		if(cred == null) {
+			return credential;
+		} else {
+			return cred;
 		}
 	}
 

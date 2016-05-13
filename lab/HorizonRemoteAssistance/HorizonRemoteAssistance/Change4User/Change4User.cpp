@@ -125,7 +125,7 @@ DWORD GetCurrentActiveSessionId()
 }
 
 //Function to run a process as active user from windows service
-bool ImpersonateActiveUserAndRun(std::wstring sUser, std::wstring sPassword, std::wstring sDomain, std::wstring sCommand)
+bool ActiveUserAndRun(std::wstring sUser, std::wstring sPassword, std::wstring sDomain, std::wstring sCommand)
 {
 	bool bResult = false;
 
@@ -193,6 +193,9 @@ bool ImpersonateActiveUserAndRun(std::wstring sUser, std::wstring sPassword, std
 
 	RevertToSelf();
 
+	// log off
+
+
 	std::cout << "WTSFreeMemory done" << std::endl;
 
 	return bResult;
@@ -217,7 +220,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
 		std::cout << "start ImpersonateActiveUserAndRun " << std::endl;
 
-		ImpersonateActiveUserAndRun(sUser, sPassword, sDomain, sCommand);
+		ActiveUserAndRun(sUser, sPassword, sDomain, sCommand);
 	}
 	else
 	{

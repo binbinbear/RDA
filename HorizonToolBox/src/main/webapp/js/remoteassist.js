@@ -10,22 +10,22 @@ $(document).ready(function () {
 		$("#session_table").html(result);
 		registerEvents();
 	}, "text");
-	
-	$( "#ratabs" ).tabs();
-	$( "#radialog" ).dialog({
-	     autoOpen: false,
-	     modal: true,
-	     width: 600,
-	     show: {
-	       effect: "blind",
-	       duration: 1000
-	     },
-	     hide: {
-	       effect: "explode",
-	       duration: 1000
-	     }
-	   });
 });
+
+$( "#ratabs" ).tabs();
+$( "#radialog" ).dialog({
+     autoOpen: false,
+     modal: true,
+     width: 600,
+     show: {
+       effect: "blind",
+       duration: 1000
+     },
+     hide: {
+       effect: "explode",
+       duration: 1000
+     }
+   });
 
 function registerEvents() {
 	$( "a.radesktopsession" ).click(function(event) {
