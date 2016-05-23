@@ -68,7 +68,7 @@ namespace ETEUtils
 
             try
             {
-                Console.WriteLine(msg);
+                //Console.WriteLine(msg);
                 File.AppendAllText(logFilePath, msg);
             }
             catch (Exception)

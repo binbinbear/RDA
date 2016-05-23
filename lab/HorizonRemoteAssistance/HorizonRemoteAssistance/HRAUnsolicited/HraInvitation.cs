@@ -4,6 +4,7 @@ using System.IO;
 using ETEUtils;
 using CreateRAString;
 using Newtonsoft.Json;
+using System.Diagnostics;
 
 namespace HRAUnsolicited
 {
@@ -30,12 +31,32 @@ namespace HRAUnsolicited
 
         private void start()
         {
+            killAllRemoteAssistProcesses();
+
             this.inv = RATicketGenerator.RequestRATicket(remoteHost);
         }
 
         public string ToJson()
         {
             return JsonConvert.SerializeObject(this);
+        }
+
+
+        public void killAllRemoteAssistProcesses()
+        {
+            Process p1 = new Process();
+
+            p1.StartInfo.FileName = "cmd.exe";
+            p1.StartInfo.UseShellExecute = false;
+            p1.StartInfo.RedirectStandardInput = true;
+            p1.StartInfo.RedirectStandardOutput = true;
+            p1.StartInfo.RedirectStandardError = true;
+            p1.StartInfo.CreateNoWindow = true;
+            p1.Start();
+            p1.StandardInput.WriteLine(@"TASKKILL /S {0} /F /IM msra.exe", remoteHost);
+            p1.StandardInput.WriteLine(@"exit");
+            p1.WaitForExit(40000);      // 40 seconds
+
         }
     }
 }

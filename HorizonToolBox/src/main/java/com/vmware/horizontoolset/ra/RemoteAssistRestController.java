@@ -28,6 +28,8 @@ import java.net.URLEncoder;
 import java.io.UnsupportedEncodingException;
 import java.io.File;
 import java.io.IOException;
+import java.io.*;
+import java.net.*;
 
 @RestController
 public class RemoteAssistRestController {
@@ -112,6 +114,8 @@ public class RemoteAssistRestController {
 				String status;
 				String action = "";
 				String uid = inv.machine + inv.user;
+				if((inv.machine == null) && (inv.user == null))  // filter the unsolicited RA ticket
+					continue;
 				if (inv.started) {
 					alreadyRequested.add(uid);
 					status = "Processed";
@@ -136,9 +140,6 @@ public class RemoteAssistRestController {
 		}
 		
 		return html.toString();
-//		HtmlTemplate tmpl = HtmlTemplate.load(HraServlet.class, "RAList.template");
-//		tmpl.replace("TABLE_ROWS", html.toString());
-//		return tmpl.toString();
 	}
 
     @RequestMapping(value = "/remoteassist/shadow/{session_id}", method = RequestMethod.GET)
@@ -147,6 +148,8 @@ public class RemoteAssistRestController {
         HttpServletResponse response) {
     	
     	log.info("eneter shadow!! session: " + sessionId);
+    	
+    	
     	
     	String sessionIdDecoded = DecodeSessionId(sessionId);
     	log.info("Decoded sessionId: " + sessionIdDecoded);
@@ -165,9 +168,8 @@ public class RemoteAssistRestController {
 		TaskModuleUtil moduleUtil = new TaskModuleUtil();
 		
 		Credential cred = moduleUtil.getLoginInfo(session);
-		log.info(cred.getUsername() + ", " + cred.getPassword() + ", " + cred.getDomain());
 		
-    	HAUnsolicited ra = new HAUnsolicited("C:\\ra\\Change4User.exe", cred.getUsername(),
+    	HAUnsolicited ra = new HAUnsolicited("webapps\\toolbox\\static\\ra\\Change4User.exe", cred.getUsername(),
     			cred.getPassword(), cred.getDomain(), ss.getMachine(false).getDnsname());
     	
     	if(ra.CreateRATicket()) {
@@ -213,14 +215,13 @@ public class RemoteAssistRestController {
 					continue;
 				
 				log.error("id: " + ss.getId());
-				String action = "<a class='radesktopsession' href='remoteassist/shadow/" + EncodeSessionId(ss.getId()) + "'>shadow</a>";
+				String action = "<a class='radesktopsession' href='remoteassist/shadow/" + EncodeSessionId(ss.getId()) + "'>remote assist</a>";
 				String type = (i % 2 == 0) ? "" : " class='tr_even'";
 				html.append("<tr").append(type)
 					.append("><td>").append(ss.getUserName())
 					.append("</td><td>").append(ss.getMachineName())
 					.append("</td><td>").append(ss.getDesktopPoolName())
 					.append("</td><td>").append(ss.getType())
-					.append("</td><td>").append("TODO")
 					.append("</td><td>").append(action)
 					.append("</td></tr>\n");
 			}
@@ -238,7 +239,7 @@ public class RemoteAssistRestController {
 	
 	private static String EncodeSessionId(String sessionId) {
 		
-		StringBuffer sessionIdEncoded = new StringBuffer();
+		/*
 		 
 	    for (int i = 0; i < sessionId.length(); i++) {
 	 
@@ -248,11 +249,15 @@ public class RemoteAssistRestController {
 	    }
 	 
 	    return sessionIdEncoded.toString();
+	    */
+	    
+	    String ret = new sun.misc.BASE64Encoder().encode(sessionId.getBytes());
+	    return ret;
 	}
 	
 	private static String DecodeSessionId(String sessionIdEncoded) {
 		
-		  StringBuffer string = new StringBuffer();
+		  /*StringBuffer string = new StringBuffer();
 			 
 		    String[] hex = sessionIdEncoded.split("u");
 		 
@@ -264,5 +269,16 @@ public class RemoteAssistRestController {
 		    }
 		 
 		    return string.toString();
+		    */
+		    
+	 byte[] bt = null;    
+	   try {    
+	       sun.misc.BASE64Decoder decoder = new sun.misc.BASE64Decoder();    
+	       bt = decoder.decodeBuffer( sessionIdEncoded );    
+	   } catch (IOException e) {    
+	       e.printStackTrace();    
+	   }    
+	   
+	   return new String(bt);    
 	}
 }

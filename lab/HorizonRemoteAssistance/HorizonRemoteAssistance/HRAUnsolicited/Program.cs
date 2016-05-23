@@ -55,8 +55,8 @@ namespace HRAUnsolicited
         private static void InitLog()
         {
             string userName = Environment.UserName;
-            string fileName = "Unsocilicited_" + userName + "_" + Process.GetCurrentProcess().Id.ToString();
-            string path = @"c:\\ra\\";
+            string fileName = "Unsocilicited_" + userName;
+            string path = Environment.CurrentDirectory + @"\\logs\\";
             Log.Init(path, fileName, "log", false);
         }
 
