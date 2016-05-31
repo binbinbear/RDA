@@ -55,9 +55,15 @@ namespace HRAUnsolicited
         private static void InitLog()
         {
             string userName = Environment.UserName;
-            string fileName = "Unsocilicited_" + userName;
-            string path = Environment.CurrentDirectory + @"\\logs\\";
-            Log.Init(path, fileName, "log", false);
+            string fileName = "Unsocilicited_" + userName + Process.GetCurrentProcess().Id.ToString();
+            string pathDefUser = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\logs\";
+            
+            int nDiskName = pathDefUser.IndexOf(":");
+            string pathPublicUser = "..\\logs\\UnsocRA\\";
+            if(nDiskName > 0)
+                pathPublicUser = pathDefUser.Substring(0, 1) + @":\users\public\logs\UnsocRA\";
+
+            Log.Init(pathPublicUser, fileName, "log", false);
         }
 
         private static void LogEnvironment()
