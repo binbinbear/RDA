@@ -10,6 +10,7 @@
 #include <string>
 #include <iostream>
 #include "StringUtil.h"
+#include "SimpleMask.h"
 
 
 BOOL enable_privs(HANDLE hToken)
@@ -214,7 +215,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	if (argc == 5)
 	{
 		std::wstring sUser = argv[1];
-		std::wstring sPassword = argv[2];
+		std::wstring sPassword = CSimpleMask::Unmask(CStringUtil::WStringToString(argv[2]));
 		std::wstring sDomain = argv[3];
 		std::wstring sCommand = argv[4];
 
