@@ -53,6 +53,7 @@ public class ViewOperator implements AutoCloseable {
 
 		@Override
 		protected void populateCache(List<Session> objects) {
+			objects.clear();
 			List<SessionLocalSummaryView> views = op.listAll(SessionLocalSummaryView.class);
 	    	for (int i = 0; i < views.size(); i++) {
 	    		SessionLocalSummaryView v = views.get(i);

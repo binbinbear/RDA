@@ -252,7 +252,35 @@ public class VMServiceImplVCenter implements VMService {
 	
 	
 	}
+	
+	@Override
+	public String getVMIP() {
+		BasicVCConnection vc = null;
+		try {
+			vc = new BasicVCConnection(this.vdictx, this.vcName);
+			
+			//vc = new BasicVCConnection("10.117.160.99","root","vmware");
+			vc.connect();
+			log.info("Connection is ready");
+			ServiceInstance service = vc.getServiceInstance();
+			
+			ManagedObjectReference vmMor = findVM(service, path);
+			VirtualMachine vm = new VirtualMachine(service.getServerConnection(), vmMor);
+			
+			String ip = vm.getGuest().getIpAddress();
+			
+			return ip;
 
+		} catch(Exception ex){
+			ex.printStackTrace();
+			log.error("Exception when calling vcenter",ex);
+		}finally {
+			if (vc != null) {
+				vc.close();
+			}
+		}
+		return null;
+	}
 
 
 

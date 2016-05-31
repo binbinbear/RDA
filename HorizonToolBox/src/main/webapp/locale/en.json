@@ -205,5 +205,14 @@ window.l10Ntable={
     "Power-on time is between 0:00 and 23:59":"Power-on time is between 0:00 and 23:59",
     "Example: If the interval value is 2(seconds), then powering-on 100 VMs will last for 200 seconds":"Example: If the interval value is 2(seconds), then powering-on 100 VMs will last for 200 seconds",
     "Seconds":"Seconds",
-    "PoolName":"PoolName"
+    "PoolName":"PoolName",
+    "Remote Assistance history":"Remote Assistance history",
+    "Filter by VM or User":"Filter by VM or User",
+    "Try to communicate with remote desktop, please wait a moment.":"Try to communicate with remote desktop, please wait a moment.",
+    "User":"User",
+    "Desktop pool":"Desktop pool",
+    "Type":"Type",
+    "expert":"expert",
+    "The maximum number of history records is 50 for offer(unsolicited) remote assistance":"The maximum number of history records is 50 for offer(unsolicited) remote assistance",
+    "To setup the entire environment or do troubleshooting, refer to user guide":"To setup the entire environment or do troubleshooting, refer to user guide"
 }

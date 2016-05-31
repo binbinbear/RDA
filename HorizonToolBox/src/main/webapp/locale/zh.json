@@ -205,5 +205,14 @@ window.l10Ntable={
     "Power-on time is between 0:00 and 23:59":"开机时间在0:00 and 23:59之间",
     "Example: If the interval value is 2(seconds), then powering-on 100 VMs will last for 200 seconds":"示例: 假如时间间隔是2秒, 打开100个虚拟机需要200秒",
     "Seconds":"秒",
-    "PoolName":"池名称"
+    "PoolName":"池名称",
+    "Remote Assistance history":"远程协助历史记录",
+    "Filter by VM or User":"根据虚拟机或用户过滤",
+    "Try to communicate with remote desktop, please wait a moment.":"尝试与远程桌面建立通讯，请稍等。",
+    "User":"用户",
+    "Desktop pool":"桌面池",
+    "Type":"类型",
+    "expert":"专家",
+    "The maximum number of history records is 50 for offer(unsolicited) remote assistance":"主动远程协助历史记录的最大数量为50条",
+    "To setup the entire environment or do troubleshooting, refer to user guide":"要设置整个环境或进行故障诊断，请参考用户手册"
 }

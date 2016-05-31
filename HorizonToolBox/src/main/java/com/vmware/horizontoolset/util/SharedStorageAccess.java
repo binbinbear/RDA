@@ -117,6 +117,8 @@ public class SharedStorageAccess extends ToolboxStorage{
 			VDIContext vdiCtx = VDIContextFactory.defaultVDIContext();
 			DirContext dirCtx = vdiCtx.getDirContext();
 			Attributes attrs = getOrcreate(dirCtx,name, attrkey);
+			log.warn("attr:"+ attrs.toString());
+			log.warn("attr size:"+ attrs.size());
 
 			Attribute a = attrs.get(attrkey);
 			if (a==null){
@@ -294,8 +296,14 @@ public class SharedStorageAccess extends ToolboxStorage{
 			log.info("value is not found");
 			return "";
 		}
-		log.info("value is found:"+list.get(0));
-		return list.get(0);
+		//log.info("value is found:"+list.get(0));
+		String value = new String();
+		for(int i = 0; i < list.size(); i++){
+			String subValue = list.get(i);
+			if(subValue != null)
+				value += subValue;
+		}
+		return value;
 
 	}
 
@@ -310,7 +318,23 @@ public class SharedStorageAccess extends ToolboxStorage{
 
 		log.info("LDAP Set key:"+namekey+",attr:"+attrkey);
 		ArrayList<String> list = new ArrayList<String>();
-		list.add(value);
+		
+		try{ // If the size > 512, split to the list
+			do {
+				if(value.length() > 512) {
+					String subValue = value.substring(0, 512);
+					list.add(subValue);
+					value = value.substring(512);
+				} else if (value.length() > 0) {
+					list.add(value);
+					break;
+				}
+			} while(true);
+		} catch(IndexOutOfBoundsException ex) {
+			
+		} catch(Exception ex) {
+			
+		}
 		this.setList(namekey, attrkey, list);
 
 

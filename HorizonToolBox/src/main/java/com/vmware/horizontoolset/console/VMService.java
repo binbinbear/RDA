@@ -27,4 +27,6 @@ public interface VMService {
 	public boolean reset();
 	
 	public String getPowerState();
+	
+	public String getVMIP();
 }

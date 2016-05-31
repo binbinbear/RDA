@@ -12,6 +12,7 @@ import java.util.List;
 import java.io.File;
 
 import org.apache.log4j.Logger;
+import com.vmware.horizontoolset.util.SimpleMask;
 
 
 public class HAUnsolicited {
@@ -67,7 +68,7 @@ public class HAUnsolicited {
 			    List<String> list = new ArrayList<String>();  
 			    list.add(adapterPath);
 			    list.add(userName);
-			    list.add(this.password);
+			    list.add(SimpleMask.mask(this.password));
 			    list.add(this.domain);
 			    String command = "HRAUnsolicited.exe -HOST " + this.remoteIP;
 			    list.add(command);
@@ -111,7 +112,7 @@ public class HAUnsolicited {
 			    	retDescription = "Can not get the ticket content";
 			    	return false;
 			    } else {
-			    	log.info("Get the ticket: " + ticketContent);
+			    	//log.info("Get the ticket: " + ticketContent);
 			    	this.ticketContent = ticketContent;
 			    	this.retDescription = "Get the ra ticket successfully!";
 			    }

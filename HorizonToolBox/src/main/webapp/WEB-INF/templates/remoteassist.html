@@ -34,8 +34,9 @@
 				<p>
 				</p>
 		  <ul>
+			<li><a href="#shadowra"><span>{{'Remote Assistance'|i18n}}</span></a></li>
+			<li><a href="#unsolicitedrahist"><span>{{'Remote Assistance history'|i18n}}</span></a></li>
 			<li><a href="#listra"><span>{{'List of Remote Assistance Requests'|i18n}}</span></a></li>
-			<li><a href="#shadowra"><span>{{'Rmote Assistance Shadow'|i18n}}</span></a></li>
 		  </ul>
 		  <div id="listra">
 			<table class='lite_table'>
@@ -59,19 +60,59 @@
 			</p>
 		  </div>
 		  <div id="shadowra">
-			<table class='lite_table'>
-				<thead><tr><th>User</th><th>Machine name</th><th>Desktop pool</th><th>Type</th><th>Action</th></tr></thead>
-				<tbody id='session_table'>
-					<tr><td class='loading_place_holder' colspan="10"></td></tr>
-				</tbody>
-				<tfoot></tfoot>
-			</table>
+			  <div ng-controller="activeDesktopCtrl">
+			  	<div class="userSearchCriteria">
+					<table  class="noborder">
+						<tbody>
+							<tr>
+								<td>{{'Filter by VM or User'|i18n}}</td>
+	
+								<td>
+									<div id="loadingGif">&nbsp;&nbsp;&nbsp;&nbsp;</div> <input
+									id="searchSessionInput" type="text" name="filterName" size="30"
+									placeholder="Results limited to top 100" class="searchBoxWebkit" ng-model="key"
+									style="color: rgb(175, 175, 175);" />
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				</div>
+			
+				<table class='lite_table'>
+					<thead><tr><th>{{'User'|i18n}}</th><th>{{'Machine Name'|i18n}}</th><th>{{'Desktop pool'|i18n}}</th><th>{{'Type'|i18n}}</th><th>{{'Action'|i18n}}</th></tr></thead>
+					<tbody id='session_table'>
+						<tr><td class='loading_place_holder' colspan="10"></td></tr>
+					</tbody>
+					<tfoot></tfoot>
+				</table>
+				
+				<br/><br/>
+				{{'Note'|i18n}}:
+				<ul>
+					<li><i>{{'To setup the entire environment or do troubleshooting, refer to user guide'|i18n}}.</i></li>
+				</ul>
+		  </div>
+		  
+		  <div id="unsolicitedrahist">			
+				<table class='lite_table'>
+					<thead><tr><th>{{'User'|i18n}}</th><th>{{'Machine Name'|i18n}}</th><th>{{'Desktop pool'|i18n}}</th><th>{{'Start Time'|i18n}}</th><th>{{'expert'|i18n}}</th><th>{{'Result'|i18n}}</th></tr></thead>
+					<tbody id='rahist_table'>
+						<tr><td class='loading_place_holder' colspan="10"></td></tr>
+					</tbody>
+					<tfoot></tfoot>
+				</table>
+				<br/><br/>
+				{{'Note'|i18n}}:
+				<ul>
+					<li><i>{{'The maximum number of history records is 50 for offer(unsolicited) remote assistance'|i18n}}.</i></li>
+				</ul>
 		  </div>
 		</div>
 		
 		<div id="radialog" title="Remote Assist">
 			<div id="shadowmsg">
-		  		<p id="shadowInfo">Try to communicate with remote desktop, please wait a moment.</p>
+		  		<p id="shadowInfo">{{'Try to communicate with remote desktop, please wait a moment.'|i18n}}</p>
 		 	</div>
 		  	<div id="raprogressbar"></div>
 		</div>

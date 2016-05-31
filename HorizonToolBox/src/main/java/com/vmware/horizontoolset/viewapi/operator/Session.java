@@ -54,4 +54,8 @@ public class Session {
 	public Object getDesktopPoolName() {
 		return summaryView.namesData.desktopName;
 	}
+	
+	public String getMachineDNS() {
+		return summaryView.namesData.machineOrRDSServerDNS;
+	}
 }
