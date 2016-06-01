@@ -384,9 +384,14 @@ namespace ToolboxInstall
             File.WriteAllLines(path + "uninstall.bat", content);
             File.Delete(tmp);
 
+            // enable remote assistance
+            EnableWindowsRAFeature();
+            ConfigFirewallRuleForRemoteAssistance();
+
             UpdaterichTextBox1("Completed...");
             Updatelabel1("100%");
             UpdateprogressBar1(progressBar1.Maximum);
+
             UpdaterichTextBox1(@"Congratulations! Your Horizon Toolbox has been installed correctly!" );
             UpdaterichTextBox1("You can close this program now.");
 
@@ -695,6 +700,47 @@ namespace ToolboxInstall
 
         private void label2_Click(object sender, EventArgs e)
         {
+
+        }
+
+        private void EnableWindowsRAFeature()
+        {
+            UpdaterichTextBox1(Environment.SystemDirectory);
+            UpdaterichTextBox1("Start to enable remote assistance feature.");
+            if (Util.IsFeatureInstalled("42"))  //42: Remote Assistance
+            {
+                UpdaterichTextBox1("Remote Assistance feature already installed. Skip.");
+                return;
+            }
+
+            string stdout;
+            if (!Util.EnableWindowsFeature("RemoteAssistance", out stdout))
+                UpdaterichTextBox1("Remote Assistance: " + stdout);
+
+            UpdaterichTextBox1("Completed to enable remote assistance feature.");
+        }
+
+        private void ConfigFirewallRuleForRemoteAssistance()
+        {
+            Process p = new Process();
+            p.StartInfo.FileName = "netsh.exe";
+            p.StartInfo.Arguments = "advfirewall firewall set rule group=\"Remote Assistance\" new enable=yes";
+            p.StartInfo.CreateNoWindow = true;
+            p.StartInfo.UseShellExecute = false;
+            p.StartInfo.RedirectStandardOutput = true;
+            p.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            p.Start();
+            string output = p.StandardOutput.ReadToEnd();
+            p.WaitForExit();
+            int ret = p.ExitCode;
+
+            if (ret != 0)
+            {
+               // msg("  WARNING: return code=" + ret);
+                UpdaterichTextBox1("WARNING: " + output);
+            }
+
+            UpdaterichTextBox1("Completed to configure firewall for remote assistance feature.");
 
         }
     
