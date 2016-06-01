@@ -23,31 +23,38 @@
 
 		<div id="content">
 			
-			<h3>Remote Assistance</h3>
+			<h3>Introduction</h3>
 			<p>
 			Remote Assistance provides the capability for administrator or IT helpdesk to remotely view and/or control
-			end-user's desktop, in Horizon View environment. It's also called session shadowing.
+			end-user's desktop, in Horizon View environment. It's also called session shadowing. 
 			</p>
+			There are two types for remote assistance.
+			<ol>
+			<li> <b>Solicited Remote Assistance:</b>  End user send a request to invite IT help desk to help him/her.</li>
+			<li> <b>Offer-based Remote Assistance</b>  Administrator or IT helpdesk initiate remote assistance. End user will allow helpassist to connect to the desktop if want to get the help. 
+			</li>
+			</ol>
+			<p>
+			<br>
+			<br>
 			
-			<h3>How to setup</h3>
-			
-			
-			<h4>1. <a href="Horizon_Remote_Assistance_Installer_v1035.exe">Download Horizon_Remote_Assistance_Installer_v1035.exe</a></h4>.
-			
-			<h4>2. Install component for end-user desktop</h4>
+			<h3>Solicited Remote Assistance</h3>
+			<h4><i>How to setup</i></h4>
+
+			<h5>1. <a href="Horizon_Remote_Assistance_Installer_v1035.exe">Download Horizon_Remote_Assistance_Installer_v1035.exe</a></h5>.
+			<h5>2. Install component for end-user desktop</h5>
 		
 			<p>Run the installer in end-user desktop, e.g. virtual machine which has View agent, and choose the "Install for end-user" option to install the end-user component.</p>
 			
 			<p>Normally you can do this on the master template of a View desktop pool.</p>
 		
 			<br>
-			<br>
-			
+
 			<p>Make sure the View connection server has Horizon Toolbox installed. By default this page is served by an active Horizon Toolbox.</p>
 
 			<p>That's all.</p>
 
-			<h3>Typical User Scenario</h3>
+			<h4><i>Typical User Scenario</i></h4>
 			<ol>
 				<li><b>User creates support request</b>: Desktop end-user clicks "Horizon Remote Assistance" icon on his/her View desktop, to initiate the remote assist request.</li>
 				<li><b>Admin support</b>: Administrator sees requests from the web portal. and by clicking the start button associated with a request to download an <i>Invitation.msrcIncident</i> file. Administrator opens the file by the default associated application, which starts the support.</li>
@@ -57,6 +64,35 @@
 			
 			<br>
 			<br>
+
+
+			<h3>Offer-based Remote Assistance</h3>
+			<h4><i>Typical User Scenario</i></h4>
+			<ol>
+				<li><b>Configure remote assistance offer feature</b>: To configure the computer of the end user to accept Remote Assistance offers, administrator can enable this feature by changing domain GPO or local policy settings.</li>
+				<li><b>Initiate remote assistance</b>: Administrator looks up the matched active session and clicks the "Remote Assist" button from the web portal. Toolbox service will initiate the assist request and download an <i>Invitation.msrcIncident</i> file. Administrator opens the file by the default associated application, which starts the support.</li>
+				<li><b>User confirmation</b>: A message box is shown in user desktop, and user confirmation is needed to establish the connection.</li>
+				<li>Further, full control can be requested by administrator, and still user confirmation is needed.</li>
+			</ol>
+
+			<h4><i>Notes:</i></h4>
+			<ol>
+				<li>Normally remote assistance request is timeout in a few minutes to hours, according to your system setting</li>
+				<li>The maximum number of history records is 50 for offer remote assistance</li>
+				<li>
+				If cannot initiate offer-based remote assistance, please check the environment follow these steps:
+				<ul>
+				<li>Refresh this webpage and check whether the https session timeout</li>
+				<li>Check the activity of this end-user's desktop session </li>
+				<li>Check whehter there is msra.exe process in the task manager of end-user's desktop. If yes, kill this process. </li>
+				<li>Check whehter offer-based remote assistance feature has been enabled in this desktop. </li>
+				</ul>
+				</li>
+			</ol>
+
+			<br>
+			<br>
+
 			<h3>Custom Configuration</h3>
 			<p>If Horizon Toolbox is not listening on default port 18443, you need to configure port for Horizon Remote Assistance in VM. 
 			This can be achieved by either of the following two ways:</p>
@@ -67,6 +103,9 @@
 			
 			<br>
 			<br>
+
+
+
 			<h3>Troubleshooting</h3>
 			<b>Client side logs:</b><br>
 			<blockquote>
@@ -79,10 +118,12 @@
 			<b>Server side logs:</b><br>
 			<blockquote>
 				<i>&lt;HorizonToolbox_dir&gt;\webapps\toolbox\horizontoolbox.log</i>
+				<i>C:\Users\Public\logs\UnSocRA\*.log
 			</blockquote>
 			<p>For example:</p>
 			<blockquote>
 				<i>C:\Program Files\VMware\HorizonToolbox\webapps\toolbox\horizontoolbox.log</i>
+				<i>C:\Users\Public\logs\UnsocRA\Unsocilicited_tooladmin6856.log</i>
 			</blockquote>
 		</div>
 

@@ -102,7 +102,7 @@ function registerEvents() {
                     $("#radialog").dialog("close");
                 });
         	}
-        }, 180000); 
+        }, 300000); 
 
        // tipId = window.setInterval("processEventes()", 1000); //  call processEventes method every onesecond
 
