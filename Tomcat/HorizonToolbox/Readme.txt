@@ -50,6 +50,7 @@ Trouble Shooting
 	C:\Program Files\VMware\HorizonToolbox\HorizonToolbox2.0\webapps\toolbox\horizontoolbox.log
 	And 
 	C:\Program Files\VMware\HorizonToolbox\HorizonToolbox2.0.0\logs\*.log
+	C:\Users\Public\logs\UnSocRA\*
   Auditing related      
 	"Event Database" should be configured in "View Administrator". Refer to this link if you don't know how to configure Event Database:
       https://pubs.vmware.com/horizon-view-60/index.jsp?topic=%2Fcom.vmware.horizon-view.installation.doc%2FGUID-1360BFDF-9F90-47FD-8B6C-E842CF951A53.html       
