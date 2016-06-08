@@ -30,10 +30,12 @@ namespace ToolboxInstall
         public const int Running = 2;
         public const string ServiceName = "Tomcat8";
         public int rate = 0;
+        public bool configureRAFireWall = true;
 
-        public Form1()
+        public Form1(bool bAutoConfigRA)
         {
             InitializeComponent();
+            configureRAFireWall = bAutoConfigRA;
             timer1.Enabled = true;
             progressBar1.Value = 0;
             label1.Text = progressBar1.Value + "%";
@@ -150,6 +152,22 @@ namespace ToolboxInstall
         /// </summary>
         public void ConfigureToolBox()
         {
+            // Check Java home
+            bool bNeedRegularJre = false;
+            if (ToolboxEnvCheck.NeedVerifyJavaVersion())
+            {
+                bNeedRegularJre = true;
+                if (ToolboxEnvCheck.VerifyJavaVersion() == false)
+                {
+                    String errorInfo = @"Error: Cannot find the matched Java Version, please install JRE8(x64 server version) or later. Otherwise, upgrade Horizon to verion 6.2 or later.";
+                    ExceptionOccur(errorInfo);
+
+                    MessageBox.Show(errorInfo);
+                    Application.Exit();
+                    return;
+                }
+            }
+
             //Application.DoEvents();
             //set JRE_HOME
 
@@ -157,71 +175,88 @@ namespace ToolboxInstall
             UpdaterichTextBox1("Checking if Horizon View Connection Server has been installed on this computer...");
             //output("Checking if connection server has been installed on this computer...");
             string jre_path = string.Empty;
-            try
+
+            if (bNeedRegularJre)
             {
-                jre_path = Registry.GetValue("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\App Paths\\wsnm.exe", "Path", null).ToString();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.ToString());
+                jre_path = ToolboxEnvCheck.GetRegularJrePath();
+                UpdaterichTextBox1("regular jre " + jre_path);
             }
 
-            if (string.Compare(jre_path, string.Empty) == 0 || jre_path.IndexOf("Server") == -1)
+            if (bNeedRegularJre && (jre_path != null))
             {
-                String errorInfo = @"JRE path is invalid. Please install Horizon Toolbox on a Horizon Connection Server!";
-                ExceptionOccur(errorInfo);
-                MessageBox.Show(@"Error: Please install Horizon Toolbox on a Horizon Connection Server!");
-                return;
-            }
-            UpdaterichTextBox1("Connection server is found on this computer.");
-            UpdaterichTextBox1("Start to set environment variables...");
-
-            //get rid of the last "\"
-            if (jre_path[jre_path.Length - 1] == '\\')
-            {
-                jre_path = jre_path.Substring(0, jre_path.Length - 1);
-            }
-            jre_path = Directory.GetParent(jre_path) + @"\jre\";
-            string oriJrePath = string.Empty;
-            try
-            {
-                oriJrePath = Registry.GetValue(@"HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Environment", "JRE_HOME", null).ToString();
-
-            }
-            catch
-            {
-            }
-            string overlay = "YES";
-            //timer1.Start();
-            if (oriJrePath.CompareTo(string.Empty) != 0 && oriJrePath.CompareTo(jre_path) != 0)
-            {
-                timer1.Enabled = false;
-                string msg = @"This computer already has the ""JRE_HOME"", would you like to override it with the value: " + jre_path + "?";
-                bool ans = ShowQuestionYesNo(msg);
-                this.Invoke(
-                         (MethodInvoker)delegate
-                         {
-                             timer1.Start();
-                         });
-                if (ans)
-                {
-                    overlay = "YES";
-                }
-                else
-                {
-                    overlay = "NO";
-                }
-                
-            }
-            if (overlay.CompareTo("YES") == 0)
-            {
-                //Registry.SetValue(@"HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Environment", "JRE_HOME", jre_path);
-                Environment.SetEnvironmentVariable(@"JRE_HOME", jre_path, EnvironmentVariableTarget.Machine);
+                ;
             }
             else
             {
-                jre_path = oriJrePath;
+                try
+                {
+                    jre_path = Registry.GetValue("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\App Paths\\wsnm.exe", "Path", null).ToString();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.ToString());
+                }
+
+                if (string.Compare(jre_path, string.Empty) == 0 || jre_path.IndexOf("Server") == -1)
+                {
+                    String errorInfo = @"JRE path is invalid. Please install Horizon Toolbox on a Horizon Connection Server!";
+                    ExceptionOccur(errorInfo);
+                    MessageBox.Show(@"Error: Please install Horizon Toolbox on a Horizon Connection Server!");
+                    return;
+                }
+                UpdaterichTextBox1("Connection server is found on this computer.");
+                UpdaterichTextBox1("Start to set environment variables...");
+
+                //get rid of the last "\"
+                if (jre_path[jre_path.Length - 1] == '\\')
+                {
+                    jre_path = jre_path.Substring(0, jre_path.Length - 1);
+                }
+                jre_path = Directory.GetParent(jre_path) + @"\jre\";
+                string oriJrePath = string.Empty;
+                try
+                {
+                    oriJrePath = Registry.GetValue(@"HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Environment", "JRE_HOME", null).ToString();
+
+                }
+                catch
+                {
+                }
+                string overlay = "YES";
+                //timer1.Start();
+                if (oriJrePath.CompareTo(string.Empty) != 0 && oriJrePath.CompareTo(jre_path) != 0)
+                {
+                    timer1.Enabled = false;
+                    string msg = @"This computer already has the ""JRE_HOME"", would you like to override it with the value: " + jre_path + "?";
+                    bool ans = ShowQuestionYesNo(msg);
+                    this.Invoke(
+                             (MethodInvoker)delegate
+                             {
+                                 timer1.Start();
+                             });
+                    if (ans)
+                    {
+                        overlay = "YES";
+                    }
+                    else
+                    {
+                        overlay = "NO";
+                    }
+
+                }
+                if (overlay.CompareTo("YES") == 0)
+                {
+                    //Registry.SetValue(@"HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Environment", "JRE_HOME", jre_path);
+                    Environment.SetEnvironmentVariable(@"JRE_HOME", jre_path, EnvironmentVariableTarget.Machine);
+                }
+                else
+                {
+                    jre_path = oriJrePath;
+                }
+
+                UpdaterichTextBox1("custom jre " + jre_path);
             }
+
             UpdaterichTextBox1("Environment variable has been successfully set.");
             UpdaterichTextBox1("Start to remove useless files...");
 
@@ -284,7 +319,7 @@ namespace ToolboxInstall
             }
             UpdaterichTextBox1("The old files have been removed.");
             UpdaterichTextBox1("Get the latest files...");
-
+            Thread.Sleep(1000);
             //unzip the latest HorizonToolbox
             string direcOfToolbox = GetToolBoxPath(path, false);
             string pathOfZip = GetToolBoxPath(path, true);
@@ -334,6 +369,7 @@ namespace ToolboxInstall
                 
             }
             UpdaterichTextBox1("Succeed getting files.");
+            Thread.Sleep(3000);
 
             //cmd,  install tomcat
             //path = Registry.GetValue("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\App Paths\\HorizonToolbox.exe", "path", null).ToString();
@@ -361,6 +397,7 @@ namespace ToolboxInstall
             }
             UpdaterichTextBox1("Succeed setting the environment.");
 
+            Thread.Sleep(3000);
             if (SvrStatus(ServiceName) == None)
             {
                 String errorInfo = @"Fail installing Tomcat. Please restart this program again or install the tomcat manually.";
@@ -386,7 +423,15 @@ namespace ToolboxInstall
 
             // enable remote assistance
             EnableWindowsRAFeature();
-            ConfigFirewallRuleForRemoteAssistance();
+
+            if (configureRAFireWall)
+            {
+                ConfigFirewallRuleForRemoteAssistance();
+            }
+            else
+            {
+                UpdaterichTextBox1("skip to configure firewall for ra.");
+            }
 
             UpdaterichTextBox1("Completed...");
             Updatelabel1("100%");
@@ -743,6 +788,5 @@ namespace ToolboxInstall
             UpdaterichTextBox1("Completed to configure firewall for remote assistance feature.");
 
         }
-    
     }
 }

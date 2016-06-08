@@ -156,4 +156,12 @@ public class ViewOperator implements AutoCloseable {
 		}
 		return null;
 	}
+	
+	public Session getRefreshSessionById(String sessionId) {
+		for (Session ss : sessions.get(true)) {
+			if (ss.summaryView.id.id.equals(sessionId))
+				return ss;
+		}
+		return null;
+	}
 }

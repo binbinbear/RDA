@@ -159,36 +159,54 @@ public class RemoteAssistRestController {
     public String shadow(HttpSession session,
         @PathVariable("session_id") String sessionId, 
         HttpServletResponse response) {
-    	
+    
     	String sessionIdDecoded = DecodeSessionId(sessionId);
+    	log.info("shadow session id:" + sessionId);
+    	log.info("decoded session id:" + sessionIdDecoded);
     	
     	Session ss = null;
-    	ViewOperator vop = SessionUtil.getViewOperator(session);
-    	ss = vop.getSessionById(sessionIdDecoded);
-    	
-		
-		if (ss == null)
-		{
-			log.error("{ret: false, msg: 'No such session.'}");
-			return "Cannot find this session.";
-		}
+    	try {
+	    	ViewOperator vop = SessionUtil.getViewOperator(session);
+	    	if(vop == null) {
+	    		log.error("Cannot get viewoperator by session " + session.toString());
+	    	}
+	    	ss = vop.getRefreshSessionById(sessionIdDecoded);
+			if (ss == null)
+			{
+				log.error("{ret: false, msg: 'No such session.'}" + sessionIdDecoded);
+				return "Cannot find this session.";
+			}
+    	} catch(Exception ex) {
+    		log.error("Cannot get session, error is: " + ex.toString());
+    		return "Cannot get related session";
+    	}
 		
 		TaskModuleUtil moduleUtil = new TaskModuleUtil();
 		Credential cred = moduleUtil.getLoginInfo(session);
 		
 		// Get the method to access this machine
 		//1. IP 2. dns name for this machine
-		String machineDnsNameOrIP = GetMachineIPBySession(session, ss);
-		if(machineDnsNameOrIP == null) {
-			machineDnsNameOrIP = ss.getMachineDNS();
-			if(machineDnsNameOrIP ==  null) {
-				log.error("Cannot find the machine name for this session " + sessionIdDecoded);
-				return "Cannot find the related machine name for this session.";
+		
+		String machineDnsNameOrIP = null;
+		try{
+			machineDnsNameOrIP = GetMachineIPBySession(session, ss);
+			if(machineDnsNameOrIP == null) {
+				machineDnsNameOrIP = ss.getMachineDNS();
+				if(machineDnsNameOrIP ==  null) {
+					log.error("Cannot find the machine name for this session " + sessionIdDecoded);
+					return "Cannot find the related machine name for this session.";
+				}
 			}
+		} catch(Exception e) {
+			log.error("Get machine error: " + e.toString());
+			machineDnsNameOrIP = ss.getMachineDNS();
 		}
 		
+		if(null == machineDnsNameOrIP)
+			return "Cannot find the related machine name for this session.";
+	
     	HAUnsolicited ra = new HAUnsolicited("webapps\\toolbox\\static\\ra\\Change4User.exe", cred.getUsername(),
-    			cred.getPassword(), cred.getDomain(), machineDnsNameOrIP);
+    			cred.getPassword(), cred.getDomain(), machineDnsNameOrIP, ss.getUserName());
     	
     	// create ra history
 		HraHistoryItem histItem = new HraHistoryItem();
@@ -248,9 +266,33 @@ public class RemoteAssistRestController {
 				for (int i = 0; i < sessions.size(); i++) {
 					Session ss = sessions.get(i);
 					
-					log.info("user: " + ss.getUserName() +", machine: " + ss.getMachineName() +", desktop: " + ss.getDesktopPoolName());
+					log.info("user: " + ss.getUserName() +", machine: " + ss.getMachineName() +", desktop: " + ss.getDesktopPoolName() 
+							+ ", type: " + ss.getType() + ", desktop type: " + ss.getDesktopType());
 					if(ss.getType().compareToIgnoreCase("DESKTOP") != 0)
 						continue;
+					
+					// don't support rds now
+					if(ss.getDesktopType().compareToIgnoreCase("RDS") == 0)
+						continue;
+					
+					boolean bPassedOS = false;
+					
+					do
+					{
+				    	Machine machine = ss.getMachine(true);
+				    	if(machine == null)
+				    		break;
+				    	
+				    	String os = machine.getOs();
+				    	if(os.contains("windows2k") == false) {
+				    		bPassedOS = true;
+				    	}
+				    	
+			    	} while (false);
+					
+					if(bPassedOS == false)
+						continue;
+			    	
 					
 					boolean bPassedFilter = true;
 					do
@@ -279,7 +321,10 @@ public class RemoteAssistRestController {
 					if(passedFilterCount > maxDisplayActiveSessionCount) {
 						break;
 					}
+					
+					//log.info("session id: " + ss.getId());
 					String encodeSessionId = EncodeSessionId(ss.getId());
+					//log.info("encoded session id: " + encodeSessionId);
 					String action = "<a class='radesktopsession' href='remoteassist/shadow/" + encodeSessionId + "'><img src='img/start.png' class='start_icon'> Remote Assist</a>";
 					String type = (i % 2 == 0) ? "" : " class='tr_even'";
 					html.append("<tr").append(type)
@@ -293,7 +338,7 @@ public class RemoteAssistRestController {
 			}
 		} catch(Exception ex) {
 			log.error("Get active sessions failed: " + ex.toString());
-			html.append("<tr><td colspan=20><i>No active session.</i></td></tr>");
+			html.append("<tr><td colspan=20><i>No active session now.</i></td></tr>");
 		}
 		
 		
@@ -382,7 +427,11 @@ public class RemoteAssistRestController {
 	
 	private static String GetMachineIPBySession(HttpSession session, Session ss) {
     	VCVersion vCVersion =null;
-    	String vmid = ss.getMachine(true).getVmid();
+    	
+    	Machine machine = ss.getMachine(true);
+    	if(machine == null)
+    		return null;
+    	String vmid = machine.getVmid();
     	
     	log.info("Requesting console for: " + vmid +", session: " + ss);
     	Machine m = SessionUtil.getMachine(session, vmid);

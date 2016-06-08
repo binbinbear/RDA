@@ -13,10 +13,12 @@ namespace HRAUnsolicited
         public string inv;
         public string code;
         public string remoteHost;
+        public string remoteLoginUser;
      
         private HraInvitation(UnsolicitedConfig conf)
         {
             remoteHost = conf.RemoteHost;
+            remoteLoginUser = conf.RemoteLoginUser;
         }
 
 

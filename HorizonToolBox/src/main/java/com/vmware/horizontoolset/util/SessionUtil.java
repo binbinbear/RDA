@@ -124,6 +124,7 @@ public class SessionUtil {
 			ViewAPIService api = getSessionObj(session, ViewAPIService.class);
 			if (api == null)
 				return null;
+			
 			vo = new ViewOperator(api.getConn());
 			setSessionObj(session, vo);
 		}

@@ -23,16 +23,18 @@ public class HAUnsolicited {
 	private String password = null;
 	private String domain = null;
 	private String remoteIP = null;
+	private String remoteUserName = null;
 	
 	public String retDescription = null;
 	public String ticketContent = null;
 	
-	public HAUnsolicited(String adapterPath, String userName, String password, String domain, String remoteIP) {
+	public HAUnsolicited(String adapterPath, String userName, String password, String domain, String remoteIP, String remoteUserName) {
 		this.adapterPath = adapterPath;
 		this.userName = userName;
 		this.password = password;
 		this.domain = domain;
 		this.remoteIP = remoteIP;
+		this.remoteUserName = remoteUserName;
 	}
 	
 	private void Rest() {
@@ -41,6 +43,7 @@ public class HAUnsolicited {
 		password = null;
 		domain = null;
 		remoteIP = null;
+		remoteUserName = null;
 	};
 	
 	boolean IsValidTicketInput() {
@@ -70,7 +73,7 @@ public class HAUnsolicited {
 			    list.add(userName);
 			    list.add(SimpleMask.mask(this.password));
 			    list.add(this.domain);
-			    String command = "HRAUnsolicited.exe -HOST " + this.remoteIP;
+			    String command = "HRAUnsolicited.exe -HOST " + this.remoteIP + " -USER \"" + this.remoteUserName + "\"";
 			    list.add(command);
 			    
 			    

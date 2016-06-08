@@ -1,20 +1,8 @@
 $(document).ready(function() {
-
-    $.get("/toolbox/remoteassist/list", null, function(result) {
-
-        $("#ra_table").html(result);
-    }, "text");
-
-    $("#searchSessionInput").Text("Results limited to top 100");
-    $.get("/toolbox/remoteassist/sessions", null, function(result) {
-        $("#session_table").html(result);
-        registerEvents();
-    }, "text");
-    
-    $.get("/toolbox/remoteassist/raHists", null, function(result) {
-
-        $("#rahist_table").html(result);
-    }, "text");
+	
+	reloadRemoteassistList();
+	reloadActiveDesktopSessions();
+	reloadRaHists(); 
 });
 
 $("#ratabs").tabs({
@@ -22,33 +10,82 @@ $("#ratabs").tabs({
 	  switch(ui.newTab.index()) {
 	  case 0:
 		  {
-		  $("#searchSessionInput").Text("Results limited to top 100");
-			  $.get("/toolbox/remoteassist/sessions", null, function(result) {
-			        $("#session_table").html(result);
-			        registerEvents();
-			    }, "text");
+		  	reloadActiveDesktopSessions();
 		  }
 		  break;
 	  case 1:
 		  {
-			  $.get("/toolbox/remoteassist/raHists", null, function(result) {
-	
-			        $("#rahist_table").html(result);
-			    }, "text");
+		  	reloadRaHists();
 		  }
 		  break;
 	  case 2:
 		  {
-			  $.get("/toolbox/remoteassist/list", null, function(result) {
-	
-			        $("#ra_table").html(result);
-			    }, "text");
-
+		  reloadRemoteassistList();
 		  }
 		  break;
 	  }
   }
 });
+
+function reloadActiveDesktopSessions() {
+	 $("#searchSessionInput").text("Results limited to top 100");
+	$.ajax({
+		url: '/toolbox/remoteassist/sessions',
+		type: "GET",
+		dataType: 'text',
+		success: function (result) {
+			if(result.indexOf("No active session now") != -1) {
+				window.location.reload();	
+				return;
+			}
+			 $("#session_table").html(result);
+		        registerEvents();
+		},
+		error:function(XMLHttpRequest, textStatus, errorThrown){
+			var sessionstatus = XMLHttpRequest.getResponseHeader("sessionstatus");
+			if (("timeout" == sessionstatus) || (null == sessionstatus)){
+				window.location.reload();	
+				return;
+			}
+	    }
+	}); 
+};
+
+function reloadRaHists() {
+	$.ajax({
+		url: '/toolbox/remoteassist/raHists',
+		type: "GET",
+		dataType: 'text',
+		success: function (result) {
+			 $("#rahist_table").html(result);
+		},
+		error:function(XMLHttpRequest, textStatus, errorThrown){
+			var sessionstatus = XMLHttpRequest.getResponseHeader("sessionstatus");
+			if (("timeout" == sessionstatus) || (null == sessionstatus)){
+				window.location.reload();	
+				return;
+			}
+	    }
+	}); 
+};
+
+function reloadRemoteassistList() {
+	$.ajax({
+		url: '/toolbox/remoteassist/list',
+		type: "GET",
+		dataType: 'text',
+		success: function (result) {
+			$("#ra_table").html(result);
+		},
+		error:function(XMLHttpRequest, textStatus, errorThrown){
+			var sessionstatus = XMLHttpRequest.getResponseHeader("sessionstatus");
+			if (("timeout" == sessionstatus) || (null == sessionstatus)){
+				window.location.reload();	
+				return;
+			}
+	    }
+	}); 
+};
 
 $("#radialog").dialog({
     autoOpen: false,
@@ -76,22 +113,41 @@ function registerEvents() {
             return;
         }
         event.preventDefault();
-        $.get($(this).attr("href"), null, function(result) {
-            if (result.indexOf("ticketlink") == -1) {
-                var msg = "<p>Cannot communicate with remote desktop.</p> <p> Check the desktop environment referring to user guide or wait 5 minutes and try again.</p>";
-                msg = msg + "<p align='center'><button id='closedlg'>OK</button></p>";
-                $("#raprogressbar").hide();
-                $("#shadowmsg").html(msg);
-                $("#closedlg").click(function() {
-                    $("#radialog").dialog("close");
-                });
-            } else {
-               // ticketDownloadViaUser(result);
-            	ticketAutoDownload(result);
-            }
-        }, "text");
-
+        console.log("start to call ticket request");
+        $.ajax({
+    		url: $(this).attr("href") +"?&date="+new Date().getTime(),
+    		type: "GET",
+    		dataType: 'text',
+    		success: function (result) {
+    			if(result.indexOf("Cannot get related session") != -1) {
+    				window.location.reload();	
+    				return;
+    			}
+                if (result.indexOf("ticketlink") == -1) {
+                    var msg = "<p>Cannot communicate with remote desktop.</p> <p> Check the desktop environment referring to user guide or wait 5 minutes and try again.</p>";
+                    msg = msg + "<p align='center'><button id='closedlg'>OK</button></p>";
+                    $("#raprogressbar").hide();
+                    $("#shadowmsg").html(msg);
+                    $("#closedlg").click(function() {
+                        $("#radialog").dialog("close");
+                    });
+                } else {
+                   // ticketDownloadViaUser(result);
+                	ticketAutoDownload(result);
+                };
+    		},
+    		error:function(XMLHttpRequest, textStatus, errorThrown){
+    			console.log("result error:"+textStatus);
+    			var sessionstatus = XMLHttpRequest.getResponseHeader("sessionstatus");
+    			if (("timeout" == sessionstatus) || (null == sessionstatus)){
+    				window.location.reload();	
+    				return;
+    			}
+    	    }
+    	}); 
+        console.log("ticket request is sent");
         resetTicketDlg();
+        console.log("reset tick dlg");
         setTimeout(function(){
         	var isVisible = $("#raprogressbar").is(":visible");
         	if(isVisible) {
@@ -186,6 +242,11 @@ if (!ToolBox.RASession) {
                         $(".loadingrow").attr("style","display:none");
                         $("#session_table").html(result);
                         registerEvents();
+                }).error(function(data, status, headers, config) {
+                	if ("timeout" == status){
+        				window.location.reload();	
+        				return;
+        			}
                 });
          };
 

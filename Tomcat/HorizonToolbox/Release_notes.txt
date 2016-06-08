@@ -1,13 +1,6 @@
 Horizon Toolbox 2.11 release note
 New features
-·	Admin initiated remote assistance
-
-Bug Fixes
-·	Auditing result was not accurate
-·	Power Policy didn't use "interval" value
-·	After deleting a power-on policy, the policy could not be created again.
-·	Console Access failed due to expired session (expired session should be redirected to login page)
-
+·	Admin initiated remote assistance(not support RDS desktop)
 
 Horizon Toolbox 2.1 release note
 New features

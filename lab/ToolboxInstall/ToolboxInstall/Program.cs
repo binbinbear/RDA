@@ -11,11 +11,24 @@ namespace ToolboxInstall
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+
+
+            // Whether need configure firewall
+            bool bConfigFirewall4RA = true;
+            if (args.Length > 0)
+            {
+                if (args[0].CompareTo("0") == 0)  //
+                {
+                    bConfigFirewall4RA = false;
+                }
+            }
+
+
+            Application.Run(new Form1(bConfigFirewall4RA));
         }
     }
 }

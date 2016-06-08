@@ -123,7 +123,7 @@ window.l10Ntable={
     "The profile will be deleted from the pool.Are you sure?":"The profile will be deleted from the pool.Are you sure?",
     "The profile has been deleted successfully!":"The profile has been deleted successfully!",
     "The selected profiles has been assigned successfully!":"The selected profiles has been assigned successfully!",
-    "List of Remote Assistance Requests":"List of Remote Assistance Requests",
+    "Remote Assistance Requests":"Remote Assistance Requests",
     "Request Time":"Request Time",
     "Machine Name":"Machine Name",
     "OS Version":"OS Version",
@@ -213,6 +213,7 @@ window.l10Ntable={
     "Desktop pool":"Desktop pool",
     "Type":"Type",
     "expert":"expert",
-    "The maximum number of history records is 50 for offer(unsolicited) remote assistance":"The maximum number of history records is 50 for offer(unsolicited) remote assistance",
-    "To setup the entire environment or do troubleshooting, refer to user guide":"To setup the entire environment or do troubleshooting, refer to user guide"
+    "The maximum number of history records is 200 for admin initiated remote assistance":"The maximum number of history records is 200 for admin initiated remote assistance",
+    "To setup the entire environment or troubleshoot, refer to":"To setup the entire environment or troubleshoot, refer to",
+    "RDS desktop is not supported for admin initiated remote assistance feature. End-user needs issue the remote assistance request on RDS desktop.":"RDS desktop is not supported for admin initiated remote assistance feature. End-user needs issue the remote assistance request on RDS desktop."
 }

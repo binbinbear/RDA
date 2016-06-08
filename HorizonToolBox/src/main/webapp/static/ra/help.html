@@ -30,8 +30,8 @@
 			</p>
 			There are two types for remote assistance.
 			<ol>
-			<li> <b>Solicited Remote Assistance:</b>  End user send a request to invite IT help desk to help him/her.</li>
-			<li> <b>Offer-based Remote Assistance</b>  Administrator or IT helpdesk initiate remote assistance. End user will allow helpassist to connect to the desktop if want to get the help. 
+			<li> <b>Solicited Remote Assistance:</b>  End user sends a request to invite IT help desk to help him/her.</li>
+			<li> <b>Admin Initiated Remote Assistance:</b>  Administrator or IT helpdesk initiates remote assistance. End user will allow helpassist to connect to the desktop if want to get the help. 
 			</li>
 			</ol>
 			<p>
@@ -66,24 +66,36 @@
 			<br>
 
 
-			<h3>Offer-based Remote Assistance</h3>
+			<h3>Admin Initiated Remote Assistance</h3>
 			<h4><i>Typical User Scenario</i></h4>
 			<ol>
-				<li><b>Configure remote assistance offer feature</b>: To configure the computer of the end user to accept Remote Assistance offers, administrator can enable this feature by changing domain GPO or local policy settings.</li>
-				<li><b>Initiate remote assistance</b>: Administrator looks up the matched active session and clicks the "Remote Assist" button from the web portal. Toolbox service will initiate the assist request and download an <i>Invitation.msrcIncident</i> file. Administrator opens the file by the default associated application, which starts the support.</li>
+				<li><b>Configure remote assistance offer feature</b>: To configure the computer of the end user to accept Remote Assistance offers, administrator or IT helpdesk needs enable this feature by changing domain GPO or local policy settings.</li>
+				<li><b>Configure remote assistance offer firewall</b>: Remote assistance feature should be allowed to pass through the firewall by changing domain GPO or local policy settings.</li>
+				<li><b>Initiate remote assistance</b>: Administrator or IT helpdesk looks up the matched active session and clicks the "Remote Assist" button from the web portal. Toolbox service will initiate the assist request and download an <i>Invitation.msrcIncident</i> file. Administrator or IT helpdesk opens the file by the default associated application, which starts the support.</li>
 				<li><b>User confirmation</b>: A message box is shown in user desktop, and user confirmation is needed to establish the connection.</li>
 				<li>Further, full control can be requested by administrator, and still user confirmation is needed.</li>
 			</ol>
 
 			<h4><i>Notes:</i></h4>
 			<ol>
-				<li>Normally remote assistance request is timeout in a few minutes to hours, according to your system setting</li>
-				<li>The maximum number of history records is 50 for offer remote assistance</li>
+				<li>RDS desktop is not supported for offer-based remote assistance feature. End-user needs issue the remote assistance request on RDS desktop.</li>
+				<li>
+					<div>
+					Refer to the link <a href="http://support.microsoft.com/kb/301527" target="_blank">Remote Assistance configuration</a> to check how to configure a computer to receive remote assistance offers.
+					<img src="RAGPO.png" alt="Config RA policy profile" width="600px" align="middle"></img>
+					</div>
+					<div>
+					<img src="RAFirewall.png" alt="Config RA firewall profile" width="600px" align="middle"></img>
+					</div>
+				</li>
+				
+				<li>Normally remote assistance request is timeout in a few minutes to hours, according to your system setting.</li>
+				<li>The maximum number of history records is 200 for offer remote assistance.</li>
 				<li>
 				If cannot initiate offer-based remote assistance, please check the environment follow these steps:
 				<ul>
-				<li>Refresh this webpage and check whether the https session timeout</li>
-				<li>Check the activity of this end-user's desktop session </li>
+				<li>Refresh this webpage and check whether the https session timeout.</li>
+				<li>Check the activity of this end-user's desktop session. </li>
 				<li>Check whehter there is msra.exe process in the task manager of end-user's desktop. If yes, kill this process. </li>
 				<li>Check whehter offer-based remote assistance feature has been enabled in this desktop. </li>
 				</ul>
@@ -118,11 +130,13 @@
 			<b>Server side logs:</b><br>
 			<blockquote>
 				<i>&lt;HorizonToolbox_dir&gt;\webapps\toolbox\horizontoolbox.log</i>
-				<i>C:\Users\Public\logs\UnSocRA\*.log
+				<br/>
+				<i>C:\Users\Public\logs\UnSocRA\*.log</i>
 			</blockquote>
 			<p>For example:</p>
 			<blockquote>
 				<i>C:\Program Files\VMware\HorizonToolbox\webapps\toolbox\horizontoolbox.log</i>
+				<br/>
 				<i>C:\Users\Public\logs\UnsocRA\Unsocilicited_tooladmin6856.log</i>
 			</blockquote>
 		</div>

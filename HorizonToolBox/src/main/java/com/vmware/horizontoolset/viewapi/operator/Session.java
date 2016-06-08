@@ -46,6 +46,10 @@ public class Session {
 	public String getType() {
 		return summaryView.sessionData.sessionType;
 	}
+	
+	public String getDesktopType() {
+		return summaryView.namesData.desktopType;
+	}
 
 	public Object getMachineName() {
 		return summaryView.namesData.machineOrRDSServerName;

@@ -121,7 +121,7 @@ window.l10Ntable={
     "This pools profile priority has been changed successfully!": "该池的配置文件的优先级已经成功地改变了！",
     "The profile has been deleted successfully!": "配置文件已成功删除！",
     "The selected profiles has been assigned successfully!": "选择的配置文件已成功转让！",
-    "List of Remote Assistance Requests": "远程协助请求列表",
+    "Remote Assistance Requests": "远程协助请求列表",
     "Request Time": "请求时间",
     "Machine Name": "机器名",
     "OS Version": "OS版本",
@@ -213,6 +213,7 @@ window.l10Ntable={
     "Desktop pool":"桌面池",
     "Type":"类型",
     "expert":"专家",
-    "The maximum number of history records is 50 for offer(unsolicited) remote assistance":"主动远程协助历史记录的最大数量为50条",
-    "To setup the entire environment or do troubleshooting, refer to user guide":"要设置整个环境或进行故障诊断，请参考用户手册"
-}
+    "The maximum number of history records is 200 for admin initiated remote assistance":"主动远程协助历史记录的最大数量为200条",
+    "To setup the entire environment or troubleshoot, refer to":"要设置整个环境或进行故障诊断，请参考",
+    "RDS desktop is not supported for admin initiated remote assistance feature. End-user needs issue the remote assistance request on RDS desktop.":"主动远程帮助不支持RDS桌面。 终端用户需要在RDS桌面上主动发起远程帮助的请求。"
+    }

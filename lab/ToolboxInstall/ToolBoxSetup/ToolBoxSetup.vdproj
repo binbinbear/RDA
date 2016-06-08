@@ -33,38 +33,44 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_379C46F577864A4CB51716D2679DECBC"
+        "MsmKey" = "8:_430577753913B779CDEE656C52BBAB31"
+        "OwnerKey" = "8:_2733D322EDA04135AA2F7BC69E3BFFD7"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_430577753913B779CDEE656C52BBAB31"
+        "OwnerKey" = "8:_300EFFBFAF464740BBE645E5D0537725"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_5F9B66D2281044F18845011ABB1F9902"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_6890A304E73084B77D5EB5901320B6EF"
-        "OwnerKey" = "8:_2733D322EDA04135AA2F7BC69E3BFFD7"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_6890A304E73084B77D5EB5901320B6EF"
-        "OwnerKey" = "8:_300EFFBFAF464740BBE645E5D0537725"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_798B275DB1CA036E155C68205F299421"
-        "OwnerKey" = "8:_2733D322EDA04135AA2F7BC69E3BFFD7"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_798B275DB1CA036E155C68205F299421"
-        "OwnerKey" = "8:_300EFFBFAF464740BBE645E5D0537725"
+        "MsmKey" = "8:_690ABBF8C8DD42CE85AE6C87FD770A0B"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_7F1FF0011B5D3AB72ECC572B54601008"
-        "OwnerKey" = "8:_798B275DB1CA036E155C68205F299421"
+        "OwnerKey" = "8:_430577753913B779CDEE656C52BBAB31"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B21C376E82902FA59177A0E363EB8494"
+        "OwnerKey" = "8:_2733D322EDA04135AA2F7BC69E3BFFD7"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B21C376E82902FA59177A0E363EB8494"
+        "OwnerKey" = "8:_300EFFBFAF464740BBE645E5D0537725"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -94,19 +100,19 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_430577753913B779CDEE656C52BBAB31"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_300EFFBFAF464740BBE645E5D0537725"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_798B275DB1CA036E155C68205F299421"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_6890A304E73084B77D5EB5901320B6EF"
+        "OwnerKey" = "8:_B21C376E82902FA59177A0E363EB8494"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -154,7 +160,7 @@
         "DisplayName" = "8:Release"
         "IsDebugOnly" = "11:FALSE"
         "IsReleaseOnly" = "11:TRUE"
-        "OutputFilename" = "8:Release\\VMWARE-Horizon-Toolbox-x64-2.1.0.msi"
+        "OutputFilename" = "8:Release\\VMWARE-Horizon-Toolbox-x64-2.1.1.msi"
         "PackageFilesAs" = "3:2"
         "PackageFileSize" = "3:-2147483648"
         "CabType" = "3:1"
@@ -205,10 +211,24 @@
             "InstallerClass" = "11:FALSE"
             "CustomActionData" = "8:[TARGETDIR]uninstall.bat"
             }
+            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_983855921B5F458F8ECA180868C65069"
+            {
+            "Name" = "8:tb2.vbs"
+            "Condition" = "8:BUTTON2=2"
+            "Object" = "8:_690ABBF8C8DD42CE85AE6C87FD770A0B"
+            "FileType" = "3:4"
+            "InstallAction" = "3:2"
+            "Arguments" = "8:"
+            "EntryPoint" = "8:"
+            "Sequence" = "3:2"
+            "Identifier" = "8:_E1631A52_38BF_4737_BDD4_E8526681B18C"
+            "InstallerClass" = "11:FALSE"
+            "CustomActionData" = "8:[TARGETDIR]ToolboxInstall.exe \"0"
+            }
             "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_F335612DA873434E8D2FC9A5B800DC04"
             {
             "Name" = "8:tb.vbs"
-            "Condition" = "8:"
+            "Condition" = "8:BUTTON2=1"
             "Object" = "8:_0597E366764145E0925B672076D8ECB2"
             "FileType" = "3:4"
             "InstallAction" = "3:2"
@@ -293,65 +313,14 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_379C46F577864A4CB51716D2679DECBC"
-            {
-            "SourcePath" = "8:..\\..\\..\\HorizonToolBox\\target\\HorizonToolbox2.1.0.zip"
-            "TargetName" = "8:HorizonToolbox2.1.0.zip"
-            "Tag" = "8:"
-            "Folder" = "8:_E9E6E9D056D6454280F9D0605AAA1644"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_6890A304E73084B77D5EB5901320B6EF"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73"
-                "ScatterAssemblies"
-                {
-                    "_6890A304E73084B77D5EB5901320B6EF"
-                    {
-                    "Name" = "8:ICSharpCode.SharpZipLib.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:ICSharpCode.SharpZipLib.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_E9E6E9D056D6454280F9D0605AAA1644"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_798B275DB1CA036E155C68205F299421"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_430577753913B779CDEE656C52BBAB31"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
             "AssemblyAsmDisplayName" = "8:Interop.IWshRuntimeLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_798B275DB1CA036E155C68205F299421"
+                    "_430577753913B779CDEE656C52BBAB31"
                     {
                     "Name" = "8:Interop.IWshRuntimeLibrary.dll"
                     "Attributes" = "3:512"
@@ -375,10 +344,81 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_5F9B66D2281044F18845011ABB1F9902"
+            {
+            "SourcePath" = "8:..\\..\\..\\HorizonToolBox\\target\\HorizonToolbox2.1.1.zip"
+            "TargetName" = "8:HorizonToolbox2.1.1.zip"
+            "Tag" = "8:"
+            "Folder" = "8:_E9E6E9D056D6454280F9D0605AAA1644"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_690ABBF8C8DD42CE85AE6C87FD770A0B"
+            {
+            "SourcePath" = "8:tb2.vbs"
+            "TargetName" = "8:tb2.vbs"
+            "Tag" = "8:"
+            "Folder" = "8:_E9E6E9D056D6454280F9D0605AAA1644"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7F1FF0011B5D3AB72ECC572B54601008"
             {
             "SourcePath" = "8:wshom.ocx"
             "TargetName" = "8:wshom.ocx"
+            "Tag" = "8:"
+            "Folder" = "8:_E9E6E9D056D6454280F9D0605AAA1644"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_B21C376E82902FA59177A0E363EB8494"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73"
+                "ScatterAssemblies"
+                {
+                    "_B21C376E82902FA59177A0E363EB8494"
+                    {
+                    "Name" = "8:ICSharpCode.SharpZipLib.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:ICSharpCode.SharpZipLib.dll"
+            "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_E9E6E9D056D6454280F9D0605AAA1644"
             "Condition" = "8:"
@@ -523,7 +563,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:HorizonToolbox"
         "ProductCode" = "8:{B29831EC-0F3F-4FF6-B3BE-6553C8F88741}"
-        "PackageCode" = "8:{3610CFCF-BDB2-470A-A67A-3F7C2B464B79}"
+        "PackageCode" = "8:{0973DA06-E353-48D9-99AE-8E1CA9048AD0}"
         "UpgradeCode" = "8:{DF0A7AD2-8D9D-475B-A045-FCD16798B34D}"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
@@ -1010,6 +1050,132 @@
                             }
                         }
                     }
+                    "{688940B3-5CA9-4162-8DEE-2993FA9D8CBC}:_61BFF574D7134B7E91588017CE196A09"
+                    {
+                    "Sequence" = "3:310"
+                    "DisplayName" = "8:RadioButtons   (2 buttons)"
+                    "UseDynamicProperties" = "11:TRUE"
+                    "IsDependency" = "11:FALSE"
+                    "SourcePath" = "8:<VsdDialogDir>\\VsdCustom2ButtonDlg.wid"
+                        "Properties"
+                        {
+                            "BannerBitmap"
+                            {
+                            "Name" = "8:BannerBitmap"
+                            "DisplayName" = "8:#1001"
+                            "Description" = "8:#1101"
+                            "Type" = "3:8"
+                            "ContextData" = "8:Bitmap"
+                            "Attributes" = "3:4"
+                            "Setting" = "3:1"
+                            "UsePlugInResources" = "11:TRUE"
+                            }
+                            "BannerText"
+                            {
+                            "Name" = "8:BannerText"
+                            "DisplayName" = "8:#1014"
+                            "Description" = "8:#1114"
+                            "Type" = "3:3"
+                            "ContextData" = "8:"
+                            "Attributes" = "3:0"
+                            "Setting" = "3:1"
+                            "Value" = "8:#1214"
+                            "DefaultValue" = "8:#1214"
+                            "UsePlugInResources" = "11:TRUE"
+                            }
+                            "BodyText"
+                            {
+                            "Name" = "8:BodyText"
+                            "DisplayName" = "8:#1015"
+                            "Description" = "8:#1115"
+                            "Type" = "3:3"
+                            "ContextData" = "8:"
+                            "Attributes" = "3:0"
+                            "Setting" = "3:2"
+                            "Value" = "8:In order to enable Offer-based Remote Assistance feature, specified rule should be configured.  Do you want configure this rule automatically?"
+                            "DefaultValue" = "8:#1215"
+                            "UsePlugInResources" = "11:TRUE"
+                            }
+                            "Button1Label"
+                            {
+                            "Name" = "8:Button1Label"
+                            "DisplayName" = "8:#1022"
+                            "Description" = "8:#1122"
+                            "Type" = "3:3"
+                            "ContextData" = "8:"
+                            "Attributes" = "3:0"
+                            "Setting" = "3:2"
+                            "Value" = "8:Configure Windows Firewall automatically"
+                            "DefaultValue" = "8:#1222"
+                            "UsePlugInResources" = "11:TRUE"
+                            }
+                            "Button1Value"
+                            {
+                            "Name" = "8:Button1Value"
+                            "DisplayName" = "8:#1018"
+                            "Description" = "8:#1118"
+                            "Type" = "3:3"
+                            "ContextData" = "8:"
+                            "Attributes" = "3:0"
+                            "Setting" = "3:1"
+                            "Value" = "8:1"
+                            "DefaultValue" = "8:1"
+                            "UsePlugInResources" = "11:TRUE"
+                            }
+                            "Button2Label"
+                            {
+                            "Name" = "8:Button2Label"
+                            "DisplayName" = "8:#1023"
+                            "Description" = "8:#1123"
+                            "Type" = "3:3"
+                            "ContextData" = "8:"
+                            "Attributes" = "3:0"
+                            "Setting" = "3:2"
+                            "Value" = "8:Do not configure Windows Firewall"
+                            "DefaultValue" = "8:#1223"
+                            "UsePlugInResources" = "11:TRUE"
+                            }
+                            "Button2Value"
+                            {
+                            "Name" = "8:Button2Value"
+                            "DisplayName" = "8:#1019"
+                            "Description" = "8:#1119"
+                            "Type" = "3:3"
+                            "ContextData" = "8:"
+                            "Attributes" = "3:0"
+                            "Setting" = "3:1"
+                            "Value" = "8:2"
+                            "DefaultValue" = "8:2"
+                            "UsePlugInResources" = "11:TRUE"
+                            }
+                            "ButtonProperty"
+                            {
+                            "Name" = "8:ButtonProperty"
+                            "DisplayName" = "8:#1017"
+                            "Description" = "8:#1117"
+                            "Type" = "3:14"
+                            "ContextData" = "8:Public"
+                            "Attributes" = "3:2"
+                            "Setting" = "3:2"
+                            "Value" = "8:BUTTON2"
+                            "DefaultValue" = "8:BUTTON2"
+                            "UsePlugInResources" = "11:TRUE"
+                            }
+                            "DefaultValue"
+                            {
+                            "Name" = "8:DefaultValue"
+                            "DisplayName" = "8:#1016"
+                            "Description" = "8:#1116"
+                            "Type" = "3:3"
+                            "ContextData" = "8:"
+                            "Attributes" = "3:0"
+                            "Setting" = "3:1"
+                            "Value" = "8:1"
+                            "DefaultValue" = "8:1"
+                            "UsePlugInResources" = "11:TRUE"
+                            }
+                        }
+                    }
                     "{688940B3-5CA9-4162-8DEE-2993FA9D8CBC}:_CBE4F48A23E04CC0BCB25B700A6340D5"
                     {
                     "Sequence" = "3:100"
@@ -1058,9 +1224,9 @@
                             }
                         }
                     }
-                    "{688940B3-5CA9-4162-8DEE-2993FA9D8CBC}:_D1399144B5B54BCE94D591A8D38760E7"
+                    "{688940B3-5CA9-4162-8DEE-2993FA9D8CBC}:_D7D0E76C40C1426D850B126B90545713"
                     {
-                    "Sequence" = "3:300"
+                    "Sequence" = "3:320"
                     "DisplayName" = "8:Confirm Installation"
                     "UseDynamicProperties" = "11:TRUE"
                     "IsDependency" = "11:FALSE"

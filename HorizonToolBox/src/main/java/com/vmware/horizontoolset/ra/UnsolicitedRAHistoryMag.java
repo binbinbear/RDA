@@ -13,7 +13,7 @@ import com.google.gson.reflect.TypeToken;
 public class UnsolicitedRAHistoryMag {
 	private static Logger log = Logger.getLogger(UnsolicitedRAHistoryMag.class);
 	private static final String STORED_RAHIST_ATTR_KEY = "RAHIST";
-	private static final int MAX_HISTITEM_COUNT = 50;
+	private static final int MAX_HISTITEM_COUNT = 200;
 	private static boolean histLoadedFromLdap = false;
 	
 	private static List<HraHistoryItem> raHistItems = new ArrayList<HraHistoryItem>(); 
